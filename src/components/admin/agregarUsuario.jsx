@@ -4,6 +4,43 @@ import { db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import Admin from "./admin";
 
+//substring
+
+class validadorRUT {
+  constructor(rut) {
+    this.rut = rut;
+    this.dv = rut.substring(this.rut.length - 1);
+    this.rut = this.rut.substring(0, this.rut.length - 1).replace(/\D/g, "");
+    this.esValido = this.validar();
+  }
+
+  validar() {
+    let numerosArray = this.rut.split("").reverse();
+    let acumulador = 0;
+    let multiplicador = 2;
+    for (let numero of numerosArray) {
+      acumulador += parseInt(numero) * multiplicador;
+      multiplicador++;
+      if (multiplicador == 8) {
+        multiplicador = 2;
+      }
+    }
+    let dv = 11 - (acumulador % 11);
+
+    if (dv == 11) 
+      dv = '0';
+
+    if (dv == 10) 
+      dv = 'k';
+    return dv == this.dv.toLowerCase();
+  }
+
+  formateado() {
+    if (!this.esValido) return '';
+
+    return (this.rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")) + "-" + this.dv;
+  }
+}
 
 const AgregarUsuario = () => {
   const [email, setEmail] = useState('')
@@ -26,6 +63,7 @@ const AgregarUsuario = () => {
 
   const createUserFirebase = async () => {
     await addDoc(collection(db, "users"), state);
+    alert('Usuario Agregado');
   }
 
   const handleSubmit = async (e) => {
@@ -33,75 +71,9 @@ const AgregarUsuario = () => {
     setError('')
     try {
       await createUser(email, password) 
-      alert('Usuario agregado');
+      alert('Usuario Agregado');
     } catch (e) {
       setError(e.mesaage);
-      console.log(error);
-    }
-  }
-
-  // const rutVerifier = (rut) => {
-  //   var valor = rut.replace('.', '');
-  //   valor = valor.replace('-', '');
-  //   cuerpo = valor.slice(0, -1);
-  //   dv = valor.slice(-1).toUpperCase();
-  //   rut.value = cuerpo + '-' + dv
-  //   if (cuerpo.length < 7) { rut.setCustomValidity("RUT Incompleto"); return false; }
-  //   suma = 0;
-  //   multiplo = 2;
-  //   for (i = 1; i <= cuerpo.length; i++) {
-  //     index = multiplo * valor.charAt(cuerpo.length - i);
-  //     suma = suma + index;
-  //     if (multiplo < 7) { multiplo = multiplo + 1; } else { multiplo = 2; }
-  //   }
-  //   dvEsperado = 11 - (suma % 11);
-  //   dv = (dv == 'K') ? 10 : dv;
-  //   dv = (dv == 0) ? 11 : dv;
-  //   if (dvEsperado != dv) { rut.setCustomValidity("RUT Inválido"); return false; }
-  //   rut.setCustomValidity('');
-  // }
-
-  class validadorRUT {
-    constructor(rut) {
-      this.rut = rut;
-      this.dv = this.rut.substring(this.rut.length - 1);
-      this.rut = this.rut.substring(0, this.rut.length - 1).replace(/\./g, "");
-      this.esValido = this.validar();
-    }
-
-    validar() {
-      let numerosArray = this.rut.split("").reverse();
-      let acumulador = 0;
-      let multiplicador = 2;
-      for (let numero of numerosArray) {
-        acumulador += parseInt(numero) * multiplicador;
-        multiplicador++;
-        if (multiplicador == 8) {
-          multiplicador = 2;
-        }
-      }
-      let dv = 11 - (acumulador % 11);
-
-      if (dv == 11) {
-        dv = '0';
-      }
-      // if (dv == 11) 
-      //   dv = '0';
-      
-      if (dv == 10) {
-        dv = 'k';
-      }
-      // if (dv == 10) 
-      //   dv = 'k';
-      
-      return dv == this.dv.toLowerCase();
-    }
-
-    formateado () {
-      if (!this.esValido) {
-        return '';
-      }
-      return this.rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "-" + this.dv;
     }
   }
 
@@ -120,8 +92,7 @@ const AgregarUsuario = () => {
                   name="rut"
                   placeholder="Rut"
                   onChange={(e) => handleChangeText('rut', e.target.value)}
-                  // onBlur={(e) => rutVerifier()}
-                  onBlur={(e) => {validadorRUT(e.target.value)}}
+                  onBlur={(e) => {new validadorRUT(e.target.value)}}
                 />
               </label>
               <label>
