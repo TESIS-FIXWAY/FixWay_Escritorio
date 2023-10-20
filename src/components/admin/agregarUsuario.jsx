@@ -4,8 +4,6 @@ import { db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import Admin from "./admin";
 
-//substring
-
 class validadorRUT {
   constructor(rut) {
     this.rut = rut;
@@ -74,6 +72,7 @@ const AgregarUsuario = () => {
       alert('Usuario Agregado');
     } catch (e) {
       setError(e.mesaage);
+      console.log(error);
     }
   }
 
@@ -90,9 +89,10 @@ const AgregarUsuario = () => {
                 <input
                   type="text"
                   name="rut"
-                  placeholder="Rut"
+                  placeholder="Rut (11.111.111-1)"
                   onChange={(e) => handleChangeText('rut', e.target.value)}
                   onBlur={(e) => {new validadorRUT(e.target.value)}}
+                  required
                 />
               </label>
               <label>
@@ -102,6 +102,7 @@ const AgregarUsuario = () => {
                   name="nombre"
                   placeholder="Nombre"
                   onChange={(e) => handleChangeText('nombre', e.target.value)}
+                  required
                 />
               </label>
               <label>
@@ -111,6 +112,7 @@ const AgregarUsuario = () => {
                   name="apellido"
                   placeholder="Apellido"
                   onChange={(e) => handleChangeText('apellido', e.target.value)}
+                  required
                 />
               </label>
               <label>
@@ -120,6 +122,7 @@ const AgregarUsuario = () => {
                   name="telefono"
                   placeholder="Telefono"
                   onChange={(e) => handleChangeText('telefono', e.target.value)}
+                  required
                 />
               </label>
               <label>
@@ -129,6 +132,7 @@ const AgregarUsuario = () => {
                   name="direccion"
                   placeholder="Direccion"
                   onChange={(e) => handleChangeText('direccion', e.target.value)}
+                  required
                 />
               </label>
               <label>
@@ -138,6 +142,7 @@ const AgregarUsuario = () => {
                   name="email"
                   placeholder="Correo"
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </label>
               <label>
@@ -147,6 +152,7 @@ const AgregarUsuario = () => {
                   name="password"
                   placeholder="Contraseña"
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </label>
               <label>
@@ -156,6 +162,7 @@ const AgregarUsuario = () => {
                   name="rol"
                   placeholder="Rol"
                   onChange={(e) => handleChangeText('rol', e.target.value)}
+                  required
                 />
               </label>
               <input 
