@@ -11,11 +11,11 @@ class validadorRUT {
     this.rut = this.rut.substring(0, this.rut.length - 1).replace(/\D/g, "");
     this.esValido = this.validar();
   }
-
   validar() {
     let numerosArray = this.rut.split("").reverse();
     let acumulador = 0;
     let multiplicador = 2;
+
     for (let numero of numerosArray) {
       acumulador += parseInt(numero) * multiplicador;
       multiplicador++;
@@ -23,6 +23,7 @@ class validadorRUT {
         multiplicador = 2;
       }
     }
+
     let dv = 11 - (acumulador % 11);
 
     if (dv == 11) 
@@ -30,9 +31,10 @@ class validadorRUT {
 
     if (dv == 10) 
       dv = 'k';
+
     return dv == this.dv.toLowerCase();
   }
-
+  
   formateado() {
     if (!this.esValido) return '';
 

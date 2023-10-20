@@ -15,6 +15,8 @@ const ListarUsuario = () => {
       querySnapshot.forEach((doc) => {
         users.push({
           id: doc.id,
+          rut: doc.data().rut,
+          rol: doc.data().rol,
           nombre: doc.data().nombre,
           apellido: doc.data().apellido,
           direccion: doc.data().direccion,
@@ -45,6 +47,8 @@ const ListarUsuario = () => {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
+                    <td>{user.rut}</td>
+                    <td>{user.rol}</td>
                     <td>{user.nombre}</td>
                     <td>{user.apellido}</td>
                     <td>{user.direccion}</td>
