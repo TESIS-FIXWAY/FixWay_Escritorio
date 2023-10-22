@@ -104,7 +104,6 @@ const AgregarUsuario = () => {
                   name="nombre"
                   placeholder="Nombre"
                   onChange={(e) => handleChangeText('nombre', e.target.value)}
-                  required
                 />
               </label>
               <label>
@@ -114,7 +113,6 @@ const AgregarUsuario = () => {
                   name="apellido"
                   placeholder="Apellido"
                   onChange={(e) => handleChangeText('apellido', e.target.value)}
-                  required
                 />
               </label>
               <label>
@@ -124,7 +122,6 @@ const AgregarUsuario = () => {
                   name="telefono"
                   placeholder="Telefono"
                   onChange={(e) => handleChangeText('telefono', e.target.value)}
-                  required
                 />
               </label>
               <label>
@@ -134,7 +131,6 @@ const AgregarUsuario = () => {
                   name="direccion"
                   placeholder="Direccion"
                   onChange={(e) => handleChangeText('direccion', e.target.value)}
-                  required
                 />
               </label>
               <label>
@@ -144,7 +140,6 @@ const AgregarUsuario = () => {
                   name="email"
                   placeholder="Correo"
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </label>
               <label>
@@ -154,7 +149,6 @@ const AgregarUsuario = () => {
                   name="password"
                   placeholder="Contraseña"
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                 />
               </label>
               <label>
@@ -164,7 +158,6 @@ const AgregarUsuario = () => {
                   name="rol"
                   placeholder="Rol"
                   onChange={(e) => handleChangeText('rol', e.target.value)}
-                  required
                 />
               </label>
               <input 
