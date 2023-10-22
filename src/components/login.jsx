@@ -1,9 +1,7 @@
+import '../../src/styles/Globals.css'
 import React, { useState } from "react";
-import '../styles/login.css';
-
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
-
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,11 +19,13 @@ const Login = () => {
       alert('bienvenido');
     } catch (e) {
       setError(e.message);
-      alert('Correo o contraseña incorrecta')
+      alert('Correo o contraseÃ±a incorrecta')
       console.log(e.message);
       console.log(error);
     }
   }
+  
+
   
   return (
     <div className="container-form login">

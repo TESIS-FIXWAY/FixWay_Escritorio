@@ -52,7 +52,8 @@ const AgregarUsuario = () => {
     apellido: '',
     telefono: '',
     direccion: '',
-    rol:''
+    rol:'',
+    salario: '',
   });
 
   const {createUser} = UserAuth();
@@ -82,90 +83,105 @@ const AgregarUsuario = () => {
     <>
       <Admin />
         <div >
-          <div className="form-info-childs">
-            <h2>Agregar Usuario</h2>
-            <p>Ingrese los datos del usuario</p>
-            <form onSubmit={handleSubmit} className="formulario">
-              <label>
-                <i className='bx bx-envelope' ></i>
-                <input
+          <div className="contenedor">
+            <h1 className="form-title">Agregar Usuario</h1>
+            <form onSubmit={handleSubmit} className=" ">
+              <div className="main-user-info">
+                <div className="user-input-box">
+                  <label>Rut</label>
+                  <input
                   type="text"
                   name="rut"
                   placeholder="Rut (11.111.111-1)"
                   onChange={(e) => handleChangeText('rut', e.target.value)}
                   onBlur={(e) => {new validadorRUT(e.target.value)}}
                   required
-                />
-              </label>
-              <label>
-                <i className='bx bx-envelope' ></i>
-                <input
+                  />
+                </div>
+                <div className="user-input-box">
+                  <label>ROL</label>
+                  <input
                   type="text"
-                  name="nombre"
-                  placeholder="Nombre"
-                  onChange={(e) => handleChangeText('nombre', e.target.value)}
-                />
-              </label>
-              <label>
-                <i className='bx bx-envelope' ></i>
-                <input
-                  type="text"
-                  name="apellido"
-                  placeholder="Apellido"
-                  onChange={(e) => handleChangeText('apellido', e.target.value)}
-                />
-              </label>
-              <label>
-                <i className='bx bx-envelope' ></i>
-                <input
-                  type="text"
-                  name="telefono"
-                  placeholder="Telefono"
-                  onChange={(e) => handleChangeText('telefono', e.target.value)}
-                />
-              </label>
-              <label>
-                <i className='bx bx-envelope' ></i>
-                <input
-                  type="text"
-                  name="direccion"
-                  placeholder="Direccion"
-                  onChange={(e) => handleChangeText('direccion', e.target.value)}
-                />
-              </label>
-              <label>
-                <i className='bx bx-envelope' ></i>
-                <input
-                  type="text"
-                  name="email"
-                  placeholder="Correo"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </label>
-              <label>
-                <i className='bx bx-lock-alt'></i>
-                <input
-                  type="text"
-                  name="password"
-                  placeholder="Contraseña"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </label>
-              <label>
-                <i className='bx bx-envelope' ></i>
-                <input
-                  type="text"
-                  name="rol"
-                  placeholder="Rol"
+                  name="rut"
+                  placeholder="ROL"
                   onChange={(e) => handleChangeText('rol', e.target.value)}
-                />
-              </label>
-              <input 
+                  required
+                  />
+                </div>
+                <div className="user-input-box">
+                  <label>nombre</label>
+                  <input
+                    required
+                    type="text"
+                    name="nombre"
+                    placeholder="Nombre"
+                    onChange={(e) => handleChangeText('nombre', e.target.value)}/>
+                  </div>
+                  <div className="user-input-box">
+                    <label>apellido</label>
+                    <input
+                      required
+                      type="text"
+                      name="apellido"
+                      placeholder="Apellido"
+                      onChange={(e) => handleChangeText('apellido', e.target.value)}/>
+                  </div>
+                  <div className="user-input-box">
+                    <label>telefono</label>
+                    <input
+                    required
+                    type="text"
+                    name="telefono"
+                    placeholder="Telefono"
+                    onChange={(e) => handleChangeText('telefono', e.target.value)}/>
+                  </div>
+                  <div className="user-input-box">
+                    <label>direccion</label>
+                    <input
+                    required
+                    type="text"
+                    name="direccion"
+                    placeholder="Direccion"
+                    onChange={(e) => handleChangeText('direccion', e.target.value)}/>
+                  </div>
+                  <div className="user-input-box">
+                    <label>email</label>
+                    <input
+                    required
+                    type="text"
+                    name="email"
+                    placeholder="Correo"
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="user-input-box">
+                    <label>Contraseña</label>
+                    <input
+                    required
+                    type="text"
+                    name="password"
+                    placeholder="Contraseña"
+                    onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="user-input-box">
+                    <label>Salario</label>
+                    <input
+                    required
+                    type="text"
+                    name="salario"
+                    placeholder="Salario"
+                    onChange={(e) => handleChangeText('salario', e.target.value)}
+                    />
+                  </div>
+              </div>
+              <div className="form-submit-btn">
+                <input 
                 type="submit" 
                 value="Crear Usuario"
                 id="nav-footer-button-second"
-                onClick={createUserFirebase}
-              />
+                onClick={createUserFirebase}/>
+              </div>
             </form>
           </div>
         </div>

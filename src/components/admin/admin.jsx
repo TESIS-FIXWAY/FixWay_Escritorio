@@ -1,4 +1,4 @@
-import './admin.css'
+import '../../../src/styles/Globals.css'
 import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
@@ -50,7 +50,7 @@ const Admin = () => {
       await logout();
       navigate("/");
       console.log(user);
-      alert('Se ha cerrado la sesión');
+      alert('Se ha cerrado la sesiÃ³n');
     } catch (error) {
       console.log(error);
     }
@@ -64,20 +64,14 @@ const Admin = () => {
   // });
 
   return (
-
+  
+  <div>
 
 
 
     <div className='sidebar' >
 
-      {/* <section className='home-section'>
-        <div className='home-content'>
-          <FontAwesomeIcon className='menu' icon="fa-solid fa-bars" />
-          <span className='text'>drop</span>
-        </div>
-      </section> */}
-
-
+    
       <Link to='/admin' className='link' st>
         <div className='logo_details'>
           <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
@@ -174,8 +168,15 @@ const Admin = () => {
 
 
     </div>
+{/* 
+    <section className='home-section'>
+        <div className='home-content'>
+          <FontAwesomeIcon className='menu' icon="fa-solid fa-bars" />
+          <span className='text'>drop</span>
+        </div>
+    </section>  */}
 
-
+  </div>
 
   )
 }

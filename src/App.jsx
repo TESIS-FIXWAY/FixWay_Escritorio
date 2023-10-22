@@ -1,5 +1,4 @@
 import React from "react";
-
 //componets (vistas)
 import Login from './components/login';
 //admin
@@ -19,33 +18,33 @@ import ProtectedRoute from "./components/ProtectedRouter";
 
 function App() {
   return (
-    <div className="App">
-      <AuthContextProvider>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route
-            path='/admin'
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-          <Route path='/agregarUsuario' element={<AgregarUsuario />} />
-          <Route path='/listarUsuario' element={<ListarUsuario />} />
-          <Route
-            path='/mecanico'
-            element={
-              <ProtectedRoute>
-                <Mecanico />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </AuthContextProvider>
-      
-    </div>
+      <div className="App">
+        <AuthContextProvider>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route
+              path='/admin'
+              element={
+                <ProtectedRoute>
+                  <Admin />
+                </ProtectedRoute>
+              }
+            />
+            <Route path='/agregarUsuario' element={<AgregarUsuario />} />
+            <Route path='/listarUsuario' element={<ListarUsuario />} />
+            <Route
+              path='/mecanico'
+              element={
+                <ProtectedRoute>
+                  <Mecanico />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Error />} />
+          </Routes>
+        </AuthContextProvider>
+        
+      </div>
   );
 }
 
