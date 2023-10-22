@@ -45,8 +45,11 @@ const Mecanico = () => {
   }
 
   return (
-    <h1>hola mecanico </h1>
-  )
+    <>
+      <h1>hola mecanico </h1>
+      <button onClick={handleLogout}>Cerrar sesión</button>
+    </>
+  );
 }
 
 export default Mecanico;

@@ -1,14 +1,17 @@
 import '../../src/styles/Globals.css'
 import React, { useState } from "react";
-import { db, auth } from "../../firebase";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { db, auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   async function getRol(uid) {
-    const docuRef = doc(firestore, `users/${uid}`);
+    const docuRef = doc(db, `users/${uid}`);
     const docuCifrada = await getDoc(docuRef);
     const infoFinal = docuCifrada.data().rol;
     return infoFinal;
@@ -22,7 +25,7 @@ const Login = () => {
         rol: rol,
       };
       setUser(userData);
-      console.log("userData fianl", userData);
+      console.log("userData final", userData);
     });
   }
 
@@ -32,50 +35,65 @@ const Login = () => {
 
       if (!user) {
         setUserWithFirebaseAndRol(usuarioFirebase);
+        // navigate("/admin");
       }
     } else {
       setUser(null);
     }
   });
 
+  function handleSumit (e) {
+    const email = e.target.elements.email.value;
+    const password = e.target.elements.password.value;
+    e.preventDefault();
+
+    signInWithEmailAndPassword(auth, email, password)
+  }
+
   return (
-    <div className="container-form login">
-        <div className="informacion">
-            <div className="info">
-                <h2>Bienvenido</h2>
-                <p>taller mecanico Hans Motors</p>
-            </div>
-        </div>
-        <div className="form-informacion">
-            <div className="form-info-childs">
-                <h2>Iniciar sesion</h2>
-                <form className="formulario" onSubmit={handleSumit}>
-                    <label>
-                        <i className='bx bx-envelope' ></i>
-                        <input 
-                          type="email" 
-                          placeholder="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)} 
-                        />
-                    </label>
-                    <label>
-                        <i className='bx bx-lock-alt'></i>                        
-                        <input
-                          type="password" 
-                          placeholder="contrasena"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </label>
-                    <input 
-                      type="submit" 
-                      value="Iniciar sesion"
-                    />
-                </form>
-            </div>
-        </div>
-    </div>
+    <>
+      <div className="container-form login">
+          <div className="informacion">
+              <div className="info">
+                  <h2>Bienvenido</h2>
+                  <p>taller mecanico Hans Motors</p>
+              </div>
+          </div>
+          <div className="form-informacion">
+              <div className="form-info-childs">
+                  <h2>Iniciar sesion</h2>
+                  <form className="formulario" onSubmit={handleSumit} >
+                      <label>
+                          <i className='bx bx-envelope' ></i>
+                          <input 
+                            type="email" 
+                            placeholder="email"
+                            id='email'
+                            // value={email}
+                            // onChange={(e) => setEmail(e.target.value)} \
+                          />
+                      </label>
+                      <label>
+                          <i className='bx bx-lock-alt'></i>                        
+                          <input
+                            type="password" 
+                            placeholder="contrasena"
+                            id='password'
+                            // value={password}
+                            // onChange={(e) => setPassword(e.target.value)}
+                          />
+                      </label>
+                      <input 
+                        type="submit" 
+                        value="Iniciar sesion"
+                        className="btn-enviar"
+                      />
+                  </form>
+              </div>
+          </div>
+      </div>
+      
+    </>
   );
 };
 

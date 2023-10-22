@@ -47,6 +47,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const AgregarUsuario = () => {
 
+  const [isResgistrando, setIsRegistrando] = useState(false);
+
   async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
     const infoUsuario = await createUserWithEmailAndPassword(
       auth,
