@@ -47,7 +47,9 @@ const Login = () => {
     const password = e.target.elements.password.value;
     e.preventDefault();
 
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email, password);
+    
+    user.rol === 'administrador' ? navigate("/admin") : navigate("/mecanico");
   }
 
   return (
