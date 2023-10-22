@@ -1,9 +1,8 @@
 import '../../src/styles/Globals.css'
 import React, { useState } from "react";
-import { db, auth } from '../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { db, auth } from '../firebase'
 import { doc, getDoc } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged,signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -31,11 +30,8 @@ const Login = () => {
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase) {
-      //funcion final
-
       if (!user) {
         setUserWithFirebaseAndRol(usuarioFirebase);
-        // navigate("/admin");
       }
     } else {
       setUser(null);
@@ -46,9 +42,7 @@ const Login = () => {
     const email = e.target.elements.email.value;
     const password = e.target.elements.password.value;
     e.preventDefault();
-
     signInWithEmailAndPassword(auth, email, password);
-    
     user.rol === 'administrador' ? navigate("/admin") : navigate("/mecanico");
   }
 
@@ -71,8 +65,6 @@ const Login = () => {
                             type="email" 
                             placeholder="email"
                             id='email'
-                            // value={email}
-                            // onChange={(e) => setEmail(e.target.value)} \
                           />
                       </label>
                       <label>
@@ -81,8 +73,6 @@ const Login = () => {
                             type="password" 
                             placeholder="contrasena"
                             id='password'
-                            // value={password}
-                            // onChange={(e) => setPassword(e.target.value)}
                           />
                       </label>
                       <input 

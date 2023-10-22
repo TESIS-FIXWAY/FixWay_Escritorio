@@ -6,6 +6,9 @@ import {
 } from "firebase/firestore";
 import Admin from "./admin";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import validadorRUT from './validadorRUT';
+
+
 
 // class validadorRUT {
 //   constructor(rut) {
@@ -46,9 +49,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 // }
 
 const AgregarUsuario = () => {
-
-  const [isResgistrando, setIsRegistrando] = useState(false);
-
   async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
     const infoUsuario = await createUserWithEmailAndPassword(
       auth,
@@ -88,7 +88,20 @@ const AgregarUsuario = () => {
     console.log(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
     registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
   }
-  
+
+
+  function validarRut() {
+    const rut = document.getElementById("rut").value;
+    const validador = new validadorRUT(rut);
+    if (validador.esValido) {
+      document.getElementById("rut").value = validador.formateado();
+      console.log("Rut valido");
+      <p>Rut valido</p>
+    } else {
+      <p>Rut invalido</p>
+      console.log("Rut invalido");
+    }
+  }
 
   return (
     <>
@@ -106,7 +119,9 @@ const AgregarUsuario = () => {
                     name="rut"
                     placeholder="Rut (11.111.111-1)"
                     required
+                    onChange={(e) => {new validadorRUT(e.target.value)}}
                   />
+                  <button type="button" className="btn btn-primary" onClick={validarRut}>Validar</button>
                 </div>
                 <div className="user-input-box">
                   <label>ROL</label>
