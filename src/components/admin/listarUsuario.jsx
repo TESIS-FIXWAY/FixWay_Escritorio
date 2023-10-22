@@ -17,6 +17,7 @@ const ListarUsuario = () => {
           id: doc.id,
           rut: doc.data().rut,
           rol: doc.data().rol,
+          salario: doc.data().salario,
           nombre: doc.data().nombre,
           apellido: doc.data().apellido,
           direccion: doc.data().direccion,
@@ -55,7 +56,7 @@ const ListarUsuario = () => {
           <td>{user.apellido}</td>
           <td>{user.direccion}</td>
           <td>{user.telefono}</td>
-          <td>{user.cargoTrabajo}</td>
+          <td>{user.rol}</td>
           <td>{user.salario}</td>
         </tr>
       ))}

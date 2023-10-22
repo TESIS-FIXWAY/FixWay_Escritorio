@@ -1,83 +1,92 @@
-import { UserAuth } from "../../context/AuthContext";
 import React, { useState } from 'react';
-import { db } from "../../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { db, auth } from "../../firebase";
+import {  
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import Admin from "./admin";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-class validadorRUT {
-  constructor(rut) {
-    this.rut = rut;
-    this.dv = rut.substring(this.rut.length - 1);
-    this.rut = this.rut.substring(0, this.rut.length - 1).replace(/\D/g, "");
-    this.esValido = this.validar();
-  }
-  validar() {
-    let numerosArray = this.rut.split("").reverse();
-    let acumulador = 0;
-    let multiplicador = 2;
+// class validadorRUT {
+//   constructor(rut) {
+//     this.rut = rut;
+//     this.dv = rut.substring(this.rut.length - 1);
+//     this.rut = this.rut.substring(0, this.rut.length - 1).replace(/\D/g, "");
+//     this.esValido = this.validar();
+//   }
+//   validar() {
+//     let numerosArray = this.rut.split("").reverse();
+//     let acumulador = 0;
+//     let multiplicador = 2;
 
-    for (let numero of numerosArray) {
-      acumulador += parseInt(numero) * multiplicador;
-      multiplicador++;
-      if (multiplicador == 8) {
-        multiplicador = 2;
-      }
-    }
+//     for (let numero of numerosArray) {
+//       acumulador += parseInt(numero) * multiplicador;
+//       multiplicador++;
+//       if (multiplicador == 8) {
+//         multiplicador = 2;
+//       }
+//     }
 
-    let dv = 11 - (acumulador % 11);
+//     let dv = 11 - (acumulador % 11);
 
-    if (dv == 11) 
-      dv = '0';
+//     if (dv == 11) 
+//       dv = '0';
 
-    if (dv == 10) 
-      dv = 'k';
+//     if (dv == 10) 
+//       dv = 'k';
 
-    return dv == this.dv.toLowerCase();
-  }
+//     return dv == this.dv.toLowerCase();
+//   }
   
-  formateado() {
-    if (!this.esValido) return '';
+//   formateado() {
+//     if (!this.esValido) return '';
 
-    return (this.rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")) + "-" + this.dv;
-  }
-}
+//     return (this.rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")) + "-" + this.dv;
+//   }
+// }
 
 const AgregarUsuario = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [state, setState] = useState({
-    rut: '',
-    nombre: '',
-    apellido: '',
-    telefono: '',
-    direccion: '',
-    rol:'',
-    salario: '',
-  });
 
-  const {createUser} = UserAuth();
+  async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
+    const infoUsuario = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    ).then((usuarioFirebase) => {
+      return usuarioFirebase;
+    })
 
-  const handleChangeText = (name, value) => {
-    setState({ ...state, [name]: value });
+    console.log(infoUsuario.user.uid);
+    const docuRef = doc(db, `users/${infoUsuario.user.uid}`);
+    setDoc(docuRef, {
+      rut: rut,
+      rol: rol,
+      nombre: nombre,
+      apellido: apellido,
+      telefono: telefono,
+      direccion: direccion,
+      email: email,
+      password: password,
+      salario: salario
+    });
   }
 
-  const createUserFirebase = async () => {
-    await addDoc(collection(db, "users"), state);
-    alert('Usuario Agregado');
-  }
-
-  const handleSubmit = async (e) => {
+  function submitHandler (e) {
     e.preventDefault();
-    setError('')
-    try {
-      await createUser(email, password) 
-      alert('Usuario Agregado');
-    } catch (e) {
-      setError(e.mesaage);
-      console.log(error);
-    }
+    const rut = e.target.elements.rut.value;
+    const rol = e.target.elements.rol.value;
+    const nombre = e.target.elements.nombre.value;
+    const apellido = e.target.elements.apellido.value;
+    const telefono = e.target.elements.telefono.value;
+    const direccion = e.target.elements.direccion.value;
+    const email = e.target.elements.email.value;
+    const password = e.target.elements.password.value;
+    const salario = e.target.elements.salario.value;
+
+    console.log(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
+    registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
   }
+  
 
   return (
     <>
@@ -85,102 +94,105 @@ const AgregarUsuario = () => {
         <div >
           <div className="contenedor">
             <h1 className="form-title">Agregar Usuario</h1>
-            <form onSubmit={handleSubmit} className=" ">
+            <form className=" " onSubmit={submitHandler}>
               <div className="main-user-info">
                 <div className="user-input-box">
                   <label>Rut</label>
                   <input
-                  type="text"
-                  name="rut"
-                  placeholder="Rut (11.111.111-1)"
-                  onChange={(e) => handleChangeText('rut', e.target.value)}
-                  onBlur={(e) => {new validadorRUT(e.target.value)}}
-                  required
+                    id="rut"
+                    type="text"
+                    name="rut"
+                    placeholder="Rut (11.111.111-1)"
+                    required
                   />
                 </div>
                 <div className="user-input-box">
                   <label>ROL</label>
                   <input
-                  type="text"
-                  name="rut"
-                  placeholder="ROL"
-                  onChange={(e) => handleChangeText('rol', e.target.value)}
-                  required
+                    id="rol"
+                    type="text"
+                    name="rut"
+                    placeholder="ROL"
+                    required
                   />
                 </div>
                 <div className="user-input-box">
                   <label>nombre</label>
                   <input
+                    id="nombre"
                     required
                     type="text"
                     name="nombre"
                     placeholder="Nombre"
-                    onChange={(e) => handleChangeText('nombre', e.target.value)}/>
+                    />
                   </div>
                   <div className="user-input-box">
                     <label>apellido</label>
                     <input
+                      id="apellido"
                       required
                       type="text"
                       name="apellido"
                       placeholder="Apellido"
-                      onChange={(e) => handleChangeText('apellido', e.target.value)}/>
+                      />
                   </div>
                   <div className="user-input-box">
                     <label>telefono</label>
                     <input
-                    required
-                    type="text"
-                    name="telefono"
-                    placeholder="Telefono"
-                    onChange={(e) => handleChangeText('telefono', e.target.value)}/>
+                      id="telefono"
+                      required
+                      type="text"
+                      name="telefono"
+                      placeholder="Telefono"
+                    />
                   </div>
                   <div className="user-input-box">
                     <label>direccion</label>
                     <input
-                    required
-                    type="text"
-                    name="direccion"
-                    placeholder="Direccion"
-                    onChange={(e) => handleChangeText('direccion', e.target.value)}/>
+                      id="direccion"
+                      required
+                      type="text"
+                      name="direccion"
+                      placeholder="Direccion"
+                    />
                   </div>
                   <div className="user-input-box">
                     <label>email</label>
                     <input
-                    required
-                    type="text"
-                    name="email"
-                    placeholder="Correo"
-                    onChange={(e) => setEmail(e.target.value)}
+                      id="email"
+                      required
+                      type="text"
+                      name="email"
+                      placeholder="Correo"
                     />
                   </div>
                   <div className="user-input-box">
                     <label>Contraseña</label>
                     <input
-                    required
-                    type="text"
-                    name="password"
-                    placeholder="Contraseña"
-                    onChange={(e) => setPassword(e.target.value)}
+                      id="password"
+                      required
+                      type="text"
+                      name="password"
+                      placeholder="Contraseña"
                     />
                   </div>
                   <div className="user-input-box">
                     <label>Salario</label>
                     <input
-                    required
-                    type="text"
-                    name="salario"
-                    placeholder="Salario"
-                    onChange={(e) => handleChangeText('salario', e.target.value)}
+                      id="salario"
+                      required
+                      type="text"
+                      name="salario"
+                      placeholder="Salario"
                     />
                   </div>
               </div>
               <div className="form-submit-btn">
                 <input 
-                type="submit" 
-                value="Crear Usuario"
-                id="nav-footer-button-second"
-                onClick={createUserFirebase}/>
+                  type="submit" 
+                  value="Crear Usuario"
+                  id="nav-footer-button-second"
+                />
               </div>
             </form>
           </div>
