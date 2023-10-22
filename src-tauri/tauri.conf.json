@@ -39,7 +39,8 @@
         "resizable": true,
         "title": "HM",
         "width": 1500,
-        "height": 1000
+        "height": 1000,
+        "center": true
       }
     ]
   }
