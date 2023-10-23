@@ -81,9 +81,7 @@ const AgregarUsuario = () => {
                     name="rut"
                     placeholder="Rut (11.111.111-1)"
                     required
-                    onChange={(e) => {new validadorRUT(e.target.value)}}
                   />
-                  <button type="button" className="btn btn-primary" onClick={validarRut}>Validar</button>
                 </div>
                 <div className="user-input-box">
                   <label>ROL</label>
