@@ -92,7 +92,7 @@ const AgregarUsuario = () => {
                   <input
                     id="rol"
                     type="text"
-                    name="rut"
+                    name="rol"
                     placeholder="ROL"
                     required
                   />
