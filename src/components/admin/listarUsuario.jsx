@@ -53,7 +53,29 @@ const ListarUsuario = () => {
     }
   };
 
-
+  const filtrarUsuario = (e) => {
+    const texto = e.target.value.toLowerCase();
+    const usuariosFiltrados = users.filter((user) => {
+      const nombre = user.nombre.toLowerCase();
+      const apellido = user.apellido.toLowerCase();
+      const rut = user.rut.toLowerCase();
+      const telefono = user.telefono.toLowerCase();
+      const direccion = user.direccion.toLowerCase();
+      const rol = user.rol.toLowerCase();
+      const salario = user.salario.toLowerCase();
+      return (
+        nombre.includes(texto) ||
+        apellido.includes(texto) ||
+        rut.includes(texto) ||
+        telefono.includes(texto) ||
+        direccion.includes(texto) ||
+        rol.includes(texto) ||
+        salario.includes(texto)
+      );
+    });
+    setUsers(usuariosFiltrados);
+    return usuariosFiltrados;
+  }
 
   return (
     <>
@@ -64,7 +86,7 @@ const ListarUsuario = () => {
         <div className='table_header'>
           <p>listar usuarios</p>
           <div>
-            <input type="text" placeholder='buscar usuario' />
+            <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
             <button className='boton-ingreso'>+ ingresar nuevo usuario</button>
           </div>
         </div>

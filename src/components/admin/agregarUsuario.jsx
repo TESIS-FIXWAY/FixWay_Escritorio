@@ -85,6 +85,7 @@ const AgregarUsuario = () => {
                     name="rut"
                     placeholder="Rut (11.111.111-1)"
                     required
+                    onBlur={validarRut}
                   />
                 </div>
                 <div className="user-input-box">
