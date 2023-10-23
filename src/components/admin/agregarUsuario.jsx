@@ -51,6 +51,7 @@ const AgregarUsuario = () => {
     registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
   }
 
+
   function validarRut() {
     const rut = document.getElementById("rut").value;
     const validador = new validadorRUT(rut);
@@ -64,72 +65,115 @@ const AgregarUsuario = () => {
     }
   }
 
+
+
+
+
   return (
     <>
       <Admin />
-        <div className='contenedor_registro'>
-          <h1 className='logo_registro'>agregar nuevo Usario</h1>
-          <div className='registro_wrapper'>
-            <div className='nuevo_registro'>
-              <h3>por favor rellene todos los campos</h3>
-              <form action="" onSubmit={submitHandler}>
-                <p className='p_registro'>
-                  <label className='label_registro'>Rut</label>
-                  <input id="rut" type="text"
-                    name="rut" placeholder="Rut (11.111.111-1)" required
-                    onChange={(e) => {new validadorRUT(e.target.value)}}/>
-                </p>
-                <p className='p_registro'>
-                  <label className='label_registro'>nombre</label>
-                  <input id="nombre" required type="text"
-                    name="nombre"placeholder="Nombre"/>
-                </p>
-
-                <p className='p_registro'>
-                  <label className='label_registro'>apellido</label>
-                    <input id="apellido" required
-                      type="text" name="apellido" placeholder="Apellido"/>
-                </p>
-                <p className='p_registro'>
-                  <label className='label_registro'>telefono</label>
-                  <input id="telefono" required
-                    type="text" name="telefono" placeholder="Telefono"/>
-                </p>
-
-                <p className='p_registro'>
-                  <label className='label_registro'>direccion</label>
-                  <input id="direccion" required
-                    type="text" name="direccion" placeholder="Direccion"/>
-                </p>
-
-                <p className='p_registro'>
-                  <label className='label_registro'>Email</label>
-                  <input id="email" required
-                    type="text" name="email" placeholder="Correo"/>
-                </p>
-
-                <p className='p_registro'>
-                  <label className='label_registro'>Contraseña</label>
-                  <input id="password" required type="text"
-                    name="password" placeholder="Contraseña"/>
-                </p>
-
-                <p className='p_registro'>
-                  <label className='label_registro'>Salario</label>
-                  <input id="salario" required
-                    type="text" name="salario" placeholder="Salario"/>
-                </p>
-                <div className="form-submit-btn">
-                  <input 
-                    type="submit" 
-                    value="Crear Usuario"
-                    id="nav-footer-button-second"
+        <div >
+          <div className="contenedor">
+            <h1 className="form-title">Agregar Usuario</h1>
+            <form className=" " onSubmit={submitHandler}>
+              <div className="main-user-info">
+                <div className="user-input-box">
+                  <label>Rut</label>
+                  <input
+                    id="rut"
+                    type="text"
+                    name="rut"
+                    placeholder="Rut (11.111.111-1)"
+                    required
                   />
                 </div>
-              </form>
-            </div>
+                <div className="user-input-box">
+                  <label>ROL</label>
+                  <input
+                    id="rol"
+                    type="text"
+                    name="rut"
+                    placeholder="ROL"
+                    required
+                  />
+                </div>
+                <div className="user-input-box">
+                  <label>nombre</label>
+                  <input
+                    id="nombre"
+                    required
+                    type="text"
+                    name="nombre"
+                    placeholder="Nombre"
+                    />
+                  </div>
+                  <div className="user-input-box">
+                    <label>apellido</label>
+                    <input
+                      id="apellido"
+                      required
+                      type="text"
+                      name="apellido"
+                      placeholder="Apellido"
+                      />
+                  </div>
+                  <div className="user-input-box">
+                    <label>telefono</label>
+                    <input
+                      id="telefono"
+                      required
+                      type="text"
+                      name="telefono"
+                      placeholder="Telefono"
+                    />
+                  </div>
+                  <div className="user-input-box">
+                    <label>direccion</label>
+                    <input
+                      id="direccion"
+                      required
+                      type="text"
+                      name="direccion"
+                      placeholder="Direccion"
+                    />
+                  </div>
+                  <div className="user-input-box">
+                    <label>email</label>
+                    <input
+                      id="email"
+                      required
+                      type="text"
+                      name="email"
+                      placeholder="Correo"
+                    />
+                  </div>
+                  <div className="user-input-box">
+                    <label>Contraseña</label>
+                    <input
+                      id="password"
+                      required
+                      type="text"
+                      name="password"
+                      placeholder="Contraseña"
+                    />
+                  </div>
+                  <div className="user-input-box">
+                    <label>Salario</label>
+                    <input
+                      id="salario"
+                      required
+                      type="text"
+                      name="salario"
+                      placeholder="Salario"
+                    />
+                  </div>
+              </div>
+              <div className="button">
+                <button type="submit">Agregar</button>
+              </div>
+            </form>
           </div>
-        </div>            
+        </div>    
     </>
   );
 };
