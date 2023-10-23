@@ -1,3 +1,4 @@
+import './listarUsuario.css'
 import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";

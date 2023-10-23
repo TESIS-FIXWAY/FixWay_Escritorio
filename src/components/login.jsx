@@ -1,4 +1,4 @@
-import '../../src/styles/Globals.css'
+import './login.css'
 import React, { useState } from "react";
 import { db, auth } from '../firebase'
 import { doc, getDoc } from "firebase/firestore";
@@ -48,9 +48,11 @@ const Login = () => {
 
   return (
     <>
+    <div className='body'>
+
       <div className="container-form login">
-          <div className="informacion">
-              <div className="info">
+        <div className="informacion">
+            <div className="info">
                   <h2>Bienvenido</h2>
                   <p>taller mecanico Hans Motors</p>
               </div>
@@ -83,7 +85,11 @@ const Login = () => {
                   </form>
               </div>
           </div>
-      </div>
+        </div>
+
+    </div>
+
+
       
     </>
   );

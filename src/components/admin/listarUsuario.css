@@ -1,0 +1,82 @@
+.contenedor-tabla{
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding-top: 200px;
+}
+
+.tabla{
+    width: 150%;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: -120px;
+    padding: 0;
+    table-layout: fixed;
+}
+
+.tabla caption{
+    font-size: 2rem;
+    color: #333;
+    font-weight: 20bold;
+    margin: 50px ;
+}
+
+.tabla tr{
+    background-color: #fff;
+    border: 0.1px solid #E8F5FF;
+}
+.tabla th{
+    font-size: 16px;
+    padding: 8px;
+    text-align: center;
+}
+.tabla td{
+    font-size: 16px;
+    padding: 8px;
+    text-align: center;
+}
+.tabla thead th{
+    text-transform: uppercase;
+    background-color: #7BD5F6;
+}
+.tabla tbody tr:hover{
+    background-color: rgba(0,0,255,.2);
+}
+.tabla tbody td:hover{
+    background-color: rgba(0,0,255,.3);
+}
+
+@media screen and (max-width:650px) {
+    .tabla{
+        border: 0px;
+    }
+    .tabla caption{
+        font-size: 22px;
+    }
+    .tabla thead{
+        display: none;
+    }
+    .tabla tr{
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ccc;
+        display: block;
+    }
+    .tabla th{
+        font-size: 12px;
+    }
+    .tabla td{
+        display: block;
+        border-bottom: 1px solid #ccc;
+        text-align: right;
+        font-size: 12px;
+    }
+    .tabla td:last-child{
+        border-bottom: 0px;
+    }
+    .tabla td::before{
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+}

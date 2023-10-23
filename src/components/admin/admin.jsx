@@ -1,4 +1,4 @@
-import '../../../src/styles/Globals.css'
+import './admin.css'
 import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
@@ -22,6 +22,7 @@ import {
   faUserPlus,
   faArrowRightFromBracket,
   faBars,
+  faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -38,7 +39,10 @@ library.add(
   faUserPlus,
   faUsers,
   faArrowRightFromBracket,
-  faBars
+  faBars,
+
+  faBars,
+  faArrowLeft
 );
 
 const Admin = () => {
@@ -56,125 +60,84 @@ const Admin = () => {
     }
   }
 
-  // let sidebar = document.querySelector(".sidebar");
-  // let sidebarBtn = document.querySelector(".menu");
-  // console.log(sidebar);
-  // sidebarBtn.addEventListener("click", ()=>{
-  //   sidebar.classList.toggle('close');
-  // });
 
   return (
   
   <div>
 
-
-
-    <div className='sidebar' >
-
-    
-      <Link to='/admin' className='link' st>
-        <div className='logo_details'>
-          <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
-          <span className='logo_name'>Hans Motors</span>
+    <header className='header'>
+      <div className='contenedor-header'>
+      <div className='btn-menu'>
+        <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
+      </div>
+        <div className='logo'>
+          <h1>Hams Motors</h1>
         </div>
-      </Link>
+        <nav className='menu'>
+          <a>inicio</a>
+          <a>email</a>
+          <a>usuarios</a>
+          <a>registros</a>
+        </nav>
+      </div>
+    </header>
+    <div className='capa'></div>
 
-      <ul className='nav_links close'>
-      <hr></hr>
-        <li>
-          <div className='icon_link'>
-            <Link to="" className='link'>
+    <input type='checkbox' id='btn-menu'></input>
+    
+    <div className='contenedor-menu'>
+      <div className='cont_menu'>
+        <nav>
+          <br />
+          <hr />
+          <Link to='/admin' className='link' st>
+            <div className='logo_details'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
-              <span className='link_name'>Usuarios</span>
-            </Link>            
-          </div>
-        </li>
-        <li>
-          <div className='icon_link'>
-            <Link to="/agregarUsuario" className='link'>
+              <span className='logo_name'>Hans Motors</span>
+            </div>
+          </Link>
+
+          <Link to="/agregarUsuario" className='link'>
             <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />              
             <span className='link_name'>Crear Usuarios</span>
-            </Link>            
-          </div>
-        </li>
-        <li>
-          <div className='icon_link'>
-            <Link to="/listarUsuario" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />              
-              <span className='link_name'>Listar Usuarios</span>
-            </Link>            
-          </div>
-        </li>
-        <hr></hr>
-        <li>
-          <div className='icon_link'>
-            <Link to="" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-invoice" />
-              <span className='link_name'>Facturas</span>
-            </Link>
-          </div>
-        </li>
-        <li>
-          <div className='icon_link'>
-            <Link to="" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-invoice" />
-              <span className='link_name'>Crear Facturas</span>
-            </Link>
-          </div>
-        </li>
-        <li>
-          <div className='icon_link'>
-            <Link to="" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-invoice" />
-              <span className='link_name'>Listar Facturas</span>
-            </Link>
-          </div>
-        </li>
-        <li>
-          <div className='icon_link'>
-            <Link to="" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-invoice" />
-              <span className='link_name'>Eliminar Facturas</span>
-            </Link>
-          </div>
-        </li>
-        <hr></hr>
-        <li>
-          <div className='icon_link'>
-            <Link to="" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-invoice" />
-              <span className='link_name'>Trabajos</span>
-            </Link>
-          </div>
-        </li>
+          </Link>  
+
+          <Link to="/listarUsuario" className='link'>
+            <FontAwesomeIcon className='i' icon="fa-solid fa-users" />              
+            <span className='link_name'>Listar Usuarios</span>
+          </Link> 
+
+          <hr />
 
 
-        <li>
-          <div className='profile_details'>
-            <div className='profile_content'>
-              <img src={logo} alt='logo' />
+
+          <li>
+            <div className='profile_details'>
+              <div className='profile_content'>
+                {/* <img src={logo} alt='logo' /> */}
+              </div>
+              <div className='name-job'>
+                <div className='profile_name'>administrador</div>
+                {/* <div className='profile_name'>yo mismo</div> */}
+              </div>
+              <button type='submit' onClick={handleLogout}>
+                <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
+              </button>
             </div>
-            <div className='name-job'>
-              <div className='profile_name'>administrador</div>
-              {/* <div className='profile_name'>yo mismo</div> */}
-            </div>
-            <button type='submit' onClick={handleLogout}>
-              <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
-            </button>
-        </div>
-        </li>
+          </li>
 
-      </ul>
+        </nav>
+        
+        <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /> </label>
 
-
+      </div>
     </div>
-{/* 
-    <section className='home-section'>
-        <div className='home-content'>
-          <FontAwesomeIcon className='menu' icon="fa-solid fa-bars" />
-          <span className='text'>drop</span>
-        </div>
-    </section>  */}
+
+
+
+
+
+
 
   </div>
 
