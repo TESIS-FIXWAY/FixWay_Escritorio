@@ -1,3 +1,53 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.table{
+    width: 100%;
+}
+.table_header{
+    margin-top: 130px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px 20px 50px;
+    background-color: rgb(240, 240, 240);
+}
+.table_header p{
+    font-size: 25px;
+}
+button{
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.boton-ingreso{
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #0298cf;
+}
+
+input{
+    padding: 10px 20px;
+    margin: 0 15px;
+    outline: none;
+    border: 1px solid #0298cf;
+    border-radius: 5px;
+    color: #000;
+}
+::placeholder{
+    color: #0298cf;
+}
+
+
+
+
+
+
+
+
 .contenedor-tabla{
     width: 100%;
     max-width: 1000px;

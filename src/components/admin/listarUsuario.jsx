@@ -4,6 +4,16 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc } from "firebase/firestore";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { 
+  faPen, faTrash
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(
+  faPen,
+  faTrash
+);
 
 const ListarUsuario = () => {
 
@@ -30,41 +40,78 @@ const ListarUsuario = () => {
     return () => unsubscribe();
   }, []);
 
+
+
+
   return (
     <>
       <Admin />
 
 
-<div className="contenedor-tabla">
-  <table className="tabla">
+      <div className='table'>
+        <div className='table_header'>
+          <p>listar usuarios</p>
+          <div>
+            <input type="text" placeholder='buscar usuario' />
+            <button className='boton-ingreso'>+ ingresar nuevo usuario</button>
+          </div>
+        </div>
 
-    <caption>Listado de Usuarios</caption>
-    <thead>
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Apellido</th>
-        <th scope="col">Direccion</th>
-        <th scope="col">Telefono</th>
-        <th scope="col">Cargo de trabajo</th>
-        <th scope="col">Salario</th>
-      </tr>
-    </thead>
+        <div className='table_section'> 
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Cargo de trabajo</th>
+                <th scope="col">Salario</th>
+                <th>
+                  <button><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
+                  <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
 
-    <tbody>
-      {users.map((user) => (
-        <tr key={user.id}>
-          <td>{user.nombre}</td>
-          <td>{user.apellido}</td>
-          <td>{user.direccion}</td>
-          <td>{user.telefono}</td>
-          <td>{user.rol}</td>
-          <td>{user.salario}</td>
-        </tr>
-      ))}
-    </tbody>
+      </div>
 
-  </table>
-</div>
+
+
+      <div className="contenedor-tabla">
+        <table className="tabla">
+
+          <caption>Listado de Usuarios</caption>
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Direccion</th>
+              <th scope="col">Telefono</th>
+              <th scope="col">Cargo de trabajo</th>
+              <th scope="col">Salario</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.nombre}</td>
+                <td>{user.apellido}</td>
+                <td>{user.direccion}</td>
+                <td>{user.telefono}</td>
+                <td>{user.rol}</td>
+                <td>{user.salario}</td>
+              </tr>
+            ))}
+          </tbody>
+
+        </table>
+      </div>
+
+
     </>
   );
 };
