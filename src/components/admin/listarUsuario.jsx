@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 import { deleteDoc } from 'firebase/firestore';
 
@@ -20,6 +21,7 @@ library.add(
 const ListarUsuario = () => {
 
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const q = query(collection(db, "users"));
@@ -74,7 +76,15 @@ const ListarUsuario = () => {
       );
     });
     setUsers(usuariosFiltrados);
-    return usuariosFiltrados;
+    if (texto === '') {
+      window.location.reload();
+    }
+    if (usuariosFiltrados.map((user) => user.nombre).length === 0 ) {
+      return alert('No se encontraron usuarios con ese nombre');
+    }
+  }
+  const agregarUsuario = () => {
+    navigate('/agregarUsuario');
   }
 
   return (
@@ -87,7 +97,7 @@ const ListarUsuario = () => {
           <p>listar usuarios</p>
           <div>
             <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
-            <button className='boton-ingreso'>+ ingresar nuevo usuario</button>
+            <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
           </div>
         </div>
 
