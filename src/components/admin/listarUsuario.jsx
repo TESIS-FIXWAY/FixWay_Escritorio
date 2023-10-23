@@ -75,7 +75,7 @@ const ListarUsuario = () => {
             <tbody>
               {users.map((user) => (
                 <tr key={user.id}>
-                  <td>{user.rut}</td>
+                  <td>{user.rut }</td>
                   <td>{user.nombre}</td>
                   <td>{user.apellido}</td>
                   <td>{user.direccion}</td>
