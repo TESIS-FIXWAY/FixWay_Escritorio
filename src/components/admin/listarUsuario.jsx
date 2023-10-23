@@ -4,6 +4,8 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc } from "firebase/firestore";
 
+import { deleteDoc } from 'firebase/firestore';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -40,6 +42,16 @@ const ListarUsuario = () => {
     return () => unsubscribe();
   }, []);
 
+  const deleteUser = async (userId) => {
+    console.log('Eliminando usuario con ID:', userId);
+    try {
+      await deleteDoc(doc(db, 'users', userId));
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      console.log('Usuario eliminado correctamente.');
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+    }
+  };
 
 
 
@@ -59,56 +71,41 @@ const ListarUsuario = () => {
 
         <div className='table_section'> 
           <table>
+
             <thead>
               <tr>
+                <th scope="col">Rut</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
                 <th scope="col">Direccion</th>
                 <th scope="col">Telefono</th>
                 <th scope="col">Cargo de trabajo</th>
                 <th scope="col">Salario</th>
-                <th>
-                  <button><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
-                  <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                </th>
+                <th scope='col'>actualizar</th>
               </tr>
             </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.rut }</td>
+                  <td>{user.nombre}</td>
+                  <td>{user.apellido}</td>
+                  <td>{user.direccion}</td>
+                  <td>{user.telefono}</td>
+                  <td>{user.rol}</td>
+                  <td>{user.salario}</td>
+                  <td>
+                    <button><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
+                    <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+
+
           </table>
         </div>
 
-      </div>
-
-
-
-      <div className="contenedor-tabla">
-        <table className="tabla">
-
-          <caption>Listado de Usuarios</caption>
-          <thead>
-            <tr>
-              <th scope="col">Nombre</th>
-              <th scope="col">Apellido</th>
-              <th scope="col">Direccion</th>
-              <th scope="col">Telefono</th>
-              <th scope="col">Cargo de trabajo</th>
-              <th scope="col">Salario</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.nombre}</td>
-                <td>{user.apellido}</td>
-                <td>{user.direccion}</td>
-                <td>{user.telefono}</td>
-                <td>{user.rol}</td>
-                <td>{user.salario}</td>
-              </tr>
-            ))}
-          </tbody>
-
-        </table>
       </div>
 
 

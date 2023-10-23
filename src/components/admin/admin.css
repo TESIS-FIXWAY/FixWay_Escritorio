@@ -40,6 +40,7 @@ body{
 .contenedor-header .btn-menu label{
     font-size: 25px;
     cursor: pointer;
+    padding: 20px
 }
 .logo h1{
     color: ;
