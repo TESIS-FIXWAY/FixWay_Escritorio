@@ -12,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 50px 20px 50px;
-    background-color: rgb(240, 240, 240);
+    background-color: #f6f9fc;
 }
 .table_header p{
     font-size: 25px;
@@ -49,7 +49,7 @@ input{
 
 
 .table_section{
-    height: 650px;
+    height: 688px;
     overflow: auto;
 }
 table{

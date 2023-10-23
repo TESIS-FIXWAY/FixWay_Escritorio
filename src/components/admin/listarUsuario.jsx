@@ -4,6 +4,8 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc } from "firebase/firestore";
 
+import { deleteDoc } from 'firebase/firestore';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -40,6 +42,16 @@ const ListarUsuario = () => {
     return () => unsubscribe();
   }, []);
 
+  const deleteUser = async (userId) => {
+    console.log('Eliminando usuario con ID:', userId);
+    try {
+      await deleteDoc(doc(db, 'users', userId));
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      console.log('Usuario eliminado correctamente.');
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+    }
+  };
 
 
 
@@ -84,7 +96,7 @@ const ListarUsuario = () => {
                   <td>{user.salario}</td>
                   <td>
                     <button><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
-                    <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
+                    <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
                   </td>
                 </tr>
               ))}
