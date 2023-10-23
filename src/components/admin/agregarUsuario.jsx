@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { db, auth } from "../../firebase";
 import {  
   doc,
@@ -8,45 +8,6 @@ import Admin from "./admin";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import validadorRUT from './validadorRUT';
 
-
-
-// class validadorRUT {
-//   constructor(rut) {
-//     this.rut = rut;
-//     this.dv = rut.substring(this.rut.length - 1);
-//     this.rut = this.rut.substring(0, this.rut.length - 1).replace(/\D/g, "");
-//     this.esValido = this.validar();
-//   }
-//   validar() {
-//     let numerosArray = this.rut.split("").reverse();
-//     let acumulador = 0;
-//     let multiplicador = 2;
-
-//     for (let numero of numerosArray) {
-//       acumulador += parseInt(numero) * multiplicador;
-//       multiplicador++;
-//       if (multiplicador == 8) {
-//         multiplicador = 2;
-//       }
-//     }
-
-//     let dv = 11 - (acumulador % 11);
-
-//     if (dv == 11) 
-//       dv = '0';
-
-//     if (dv == 10) 
-//       dv = 'k';
-
-//     return dv == this.dv.toLowerCase();
-//   }
-  
-//   formateado() {
-//     if (!this.esValido) return '';
-
-//     return (this.rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")) + "-" + this.dv;
-//   }
-// }
 
 const AgregarUsuario = () => {
   async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
@@ -96,9 +57,9 @@ const AgregarUsuario = () => {
     if (validador.esValido) {
       document.getElementById("rut").value = validador.formateado();
       console.log("Rut valido");
-      <p>Rut valido</p>
+      alert("Rut valido");
     } else {
-      <p>Rut invalido</p>
+      alert("Rut invalido");
       console.log("Rut invalido");
     }
   }

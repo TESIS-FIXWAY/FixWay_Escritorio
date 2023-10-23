@@ -156,7 +156,7 @@ const Admin = () => {
             </div>
             <div className='name-job'>
               <div className='profile_name'>administrador</div>
-              <div className='profile_name'>yo mismo</div>
+              {/* <div className='profile_name'>yo mismo</div> */}
             </div>
             <button type='submit' onClick={handleLogout}>
               <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
