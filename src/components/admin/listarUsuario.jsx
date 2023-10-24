@@ -87,6 +87,10 @@ const ListarUsuario = () => {
     navigate('/agregarUsuario');
   }
 
+  const editarUsuario = () => {
+    navigate('/editarUsuario');
+  }
+
   return (
     <>
       <Admin />
