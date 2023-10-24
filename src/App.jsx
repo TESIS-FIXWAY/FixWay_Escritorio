@@ -2,9 +2,11 @@ import React from "react";
 //componets (vistas)
 import Login from './components/login';
 //admin
+// agregar los nombres de las constantes en mayusculas
 import Admin from './components/admin/admin';
 import AgregarUsuario from './components/admin/agregarUsuario';
 import ListarUsuario from "./components/admin/listarUsuario";
+import EditarUsuario from "./components/admin/editarUsuario";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -14,7 +16,6 @@ import Error from './components/404';
 import { Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRouter";
-
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             />
             <Route path='/agregarUsuario' element={<AgregarUsuario />} />
             <Route path='/listarUsuario' element={<ListarUsuario />} />
+            <Route path='/editarUsuario' element={<EditarUsuario />} />
             <Route
               path='/mecanico'
               element={
@@ -43,7 +45,6 @@ function App() {
             <Route path="*" element={<Error />} />
           </Routes>
         </AuthContextProvider>
-        
       </div>
   );
 }

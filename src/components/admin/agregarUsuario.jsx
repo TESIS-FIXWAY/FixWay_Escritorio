@@ -51,7 +51,6 @@ const AgregarUsuario = () => {
     registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
   }
 
-
   function validarRut() {
     const rut = document.getElementById("rut").value;
     const validador = new validadorRUT(rut);
@@ -64,10 +63,6 @@ const AgregarUsuario = () => {
       console.log("Rut invalido");
     }
   }
-
-
-
-
 
   return (
     <>

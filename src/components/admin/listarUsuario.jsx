@@ -131,20 +131,15 @@ const ListarUsuario = () => {
                   <td>{user.rol}</td>
                   <td>{user.salario}</td>
                   <td>
-                    <button><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
+                    <button onClick={editarUsuario} ><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
                     <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
                   </td>
                 </tr>
               ))}
             </tbody>
-
-
           </table>
         </div>
-
       </div>
-
-
     </>
   );
 };
