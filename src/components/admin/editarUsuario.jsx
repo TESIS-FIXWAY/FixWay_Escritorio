@@ -19,93 +19,62 @@ const EditarUsuario = () => {
     apellido: '',
     telefono: '',
     direccion: '',
-    email: '',
-    password: '',
     salario: '',
+    password: '',
   });
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState([]);
+  
+  
 
-
-  React.useEffect(() => { const collectionRef = collection(db, "users");
-    const q = query(collectionRef);
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {setUser(querySnapshot.docs.map((doc) => ({ id: doc.id })));});
-    return unsubscribe; }, []);
-  let id = "";
-  user.map((user) => {id = user.id});
-
-  const onEdit = () => {
-    const docRef = doc(db, "users", id);
-    updateDoc(docRef, {
+  React.useEffect(() => {
+    const obtenerDatos = async () => {
+      const datos = await getDocs(query(collection(db, "users")));
+      const arrayDatos = datos.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setUser(arrayDatos);
+    };
+    obtenerDatos();
+  }, [user]);
+  
+  const onEdit = async (e) => {
+    e.preventDefault();
+    await updateDoc(doc(db, "users", id), {
       rol: state.rol,
       nombre: state.nombre,
       apellido: state.apellido,
       telefono: state.telefono,
       direccion: state.direccion,
-      email: state.email,
-      password: state.password,
       salario: state.salario,
-  })};
-
-  // const onEdit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const docRef = doc(db, "users", user.id);
-  //     const payload = {
-  //       rol: state.rol,
-  //       nombre: state.nombre,
-  //       apellido: state.apellido,
-  //       telefono: state.telefono,
-  //       direccion: state.direccion,
-  //       email: state.email,
-  //       password: state.password,
-  //       salario: state.salario,
-  //     };
-  //     await updateDoc(docRef, payload);
-  //     console.log('Usuario actualizado correctamente.');
-  //     navigate('/listarUsuario');
-  //   } catch (error) {
-  //     console.error('Error al actualizar el usuario:', error);
-  //   }
-  // }
+      password: state.password,
+    });
+    navigate('/listarUsuario');
+  }
 
   const handleChangeTexte = (name, value) => {
     setState({ ...state, [name]: value });
   }
 
-  // const rellenarCampos = async () => {
-  //   const q = query(collection(db, "users"));
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     if (doc.id === localStorage.getItem('id')) {
-  //       setUser({
-  //         id: doc.id,
-  //         rol: doc.data().rol,
-  //         nombre: doc.data().nombre,
-  //         apellido: doc.data().apellido,
-  //         telefono: doc.data().telefono,
-  //         direccion: doc.data().direccion,
-  //         email: doc.data().email,
-  //         password: doc.data().password,
-  //         salario: doc.data().salario,
-  //       });
-  //       setState({
-  //         rol: doc.data().rol,
-  //         nombre: doc.data().nombre,
-  //         apellido: doc.data().apellido,
-  //         telefono: doc.data().telefono,
-  //         direccion: doc.data().direccion,
-  //         email: doc.data().email,
-  //         password: doc.data().password,
-  //         salario: doc.data().salario,
-  //       });
-  //     }
-  //   });
-  // }
+  let id = localStorage.getItem('id');
+  user.map((user) => id = user.id);
 
-  const reloadList = () => {
-    navigate('/listarUsuario');
+  
+  const rellenarCampos = () => {
+    user.map((user) => {
+      if (user.id === id) {
+        setState({
+          rol: user.rol,
+          nombre: user.nombre,
+          apellido: user.apellido,
+          telefono: user.telefono,
+          direccion: user.direccion,
+          salario: user.salario,
+          email: user.email,
+          password: user.password,
+        });
+      }
+    });
   }
 
+  
   return (
     <div>
       <h1>Editar Usuario</h1>
@@ -181,7 +150,7 @@ const EditarUsuario = () => {
                 name="email"
                 placeholder="Correo"
                 value={state.email}
-                onChange={(event) => handleChangeTexte("email", event.target.value)}
+                onChange={(e) => handleChangeTexte("email", e.target.value)}
               />
             </div>
             <div className="user-input-box">
@@ -210,7 +179,7 @@ const EditarUsuario = () => {
             </div>
         </div>
         <div className="button">
-          <button type="submit" onClick={reloadList}>Guardar Datos</button>
+          <button type="submit">Guardar Datos</button>
         </div>
       </form>
     </div>
