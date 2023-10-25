@@ -67,9 +67,9 @@ const Admin = () => {
 
     <header className='header'>
       <div className='contenedor-header'>
-      <div className='btn-menu'>
-        <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
-      </div>
+        <div className='btn-menu'>
+          <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
+        </div>
         <div className='logo'>
           <h1>Hams Motors</h1>
         </div>
@@ -82,6 +82,8 @@ const Admin = () => {
       </div>
     </header>
     <div className='capa'></div>
+
+
 
     <input type='checkbox' id='btn-menu'></input>
     
@@ -108,8 +110,6 @@ const Admin = () => {
           </Link> 
 
           <hr />
-
-
 
           <li>
             <div className='profile_details'>

@@ -96,50 +96,50 @@ const ListarUsuario = () => {
       <Admin />
 
 
-      <div className='table'>
-        <div className='table_header'>
-          <p>listar usuarios</p>
-          <div>
-            <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
-            <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
+        <div className='tabla_listar'>
+          <div className='table_header'>
+            <p>listar usuarios</p>
+            <div>
+              <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
+              <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
+            </div>
+          </div>
+
+          <div className='table_section'> 
+            <table>
+
+              <thead>
+                <tr>
+                  <th scope="col">Rut</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">Direccion</th>
+                  <th scope="col">Telefono</th>
+                  <th scope="col">Cargo de trabajo</th>
+                  <th scope="col">Salario</th>
+                  <th scope='col'>actualizar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.rut }</td>
+                    <td>{user.nombre}</td>
+                    <td>{user.apellido}</td>
+                    <td>{user.direccion}</td>
+                    <td>{user.telefono}</td>
+                    <td>{user.rol}</td>
+                    <td>{user.salario}</td>
+                    <td>
+                      <button onClick={editarUsuario} ><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
+                      <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <div className='table_section'> 
-          <table>
-
-            <thead>
-              <tr>
-                <th scope="col">Rut</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Direccion</th>
-                <th scope="col">Telefono</th>
-                <th scope="col">Cargo de trabajo</th>
-                <th scope="col">Salario</th>
-                <th scope='col'>actualizar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.rut }</td>
-                  <td>{user.nombre}</td>
-                  <td>{user.apellido}</td>
-                  <td>{user.direccion}</td>
-                  <td>{user.telefono}</td>
-                  <td>{user.rol}</td>
-                  <td>{user.salario}</td>
-                  <td>
-                    <button onClick={editarUsuario} ><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
-                    <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </>
   );
 };

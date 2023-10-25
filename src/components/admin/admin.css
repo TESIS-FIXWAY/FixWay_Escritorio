@@ -19,18 +19,22 @@ body{
     background: rgba(0,0,0,0.1);
     z-index: -1;
     top: 0;left: 0;
-} */
+}  */
 
 /*Estilos para el encabezado*/
 .header{
-	width: 100%;
+    background-color: #c7c7c7;
+    width: 100vw;
 	height: 100px;
 	position: fixed;
-	top: 0;left: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px 10px;
 }
 .contenedor-header{
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     margin: auto;
 }
 .contenedor-header .btn-menu, .logo{
@@ -64,10 +68,11 @@ body{
     margin-right: 5px;
 }
 .contenedor-header .menu a:hover{
-    border-bottom: 2px solid #c7c7c7;
+    border-bottom: 2px solid #1f1f1f;
     padding-bottom: 5px;
 }
 /*Fin de Estilos para el encabezado*/
+
 
 
 
