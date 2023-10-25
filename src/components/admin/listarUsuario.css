@@ -23,6 +23,7 @@ button{
     cursor: pointer;
     padding: 10px;
     color: #fff;
+    margin: 0px 10px 0px 10px;
 }
 td button:nth-child(1){
     background-color: #0298cf;
