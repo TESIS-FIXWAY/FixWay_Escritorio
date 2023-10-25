@@ -1,0 +1,48 @@
+
+/* cartas de presentacion */
+.card_admin{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.card_landing{
+    max-width: 800px;
+    width: 100%;
+    margin: 180px 20px 20px 50px ;
+    border-radius: 5px;
+    overflow: hidden;
+    background: #E5DBFF;
+    cursor: default;
+    transition: all 400ms ease;  
+    gap: 20px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+ 
+}
+.hr-container {
+    display: flex; 
+    width: 100%; 
+    justify-content: center;
+    align-items: center; 
+    color: #1f1f1f;
+}
+.card_landing hr {
+    width: 90%; /* Ajusta la longitud del hr según tus preferencias */
+    border: 1px solid #1f1f1f; /* Cambia el color del hr aquí */
+}          
+.card_landing h1,
+.card_landing p,
+.card_landing hr,
+.card_landing .fa-users {
+    margin: 10px 0; 
+}
+.card_landing .fa-users {
+    font-size: 100px; /* Ajusta el tamaño del icono según tus necesidades */
+}
+
+.card_landing:hover{
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3%);
+}

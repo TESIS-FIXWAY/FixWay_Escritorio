@@ -31,6 +31,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path='/indexAdmin' element={<indexAdmin />} />
             <Route path='/agregarUsuario' element={<AgregarUsuario />} />
             <Route path='/listarUsuario' element={<ListarUsuario />} />
             <Route path='/editarUsuario' element={<EditarUsuario />} />

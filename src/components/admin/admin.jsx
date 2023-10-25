@@ -24,6 +24,7 @@ import {
   faBars,
   faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
+import Index from './indexAdmin';
 
 library.add(
   faUser,
@@ -65,6 +66,7 @@ const Admin = () => {
   
   <div>
 
+
     <header className='header'>
       <div className='contenedor-header'>
         <div className='btn-menu'>
@@ -92,7 +94,7 @@ const Admin = () => {
         <nav>
           <br />
           <hr />
-          <Link to='/admin' className='link' st>
+          <Link to='/indexAdmin' className='link'>
             <div className='logo_details'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
               <span className='logo_name'>Hans Motors</span>
@@ -132,6 +134,9 @@ const Admin = () => {
 
       </div>
     </div>
+
+
+    
 
 
 
