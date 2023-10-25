@@ -12,6 +12,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
   faPen, faTrash
 } from '@fortawesome/free-solid-svg-icons';
+import EditarUsuario from './editarUsuario';
 
 library.add(
   faPen,
@@ -87,15 +88,15 @@ const ListarUsuario = () => {
     navigate('/agregarUsuario');
   }
 
-  const editarUsuario = () => {
+  const editarUsuario = (rut) => {
     navigate('/editarUsuario');
+    console.log(rut);
+    EditarUsuario(rut);
   }
 
   return (
     <>
       <Admin />
-
-
       <div className='table'>
         <div className='table_header'>
           <p>listar usuarios</p>
@@ -104,10 +105,8 @@ const ListarUsuario = () => {
             <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
           </div>
         </div>
-
         <div className='table_section'> 
           <table>
-
             <thead>
               <tr>
                 <th scope="col">Rut</th>
@@ -131,7 +130,7 @@ const ListarUsuario = () => {
                   <td>{user.rol}</td>
                   <td>{user.salario}</td>
                   <td>
-                    <button onClick={editarUsuario} ><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
+                    <button onClick={() => editarUsuario(user.rut)} ><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
                     <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
                   </td>
                 </tr>

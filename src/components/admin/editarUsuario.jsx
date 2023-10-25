@@ -10,8 +10,9 @@ import {
   updateDoc 
 } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
+import ListarUsuario from './listarUsuario';
 
-const EditarUsuario = () => {
+const EditarUsuario = (idrut) => {
   const navigate = useNavigate(); 
   const [state, setState] = useState({
     rol: '',
@@ -53,13 +54,14 @@ const EditarUsuario = () => {
     setState({ ...state, [name]: value });
   }
 
-  let id = localStorage.getItem('id');
-  user.map((user) => id = user.id);
+  // let uid = localStorage.getItem('id');
+  // user.find((user) => id = user.id);
 
   
   const rellenarCampos = () => {
-    user.map((user) => {
-      if (user.id === id) {
+    console.log(idrut);
+    user.find((user) => {
+      if (user.id === idrut) {
         setState({
           rol: user.rol,
           nombre: user.nombre,
