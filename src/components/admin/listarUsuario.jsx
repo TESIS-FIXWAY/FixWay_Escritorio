@@ -7,11 +7,11 @@ import { deleteDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
-  faPen, faTrash
+  faPen, faPenRuler, faTrash, faUser, faUserPen
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
   faPen,
-  faTrash
+  faTrash,
 );
 
 const ListarUsuario = () => {
@@ -172,9 +172,9 @@ const ListarUsuario = () => {
                           <button onClick={() => cancelEditing()}>Cancelar</button>
                         </>
                       ) : (
-                        <button onClick={() => startEditing(user.id)}>Editar</button>
+                        <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
                       )}
-                      <button onClick={() => deleteUser(user.id)}>Eliminar</button>
+                      <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
                     </td>
                   </tr>
                 ))}
