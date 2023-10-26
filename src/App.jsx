@@ -8,6 +8,7 @@ import AgregarUsuario from './components/admin/agregarUsuario';
 import ListarUsuario from "./components/admin/listarUsuario";
 import IndexAdmin from "./components/admin/indexAdmin";
 import AgregarFactura from "./components/admin/agregarFactura";
+import ListadoFacturas from "./components/admin/listadoFacturas";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -36,6 +37,7 @@ function App() {
             <Route path='/agregarUsuario' element={<AgregarUsuario />} />
             <Route path='/listarUsuario' element={<ListarUsuario />} />
             <Route path='/agregarFactura' element={<AgregarFactura />} />
+            <Route path='/listadoFacturas' element={<ListadoFacturas />} />
             <Route
               path='/mecanico'
               element={

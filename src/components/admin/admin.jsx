@@ -107,6 +107,10 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Agregar Factura</span>
             </Link>
+            <Link to="/listadoFactura" className='link'>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <span className='link_name'>Listado Factura</span>
+            </Link>
             <hr />
             <li>
               <div className='profile_details'>

@@ -9,7 +9,6 @@ import Admin from "./admin";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import validadorRUT from './validadorRUT';
 
-
 const AgregarUsuario = () => {
   async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
     const infoUsuario = await createUserWithEmailAndPassword(

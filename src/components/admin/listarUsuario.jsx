@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
-import { useNavigate } from 'react-router-dom';
-
 import { deleteDoc } from 'firebase/firestore';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
