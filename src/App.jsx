@@ -10,6 +10,7 @@ import IndexAdmin from "./components/admin/indexAdmin";
 import AgregarFactura from "./components/admin/agregarFactura";
 import ListadoFacturas from "./components/admin/listadoFacturas";
 
+
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
 
