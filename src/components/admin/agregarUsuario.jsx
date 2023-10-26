@@ -65,110 +65,144 @@ const AgregarUsuario = () => {
 
   return (
     <>
-      <Admin />
-        <div >
-          <div className="contenedor">
-            <h1 className="form-title">Agregar Usuario</h1>
-            <form className=" " onSubmit={submitHandler}>
-              <div className="main-user-info">
-                <div className="user-input-box">
-                  <label>Rut</label>
+      <Admin/>
+
+      <div className='body_formulario'>
+
+        <div className='formulario_content'>
+          
+          <div className='formulario_wrapper'>
+            <div className='formulario_contact'>
+              
+              <h1 className='formulario_titulo'>Agregar Usuario</h1>
+              <form className="formulario_form"onSubmit={submitHandler}>
+                <p>
+                  <label className='label_formulario'>Rut</label>
+                  <br />
                   <input
+                    className='input_formulario'
                     id="rut"
                     type="text"
                     name="rut"
                     placeholder="Rut (11.111.111-1)"
                     required
-                    onBlur={validarRut}
-                  />
-                </div>
-                <div className="user-input-box">
-                  <label>ROL</label>
+                    onBlur={validarRut}/>
+                </p>
+                <p>
+                  <label className='label_formulario'>ROL</label>
+                  <br />
                   <input
+                    className='input_formulario'
                     id="rol"
                     type="text"
                     name="rol"
                     placeholder="ROL"
-                    required
-                  />
-                </div>
-                <div className="user-input-box">
-                  <label>nombre</label>
+                    required/>
+                </p>
+                <p>
+                  <label className='label_formulario'>nombre</label>                  
+                  <br />
                   <input
+                    className='input_formulario'
                     id="nombre"
                     required
                     type="text"
                     name="nombre"
-                    placeholder="Nombre"
-                    />
-                  </div>
-                  <div className="user-input-box">
-                    <label>apellido</label>
-                    <input
-                      id="apellido"
-                      required
-                      type="text"
-                      name="apellido"
-                      placeholder="Apellido"
-                      />
-                  </div>
-                  <div className="user-input-box">
-                    <label>telefono</label>
-                    <input
-                      id="telefono"
-                      required
-                      type="text"
-                      name="telefono"
-                      placeholder="Telefono"
-                    />
-                  </div>
-                  <div className="user-input-box">
-                    <label>direccion</label>
-                    <input
-                      id="direccion"
-                      required
-                      type="text"
-                      name="direccion"
-                      placeholder="Direccion"
-                    />
-                  </div>
-                  <div className="user-input-box">
-                    <label>email</label>
-                    <input
-                      id="email"
-                      required
-                      type="text"
-                      name="email"
-                      placeholder="Correo"
-                    />
-                  </div>
-                  <div className="user-input-box">
-                    <label>Contraseña</label>
-                    <input
-                      id="password"
-                      required
-                      type="text"
-                      name="password"
-                      placeholder="Contraseña"
-                    />
-                  </div>
-                  <div className="user-input-box">
-                    <label>Salario</label>
-                    <input
-                      id="salario"
-                      required
-                      type="text"
-                      name="salario"
-                      placeholder="Salario"
-                    />
-                  </div>
-              </div>
-              <div className="button">
-                <button type="submit">Agregar</button>
-              </div>
-            </form>
+                    placeholder="Nombre"/>
+                </p>
+                <p>
+                  <label className='label_formulario'>apellido</label>
+                  <br />
+                  <input
+                    className='input_formulario'
+                    id="apellido"
+                    required
+                    type="text"
+                    name="apellido"
+                    placeholder="Apellido"/>
+                </p>
+                <p>
+                  <label className='label_formulario'>telefono</label>
+                  <br />
+                  <input
+                    className='input_formulario'
+                    id="telefono"
+                    required
+                    type="tel"
+                    name="telefono"
+                    pattern="[+]56 [0-9]{1} [0-9]{8}"
+                    placeholder="Ejemplo: +56 9 12345678"/>
+                </p>
+                <p>
+                  <label className='label_formulario'>direccion</label>
+                  <br />
+                  <input
+                    className='input_formulario'
+                    id="direccion"
+                    required
+                    type="text"
+                    name="direccion"
+                    placeholder="Direccion"/>
+                </p>
+                <p>
+                  <label className='label_formulario'>Salario</label>
+                  <br />
+                  <input
+                    className='input_formulario'
+                    id="salario"
+                    required
+                    type="text"
+                    name="salario"
+                    placeholder="Salario"/>
+                </p>
+                <p>
+                  <label className='label_formulario'>Contraseña</label>
+                  <br />
+                  <input
+                    className='input_formulario'
+                    id="password"
+                    required
+                    type="text"
+                    name="password"
+                    placeholder="Contraseña"/>
+                </p>
+                <p>
+                  <label className='label_formulario'>email</label>
+                  <br />
+                  <input
+                    className='input_formulario'
+                    id="email"
+                    required
+                    type="text"
+                    name="email"
+                    placeholder="Correo"/>
+                </p>
+                <p className='block_boton'>
+                  <button type="submit" onClick={AgregarUsuario} className='boton_formulario'>
+                    Agregar
+                  </button>
+                </p>
+              </form>
+            
+            </div>
           </div>
-        </div>    
+        
+        </div>
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
     </>
   );
 };

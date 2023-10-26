@@ -61,7 +61,7 @@ const Login = () => {
               <div className="form-info-childs">
                   <h2>Iniciar sesion</h2>
                   <form className="formulario" onSubmit={handleSumit} >
-                      <label>
+                      <label className='label_login'>
                           <i className='bx bx-envelope' ></i>
                           <input 
                             type="email" 
@@ -69,7 +69,7 @@ const Login = () => {
                             id='email'
                           />
                       </label>
-                      <label>
+                      <label className='label_login'>
                           <i className='bx bx-lock-alt'></i>                        
                           <input
                             type="password" 

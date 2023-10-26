@@ -116,7 +116,7 @@
     margin: 30px 0 0 0;
   }
   
-  .formulario label{
+   .label_login{
     display: flex;
     align-items: center;
     margin-bottom: 15px;
@@ -126,7 +126,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
   }
   
-  .formulario label input{
+   .label_login input{
     width: 100%;
     padding: 10px;
     background-color: #fff;
