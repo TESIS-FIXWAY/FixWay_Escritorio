@@ -62,7 +62,6 @@ const Admin = () => {
     }
   }
 
-
   return (
     <>
     {/* <IndexAdmin /> */}
@@ -84,11 +83,7 @@ const Admin = () => {
         </div>
       </header>
       <div className='capa'></div>
-
-
-
       <input type='checkbox' id='btn-menu'></input>
-
       <div className='contenedor-menu'>
         <div className='cont_menu'>
           <nav>
@@ -100,19 +95,19 @@ const Admin = () => {
                 <span className='logo_name'>Hans Motors</span>
               </div>
             </Link>
-
             <Link to="/agregarUsuario" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />
               <span className='link_name'>Crear Usuarios</span>
             </Link>
-
             <Link to="/listarUsuario" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Usuarios</span>
             </Link>
-
+            <Link to="/agregarFactura" className='link'>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <span className='link_name'>Agregar Factura</span>
+            </Link>
             <hr />
-
             <li>
               <div className='profile_details'>
                 <div className='profile_content'>
@@ -127,11 +122,8 @@ const Admin = () => {
                 </button>
               </div>
             </li>
-
           </nav>
-
           <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /> </label>
-
         </div>
       </div>
     </div>

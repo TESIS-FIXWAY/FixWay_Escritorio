@@ -6,8 +6,8 @@ import Login from './components/login';
 import Admin from './components/admin/admin';
 import AgregarUsuario from './components/admin/agregarUsuario';
 import ListarUsuario from "./components/admin/listarUsuario";
-import EditarUsuario from "./components/admin/editarUsuario";
 import IndexAdmin from "./components/admin/indexAdmin";
+import AgregarFactura from "./components/admin/agregarFactura";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -35,7 +35,7 @@ function App() {
             <Route path='/indexAdmin' element={<IndexAdmin />} />
             <Route path='/agregarUsuario' element={<AgregarUsuario />} />
             <Route path='/listarUsuario' element={<ListarUsuario />} />
-            <Route path='/editarUsuario/:id' element={<EditarUsuario />} />
+            <Route path='/agregarFactura' element={<AgregarFactura />} />
             <Route
               path='/mecanico'
               element={
