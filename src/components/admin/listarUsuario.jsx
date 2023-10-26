@@ -2,7 +2,7 @@ import './listarUsuario.css'
 import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
-import { collection, getDocs, onSnapshot, query, addDoc, doc } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
 
 import { deleteDoc } from 'firebase/firestore';
@@ -12,49 +12,12 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
   faPen, faTrash
 } from '@fortawesome/free-solid-svg-icons';
-
 library.add(
   faPen,
   faTrash
 );
 
 const ListarUsuario = () => {
-
-  const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    const q = query(collection(db, "users"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const users = [];
-      querySnapshot.forEach((doc) => {
-        users.push({
-          id: doc.id,
-          rut: doc.data().rut,
-          rol: doc.data().rol,
-          salario: doc.data().salario,
-          nombre: doc.data().nombre,
-          apellido: doc.data().apellido,
-          direccion: doc.data().direccion,
-          telefono: doc.data().telefono,
-        });
-      });
-      setUsers(users);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const deleteUser = async (userId) => {
-    console.log('Eliminando usuario con ID:', userId);
-    try {
-      await deleteDoc(doc(db, 'users', userId));
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-      console.log('Usuario eliminado correctamente.');
-    } catch (error) {
-      console.error('Error al eliminar el usuario:', error);
-    }
-  };
-
   const filtrarUsuario = (e) => {
     const texto = e.target.value.toLowerCase();
     const usuariosFiltrados = users.filter((user) => {
@@ -87,15 +50,56 @@ const ListarUsuario = () => {
     navigate('/agregarUsuario');
   }
 
-  const editarUsuario = () => {
-    navigate('/editarUsuario');
-  }
+  const [users, setUsers] = useState([]);
+  const [editingUserId, setEditingUserId] = useState(null);
+
+  React.useEffect(() => {
+    const unsubscribe = onSnapshot(query(collection(db, 'users')), (querySnapshot) => {
+      const usersData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setUsers(usersData);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const deleteUser = async (userId) => {
+    try {
+      await deleteDoc(doc(db, 'users', userId));
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      console.log('Usuario eliminado correctamente.');
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+    }
+  };
+
+  const startEditing = (userId) => {
+    setEditingUserId(userId);
+  };
+
+  const cancelEditing = () => {
+    setEditingUserId(null);
+  };
+
+  const saveEdit = async (userId, updatedData) => {
+    try {
+      await updateDoc(doc(db, 'users', userId), updatedData);
+      setEditingUserId(null);
+      console.log('Usuario actualizado correctamente.');
+    } catch (error) {
+      console.error('Error al actualizar el usuario:', error);
+    }
+  };
+
+  const handleInputChange = (userId, name, value) => {
+    const updatedUsers = users.map((user) =>
+      user.id === userId ? { ...user, [name]: value } : user
+    );
+    setUsers(updatedUsers);
+  };
 
   return (
     <>
       <Admin />
-
-
         <div className='tabla_listar'>
           <div className='table_header'>
             <p>listar usuarios</p>
@@ -104,10 +108,8 @@ const ListarUsuario = () => {
               <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
             </div>
           </div>
-
           <div className='table_section'> 
             <table>
-
               <thead>
                 <tr>
                   <th scope="col">Rut</th>
@@ -123,6 +125,7 @@ const ListarUsuario = () => {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
+                    {/* Tu código existente para los datos de la tabla */}
                     <td>{user.rut }</td>
                     <td>{user.nombre}</td>
                     <td>{user.apellido}</td>
@@ -131,8 +134,50 @@ const ListarUsuario = () => {
                     <td>{user.rol}</td>
                     <td>{user.salario}</td>
                     <td>
-                      <button onClick={editarUsuario} ><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
-                      <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
+                      {editingUserId === user.id ? (
+                        <>
+                          <input
+                            type="text"
+                            value={user.rol}
+                            onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            value={user.nombre}
+                            onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            value={user.apellido}
+                            onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            value={user.telefono}
+                            onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            value={user.direccion}
+                            onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            value={user.salario}
+                            onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            value={user.password}
+                            onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}
+                          />
+                          <button onClick={() => saveEdit(user.id, user)}>Guardar</button>
+                          <button onClick={() => cancelEditing()}>Cancelar</button>
+                        </>
+                      ) : (
+                        <button onClick={() => startEditing(user.id)}>Editar</button>
+                      )}
+                      <button onClick={() => deleteUser(user.id)}>Eliminar</button>
                     </td>
                   </tr>
                 ))}

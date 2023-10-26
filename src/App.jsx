@@ -7,13 +7,14 @@ import Admin from './components/admin/admin';
 import AgregarUsuario from './components/admin/agregarUsuario';
 import ListarUsuario from "./components/admin/listarUsuario";
 import EditarUsuario from "./components/admin/editarUsuario";
+import IndexAdmin from "./components/admin/indexAdmin";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
 
 import Error from './components/404';
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRouter";
 
@@ -31,10 +32,10 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path='/indexAdmin' element={<indexAdmin />} />
+            <Route path='/indexAdmin' element={<IndexAdmin />} />
             <Route path='/agregarUsuario' element={<AgregarUsuario />} />
             <Route path='/listarUsuario' element={<ListarUsuario />} />
-            <Route path='/editarUsuario' element={<EditarUsuario />} />
+            <Route path='/editarUsuario/:id' element={<EditarUsuario />} />
             <Route
               path='/mecanico'
               element={

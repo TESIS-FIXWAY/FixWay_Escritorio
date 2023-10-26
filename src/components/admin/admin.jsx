@@ -3,10 +3,11 @@ import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import logo from '../../images/logo.jpg';
+import IndexAdmin from './indexAdmin';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { 
+import {
   faUser,
   faTrash,
   faUsers,
@@ -63,89 +64,78 @@ const Admin = () => {
 
 
   return (
-  
-  <div>
-
-
-    <header className='header'>
-      <div className='contenedor-header'>
-        <div className='btn-menu'>
-          <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
+    <>
+    {/* <IndexAdmin /> */}
+    <div>
+      <header className='header'>
+        <div className='contenedor-header'>
+          <div className='btn-menu'>
+            <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
+          </div>
+          <div className='logo'>
+            <h1>Hams Motors</h1>
+          </div>
+          <nav className='menu'>
+            <a>inicio</a>
+            <a>email</a>
+            <a>usuarios</a>
+            <a>registros</a>
+          </nav>
         </div>
-        <div className='logo'>
-          <h1>Hams Motors</h1>
+      </header>
+      <div className='capa'></div>
+
+
+
+      <input type='checkbox' id='btn-menu'></input>
+
+      <div className='contenedor-menu'>
+        <div className='cont_menu'>
+          <nav>
+            <br />
+            <hr />
+            <Link to='/indexAdmin' className='link'>
+              <div className='logo_details'>
+                <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
+                <span className='logo_name'>Hans Motors</span>
+              </div>
+            </Link>
+
+            <Link to="/agregarUsuario" className='link'>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />
+              <span className='link_name'>Crear Usuarios</span>
+            </Link>
+
+            <Link to="/listarUsuario" className='link'>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <span className='link_name'>Listar Usuarios</span>
+            </Link>
+
+            <hr />
+
+            <li>
+              <div className='profile_details'>
+                <div className='profile_content'>
+                  {/* <img src={logo} alt='logo' /> */}
+                </div>
+                <div className='name-job'>
+                  <div className='profile_name'>administrador</div>
+                  {/* <div className='profile_name'>yo mismo</div> */}
+                </div>
+                <button type='submit' onClick={handleLogout}>
+                  <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
+                </button>
+              </div>
+            </li>
+
+          </nav>
+
+          <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /> </label>
+
         </div>
-        <nav className='menu'>
-          <a>inicio</a>
-          <a>email</a>
-          <a>usuarios</a>
-          <a>registros</a>
-        </nav>
-      </div>
-    </header>
-    <div className='capa'></div>
-
-
-
-    <input type='checkbox' id='btn-menu'></input>
-    
-    <div className='contenedor-menu'>
-      <div className='cont_menu'>
-        <nav>
-          <br />
-          <hr />
-          <Link to='/indexAdmin' className='link'>
-            <div className='logo_details'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
-              <span className='logo_name'>Hans Motors</span>
-            </div>
-          </Link>
-
-          <Link to="/agregarUsuario" className='link'>
-            <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />              
-            <span className='link_name'>Crear Usuarios</span>
-          </Link>  
-
-          <Link to="/listarUsuario" className='link'>
-            <FontAwesomeIcon className='i' icon="fa-solid fa-users" />              
-            <span className='link_name'>Listar Usuarios</span>
-          </Link> 
-
-          <hr />
-
-          <li>
-            <div className='profile_details'>
-              <div className='profile_content'>
-                {/* <img src={logo} alt='logo' /> */}
-              </div>
-              <div className='name-job'>
-                <div className='profile_name'>administrador</div>
-                {/* <div className='profile_name'>yo mismo</div> */}
-              </div>
-              <button type='submit' onClick={handleLogout}>
-                <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
-              </button>
-            </div>
-          </li>
-
-        </nav>
-        
-        <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /> </label>
-
       </div>
     </div>
-
-
-    
-
-
-
-
-
-
-
-  </div>
-
+  </>
   )
 }
 

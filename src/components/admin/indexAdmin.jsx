@@ -55,7 +55,7 @@ library.add(
 );
 
 
-const indexAdmin = () => {
+const IndexAdmin = () => {
   return (
 
     <>
@@ -94,4 +94,4 @@ const indexAdmin = () => {
   );
 };
 
-export default indexAdmin;
+export default IndexAdmin;
