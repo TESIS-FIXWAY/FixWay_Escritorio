@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
-import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc, Firestore } from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
 
 
@@ -47,7 +47,7 @@ const ListadoFacturas = () => {
       console.error('Error al eliminar la factura:', error);
     }
   };
-
+  
   return (
     <>
       <Admin/>
@@ -75,7 +75,6 @@ const ListadoFacturas = () => {
                   <td>{factura.fecha}</td>
                   <td>
                     <button>Mostrar detalles</button>
-                    <p id="info"></p>
                   </td>
                   <td>
                     <button
