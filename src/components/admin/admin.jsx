@@ -3,8 +3,6 @@ import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import logo from '../../images/logo.jpg';
-import IndexAdmin from './indexAdmin';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {

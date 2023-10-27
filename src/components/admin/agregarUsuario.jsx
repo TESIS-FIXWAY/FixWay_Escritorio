@@ -66,14 +66,10 @@ const AgregarUsuario = () => {
   return (
     <>
       <Admin/>
-
       <div className='body_formulario'>
-
         <div className='formulario_content'>
-          
           <div className='formulario_wrapper'>
             <div className='formulario_contact'>
-              
               <h1 className='formulario_titulo'>Agregar Usuario</h1>
               <form className="formulario_form"onSubmit={submitHandler}>
                 <p>
@@ -100,7 +96,7 @@ const AgregarUsuario = () => {
                     required/>
                 </p>
                 <p>
-                  <label className='label_formulario'>nombre</label>                  
+                  <label className='label_formulario'>Nombre</label>                  
                   <br />
                   <input
                     className='input_formulario'
@@ -111,7 +107,7 @@ const AgregarUsuario = () => {
                     placeholder="Nombre"/>
                 </p>
                 <p>
-                  <label className='label_formulario'>apellido</label>
+                  <label className='label_formulario'>Apellido</label>
                   <br />
                   <input
                     className='input_formulario'
@@ -122,7 +118,7 @@ const AgregarUsuario = () => {
                     placeholder="Apellido"/>
                 </p>
                 <p>
-                  <label className='label_formulario'>telefono</label>
+                  <label className='label_formulario'>Telefono</label>
                   <br />
                   <input
                     className='input_formulario'
@@ -134,7 +130,7 @@ const AgregarUsuario = () => {
                     placeholder="Ejemplo: +56 9 12345678"/>
                 </p>
                 <p>
-                  <label className='label_formulario'>direccion</label>
+                  <label className='label_formulario'>Direccion</label>
                   <br />
                   <input
                     className='input_formulario'
@@ -167,7 +163,7 @@ const AgregarUsuario = () => {
                     placeholder="Contraseña"/>
                 </p>
                 <p>
-                  <label className='label_formulario'>email</label>
+                  <label className='label_formulario'>Email</label>
                   <br />
                   <input
                     className='input_formulario'

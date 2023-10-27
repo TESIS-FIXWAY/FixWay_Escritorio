@@ -1,10 +1,32 @@
 import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
-import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc, Firestore } from "firebase/firestore";
+import { 
+  collection, 
+  onSnapshot, 
+  query, 
+  doc, 
+} from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { 
+  faPen, 
+  faTrash, 
+  faMagnifyingGlass, 
+  faCheck, 
+  faDownload,
+  faXmark
+} from '@fortawesome/free-solid-svg-icons';
+library.add(
+  faPen,
+  faTrash,
+  faMagnifyingGlass,
+  faCheck,
+  faXmark,
+  faDownload
+);
 
 const ListadoFacturas = () => {
   const filtrarFactura = (e) => {
@@ -82,11 +104,14 @@ const ListadoFacturas = () => {
                     <td>{factura.fecha}</td>
                     <td>{factura.detalle}</td>
                     <td>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => deletefactura(factura.id)}
-                      >
-                        Eliminar
+                      <button>
+                        <FontAwesomeIcon icon={faPen} />
+                      </button>
+                      <button>
+                        <FontAwesomeIcon icon={faDownload} />
+                      </button>
+                      <button onClick={() => deletefactura(factura.id)}>
+                        <FontAwesomeIcon icon="fa-solid fa-trash" />
                       </button>
                     </td>
                   </tr>
