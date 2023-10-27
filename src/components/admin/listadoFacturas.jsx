@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
-import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc, Firestore } from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 
