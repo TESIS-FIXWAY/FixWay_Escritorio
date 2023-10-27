@@ -56,12 +56,29 @@ const ListarInventario = () => {
   const filtrarInventario = (e) => {
     const texto = e.target.value.toLowerCase();
     const inventarioFiltrados = inventario.filter((inventario) => {
-      const proveedor = inventario.proveedor.toLowerCase();
-      const fecha = inventario.fecha.toLowerCase();
-      const detalle = inventario.detalle.toLowerCase();
-      return proveedor.includes(texto) || fecha.includes(texto) || detalle.includes(texto);
+      const { codigoProducto, nombreProducto, categoria, marca, cantidad, costo } = inventario;
+      const codigoProductoLower = codigoProducto.toLowerCase();
+      const nombreProductoLower = nombreProducto.toLowerCase();
+      const categoriaLower = categoria.toLowerCase();
+      const marcaLower = marca.toLowerCase();
+      const cantidadLower = cantidad.toLowerCase();
+      const costoLower = costo.toLowerCase();
+      if (
+        codigoProductoLower.includes(texto) ||
+        nombreProductoLower.includes(texto) ||
+        categoriaLower.includes(texto) ||
+        marcaLower.includes(texto) ||
+        cantidadLower.includes(texto) ||
+        costoLower.includes(texto)
+      ) {
+        return inventario;
+      }
+      return null;
     });
     setInventario(inventarioFiltrados);
+    if (texto === '') {
+      window.location.reload();
+    }
   };
   
   const agregarInventario = () => {
