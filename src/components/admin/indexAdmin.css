@@ -64,13 +64,12 @@
 }
 
 
+
 .iconos_boton:hover{
     background: #1D90FA;
 }
-
 .card_landing:hover{
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
-    transform: translateY(-3%);
 }
 .card_landing:hover .hr-container{
     opacity: 1;
