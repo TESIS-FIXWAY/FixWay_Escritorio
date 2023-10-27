@@ -90,61 +90,71 @@ const AgregarFactura = () => {
     <>
       <Admin />
       <div >
-          <div className="contenedor">
-            <h1 className="form-title">Agregar Factura</h1>
-            <form className=" " onSubmit={handleSubmit}>
-              <div className="main-user-info">
-                <div className="user-input-box">
-                  <label>Fecha</label>
-                  <input
-                    id="fecha"
-                    type="date"
-                    name="fecha"
-                    placeholder="Fecha"
-                    required
-                    onChange={(e) => handleChangeText('fecha', e.target.value)}
-                    value={state.fecha}
-                  />
+          <div className="body_formulario">
+            <div className='formulario_content'>
+              <div className='formulario_wrapper'>
+                <div className='formulario_contact'>
+                  <h1 className="formulario_titulo">Agregar Factura</h1>
+                  <form className="formulario_form" onSubmit={handleSubmit}>
+                    <p>
+                      <label className='label_formulario'>Fecha</label>
+                      <br />
+                      <input
+                        id="fecha"
+                        type="date"
+                        name="fecha"
+                        placeholder="Fecha"
+                        className='input_formulario'
+                        required
+                        onChange={(e) => handleChangeText('fecha', e.target.value)}
+                        value={state.fecha}
+                      />
+                    </p>
+                    <p>
+                      <label className='label_formulario'>Proveedor</label>
+                      <br />
+                      <input
+                        id="proveedor"
+                        type="text"
+                        name="proveedor"
+                        placeholder="Proveedor"
+                        className='input_formulario'
+                        required
+                        onChange={(e) => handleChangeText('proveedor', e.target.value)}
+                        value={state.proveedor}
+                      />
+                    </p>
+                    <p>
+                      <label className='label_formulario'>Detalle</label>
+                      <br />
+                      <input
+                        id="detalle"
+                        required
+                        type="text"
+                        className='input_formulario'
+                        name="detalle"
+                        placeholder="Detalle"
+                        onChange={(e) => handleChangeText('detalle', e.target.value)}
+                        value={state.detalle}
+                      />
+                      </p>
+                      <p>
+                        <label className='label_formulario'>Seleccionar Archivo</label>
+                        <br />
+                        <input type="file" onChange={handleFileChange} className='input_formulario'/>
+                      </p>
+                      <p className="block_boton">
+                        <button type="submit" onClick={handleUpload} disabled={uploading} className='boton_formulario' >Agregar Fatura</button>
+                        {uploading && <p>Subiendo Archivo</p> }
+                      </p>
+                  </form>
                 </div>
-                <div className="user-input-box">
-                  <label>Proveedor</label>
-                  <input
-                    id="proveedor"
-                    type="text"
-                    name="proveedor"
-                    placeholder="Proveedor"
-                    required
-                    onChange={(e) => handleChangeText('proveedor', e.target.value)}
-                    value={state.proveedor}
-                  />
-                </div>
-                <div className="user-input-box">
-                  <label>Detalle</label>
-                  <input
-                    id="detalle"
-                    required
-                    type="text"
-                    name="detalle"
-                    placeholder="Detalle"
-                    onChange={(e) => handleChangeText('detalle', e.target.value)}
-                    value={state.detalle}
-                  />
-                  </div>
-                  <div className="user-input-box">
-                    <label>Seleccionar Archivo</label>
-                    <input type="file" onChange={handleFileChange} />
-                  </div>
               </div>
-              <div className="button">
-                <button type="submit" onClick={handleUpload} disabled={uploading}>Agregar Fatura</button>
-                {uploading && <p>Subiendo Archivo</p> }
-              </div>
-            </form>
+            </div>
           </div>
         </div> 
     </>
   );
 };
-
 
 export default AgregarFactura;
