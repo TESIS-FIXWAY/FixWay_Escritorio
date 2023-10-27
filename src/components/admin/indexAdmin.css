@@ -1,5 +1,5 @@
-
 /* cartas de presentacion */
+
 .card_admin{
     width: 100%;
     display: flex;
@@ -8,7 +8,7 @@
 .card_landing{
     max-width: 800px;
     width: 100%;
-    margin: 180px 20px 20px 50px ;
+    margin: 180px 20px 20px 5px ;
     border-radius: 5px;
     overflow: hidden;
     background: #E5DBFF;
@@ -19,7 +19,6 @@
     display: flex;
     flex-direction: column; 
     align-items: center; 
- 
 }
 .hr-container {
     display: flex; 
@@ -33,16 +32,52 @@
     border: 1px solid #1f1f1f; 
 }          
 .card_landing h1,
-.card_landing p,
-.card_landing hr,
 .card_landing .iconos{
-    margin: 10px 0; 
+    margin: 1px 0; 
 }
+.p_card{
+    margin: 5px 0px 0px 0px
+}
+
+.hr-container{
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.3s ease-out 0.3s;
+}
+.p_card{
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.3s ease-out 0.3s;
+}
+
 .card_landing .iconos {
     font-size: 100px; 
+}
+.iconos_boton{
+    cursor: pointer;
+    margin: 0px 5px 3px 0px;
+    padding: 5px;
+    width: 8%;
+    color: #fff;
+    background: #389CFC;
+    border-radius: 5px;
+}
+
+
+.iconos_boton:hover{
+    background: #1D90FA;
 }
 
 .card_landing:hover{
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
     transform: translateY(-3%);
 }
+.card_landing:hover .hr-container{
+    opacity: 1;
+    transform: translateY(0px);
+}
+.card_landing:hover .p_card{
+    opacity: 1;
+    transform: translateY(0px);
+}
+

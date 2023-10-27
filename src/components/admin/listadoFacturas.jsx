@@ -100,8 +100,7 @@ const ListadoFacturas = () => {
             <div>
               <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder="buscar factura" onChange={filtrarFactura}/>
-              <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" />
-              <button className='boton-ingreso' onClick={agregarFactura}> + Ingresar Nueva Factura</button>
+              <button className='boton-ingreso' onClick={agregarFactura}> <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" /> Ingresar Nueva Factura</button>
             </div>
           </div>
           <div className="table_section">

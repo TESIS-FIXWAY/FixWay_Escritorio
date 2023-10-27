@@ -1,6 +1,7 @@
 import './indexAdmin.css'
 import React from "react";
 import { useNavigate } from 'react-router-dom';
+import usuario from '../../images/usuarios.png';
 import Admin from "./admin";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -22,7 +23,9 @@ import {
   faBars,
   faArrowLeft,
   faUsersGear,
-  faFileLines
+  faFileLines,
+  faUsersLine
+
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -43,49 +46,70 @@ library.add(
   faBars,
   faArrowLeft,
   faUsersGear,
-  faFileLines
+  faFileLines,
+  faUsersLine
 );
 
 const IndexAdmin = () => {
   const navigate = useNavigate();
 
   const usuarios = () => {
+    navigate('/agregarUsuario')
+  }
+  const listarUsuarios = () => {
     navigate('/listarUsuario')
   }
-
   const facturas = () => {
+    navigate('/agregarFactura')
+  }
+  const listarFacturas = () => {
     navigate('/listadoFacturas')
   }
-
   return (
+
+
     <>
-      <Admin />
+      <Admin/>
+
+
+
+
+
+        
         <div className='card_admin'>
-        <div className='card_landing' onClick={usuarios}>
-            <h1>Administrar usuarios</h1>
+        <div className='card_landing'>
+            <h1> usuarios</h1>
             <hr className='hr-container'/>
             <FontAwesomeIcon icon="fa-solid fa-users-gear" className='iconos'/>            
             <hr className='hr-container'/>
-            <p>gestiona a los usuarios del taller</p>
+            <p className='p_card'>gestiona a los usuarios del taller</p>
+            <p className='p_card'>agregar usuarios <FontAwesomeIcon icon="fa-solid fa-user-plus"  onClick={usuarios} className='iconos_boton'/> </p>
+            <p className='p_card'>listar usuarios <FontAwesomeIcon icon="fa-solid fa-users-line" onClick={listarUsuarios} className='iconos_boton'/> </p>
         </div>
-        <div className='card_info'></div>
-        <div className='card_landing' onClick={facturas}>
-            <h1>Lista Factura</h1>
+
+        <div className='card_landing'>
+            <h1> facturas de proveedor</h1>
             <hr className='hr-container'/>
             <FontAwesomeIcon icon="fa-solid fa-file-lines" className='iconos'/>
-            <hr  className='hr-container'/>
-            <p>gestiona las facturas del taller</p>
+            <hr className='hr-container'/>
+            <p className='p_card'>gestiona a las facturas del taller</p>
+            <p className='p_card'>agregar facturas <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" onClick={facturas} className='iconos_boton'/> </p>
+            <p className='p_card'>listar facturas <FontAwesomeIcon icon="fa-solid fa-file-lines" onClick={listarFacturas} className='iconos_boton'/> </p>
         </div>
-        <div className='card_info'></div>
+
         <div className='card_landing'>
-            <h1>usuarios</h1>
+            <h1> inventario</h1>
             <hr className='hr-container'/>
-            <FontAwesomeIcon icon="fa-solid fa-user" className='iconos'/>
+            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='iconos'/>
             <hr className='hr-container'/>
-            <p>gestiona a los usuarios del taller</p>
+            <p className='p_card'>gestiona el inventario taller</p>
+            <p className='p_card'>agregar usuarios <FontAwesomeIcon icon="fa-solid fa-user-plus"  onClick={usuarios}/> </p>
+            <p className='p_card'>listar usuarios <FontAwesomeIcon icon="fa-solid fa-users-line" onClick={listarUsuarios}/> </p>
         </div>
-        <div className='card_info'></div>
+
         </div>
+
+
     </>
   );
 };

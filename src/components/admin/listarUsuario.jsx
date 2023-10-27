@@ -118,8 +118,7 @@ const ListarUsuario = () => {
             <div>
               <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
-              <FontAwesomeIcon icon="fa-solid fa-user-plus" />
-              <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
+              <button className='boton-ingreso' onClick={agregarUsuario}> <FontAwesomeIcon icon="fa-solid fa-user-plus" /> ingresar nuevo usuario</button>
             </div>
           </div>
           <div className='table_section'> 

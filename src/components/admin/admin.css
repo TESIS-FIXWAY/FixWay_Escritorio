@@ -13,7 +13,7 @@ body{
 }
 
 /* .capa{
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100vh;
     background: rgba(0,0,0,0.1);
@@ -60,7 +60,6 @@ body{
     padding: 15px;
     line-height: normal;
     text-decoration: none;
-    color: ;
     transition: all 0.3s ease;
     border-bottom: 2px solid transparent;
     font-size: 15px;

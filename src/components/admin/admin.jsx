@@ -74,14 +74,16 @@ const Admin = () => {
           <div className='logo'>
             <h1>Hams Motors</h1>
           </div>
-          <nav className='menu'>
+          {/* <nav className='menu'>
             <a>inicio</a>
             <a>email</a>
             <a>usuarios</a>
             <a>registros</a>
-          </nav>
+          </nav> */}
         </div>
       </header>
+
+      
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
       <div className='contenedor-menu'>
