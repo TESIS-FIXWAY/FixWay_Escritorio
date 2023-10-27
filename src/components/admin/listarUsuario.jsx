@@ -4,8 +4,7 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
-
-
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -23,42 +22,10 @@ library.add(
   faXmark
 );
 
-
 const ListarUsuario = () => {
-  const filtrarUsuario = (e) => {
-    const texto = e.target.value.toLowerCase();
-    const usuariosFiltrados = users.filter((user) => {
-      const nombre = user.nombre.toLowerCase();
-      const apellido = user.apellido.toLowerCase();
-      const rut = user.rut.toLowerCase();
-      const telefono = user.telefono.toLowerCase();
-      const direccion = user.direccion.toLowerCase();
-      const rol = user.rol.toLowerCase();
-      const salario = user.salario.toLowerCase();
-      return (
-        nombre.includes(texto) ||
-        apellido.includes(texto) ||
-        rut.includes(texto) ||
-        telefono.includes(texto) ||
-        direccion.includes(texto) ||
-        rol.includes(texto) ||
-        salario.includes(texto)
-      );
-    });
-    setUsers(usuariosFiltrados);
-    if (texto === '') {
-      window.location.reload();
-    }
-    if (usuariosFiltrados.map((user) => user.nombre).length === 0 ) {
-      return alert('No se encontraron usuarios con ese nombre');
-    }
-  }
-  const agregarUsuario = () => {
-    navigate('/agregarUsuario');
-  }
-
   const [users, setUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const unsubscribe = onSnapshot(query(collection(db, 'users')), (querySnapshot) => {
@@ -103,6 +70,38 @@ const ListarUsuario = () => {
     );
     setUsers(updatedUsers);
   };
+
+  const filtrarUsuario = (e) => {
+    const texto = e.target.value.toLowerCase();
+    const usuariosFiltrados = users.filter((user) => {
+      const nombre = user.nombre.toLowerCase();
+      const apellido = user.apellido.toLowerCase();
+      const rut = user.rut.toLowerCase();
+      const telefono = user.telefono.toLowerCase();
+      const direccion = user.direccion.toLowerCase();
+      const rol = user.rol.toLowerCase();
+      const salario = user.salario.toLowerCase();
+      return (
+        nombre.includes(texto) ||
+        apellido.includes(texto) ||
+        rut.includes(texto) ||
+        telefono.includes(texto) ||
+        direccion.includes(texto) ||
+        rol.includes(texto) ||
+        salario.includes(texto)
+      );
+    });
+    setUsers(usuariosFiltrados);
+    if (texto === '') {
+      window.location.reload();
+    }
+    if (usuariosFiltrados.map((user) => user.nombre).length === 0 ) {
+      return alert('No se encontraron usuarios con ese nombre');
+    }
+  }
+  const agregarUsuario = () => {
+    navigate('/agregarUsuario');
+  }
 
   return (
     <>

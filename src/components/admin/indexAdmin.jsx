@@ -1,20 +1,9 @@
-// src/index.jsx
 import './indexAdmin.css'
-import React, { useState } from "react";
-import Admin from "./admin";
-
-import { db } from "../../firebase";
-import { collection, getDocs, onSnapshot, query, addDoc, doc } from "firebase/firestore";
+import React from "react";
 import { useNavigate } from 'react-router-dom';
-
-import { deleteDoc } from 'firebase/firestore';
-
-
+import Admin from "./admin";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-
-
-
 import { 
   faUser,
   faTrash,
@@ -49,34 +38,39 @@ library.add(
   faUsers,
   faArrowRightFromBracket,
   faBars,
-
   faBars,
   faArrowLeft
 );
 
-
 const IndexAdmin = () => {
-  return (
+  const navigate = useNavigate();
 
+  const usuarios = () => {
+    navigate('/listarUsuario')
+  }
+
+  const facturas = () => {
+    navigate('/listadoFacturas')
+  }
+
+  return (
     <>
-    <Admin />
-    
+      <Admin />
         <div className='card_admin'>
-        <div className='card_landing'>
-            <h1>usuarios</h1>
+        <div className='card_landing' onClick={usuarios}>
+            <h1>Lista Usuario</h1>
             <hr className='hr-container'/>
             <FontAwesomeIcon icon="fa-solid fa-users" />
             <hr className='hr-container'/>
             <p>gestiona a los usuarios del taller</p>
         </div>
         <div className='card_info'></div>
-
-        <div className='card_landing'>
-            <h1>usuarios</h1>
+        <div className='card_landing' onClick={facturas}>
+            <h1>Lista Factura</h1>
             <hr className='hr-container'/>
             <FontAwesomeIcon icon="fa-solid fa-users" />
             <hr  className='hr-container'/>
-            <p>gestiona a los usuarios del taller</p>
+            <p>gestiona las facturas del taller</p>
         </div>
         <div className='card_info'></div>
         <div className='card_landing'>
@@ -88,9 +82,7 @@ const IndexAdmin = () => {
         </div>
         <div className='card_info'></div>
         </div>
-
     </>
-
   );
 };
 

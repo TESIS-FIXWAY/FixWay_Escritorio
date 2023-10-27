@@ -25,8 +25,6 @@ import {
   faBars,
   faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
-import Index from './indexAdmin';
-
 library.add(
   faUser,
   faTrash,
@@ -64,7 +62,6 @@ const Admin = () => {
 
   return (
     <>
-    {/* <IndexAdmin /> */}
     <div>
       <header className='header'>
         <div className='contenedor-header'>
