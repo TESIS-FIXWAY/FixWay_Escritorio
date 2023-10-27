@@ -3,6 +3,7 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
+import { useNavigate } from "react-router-dom";
 
 
 const ListadoFacturas = () => {
@@ -28,6 +29,7 @@ const ListadoFacturas = () => {
   }
 
   const [facturas, setFacturas] = useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const unsubscribe = onSnapshot(query(collection(db, 'facturas')), (querySnapshot) => {
@@ -48,47 +50,50 @@ const ListadoFacturas = () => {
     }
   };
 
+  const agregarFactura = () => {
+    navigate('/agregarFactura');
+  }
+
   return (
     <>
       <Admin/>
-        <div className="container">
-          <div>
+        <div className="tabla_listar">
+          <div className="table_header">
             <p>Listado de Facturas</p>
+            <div>
+              <input type="text" placeholder="buscar factura" onChange={filtrarFactura}/>
+              <button className='boton-ingreso' onClick={agregarFactura}> + Ingresar Nueva Factura</button>
+            </div>
           </div>
-          <div>
-            <input type="text" placeholder="buscar factura" onChange={filtrarFactura}/>
-          </div>
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Detalle</th>
-              </tr>
-            </thead>
-            <tbody>
-              {facturas.map((factura) => (
-                <tr key={factura.id}>
-                  <td>{factura.id}</td>
-                  <td>{factura.proveedor}</td>
-                  <td>{factura.fecha}</td>
-                  <td>
-                    <button>Mostrar detalles</button>
-                    <p id="info"></p>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => deletefactura(factura.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </td>
+          <div className="table_section">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Proveedor</th>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Detalle</th>
+                  <th scope="col">Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {facturas.map((factura) => (
+                  <tr key={factura.id}>
+                    <td>{factura.proveedor}</td>
+                    <td>{factura.fecha}</td>
+                    <td>{factura.detalle}</td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deletefactura(factura.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
     </>
   );
