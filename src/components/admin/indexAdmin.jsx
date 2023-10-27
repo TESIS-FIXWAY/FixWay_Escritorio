@@ -21,6 +21,8 @@ import {
   faArrowRightFromBracket,
   faBars,
   faArrowLeft,
+  faUsersGear,
+  faFileLines
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -39,7 +41,9 @@ library.add(
   faArrowRightFromBracket,
   faBars,
   faBars,
-  faArrowLeft
+  faArrowLeft,
+  faUsersGear,
+  faFileLines
 );
 
 const IndexAdmin = () => {
@@ -58,9 +62,9 @@ const IndexAdmin = () => {
       <Admin />
         <div className='card_admin'>
         <div className='card_landing' onClick={usuarios}>
-            <h1>Lista Usuario</h1>
+            <h1>Administrar usuarios</h1>
             <hr className='hr-container'/>
-            <FontAwesomeIcon icon="fa-solid fa-users" />
+            <FontAwesomeIcon icon="fa-solid fa-users-gear" className='iconos'/>            
             <hr className='hr-container'/>
             <p>gestiona a los usuarios del taller</p>
         </div>
@@ -68,7 +72,7 @@ const IndexAdmin = () => {
         <div className='card_landing' onClick={facturas}>
             <h1>Lista Factura</h1>
             <hr className='hr-container'/>
-            <FontAwesomeIcon icon="fa-solid fa-users" />
+            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='iconos'/>
             <hr  className='hr-container'/>
             <p>gestiona las facturas del taller</p>
         </div>
@@ -76,7 +80,7 @@ const IndexAdmin = () => {
         <div className='card_landing'>
             <h1>usuarios</h1>
             <hr className='hr-container'/>
-            <FontAwesomeIcon icon="fa-solid fa-users" />
+            <FontAwesomeIcon icon="fa-solid fa-user" className='iconos'/>
             <hr className='hr-container'/>
             <p>gestiona a los usuarios del taller</p>
         </div>
