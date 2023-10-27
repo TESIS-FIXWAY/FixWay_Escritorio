@@ -74,14 +74,17 @@ const Admin = () => {
           <div className='logo'>
             <h1>Hams Motors</h1>
           </div>
-          {/* <nav className='menu'>
+          <nav className='menu'>
             <a>inicio</a>
             <a>email</a>
             <a>usuarios</a>
             <a>registros</a>
-          </nav> */}
+          </nav>
         </div>
-      </header>
+        <button type='submit' onClick={handleLogout} className='boton_salir'>
+          <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
+        </button>
+      </header> 
 
       
       <div className='capa'></div>
@@ -90,7 +93,7 @@ const Admin = () => {
         <div className='cont_menu'>
           <nav>
             <br />
-            <hr />
+    <hr />
             <Link to='/indexAdmin' className='link'>
               <div className='logo_details'>
                 <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
@@ -105,6 +108,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Usuarios</span>
             </Link>
+    <hr />
             <Link to="/agregarFactura" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Agregar Factura</span>
@@ -113,6 +117,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Factura</span>
             </Link>
+    <hr />
             <Link to="/agregarInventario" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Agregar Inventario</span>
@@ -121,7 +126,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Inventario</span>
             </Link>
-            <hr />
+    <hr />
             <li>
               <div className='profile_details'>
                 <div className='profile_content'>

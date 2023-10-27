@@ -77,7 +77,7 @@ const ListarInventario = () => {
             <div>
               <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder="buscar factura" onChange={filtrarInventario}/>
-              <button className='boton-ingreso' onClick={agregarInventario}> <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" /> Ingresar Nueva Factura</button>
+              <button className='boton-ingreso' onClick={agregarInventario}> <FontAwesomeIcon icon="fa-solid fa-cart-flatbed" /> Ingresar Nuevo inventario</button>
             </div>
           </div>
           <div className="table_section">

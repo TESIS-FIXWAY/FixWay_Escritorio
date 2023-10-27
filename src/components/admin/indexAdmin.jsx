@@ -24,8 +24,11 @@ import {
   faArrowLeft,
   faUsersGear,
   faFileLines,
-  faUsersLine
-
+  faUsersLine,
+  faReceipt,
+  faBoxesStacked,
+  faCartFlatbed,
+  faClipboardList
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -47,7 +50,11 @@ library.add(
   faArrowLeft,
   faUsersGear,
   faFileLines,
-  faUsersLine
+  faUsersLine,
+  faReceipt,
+  faBoxesStacked,
+  faCartFlatbed,
+  faClipboardList
 );
 
 const IndexAdmin = () => {
@@ -65,6 +72,14 @@ const IndexAdmin = () => {
   const listarFacturas = () => {
     navigate('/listadoFacturas')
   }
+  const inventario = () => {
+    navigate('/agregarInventario')
+  }
+  const listarInventario = () => {
+    navigate('/listarInventario')
+  }
+
+
   return (
 
 
@@ -90,7 +105,7 @@ const IndexAdmin = () => {
         <div className='card_landing'>
             <h1> facturas de proveedor</h1>
             <hr className='hr-container'/>
-            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='iconos'/>
+            <FontAwesomeIcon icon="fa-solid fa-receipt" className='iconos'/>            
             <hr className='hr-container'/>
             <p className='p_card'>gestiona a las facturas del taller</p>
             <p className='p_card'>agregar facturas <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" onClick={facturas} className='iconos_boton'/> </p>
@@ -100,11 +115,11 @@ const IndexAdmin = () => {
         <div className='card_landing'>
             <h1> inventario</h1>
             <hr className='hr-container'/>
-            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='iconos'/>
+            <FontAwesomeIcon icon="fa-solid fa-boxes-stacked" className='iconos'/>
             <hr className='hr-container'/>
             <p className='p_card'>gestiona el inventario taller</p>
-            <p className='p_card'>agregar usuarios <FontAwesomeIcon icon="fa-solid fa-user-plus"  onClick={usuarios}/> </p>
-            <p className='p_card'>listar usuarios <FontAwesomeIcon icon="fa-solid fa-users-line" onClick={listarUsuarios}/> </p>
+            <p className='p_card'>agregar inventario <FontAwesomeIcon icon="fa-solid fa-cart-flatbed" onClick={inventario} className='iconos_boton'/> </p>
+            <p className='p_card'>listar usuarios <FontAwesomeIcon icon="fa-solid fa-clipboard-list" onClick={listarInventario} className='iconos_boton'/> </p>
         </div>
 
         </div>

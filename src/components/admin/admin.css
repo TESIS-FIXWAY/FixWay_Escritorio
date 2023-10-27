@@ -23,7 +23,7 @@ body{
 
 /*Estilos para el encabezado*/
 .header{
-    background-color: #c7c7c7;
+    background-color: #9ACEF8;
     width: 100vw;
 	height: 100px;
 	position: fixed;
@@ -77,12 +77,21 @@ body{
     color: #4F2490;
     transform: translateY(-30%);
 }
+
+.boton_salir{
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #1f1f1f;
+}
+.boton_salir:hover{
+    color: #4F2490;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3%);
+    transition: all 0.3s ease-out 0.1s;
+}
+
 /*Fin de Estilos para el encabezado*/
-
-
-
-
-
 
 
 
