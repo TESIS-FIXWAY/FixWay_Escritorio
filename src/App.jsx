@@ -5,14 +5,12 @@ import Login from './components/login';
 // agregar los nombres de las constantes en mayusculas
 import Admin from './components/admin/admin';
 import IndexAdmin from "./components/admin/indexAdmin";
-
-
 import AgregarUsuario from './components/admin/agregarUsuario';
 import ListarUsuario from "./components/admin/listarUsuario";
-
-
 import AgregarFactura from "./components/admin/agregarFactura";
 import ListadoFacturas from "./components/admin/listadoFacturas";
+import AgregarInventario from "./components/admin/agregarInventario";
+import ListarInventario from "./components/admin/listarInventario";
 
 
 //mecanico
@@ -43,6 +41,8 @@ function App() {
             <Route path='/listarUsuario' element={<ListarUsuario />} />
             <Route path='/agregarFactura' element={<AgregarFactura />} />
             <Route path='/listadoFacturas' element={<ListadoFacturas />} />
+            <Route path='/agregarInventario' element={<AgregarInventario />} />
+            <Route path='/listarInventario' element={<ListarInventario />} />
             <Route
               path='/mecanico'
               element={
