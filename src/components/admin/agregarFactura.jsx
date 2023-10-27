@@ -2,16 +2,10 @@ import React, { useState } from 'react';
 import { storage, db } from '../../firebase';
 import { 
   collection, 
-  getDocs, 
-  onSnapshot, 
-  query, 
   addDoc, 
-  doc, 
-  updateDoc,
   serverTimestamp
 } from "firebase/firestore";
 import {
-  getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
@@ -153,7 +147,6 @@ const AgregarFactura = () => {
                         <input type="file" onChange={handleFileChange} className='input_formulario'/>
                       </p>
                       <p className="block_boton">
-                        {/* <button type="submit" onClick={handleUpload} disabled={uploading} className='boton_formulario' >Agregar Fatura</button> */}
                         <button type="submit" disabled={uploading} className='boton_formulario' >Agregar Fatura</button>
                         {uploading && <p>Subiendo Archivo</p> }
                       </p>
