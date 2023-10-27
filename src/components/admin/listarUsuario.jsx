@@ -1,6 +1,6 @@
 import './listarUsuario.css'
 import React, { useState } from "react";
-import Admin from "../admin/admin";
+import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';

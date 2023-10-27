@@ -7,12 +7,12 @@ import Admin from './components/admin/admin';
 import IndexAdmin from "./components/admin/indexAdmin";
 
 
-import AgregarUsuario from './components/usuarios Admin/agregarUsuario';
-import ListarUsuario from "./components/usuarios Admin/listarUsuario";
+import AgregarUsuario from './components/admin/agregarUsuario';
+import ListarUsuario from "./components/admin/listarUsuario";
 
 
-import AgregarFactura from "./components/factura/agregarFactura";
-import ListadoFacturas from "./components/factura/listadoFacturas";
+import AgregarFactura from "./components/admin/agregarFactura";
+import ListadoFacturas from "./components/admin/listadoFacturas";
 
 
 //mecanico
