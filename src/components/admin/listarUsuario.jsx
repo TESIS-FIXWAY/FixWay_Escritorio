@@ -4,15 +4,25 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
-  faPen, faPenRuler, faTrash, faUser, faUserPen
+  faPen, 
+  faTrash, 
+  faMagnifyingGlass, 
+  faCheck, 
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
   faPen,
   faTrash,
+  faMagnifyingGlass,
+  faCheck,
+  faXmark
 );
+
 
 const ListarUsuario = () => {
   const filtrarUsuario = (e) => {
@@ -101,6 +111,7 @@ const ListarUsuario = () => {
           <div className='table_header'>
             <p>listar usuarios</p>
             <div>
+              <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
               <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
             </div>
@@ -136,46 +147,43 @@ const ListarUsuario = () => {
                           <input
                             type="text"
                             value={user.rol}
-                            onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}
-                          />
+                            onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}/>
                           <input
                             type="text"
                             value={user.nombre}
-                            onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}
-                          />
+                            onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}/>
                           <input
                             type="text"
                             value={user.apellido}
-                            onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}
-                          />
+                            onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}/>
                           <input
                             type="text"
                             value={user.telefono}
-                            onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}
-                          />
+                            onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}/>
                           <input
                             type="text"
                             value={user.direccion}
-                            onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}
-                          />
+                            onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}/>
                           <input
                             type="text"
                             value={user.salario}
-                            onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}
-                          />
+                            onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}/>
                           <input
                             type="text"
                             value={user.password}
-                            onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}
-                          />
-                          <button onClick={() => saveEdit(user.id, user)}>Guardar</button>
-                          <button onClick={() => cancelEditing()}>Cancelar</button>
+                            onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}/>
+                          <button onClick={() => saveEdit(user.id, user)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
+                          <button onClick={() => cancelEditing()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
                         </>
+                      
+                      
                       ) : (
                         <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
+                      
                       )}
                       <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
                     </td>
+                  
                   </tr>
                 ))}
               </tbody>

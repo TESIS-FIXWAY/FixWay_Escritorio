@@ -4,9 +4,13 @@ import Login from './components/login';
 //admin
 // agregar los nombres de las constantes en mayusculas
 import Admin from './components/admin/admin';
+import IndexAdmin from "./components/admin/indexAdmin";
+
+
 import AgregarUsuario from './components/admin/agregarUsuario';
 import ListarUsuario from "./components/admin/listarUsuario";
-import IndexAdmin from "./components/admin/indexAdmin";
+
+
 import AgregarFactura from "./components/admin/agregarFactura";
 import ListadoFacturas from "./components/admin/listadoFacturas";
 

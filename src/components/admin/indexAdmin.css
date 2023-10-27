@@ -29,8 +29,8 @@
     color: #1f1f1f;
 }
 .card_landing hr {
-    width: 90%; /* Ajusta la longitud del hr según tus preferencias */
-    border: 1px solid #1f1f1f; /* Cambia el color del hr aquí */
+    width: 90%; 
+    border: 1px solid #1f1f1f; 
 }          
 .card_landing h1,
 .card_landing p,
@@ -39,7 +39,7 @@
     margin: 10px 0; 
 }
 .card_landing .fa-users {
-    font-size: 100px; /* Ajusta el tamaño del icono según tus necesidades */
+    font-size: 100px; 
 }
 
 .card_landing:hover{
