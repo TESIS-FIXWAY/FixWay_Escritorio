@@ -70,7 +70,12 @@ const Admin = () => {
         <div className='contenedor-header'>
           <div className='btn-menu'>
             <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
+            
+            <Link to="/indexAdmin"  className='menu_home'>
+              <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/> </label>
+            </Link>
           </div>
+          
           <div className='logo'>
             <h1>Hams Motors</h1>
           </div>
