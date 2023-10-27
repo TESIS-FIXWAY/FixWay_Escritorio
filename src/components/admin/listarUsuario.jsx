@@ -2,7 +2,13 @@ import './listarUsuario.css'
 import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
-import { collection, getDocs, onSnapshot, query, addDoc, doc, updateDoc } from "firebase/firestore";
+import { 
+  collection, 
+  onSnapshot, 
+  query, 
+  doc, 
+  updateDoc 
+} from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

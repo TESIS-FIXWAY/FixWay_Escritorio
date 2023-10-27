@@ -7,7 +7,8 @@ import {
   query, 
   addDoc, 
   doc, 
-  updateDoc 
+  updateDoc,
+  serverTimestamp
 } from "firebase/firestore";
 import {
   getStorage,
@@ -24,29 +25,11 @@ const AgregarFactura = () => {
     fecha: '',
     proveedor: '',
     detalle: '',
+    url: '',
   });
 
   const handleChangeText = (name, value) => {
     setState({ ...state, [name]: value });
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!state.fecha || !state.proveedor || !state.detalle) {
-      alert('Datos incompletos');
-    } else {
-      try {
-        const docRef = await addDoc(collection(db, "facturas"), {
-          fecha: state.fecha,
-          proveedor: state.proveedor,
-          detalle: state.detalle,
-        });
-        console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
-      setState({ ...state, fecha: '', proveedor: '', detalle: '' });
-    }
   }
 
   const handleFileChange = (e) => {
@@ -85,6 +68,32 @@ const AgregarFactura = () => {
       setUploading(false);
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!state.fecha || !state.proveedor || !state.detalle) {
+      alert('Datos incompletos');
+    } else {
+      try {
+        const timestampNow = serverTimestamp();
+        await handleUpload();
+        const storageRef = ref(storage, `facturas/${file.name}`);
+        const downloadURL = await getDownloadURL(storageRef);
+        const docRef = await addDoc(collection(db, "facturas"), {
+          fecha: state.fecha,
+          proveedor: state.proveedor,
+          detalle: state.detalle,
+          timestamp: timestampNow,
+          url: downloadURL,
+        });
+        console.log("Documento escrito con ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error al agregar el documento: ", e);
+      } finally {
+        setState({ ...state, fecha: '', proveedor: '', detalle: '' });
+      }
+    }
+  }
 
   return (
     <>
@@ -144,7 +153,8 @@ const AgregarFactura = () => {
                         <input type="file" onChange={handleFileChange} className='input_formulario'/>
                       </p>
                       <p className="block_boton">
-                        <button type="submit" onClick={handleUpload} disabled={uploading} className='boton_formulario' >Agregar Fatura</button>
+                        {/* <button type="submit" onClick={handleUpload} disabled={uploading} className='boton_formulario' >Agregar Fatura</button> */}
+                        <button type="submit" disabled={uploading} className='boton_formulario' >Agregar Fatura</button>
                         {uploading && <p>Subiendo Archivo</p> }
                       </p>
                   </form>

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Admin from "./admin";
-import { db } from "../../firebase";
+import { db, storage } from "../../firebase";
 import { 
   collection, 
   onSnapshot, 
   query, 
   doc, 
 } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,6 +30,28 @@ library.add(
 );
 
 const ListadoFacturas = () => {
+  const [facturas, setFacturas] = useState([]);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const unsubscribe = onSnapshot(query(collection(db, 'facturas')), (querySnapshot) => {
+      const facturasData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setFacturas(facturasData);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const deletefactura = async (facturaId) => {
+    try {
+      await deleteDoc(doc(db, 'facturas', facturaId));
+      setFacturas((prevFactura) => prevFactura.filter((factura) => factura.id !== facturaId));
+      console.log('Factura eliminada correctamente.');
+    } catch (error) {
+      console.error('Error al eliminar la factura:', error);
+    }
+  };
+
   const filtrarFactura = (e) => {
     const texto = e.target.value.toLowerCase();
     const facturasFiltrados = facturas.filter((factura) => {
@@ -50,25 +73,15 @@ const ListadoFacturas = () => {
     }
   }
 
-  const [facturas, setFacturas] = useState([]);
-  const navigate = useNavigate();
 
-  React.useEffect(() => {
-    const unsubscribe = onSnapshot(query(collection(db, 'facturas')), (querySnapshot) => {
-      const facturasData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setFacturas(facturasData);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const deletefactura = async (facturaId) => {
+  const downloadPDF = async (pdfPath) => {
     try {
-      await deleteDoc(doc(db, 'facturas', facturaId));
-      setFacturas((prevFactura) => prevFactura.filter((factura) => factura.id !== facturaId));
-      console.log('Factura eliminada correctamente.');
+      const storageRef = ref(storage, pdfPath);
+      const url = await getDownloadURL(storageRef);
+      console.log(url);
+      window.open(url, '_blank');
     } catch (error) {
-      console.error('Error al eliminar la factura:', error);
+      console.error('Error al descargar el archivo PDF:', error);
     }
   };
 
@@ -108,7 +121,7 @@ const ListadoFacturas = () => {
                         <FontAwesomeIcon icon={faPen} />
                       </button>
                       <button>
-                        <FontAwesomeIcon icon={faDownload} />
+                        <FontAwesomeIcon onClick={() => downloadPDF(factura.url)} icon={faDownload} />
                       </button>
                       <button onClick={() => deletefactura(factura.id)}>
                         <FontAwesomeIcon icon="fa-solid fa-trash" />
