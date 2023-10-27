@@ -15,7 +15,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import Admin from './admin';
+import Admin from '../admin/admin';
 
 const AgregarFactura = () => {
   const [file, setFile] = useState(null);

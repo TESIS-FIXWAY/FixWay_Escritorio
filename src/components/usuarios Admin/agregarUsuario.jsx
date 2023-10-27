@@ -5,7 +5,7 @@ import {
   doc,
   setDoc,
 } from "firebase/firestore";
-import Admin from "./admin";
+import Admin from "../admin/admin";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import validadorRUT from './validadorRUT';
 
