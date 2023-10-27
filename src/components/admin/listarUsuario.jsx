@@ -14,14 +14,14 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
-  faPen, 
+  faUserPen, 
   faTrash, 
   faMagnifyingGlass, 
   faCheck, 
   faXmark
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
-  faPen,
+  faUserPen,
   faTrash,
   faMagnifyingGlass,
   faCheck,
@@ -118,6 +118,7 @@ const ListarUsuario = () => {
             <div>
               <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
+              <FontAwesomeIcon icon="fa-solid fa-user-plus" />
               <button className='boton-ingreso' onClick={agregarUsuario}> + ingresar nuevo usuario</button>
             </div>
           </div>
@@ -183,7 +184,7 @@ const ListarUsuario = () => {
                       
                       
                       ) : (
-                        <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-pen" /></button>
+                        <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-user-pen" /></button>
                       
                       )}
                       <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>

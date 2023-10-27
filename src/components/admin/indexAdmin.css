@@ -35,10 +35,10 @@
 .card_landing h1,
 .card_landing p,
 .card_landing hr,
-.card_landing .fa-users {
+.card_landing .iconos{
     margin: 10px 0; 
 }
-.card_landing .fa-users {
+.card_landing .iconos {
     font-size: 100px; 
 }
 

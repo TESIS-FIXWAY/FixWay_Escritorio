@@ -13,20 +13,22 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
-  faPen, 
+  faFilePen, 
   faTrash, 
   faMagnifyingGlass, 
   faCheck, 
   faDownload,
-  faXmark
+  faXmark,
+  faFileCirclePlus
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
-  faPen,
+  faFilePen,
   faTrash,
   faMagnifyingGlass,
   faCheck,
   faXmark,
-  faDownload
+  faDownload,
+  faFileCirclePlus
 );
 
 const ListadoFacturas = () => {
@@ -96,7 +98,9 @@ const ListadoFacturas = () => {
           <div className="table_header">
             <p>Listado de Facturas</p>
             <div>
+              <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder="buscar factura" onChange={filtrarFactura}/>
+              <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" />
               <button className='boton-ingreso' onClick={agregarFactura}> + Ingresar Nueva Factura</button>
             </div>
           </div>
@@ -118,7 +122,7 @@ const ListadoFacturas = () => {
                     <td>{factura.detalle}</td>
                     <td>
                       <button>
-                        <FontAwesomeIcon icon={faPen} />
+                        <FontAwesomeIcon icon="fa-solid fa-file-pen" />
                       </button>
                       <button>
                         <FontAwesomeIcon onClick={() => downloadPDF(factura.url)} icon={faDownload} />
