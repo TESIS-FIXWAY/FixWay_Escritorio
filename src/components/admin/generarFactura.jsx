@@ -4,16 +4,15 @@ import jsPDF from "jspdf";
 import { db } from "../../firebase";
 import { 
   collection, 
-  onSnapshot, 
-  query, 
-  doc,
-  addDoc,
-  getDocs
+  getDocs,
+  updateDoc,
 } from "firebase/firestore";
 
-const GenerarFactura  = () => {
-  const [miFactura, setMiFactura] = useState([]);
+import { writeBatch, doc } from "firebase/firestore";
+
+const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
 
   React.useEffect(() => {
     const obtenerInventario = async () => {
@@ -29,96 +28,135 @@ const GenerarFactura  = () => {
     obtenerInventario();
   }, []);
 
-  // const generarFactura = async () => {
-  //   try {
-  //     const primerItemInventario = inventario[0];
+  const toggleSeleccionProducto = (id) => {
+    // Verificar si el producto ya está seleccionado
+    const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
 
-  //     const nuevaFactura = {
-  //       nombreProducto: primerItemInventario.nombreProducto,
-  //       descripcion: primerItemInventario.descripcion,
-  //       precio: primerItemInventario.precio,
-  //       costo: primerItemInventario.costo,
-  //     };
-
-  //     // Almacenar la factura en Firebase
-  //     const facturaRef = await addDoc(collection(db, "facturas"), nuevaFactura);
-
-  //     // Actualizar el estado con la nueva factura
-  //     setMiFactura((prevFacturas) => [...prevFacturas, { id: facturaRef.id, ...nuevaFactura }]);
-
-  //     // Generar y descargar el PDF
-  //     generarPDF(nuevaFactura);
-  //   } catch (error) {
-  //     console.error("Error al generar la factura:", error);
-  //   }
-  // };
+    if (productoIndex === -1) {
+      // Agregar el producto a la lista de seleccionados
+      const productoSeleccionado = inventario.find((producto) => producto.id === id);
+      setProductosSeleccionados([...productosSeleccionados, productoSeleccionado]);
+    } else {
+      // Remover el producto de la lista de seleccionados
+      const nuevaLista = [...productosSeleccionados];
+      nuevaLista.splice(productoIndex, 1);
+      setProductosSeleccionados(nuevaLista);
+    }
+  };
 
   const generarFactura = async () => {
     try {
-      // Check if the inventory is empty
-      if (inventario.length === 0) {
-        console.error("El inventario está vacío. No se puede generar la factura.");
+      // Check if no products are selected
+      if (productosSeleccionados.length === 0) {
+        console.error("No se han seleccionado productos para la factura.");
         return;
       }
   
-      const primerItemInventario = inventario[0];
+      // Initialize Firestore batch
+      const batch = writeBatch(db);
   
-      const nuevaFactura = {
-        nombreProducto: primerItemInventario.nombreProducto,
-        descripcion: primerItemInventario.descripcion,
-        precio: primerItemInventario.precio,
-        costo: primerItemInventario.costo,
-      };
+      // Update each selected product in the batch
+      productosSeleccionados.forEach((producto) => {
+        const productoRef = doc(db, "inventario", producto.id);
+        const nuevaCantidad = producto.cantidad || 0;
+        updateDoc(productoRef, { cantidad: nuevaCantidad }); // No need for FieldValue.increment here
+      });
   
-      // Almacenar la factura en Firebase
-      const facturaRef = await addDoc(collection(db, "facturas"), nuevaFactura);
+      // Commit the batch update
+      await batch.commit();
   
-      // Actualizar el estado con la nueva factura
-      setMiFactura((prevFacturas) => [...prevFacturas, { id: facturaRef.id, ...nuevaFactura }]);
-  
-      // Generar y descargar el PDF
-      generarPDF(nuevaFactura);
+      // Update and download the PDF
+      const productosConPrecio = productosSeleccionados.map((producto) => ({
+        ...producto,
+        precio: producto.costo * 0.19 + producto.costo,
+      }));
+      generarPDF(productosConPrecio);
     } catch (error) {
       console.error("Error al generar la factura:", error);
     }
   };
 
-  const generarPDF = (factura) => {
+  const generarPDF = (productosSeleccionados) => {
     const pdf = new jsPDF();
-    pdf.text("Detalles de la factura:", 10, 10);
-    pdf.text(`Nombre del Producto: ${factura.nombreProducto}`, 10, 20);
-    pdf.text(`Descripción: ${factura.descripcion}`, 10, 30);
-    // pdf.text(`Precio: ${factura.precio}`, 10, 40);
-    pdf.text(`Costo: ${factura.costo}`, 10, 50);
+
+    // Header
+    pdf.setFontSize(26);
+    pdf.text("Factura", 10, 10);
+
+    // Table header
+    pdf.setFontSize(14);
+    pdf.setTextColor(100);
+    pdf.text("Nombre del Producto", 10, 30);
+    pdf.text("Descripción", 60, 30);
+    pdf.text("Costo", 120, 30);
+    pdf.text("Cantidad", 160, 30);
+    pdf.text("Precio", 200, 30);
+
+    // Table rows
+    pdf.setTextColor(0);
+    let y = 40;
+    productosSeleccionados.forEach((producto) => {
+      pdf.text(producto.nombreProducto, 10, y);
+      pdf.text(producto.descripcion, 60, y);
+      pdf.text(producto.costo.toString(), 120, y);
+      pdf.text(producto.cantidad.toString(), 160, y);
+      pdf.text(producto.precio.toString(), 200, y);
+
+      y += 10;
+    });
+
+    
+
+    // Guardar el PDF
     pdf.save("factura.pdf");
   };
 
-  return(
+  return (
     <>
       <Admin />
-      <div className="container">
-        <h1>Generar Factura</h1>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+      <div className="tabla_listar">
+        <div className="table_header">
+          <h1>Generar Factura</h1>
+        </div>
         <table className="table table-striped">
           <thead>
             <tr>
+              <th>Seleccionar</th>
               <th>Nombre del Producto</th>
               <th>Descripción</th>
-              <th>Precio</th>
               <th>Costo</th>
+              <th>Cantidad</th>
             </tr>
           </thead>
           <tbody>
             {inventario.map((item) => (
               <tr key={item.id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    onChange={() => toggleSeleccionProducto(item.id)}
+                    checked={productosSeleccionados.some((producto) => producto.id === item.id)}
+                  />
+                </td>
                 <td>{item.nombreProducto}</td>
                 <td>{item.descripcion}</td>
-                <td>{item.precio}</td>
                 <td>{item.costo}</td>
+                <td>
+                  <input
+                    type="number"
+                    min="1"
+                    value={productosSeleccionados.find((producto) => producto.id === item.id)?.cantidad || ""}
+                    onChange={(e) => {
+                      const nuevaCantidad = parseInt(e.target.value, 10) || 0;
+                      setProductosSeleccionados((prevProductos) => {
+                        const nuevosProductos = prevProductos.map((producto) =>
+                          producto.id === item.id ? { ...producto, cantidad: nuevaCantidad } : producto
+                        );
+                        return nuevosProductos;
+                      });
+                    }}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -126,7 +164,7 @@ const GenerarFactura  = () => {
         <button onClick={generarFactura}>Generar Factura</button>
       </div>
     </>
-  )
+  );
 }
 
 export default GenerarFactura;
