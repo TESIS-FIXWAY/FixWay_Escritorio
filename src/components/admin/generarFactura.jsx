@@ -15,9 +15,6 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 
-
-
-
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
@@ -110,13 +107,12 @@ const GenerarFactura = () => {
       });
   };
 
-
-
   const generarPDF = (productosSeleccionados) => {
     const pdf = new jsPDF();
   
     pdf.setFontSize(24);
     pdf.text("FACTURA", 10, 10);
+    pdf.text("Hans Motors", 10, 10);
     pdf.line(10, 15, pdf.internal.pageSize.getWidth() - 10, 15);
   
     pdf.setFontSize(12);
@@ -159,8 +155,6 @@ const GenerarFactura = () => {
     pdf.save("factura.pdf");
   };
     
-
-
   return (
     <>
       <Admin />
