@@ -14,8 +14,6 @@ import {
   faCoins,
   faDatabase,
   faTableList,
-  faAngleUp,
-  faList,
   faHouse,
   faChevronDown,
   faUserPlus,
@@ -38,7 +36,6 @@ library.add(
   faUsers,
   faArrowRightFromBracket,
   faBars,
-
   faBars,
   faArrowLeft
 );
@@ -52,7 +49,7 @@ const Admin = () => {
       await logout();
       navigate("/");
       console.log(user);
-      alert('Se ha cerrado la sesiÃ³n');
+      alert('Se ha cerrado la sesion');
     } catch (error) {
       console.log(error);
     }
@@ -65,12 +62,10 @@ const Admin = () => {
         <div className='contenedor-header'>
           <div className='btn-menu'>
             <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
-            
             <Link to="/indexAdmin"  className='menu_home'>
               <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/> </label>
             </Link>
           </div>
-          
           <div className='logo'>
             <h1>Hams Motors</h1>
           </div>
@@ -78,7 +73,7 @@ const Admin = () => {
             <a>inicio</a>
             <a>email</a>
             <a>usuarios</a>
-            <a>registros</a>
+            <a>Administrador</a>
           </nav>
         </div>
         <button type='submit' onClick={handleLogout} className='boton_salir'>
@@ -87,6 +82,7 @@ const Admin = () => {
 
 
       </header> 
+<<<<<<< HEAD
 
 
 
@@ -97,13 +93,15 @@ const Admin = () => {
 
 
       
+=======
+>>>>>>> d4eb1cadc1141232d21d3592564cc04105c98cef
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
       <div className='contenedor-menu'>
         <div className='cont_menu'>
           <nav>
             <br />
-    <hr />
+            <hr />
             <Link to='/indexAdmin' className='link'>
               <div className='logo_details'>
                 <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
@@ -118,7 +116,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Usuarios</span>
             </Link>
-    <hr />
+            <hr />
             <Link to="/agregarFactura" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Agregar Factura</span>
@@ -127,7 +125,11 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Factura</span>
             </Link>
-    <hr />
+            <Link to="/generarFactura" className='link'>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <span className='link_name'>Generar Factura</span>
+            </Link>
+            <hr />
             <Link to="/agregarInventario" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Agregar Inventario</span>
@@ -136,21 +138,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Inventario</span>
             </Link>
-    <hr />
-            <li>
-              <div className='profile_details'>
-                <div className='profile_content'>
-                  {/* <img src={logo} alt='logo' /> */}
-                </div>
-                <div className='name-job'>
-                  <div className='profile_name'>administrador</div>
-                  {/* <div className='profile_name'>yo mismo</div> */}
-                </div>
-                <button type='submit' onClick={handleLogout}>
-                  <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
-                </button>
-              </div>
-            </li>
+            <hr />
           </nav>
           <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /> </label>
         </div>
