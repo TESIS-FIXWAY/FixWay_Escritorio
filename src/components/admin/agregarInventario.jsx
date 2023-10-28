@@ -39,7 +39,7 @@ const AgregarInventario = () => {
           <div className='formulario_content'>
             <div className='formulario_wrapper'>
               <div className='formulario_contact'>
-                <h1 className='formulario_titulo'>Agregar Usuario</h1>
+                <h1 className='formulario_titulo'>Agregar Inventario</h1>
                 <form className="formulario_form"onSubmit={submitHandler}>
                   <p>
                     <label className='label_formulario'>Codigo Producto</label>
@@ -82,7 +82,7 @@ const AgregarInventario = () => {
                       className='input_formulario'
                       id="cantidad"
                       required
-                      type="text"
+                      type="number"
                       name="cantidad"
                       placeholder="Cantidad"/>
                   </p>
@@ -93,7 +93,7 @@ const AgregarInventario = () => {
                       className='input_formulario'
                       id="costo"
                       required
-                      type="text"
+                      type="number"
                       name="costo"
                       placeholder="Costo"/>
                   </p>

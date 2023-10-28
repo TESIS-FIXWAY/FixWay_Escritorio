@@ -147,7 +147,7 @@ const AgregarUsuario = () => {
                     className='input_formulario'
                     id="salario"
                     required
-                    type="text"
+                    type="number"
                     name="salario"
                     placeholder="Salario"/>
                 </p>

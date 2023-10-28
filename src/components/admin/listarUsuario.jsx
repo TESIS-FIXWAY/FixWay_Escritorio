@@ -130,7 +130,7 @@ const ListarUsuario = () => {
                   <th scope="col">Apellido</th>
                   <th scope="col">Direccion</th>
                   <th scope="col">Telefono</th>
-                  <th scope="col">Cargo de trabajo</th>
+                  <th scope="col">Cargo <br /> de trabajo</th>
                   <th scope="col">Salario</th>
                   <th scope='col'>actualizar</th>
                 </tr>
