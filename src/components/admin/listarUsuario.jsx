@@ -44,7 +44,6 @@ const ListarUsuario = () => {
           value={user.rol}
           onChange={(e) => onInputChange('rol', e.target.value)}
         />
-        {/* Otros campos del formulario... */}
         <button onClick={onSave}>
           <FontAwesomeIcon icon="fa-solid fa-check" />
         </button>
@@ -163,7 +162,6 @@ const ListarUsuario = () => {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
-                    {/* Tu código existente para los datos de la tabla */}
                     <td>{user.rut }</td>
                     <td>{user.nombre}</td>
                     <td>{user.apellido}</td>
@@ -175,11 +173,8 @@ const ListarUsuario = () => {
                       {editingUserId === user.id ? (
                         <>
                           <div className='fondo_no'>
-                        
-
                             <div className='editar'>
                               <p className='p_editar'>editar usuarios</p>
-
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >rol</label>
                                 <input
@@ -187,7 +182,6 @@ const ListarUsuario = () => {
                                 value={user.rol}
                                 onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}/>
                               </p>
-
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >nombre</label>
                                 <input
@@ -195,7 +189,6 @@ const ListarUsuario = () => {
                                 value={user.nombre}
                                 onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}/>
                               </p>
-
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >apellido</label>
                                 <input
@@ -203,7 +196,6 @@ const ListarUsuario = () => {
                                 value={user.apellido}
                                 onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}/>
                               </p>
-
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >telefono</label>
                                 <input
@@ -211,7 +203,6 @@ const ListarUsuario = () => {
                                 value={user.telefono}
                                 onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}/>
                               </p>
-
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >direccion</label>
                                 <input
@@ -219,7 +210,6 @@ const ListarUsuario = () => {
                                 value={user.direccion}
                                 onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}/>
                               </p>
-
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >salario</label>
                                 <input
@@ -227,7 +217,6 @@ const ListarUsuario = () => {
                                 value={user.salario}
                                 onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}/>
                               </p>
-
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >contraseña</label>
                                 <input
@@ -235,32 +224,16 @@ const ListarUsuario = () => {
                                 value={user.password}
                                 onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}/>
                               </p>
-
-
-
-
-
-
                               <button className='guardar' onClick={() => saveEdit(user.id, user)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
                               <button className='cancelar' onClick={() => cancelEditing()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
                             </div>
-
-
-
-
                           </div>
-
-
                         </>
-                      
-                      
                       ) : (
                         <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-user-pen" /></button>
-                      
                       )}
                       <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
                     </td>
-                  
                   </tr>
                 ))}
               </tbody>

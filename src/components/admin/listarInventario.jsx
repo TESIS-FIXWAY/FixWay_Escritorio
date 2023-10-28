@@ -6,6 +6,7 @@ import {
   onSnapshot, 
   query, 
   doc, 
+  updateDoc
 } from "firebase/firestore";
 import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
@@ -32,7 +33,59 @@ library.add(
 
 const ListarInventario = () => {
   const [inventario, setInventario] = React.useState([]);
+  const [editingInventarioId, setEditingInventarioId] = React.useState(null);
+  const [isEditingModalOpen, setIsEditingModalOpen] = React.useState(false);
   const navigate = useNavigate();
+
+  const EditarInventarioModal = ({ inventario, onSave, onCancel, onInputChange }) => {
+    return (
+      <div className="editar-modal">
+        <p>Editar inventario</p>
+        <label htmlFor="">Codigo Producto</label>
+        <input
+          type="text"
+          value={inventario.codigoProducto}
+          onChange={(e) => onInputChange('codigoProducto', e.target.value)}
+        />
+        <label htmlFor="">Nombre Producto</label>
+        <input
+          type="text"
+          value={inventario.nombreProducto}
+          onChange={(e) => onInputChange('nombreProducto', e.target.value)}
+        />
+        <label htmlFor="">Categoria</label>
+        <input
+          type="text"
+          value={inventario.categoria}
+          onChange={(e) => onInputChange('categoria', e.target.value)}
+        />
+        <label htmlFor="">Marca</label>
+        <input
+          type="text"
+          value={inventario.marca}
+          onChange={(e) => onInputChange('marca', e.target.value)}
+        />
+        <label htmlFor="">Cantidad</label>
+        <input
+          type="text"
+          value={inventario.cantidad}
+          onChange={(e) => onInputChange('cantidad', e.target.value)}
+        />
+        <label htmlFor="">Costo</label>
+        <input
+          type="text"
+          value={inventario.costo}
+          onChange={(e) => onInputChange('costo', e.target.value)}
+        />
+        <button onClick={onSave}>
+          <FontAwesomeIcon icon="fa-solid fa-check" />
+        </button>
+        <button onClick={onCancel}>
+          <FontAwesomeIcon icon="fa-solid fa-xmark" />
+        </button>
+      </div>
+    );
+  };
 
   React.useEffect(() => {
     const unsubscribe = onSnapshot(query(collection(db, 'inventario')), (querySnapshot) => {
@@ -50,6 +103,27 @@ const ListarInventario = () => {
       console.log('Factura eliminada correctamente.');
     } catch (error) {
       console.error('Error al eliminar la factura:', error);
+    }
+  };
+
+  const startEditing = (inventarioId) => {
+    setEditingInventarioId(inventarioId);
+    setIsEditingModalOpen(true);
+  };
+
+  const cancelEditing = () => {
+    setEditingInventarioId(null);
+    setIsEditingModalOpen(false);
+  };
+
+  const saveEdit = async (inventarioId, updatedData) => {
+    try {
+      await updateDoc(doc(db, 'inventario', inventarioId), updatedData);
+      setEditingInventarioId(null);
+      setIsEditingModalOpen(false);
+      console.log('Factura actualizada correctamente.');
+    } catch (error) {
+      console.error('Error al actualizar la factura:', error);
     }
   };
 
@@ -81,6 +155,13 @@ const ListarInventario = () => {
     }
   };
   
+  const handleInputChange = (inventarioId, name, value) => {
+    const updatedInventario = inventario.map((inventario) =>
+      inventario.id === inventarioId ? { ...inventario, [name]: value } : inventario
+    );
+    setInventario(updatedInventario);
+  };
+
   const agregarInventario = () => {
     navigate('/agregarInventario');
   }
@@ -122,6 +203,73 @@ const ListarInventario = () => {
                       <td>{inventario.costo}</td>
                     </>
                     <td>
+                      {editingInventarioId === inventario.id ? (
+                        <>
+                          <div className="fondo_no">
+                            <div className="editar">
+                              <p className="p_editar">Editar inventario</p>
+                              <p className="p_editar">
+                                <label htmlFor="">Codigo Producto</label>
+                                <input
+                                  type="text"
+                                  value={inventario.codigoProducto}
+                                  onChange={(e) => handleInputChange(inventario.id, 'codigoProducto', e.target.value)}
+                                />
+                              </p>
+                              <p className="p_editar">
+                                <label htmlFor="">Nombre Producto</label>
+                                <input
+                                  type="text"
+                                  value={inventario.nombreProducto}
+                                  onChange={(e) => handleInputChange(inventario.id, 'nombreProducto', e.target.value)}
+                                />
+                              </p>
+                              <p className="p_editar">
+                                <label htmlFor="">Categoria</label>
+                                <input
+                                  type="text"
+                                  value={inventario.categoria}
+                                  onChange={(e) => handleInputChange(inventario.id, 'categoria', e.target.value)}
+                                />
+                              </p>
+                              <p className="p_editar">
+                                <label htmlFor="">Marca</label>
+                                <input
+                                  type="text"
+                                  value={inventario.marca}
+                                  onChange={(e) => handleInputChange(inventario.id, 'marca', e.target.value)}
+                                />
+                              </p>
+                              <p className="p_editar">
+                                <label htmlFor="">Cantidad</label>
+                                <input
+                                  type="text"
+                                  value={inventario.cantidad}
+                                  onChange={(e) => handleInputChange(inventario.id, 'cantidad', e.target.value)}
+                                />
+                              </p>
+                              <p className="p_editar">
+                                <label htmlFor="">Costo</label>
+                                <input
+                                  type="text"
+                                  value={inventario.costo}
+                                  onChange={(e) => handleInputChange(inventario.id, 'costo', e.target.value)}
+                                />
+                              </p>
+                              <button className="guardar" onClick={() => saveEdit(inventario.id, inventario)}>
+                                <FontAwesomeIcon icon="fa-solid fa-check" />
+                              </button>
+                              <button className="cancelar" onClick={() => cancelEditing()}>
+                                <FontAwesomeIcon icon="fa-solid fa-xmark" />
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                      <button onClick={() => startEditing(inventario.id)}>
+                        <FontAwesomeIcon icon="fa-solid fa-file-pen" />
+                      </button>
+                      )}
                       <button onClick={() => deleteInventario(inventario.id)}>
                         <FontAwesomeIcon icon="fa-solid fa-trash" />
                       </button>

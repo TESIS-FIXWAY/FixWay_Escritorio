@@ -2,7 +2,6 @@ import './admin.css'
 import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
-import logo from '../../images/logo.jpg';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -31,7 +30,6 @@ const Admin = () => {
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
   
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
@@ -39,7 +37,6 @@ const Admin = () => {
 
     return () => clearInterval(intervalId);
   }, []);
-
 
   const formatTime = (time) => {
     const options = {
@@ -69,9 +66,9 @@ const Admin = () => {
       <header className='header'>
         <div className='contenedor-header'>
           <div className='btn-menu'>
-            <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
+            <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/></label>
             <Link to="/indexAdmin"  className='menu_home'>
-              <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/> </label>
+              <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/></label>
             </Link>
           </div>
           <div className='logo'>
@@ -84,14 +81,10 @@ const Admin = () => {
             <a>Administrador</a>
           </nav>
         </div>
-
         <button type='submit' onClick={handleLogout} className='boton_salir'>
           <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
         </button>
       </header> 
-
-
-
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
       <div className='contenedor-menu'>
@@ -99,7 +92,6 @@ const Admin = () => {
           <nav>
             <br />
             <hr />
-
             <Link to="/agregarUsuario" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />
               <span className='link_name'>Crear Usuarios</span>
@@ -132,7 +124,7 @@ const Admin = () => {
             </Link>
             <hr />
           </nav>
-          <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /> </label>
+          <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /></label>
         </div>
       </div>
     </div>

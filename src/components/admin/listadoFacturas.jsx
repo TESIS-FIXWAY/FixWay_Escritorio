@@ -6,6 +6,7 @@ import {
   onSnapshot, 
   query, 
   doc, 
+  updateDoc
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { deleteDoc } from 'firebase/firestore';
@@ -34,6 +35,40 @@ library.add(
 const ListadoFacturas = () => {
   const [facturas, setFacturas] = useState([]);
   const navigate = useNavigate();
+  const [editingFacturaId, setEditingFacturaId] = useState(null);
+  const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+
+  const EditarUsuarioModalFactura = ({ factura, onSave, onCancel, onInputChange }) => {
+    return (
+      <div className="editar-modal">
+        <p>Editar factura</p>
+        <label htmlFor="">Proveedor</label>
+        <input
+          type="text"
+          value={factura.proveedor}
+          onChange={(e) => onInputChange('proveedor', e.target.value)}
+        />
+        <label htmlFor="">Fecha</label>
+        <input 
+          type="text"
+          value={factura.fecha}
+          onChange={(e) => onInputChange('fecha', e.target.value)}
+        />
+        <label htmlFor="">Detalle</label>
+        <input
+          type="text"
+          value={factura.detalle}
+          onChange={(e) => onInputChange('detalle', e.target.value)}
+        />
+        <button onClick={onSave}>
+          <FontAwesomeIcon icon="fa-solid fa-check" />
+        </button>
+        <button onClick={onCancel}>
+          <FontAwesomeIcon icon="fa-solid fa-xmark" />
+        </button>
+      </div>
+    );
+  }
 
   React.useEffect(() => {
     const unsubscribe = onSnapshot(query(collection(db, 'facturas')), (querySnapshot) => {
@@ -51,6 +86,27 @@ const ListadoFacturas = () => {
       console.log('Factura eliminada correctamente.');
     } catch (error) {
       console.error('Error al eliminar la factura:', error);
+    }
+  };
+
+  const startEditing = (facturaId) => {
+    setEditingFacturaId(facturaId);
+    setIsEditingModalOpen(true);
+  };
+
+  const cancelEditing = () => {
+    setEditingFacturaId(null);
+    setIsEditingModalOpen(false);
+  };
+
+  const saveEdit = async (facturaId, updatedData) => {
+    try {
+      await updateDoc(doc(db, 'facturas', facturaId), updatedData);
+      setEditingFacturaId(null);
+      setIsEditingModalOpen(false);
+      console.log('Factura actualizada correctamente.');
+    } catch (error) {
+      console.error('Error al actualizar la factura:', error);
     }
   };
 
@@ -75,7 +131,6 @@ const ListadoFacturas = () => {
     }
   }
 
-
   const downloadPDF = async (pdfPath) => {
     try {
       const storageRef = ref(storage, pdfPath);
@@ -85,6 +140,13 @@ const ListadoFacturas = () => {
     } catch (error) {
       console.error('Error al descargar el archivo PDF:', error);
     }
+  };
+
+  const onInputChange = (name, value) => {
+    const updatedFacturas = facturas.map((factura) =>
+      factura.id === editingFacturaId ? { ...factura, [name]: value } : factura
+    );
+    setFacturas(updatedFacturas);
   };
 
   const agregarFactura = () => {
@@ -120,9 +182,48 @@ const ListadoFacturas = () => {
                     <td>{factura.fecha}</td>
                     <td>{factura.detalle}</td>
                     <td>
-                      <button>
+                      {editingFacturaId === factura.id ? (
+                        <>
+                          <div className="fondo_no">
+                            <div className="editar">
+                              <p className="p_editar">
+                                <label className="etiqueta_editar">Proveedor</label>
+                                <input
+                                  type="text"
+                                  value={factura.proveedor}
+                                  onChange={(e) => onInputChange('proveedor', e.target.value)}
+                                />
+                              </p>
+                              <p className="p_editar">
+                                <label className="etiqueta_editar">Fecha</label>
+                                <input
+                                  type="text"
+                                  value={factura.fecha}
+                                  onChange={(e) => onInputChange('fecha', e.target.value)}
+                                />
+                              </p>
+                              <p className="p_editar">
+                                <label className="etiqueta_editar">Detalle</label>
+                                <input
+                                  type="text"
+                                  value={factura.detalle}
+                                  onChange={(e) => onInputChange('detalle', e.target.value)}
+                                />
+                              </p>
+                              <button className="guardar" onClick={() => saveEdit(factura.id, { proveedor: factura.proveedor, fecha: factura.fecha, detalle: factura.detalle })}>
+                                <FontAwesomeIcon icon="fa-solid fa-check" />
+                              </button>
+                              <button className="cancelar" onClick={cancelEditing}>
+                                <FontAwesomeIcon icon="fa-solid fa-xmark" />
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                      <button onClick={() => startEditing(factura.id)}>
                         <FontAwesomeIcon icon="fa-solid fa-file-pen" />
                       </button>
+                      )}
                       <button>
                         <FontAwesomeIcon onClick={() => downloadPDF(factura.url)} icon={faDownload} />
                       </button>
