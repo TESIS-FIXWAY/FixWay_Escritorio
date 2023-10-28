@@ -50,7 +50,7 @@ const ListadoFacturas = () => {
         />
         <label htmlFor="">Fecha</label>
         <input 
-          type="text"
+          type="date"
           value={factura.fecha}
           onChange={(e) => onInputChange('fecha', e.target.value)}
         />
@@ -197,7 +197,7 @@ const ListadoFacturas = () => {
                               <p className="p_editar">
                                 <label className="etiqueta_editar">Fecha</label>
                                 <input
-                                  type="text"
+                                  type="date"
                                   value={factura.fecha}
                                   onChange={(e) => onInputChange('fecha', e.target.value)}
                                 />
