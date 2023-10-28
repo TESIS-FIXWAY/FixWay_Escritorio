@@ -79,22 +79,7 @@ const Admin = () => {
         <button type='submit' onClick={handleLogout} className='boton_salir'>
           <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
         </button>
-
-
       </header> 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-      
-=======
->>>>>>> d4eb1cadc1141232d21d3592564cc04105c98cef
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
       <div className='contenedor-menu'>
