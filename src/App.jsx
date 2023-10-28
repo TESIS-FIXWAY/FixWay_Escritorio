@@ -11,7 +11,7 @@ import AgregarFactura from "./components/admin/agregarFactura";
 import ListadoFacturas from "./components/admin/listadoFacturas";
 import AgregarInventario from "./components/admin/agregarInventario";
 import ListarInventario from "./components/admin/listarInventario";
-
+import GenerarFactura from "./components/admin/generarFactura";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -43,6 +43,7 @@ function App() {
             <Route path='/listadoFacturas' element={<ListadoFacturas />} />
             <Route path='/agregarInventario' element={<AgregarInventario />} />
             <Route path='/listarInventario' element={<ListarInventario />} />
+            <Route path='/generarFactura' element={<GenerarFactura />} />
             <Route
               path='/mecanico'
               element={
