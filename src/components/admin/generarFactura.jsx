@@ -4,15 +4,21 @@ import jsPDF from "jspdf";
 import { db } from "../../firebase";
 import { 
   collection, 
+  addDoc,
+  setDoc,
   getDocs,
   updateDoc,
+  doc,
+  writeBatch,
+  FieldValue,
+  increment,
+  serverTimestamp
 } from "firebase/firestore";
-
-import { writeBatch, doc } from "firebase/firestore";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  
 
   React.useEffect(() => {
     const obtenerInventario = async () => {
@@ -44,45 +50,60 @@ const GenerarFactura = () => {
     }
   };
 
-  const generarFactura = async () => {
-    try {
-      // Check if no products are selected
-      if (productosSeleccionados.length === 0) {
-        console.error("No se han seleccionado productos para la factura.");
-        return;
-      }
+  const generarFactura = () => {
+    // Crear la factura en la base de datos
+    const nuevaFactura = {
+      productos: productosSeleccionados.map((producto) => ({
+        ...producto, // Include all properties of the producto
+        cantidad: producto.cantidad || 0, // Provide a default value if cantidad is undefined
+      })),
+    };
   
-      // Initialize Firestore batch
-      const batch = writeBatch(db);
+    const facturasCollection = collection(db, "mifacturas");
   
-      // Update each selected product in the batch
-      productosSeleccionados.forEach((producto) => {
-        const productoRef = doc(db, "inventario", producto.id);
-        const nuevaCantidad = producto.cantidad || 0;
-        updateDoc(productoRef, { cantidad: nuevaCantidad }); // No need for FieldValue.increment here
+    // Assuming you want Firestore to generate the ID
+    addDoc(facturasCollection, nuevaFactura)
+      .then((nuevaFacturaRef) => {
+        // Actualizar el inventario
+        const batch = writeBatch(db);
+        productosSeleccionados.forEach((producto) => {
+          const productoRef = doc(db, "inventario", producto.id);
+  
+          // Check if producto.cantidad is a valid number before updating
+          if (typeof producto.cantidad === 'number') {
+            batch.update(productoRef, {
+              cantidad: increment(-producto.cantidad),
+            });
+          } else {
+            console.error("Invalid cantidad value:", producto.cantidad);
+          }
+        });
+  
+        // Commit the batch update
+        batch.commit()
+          .then(() => {
+            // Generar el PDF (Assuming you have a generarPDF function defined)
+            generarPDF(productosSeleccionados);
+  
+            // Limpiar la lista de productos seleccionados
+            setProductosSeleccionados([]);
+          })
+          .catch((error) => {
+            console.error("Error al actualizar el inventario:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error al agregar la nueva factura:", error);
       });
-  
-      // Commit the batch update
-      await batch.commit();
-  
-      // Update and download the PDF
-      const productosConPrecio = productosSeleccionados.map((producto) => ({
-        ...producto,
-        precio: producto.costo * 0.19 + producto.costo,
-      }));
-      generarPDF(productosConPrecio);
-    } catch (error) {
-      console.error("Error al generar la factura:", error);
-    }
-  };
+  }
 
   const generarPDF = (productosSeleccionados) => {
     const pdf = new jsPDF();
-
+  
     // Header
     pdf.setFontSize(26);
     pdf.text("Factura", 10, 10);
-
+  
     // Table header
     pdf.setFontSize(14);
     pdf.setTextColor(100);
@@ -91,22 +112,20 @@ const GenerarFactura = () => {
     pdf.text("Costo", 120, 30);
     pdf.text("Cantidad", 160, 30);
     pdf.text("Precio", 200, 30);
-
+  
     // Table rows
     pdf.setTextColor(0);
     let y = 40;
     productosSeleccionados.forEach((producto) => {
-      pdf.text(producto.nombreProducto, 10, y);
-      pdf.text(producto.descripcion, 60, y);
-      pdf.text(producto.costo.toString(), 120, y);
-      pdf.text(producto.cantidad.toString(), 160, y);
-      pdf.text(producto.precio.toString(), 200, y);
-
+      pdf.text(producto.nombreProducto || "", 10, y);
+      pdf.text(producto.descripcion || "", 60, y);
+      pdf.text(producto.costo !== undefined ? producto.costo.toString() : "", 120, y);
+      pdf.text(producto.cantidad !== undefined ? producto.cantidad.toString() : "", 160, y);
+      pdf.text(producto.precio !== undefined ? producto.precio.toString() : "", 200, y);
+  
       y += 10;
     });
-
-    
-
+  
     // Guardar el PDF
     pdf.save("factura.pdf");
   };
