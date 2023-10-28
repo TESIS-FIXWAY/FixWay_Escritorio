@@ -32,7 +32,7 @@
     color: #1f1f1f;
 }
 .card_landing hr {
-    width: 95%; 
+    margin: 0px 5% 0px 5%;
     border: 1px solid #1f1f1f; 
 }          
 .card_landing h1,
@@ -49,7 +49,7 @@
     transition: all 0.3s ease-out 0.3s;
 }
 .p_card{
-    transform: translateY(0px);
+    transform: translateY(30px);
     opacity: 0;
     transition: all 0.3s ease-out 0.3s;
 }
@@ -82,6 +82,6 @@
 }
 .card_landing:hover .p_card{
     opacity: 1;
-    transform: translateY();
+    transform: translateY(0px);
 }
 

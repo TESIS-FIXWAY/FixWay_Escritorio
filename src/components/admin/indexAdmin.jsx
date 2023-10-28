@@ -3,61 +3,42 @@ import React from "react";
 import { useNavigate } from 'react-router-dom';
 import usuario from '../../images/usuarios.png';
 import Admin from "./admin";
+
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
-  faUser,
-  faTrash,
-  faUsers,
-  faFileInvoice,
-  faChartSimple,
-  faCoins,
-  faDatabase,
-  faTableList,
-  faAngleUp,
-  faList,
-  faHouse,
-  faChevronDown,
-  faUserPlus,
-  faArrowRightFromBracket,
-  faBars,
-  faArrowLeft,
   faUsersGear,
-  faFileLines,
-  faUsersLine,
   faReceipt,
   faBoxesStacked,
   faCartFlatbed,
-  faClipboardList
+  faClipboardList,
+  faUserPlus,
+  faUsersLine,
+  faFileCirclePlus,
+  faFileLines,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
-  faUser,
-  faTrash,
-  faFileInvoice,
-  faChartSimple,
-  faCoins,
-  faDatabase,
-  faTableList,
-  faHouse,
-  faChevronDown,
-  faFileInvoice,
-  faUserPlus,
-  faUsers,
-  faArrowRightFromBracket,
-  faBars,
-  faBars,
-  faArrowLeft,
   faUsersGear,
-  faFileLines,
-  faUsersLine,
   faReceipt,
   faBoxesStacked,
   faCartFlatbed,
-  faClipboardList
+  faClipboardList,
+  faUserPlus,
+  faUsersLine,
+  faFileCirclePlus,
+  faFileLines,
 );
 
+
+
 const IndexAdmin = () => {
+
+
+
+  
   const navigate = useNavigate();
 
   const usuarios = () => {
@@ -78,6 +59,7 @@ const IndexAdmin = () => {
   const listarInventario = () => {
     navigate('/listarInventario')
   }
+
 
 
   return (

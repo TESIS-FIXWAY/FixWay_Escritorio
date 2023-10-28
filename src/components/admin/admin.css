@@ -21,6 +21,18 @@ body{
     top: 0;left: 0;
 }  */
 
+/* ... (tu código CSS existente) ... */
+
+.reloj {
+    position: fixed;
+    right: 220px;
+    top: 35px;
+    color: #1f1f1f;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+
 /*Estilos para el encabezado*/
 .header{
     background-color: #9ACEF8;
@@ -98,53 +110,67 @@ body{
 
 
 
-#btn-menu{
+#btn-menu {
     display: none;
 }
-.contenedor-menu{
+
+.contenedor-menu {
     position: absolute;
-    background: rgb(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     width: 100%;
     height: 100vh;
-    top: 0;left: 0;
-    transition: all 500ms ease;
+    top: 0;
+    left: 0;
+    transition: opacity 500ms ease, visibility 500ms ease;
     opacity: 0;
     visibility: hidden;
     display: inherit;
 }
-#btn-menu:checked ~ .contenedor-menu{
+
+#btn-menu:checked ~ .contenedor-menu {
     opacity: 1;
     visibility: visible;
 }
-.cont_menu{
+
+.cont_menu {
     width: 100%;
     max-width: 250px;
     background: #E5DBFF;
     height: 100vh;
     position: relative;
-    transition: all 500ms ease;
+    transition: transform 500ms ease;
     transform: translateX(-100%);
 }
-#btn-menu:checked ~ .contenedor-menu .cont_menu{
+
+#btn-menu:checked ~ .contenedor-menu .cont_menu {
     transform: translateX(0%);
 }
-.cont_menu nav{
+
+.cont_menu nav {
     transform: translateY(15%);
 }
-.cont_menu nav .link{
-    display: block;
+
+.cont_menu nav .link {
+    display: flex;
+    align-items: center;
     text-decoration: none;
     padding: 20px;
     color: #1f1f1f;
     border-left: 10px solid transparent;
-    transition: all 400ms ease;
+    transition: background 400ms ease, border-radius 400ms ease;
 }
-.cont_menu nav .link:hover{
+.cont_menu nav .link .i {
+    margin-right: 10px; 
+    font-size: 25px;
+}
+
+.cont_menu nav .link:hover {
     border-left: 5px solid #c7c7c7;
     background: #c7c7c7;
     border-radius: 50px 0px 0px 50px;
 }
-.cont_menu label{
+
+.cont_menu label {
     position: absolute;
     right: 5px;
     top: 10px;
@@ -153,18 +179,47 @@ body{
     font-size: 18px;
 }
 
-hr{
+.cont_menu hr {
     margin: 10px;
 }
 
+
+.contenido-principal {
+    transition: margin-left 500ms ease;
+    margin-left: 250px; 
+}
+
+
+
 /*Fin de Menù lateral*/
 
+
+.capa {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 99; 
+    display: none; 
+  }
+  
+  /* Mostrar la capa cuando el menú está abierto */
+#btn-menu:checked ~ .capa {
+display: block;
+}
 
 
 @media screen and (max-width:800px){
     .menu{
         display: none;
     }
+    .reloj {
+        position: fixed;
+        right: 80px;
+        top: 35px;
+      }
     
 }
 

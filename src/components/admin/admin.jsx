@@ -3,57 +3,65 @@ import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import logo from '../../images/logo.jpg';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faUser,
-  faTrash,
-  faUsers,
-  faFileInvoice,
-  faChartSimple,
-  faCoins,
-  faDatabase,
-  faTableList,
-  faHouse,
-  faChevronDown,
-  faUserPlus,
-  faArrowRightFromBracket,
   faBars,
   faArrowLeft,
-} from '@fortawesome/free-solid-svg-icons';
-library.add(
+  faArrowRightFromBracket,
   faUser,
-  faTrash,
-  faFileInvoice,
-  faChartSimple,
-  faCoins,
-  faDatabase,
-  faTableList,
-  faHouse,
-  faChevronDown,
-  faFileInvoice,
   faUserPlus,
   faUsers,
+  faHouse
+} 
+from '@fortawesome/free-solid-svg-icons';
+library.add(
+  faBars,
+  faArrowLeft,
   faArrowRightFromBracket,
-  faBars,
-  faBars,
-  faArrowLeft
+  faUser,
+  faUserPlus,
+  faUsers,
+  faHouse
 );
 
 const Admin = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
+  const [currentTime, setCurrentTime] = useState(new Date());
+  
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+
+  const formatTime = (time) => {
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true,
+      timeZone: 'America/Santiago', // Zona horaria de Santiago, Chile
+    };
+    return time.toLocaleTimeString('en-US', options);
+  };
 
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/");
+      navigate('/');
       console.log(user);
-      alert('Se ha cerrado la sesion');
+      alert('Se ha cerrado la sesión');
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <>
@@ -69,17 +77,21 @@ const Admin = () => {
           <div className='logo'>
             <h1>Hams Motors</h1>
           </div>
+          <div className="reloj">
+            <p>{formatTime(currentTime)}</p>
+          </div>
           <nav className='menu'>
-            <a>inicio</a>
-            <a>email</a>
-            <a>usuarios</a>
             <a>Administrador</a>
           </nav>
         </div>
+
         <button type='submit' onClick={handleLogout} className='boton_salir'>
           <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
         </button>
       </header> 
+
+
+
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
       <div className='contenedor-menu'>
@@ -87,12 +99,7 @@ const Admin = () => {
           <nav>
             <br />
             <hr />
-            <Link to='/indexAdmin' className='link'>
-              <div className='logo_details'>
-                <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
-                <span className='logo_name'>Hans Motors</span>
-              </div>
-            </Link>
+
             <Link to="/agregarUsuario" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />
               <span className='link_name'>Crear Usuarios</span>
@@ -103,24 +110,24 @@ const Admin = () => {
             </Link>
             <hr />
             <Link to="/agregarFactura" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" />              
               <span className='link_name'>Agregar Factura</span>
             </Link>
             <Link to="/listadoFacturas" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
               <span className='link_name'>Listar Factura</span>
             </Link>
             <Link to="/generarFactura" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-file-lines" />
               <span className='link_name'>Generar Factura</span>
             </Link>
             <hr />
             <Link to="/agregarInventario" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-cart-flatbed" />
               <span className='link_name'>Agregar Inventario</span>
             </Link>
             <Link to="/listarInventario" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-boxes-stacked" />
               <span className='link_name'>Listar Inventario</span>
             </Link>
             <hr />
