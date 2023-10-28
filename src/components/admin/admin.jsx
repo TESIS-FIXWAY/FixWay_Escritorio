@@ -84,7 +84,17 @@ const Admin = () => {
         <button type='submit' onClick={handleLogout} className='boton_salir'>
           <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
         </button>
+
+
       </header> 
+
+
+
+
+
+
+
+
 
       
       <div className='capa'></div>

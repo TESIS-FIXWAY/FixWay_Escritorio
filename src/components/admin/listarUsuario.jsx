@@ -31,7 +31,29 @@ library.add(
 const ListarUsuario = () => {
   const [users, setUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
+  const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const EditarUsuarioModal = ({ user, onSave, onCancel, onInputChange }) => {
+    return (
+      <div className="editar-modal">
+        <p>Editar usuario</p>
+        <label htmlFor="">Rol</label>
+        <input
+          type="text"
+          value={user.rol}
+          onChange={(e) => onInputChange('rol', e.target.value)}
+        />
+        {/* Otros campos del formulario... */}
+        <button onClick={onSave}>
+          <FontAwesomeIcon icon="fa-solid fa-check" />
+        </button>
+        <button onClick={onCancel}>
+          <FontAwesomeIcon icon="fa-solid fa-xmark" />
+        </button>
+      </div>
+    );
+  };
 
   React.useEffect(() => {
     const unsubscribe = onSnapshot(query(collection(db, 'users')), (querySnapshot) => {
@@ -54,16 +76,19 @@ const ListarUsuario = () => {
 
   const startEditing = (userId) => {
     setEditingUserId(userId);
+    setIsEditingModalOpen(true);
   };
 
   const cancelEditing = () => {
     setEditingUserId(null);
+    setIsEditingModalOpen(false);
   };
 
   const saveEdit = async (userId, updatedData) => {
     try {
       await updateDoc(doc(db, 'users', userId), updatedData);
       setEditingUserId(null);
+      setIsEditingModalOpen(false); 
       console.log('Usuario actualizado correctamente.');
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
@@ -149,36 +174,83 @@ const ListarUsuario = () => {
                     <td>
                       {editingUserId === user.id ? (
                         <>
-                          <input
-                            type="text"
-                            value={user.rol}
-                            onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}/>
-                          <input
-                            type="text"
-                            value={user.nombre}
-                            onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}/>
-                          <input
-                            type="text"
-                            value={user.apellido}
-                            onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}/>
-                          <input
-                            type="text"
-                            value={user.telefono}
-                            onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}/>
-                          <input
-                            type="text"
-                            value={user.direccion}
-                            onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}/>
-                          <input
-                            type="text"
-                            value={user.salario}
-                            onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}/>
-                          <input
-                            type="text"
-                            value={user.password}
-                            onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}/>
-                          <button onClick={() => saveEdit(user.id, user)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
-                          <button onClick={() => cancelEditing()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
+                          <div className='fondo_no'>
+                        
+
+                            <div className='editar'>
+                              <p className='p_editar'>editar usuarios</p>
+
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar' >rol</label>
+                                <input
+                                type="text"
+                                value={user.rol}
+                                onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}/>
+                              </p>
+
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar' >nombre</label>
+                                <input
+                                type="text"
+                                value={user.nombre}
+                                onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}/>
+                              </p>
+
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar' >apellido</label>
+                                <input
+                                type="text"
+                                value={user.apellido}
+                                onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}/>
+                              </p>
+
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar' >telefono</label>
+                                <input
+                                type="text"
+                                value={user.telefono}
+                                onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}/>
+                              </p>
+
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar' >direccion</label>
+                                <input
+                                type="text"
+                                value={user.direccion}
+                                onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}/>
+                              </p>
+
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar' >salario</label>
+                                <input
+                                type="text"
+                                value={user.salario}
+                                onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}/>
+                              </p>
+
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar' >contraseña</label>
+                                <input
+                                type="text"
+                                value={user.password}
+                                onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}/>
+                              </p>
+
+
+
+
+
+
+                              <button className='guardar' onClick={() => saveEdit(user.id, user)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
+                              <button className='cancelar' onClick={() => cancelEditing()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
+                            </div>
+
+
+
+
+                          </div>
+
+
                         </>
                       
                       

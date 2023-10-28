@@ -161,15 +161,101 @@ tabla tbody td:hover{
 
 
 
+.fondo_no {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 999; 
+  }
+  
+.editar {
+    position: absolute;
+    background-color: #fff; 
+    border: 1px solid #ccc; 
+    padding: 50px 50px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1; 
+    width: 500px; 
+    height: auto; 
+    left: 50%; 
+    top: 50%; 
+    transform: translate(-50%, -50%);
+  }
+  
+  .editar p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .etiqueta_editar {
+    display: flex;
+    margin-bottom: 5px;
+    margin: 0px 0px 0px 20px;
+    font-weight: bold;
+  }
+  
+  .editar input {
+    border-radius: 0px;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: none; 
+    border-bottom: 1px solid #ccc; 
+    outline: none; 
+  }
+  
 
+
+  .editar button.guardar {
+    background-color: #3498db; 
+    color: white; 
+    padding: 10x 20px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    width: 40%;
+    transition: background-color 0.3s ease; 
+
+  }
+  
+  .editar button.cancelar {
+    background-color: #e74c3c; 
+    color: white; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 40%;
+    transition: background-color 0.3s ease; 
+  }
+  
+  .editar button.guardar:hover {
+    background-color: #2980b9; 
+  }
+  
+  .editar button.cancelar:hover {
+    background-color: #c0392b; 
+  }
+  
+  
+
+
+
+
+/* 
 @media screen and (max-width:650px) {
-    .tabla{
+    .tabla_listar{
         border: 0px;
     }
     .tabla caption{
         font-size: 22px;
     }
-    .tabla thead{
+    .table_header{
         display: none;
     }
     .tabla tr{
@@ -195,4 +281,4 @@ tabla tbody td:hover{
         text-transform: uppercase;
         float: left;
     }
-}
+} */
