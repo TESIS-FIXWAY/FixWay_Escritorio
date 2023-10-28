@@ -62,12 +62,10 @@ const Admin = () => {
         <div className='contenedor-header'>
           <div className='btn-menu'>
             <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/> </label>
-            
             <Link to="/indexAdmin"  className='menu_home'>
               <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/> </label>
             </Link>
           </div>
-          
           <div className='logo'>
             <h1>Hams Motors</h1>
           </div>
@@ -75,15 +73,13 @@ const Admin = () => {
             <a>inicio</a>
             <a>email</a>
             <a>usuarios</a>
-            <a>registros</a>
+            <a>Administrador</a>
           </nav>
         </div>
         <button type='submit' onClick={handleLogout} className='boton_salir'>
           <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
         </button>
       </header> 
-
-      
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
       <div className='contenedor-menu'>
