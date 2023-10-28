@@ -15,10 +15,12 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 
+
+
+
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
-  
 
   React.useEffect(() => {
     const obtenerInventario = async () => {
@@ -35,41 +37,55 @@ const GenerarFactura = () => {
   }, []);
 
   const toggleSeleccionProducto = (id) => {
-    // Verificar si el producto ya está seleccionado
     const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
 
     if (productoIndex === -1) {
-      // Agregar el producto a la lista de seleccionados
       const productoSeleccionado = inventario.find((producto) => producto.id === id);
-      setProductosSeleccionados([...productosSeleccionados, productoSeleccionado]);
+      setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 0 }]);
     } else {
-      // Remover el producto de la lista de seleccionados
       const nuevaLista = [...productosSeleccionados];
       nuevaLista.splice(productoIndex, 1);
       setProductosSeleccionados(nuevaLista);
     }
   };
 
+  const aumentarCantidad = (id) => {
+    setProductosSeleccionados((prevProductos) => {
+      return prevProductos.map((producto) =>
+        producto.id === id ? { ...producto, cantidad: producto.cantidad + 1 } : producto
+      );
+    });
+  };
+
+  const disminuirCantidad = (id) => {
+    setProductosSeleccionados((prevProductos) => {
+      return prevProductos.map((producto) =>
+        producto.id === id && producto.cantidad > 0 ? { ...producto, cantidad: producto.cantidad - 1 } : producto
+      );
+    });
+  };
+
+  const actualizarCantidadManual = (id, nuevaCantidad) => {
+    setProductosSeleccionados((prevProductos) => {
+      return prevProductos.map((producto) => (producto.id === id ? { ...producto, cantidad: nuevaCantidad } : producto));
+    });
+  };
+
   const generarFactura = () => {
-    // Crear la factura en la base de datos
     const nuevaFactura = {
       productos: productosSeleccionados.map((producto) => ({
-        ...producto, // Include all properties of the producto
-        cantidad: producto.cantidad || 0, // Provide a default value if cantidad is undefined
+        ...producto,
       })),
     };
-  
+
     const facturasCollection = collection(db, "mifacturas");
-  
-    // Assuming you want Firestore to generate the ID
+
     addDoc(facturasCollection, nuevaFactura)
       .then((nuevaFacturaRef) => {
-        // Actualizar el inventario
         const batch = writeBatch(db);
         productosSeleccionados.forEach((producto) => {
           const productoRef = doc(db, "inventario", producto.id);
-  
-          // Check if producto.cantidad is a valid number before updating
+
           if (typeof producto.cantidad === 'number') {
             batch.update(productoRef, {
               cantidad: increment(-producto.cantidad),
@@ -78,14 +94,11 @@ const GenerarFactura = () => {
             console.error("Invalid cantidad value:", producto.cantidad);
           }
         });
-  
-        // Commit the batch update
+
         batch.commit()
           .then(() => {
-            // Generar el PDF (Assuming you have a generarPDF function defined)
             generarPDF(productosSeleccionados);
-  
-            // Limpiar la lista de productos seleccionados
+
             setProductosSeleccionados([]);
           })
           .catch((error) => {
@@ -95,40 +108,58 @@ const GenerarFactura = () => {
       .catch((error) => {
         console.error("Error al agregar la nueva factura:", error);
       });
-  }
+  };
+
+
 
   const generarPDF = (productosSeleccionados) => {
     const pdf = new jsPDF();
   
-    // Header
-    pdf.setFontSize(26);
-    pdf.text("Factura", 10, 10);
+    pdf.setFontSize(24);
+    pdf.text("FACTURA", 10, 10);
+    pdf.line(10, 15, pdf.internal.pageSize.getWidth() - 10, 15);
   
-    // Table header
-    pdf.setFontSize(14);
-    pdf.setTextColor(100);
-    pdf.text("Nombre del Producto", 10, 30);
-    pdf.text("Descripción", 60, 30);
-    pdf.text("Costo", 120, 30);
-    pdf.text("Cantidad", 160, 30);
-    pdf.text("Precio", 200, 30);
-  
-    // Table rows
+    pdf.setFontSize(12);
     pdf.setTextColor(0);
-    let y = 40;
-    productosSeleccionados.forEach((producto) => {
-      pdf.text(producto.nombreProducto || "", 10, y);
-      pdf.text(producto.descripcion || "", 60, y);
-      pdf.text(producto.costo !== undefined ? producto.costo.toString() : "", 120, y);
-      pdf.text(producto.cantidad !== undefined ? producto.cantidad.toString() : "", 160, y);
-      pdf.text(producto.precio !== undefined ? producto.precio.toString() : "", 200, y);
+    let y = 30;
   
+    productosSeleccionados.forEach((producto) => {
+      pdf.text("Nombre del producto:", 10, y);
+      pdf.text(producto.nombreProducto || "", 80, y);
       y += 10;
+  
+      pdf.text("Descripción:", 10, y);
+      pdf.text(producto.descripcion || "", 80, y);
+      y += 10;
+  
+      pdf.text("Costo unitario:", 10, y);
+      pdf.text(producto.costo || "", 80, y);
+      y += 10;
+  
+      pdf.text("Cantidad:", 10, y);
+      pdf.text(producto.cantidad !== undefined ? producto.cantidad.toString() : "", 80, y);
+      y += 10;
+  
+      const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
+      pdf.text("Costo total:", 10, y);
+      pdf.text(`$${costoTotalProducto.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y);
+      y += 10;
+  
+      pdf.line(10, y - 5, pdf.internal.pageSize.getWidth() - 10, y - 5);
+      y += 10; 
     });
   
-    // Guardar el PDF
+    const totalPagar = productosSeleccionados.reduce((total, producto) => {
+      const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
+      return total + costoTotalProducto;
+    }, 0);
+    pdf.text("Total a pagar:", 10, y);
+    pdf.text(`$${totalPagar.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
+  
     pdf.save("factura.pdf");
   };
+    
+
 
   return (
     <>
@@ -136,7 +167,19 @@ const GenerarFactura = () => {
       <div className="tabla_listar">
         <div className="table_header">
           <h1>Generar Factura</h1>
+          <button
+            onClick={generarFactura}
+            style={{
+              backgroundColor: '#6fa0e8'
+            }}
+            // Efecto hover
+            onMouseOver={(e) => e.target.style.backgroundColor = '#87CEEB'} 
+            onMouseOut={(e) => e.target.style.backgroundColor = '#6fa0e8'}  
+          >
+            Generar Factura
+          </button>
         </div>
+      
         <table className="table table-striped">
           <thead>
             <tr>
@@ -163,16 +206,12 @@ const GenerarFactura = () => {
                 <td>
                   <input
                     type="number"
-                    min="1"
+                    min="0"
+                    style={{ width: '80px' }}
                     value={productosSeleccionados.find((producto) => producto.id === item.id)?.cantidad || ""}
                     onChange={(e) => {
                       const nuevaCantidad = parseInt(e.target.value, 10) || 0;
-                      setProductosSeleccionados((prevProductos) => {
-                        const nuevosProductos = prevProductos.map((producto) =>
-                          producto.id === item.id ? { ...producto, cantidad: nuevaCantidad } : producto
-                        );
-                        return nuevosProductos;
-                      });
+                      actualizarCantidadManual(item.id, nuevaCantidad);
                     }}
                   />
                 </td>
@@ -180,7 +219,6 @@ const GenerarFactura = () => {
             ))}
           </tbody>
         </table>
-        <button onClick={generarFactura}>Generar Factura</button>
       </div>
     </>
   );
