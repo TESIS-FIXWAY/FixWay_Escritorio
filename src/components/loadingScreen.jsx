@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './LoadingScreen.css';
+import Car from '../images/car.png'; 
+
 
 const LoadingScreen = () => {
   const [textVisible, setTextVisible] = useState(false);
@@ -14,6 +16,14 @@ const LoadingScreen = () => {
 
   return (
     <div className="loading-screen">
+      {textVisible && (
+        <div className="text-background">
+          <img src={Car} alt="logo" />
+          <p className="animated-text">
+            {/* Tu texto aquí */}
+          </p>
+        </div>
+      )}
 
       {textVisible && (
         <div className="text-background">
