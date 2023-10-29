@@ -35,6 +35,8 @@ const ListarInventario = () => {
   const [inventario, setInventario] = React.useState([]);
   const [editingInventarioId, setEditingInventarioId] = React.useState(null);
   const [isEditingModalOpen, setIsEditingModalOpen] = React.useState(false);
+  const [deleteInventarioId, setDeleteInventarioId] = React.useState(null);
+  const [IsDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const navigate = useNavigate();
 
   const EditarInventarioModal = ({ inventario, onSave, onCancel, onInputChange }) => {
@@ -96,6 +98,16 @@ const ListarInventario = () => {
     return () => unsubscribe();
   }, []);
   
+  const startDelete = (inventarioId) => {
+    setDeleteInventarioId(inventarioId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const cancelDelete = () => {
+    setDeleteInventarioId(null);
+    setIsDeleteModalOpen(false);
+  }
+
   const deleteInventario = async (inventarioId) => {
     try {
       await deleteDoc(doc(db, 'inventario', inventarioId));
@@ -270,9 +282,19 @@ const ListarInventario = () => {
                         <FontAwesomeIcon icon="fa-solid fa-file-pen" />
                       </button>
                       )}
-                      <button onClick={() => deleteInventario(inventario.id)}>
-                        <FontAwesomeIcon icon="fa-solid fa-trash" />
-                      </button>
+                      {deleteInventarioId === inventario.id ? (
+                        <>
+                        <div className='fondo_no'>
+                          <div className='editar'>
+                          <p className='p_editar'>¿Estás seguro que deseas <br /> eliminar este producto?</p>
+                          <button className='guardar' onClick={() => deleteInventario(inventario.id)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
+                          <button className='cancelar' onClick={() => cancelDelete()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
+                          </div>
+                        </div>
+                        </>
+                      ): (
+                        <button onClick={() => startDelete(inventario.id)}><FontAwesomeIcon icon="fa-solid fa-trash"/></button>
+                      )}
                     </td>
                   </tr>
                 ))}

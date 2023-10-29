@@ -37,6 +37,8 @@ const ListadoFacturas = () => {
   const navigate = useNavigate();
   const [editingFacturaId, setEditingFacturaId] = useState(null);
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+  const [deleteFacturaId, setDeleteFacturaId] = useState(null);
+  const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const EditarUsuarioModalFactura = ({ factura, onSave, onCancel, onInputChange }) => {
     return (
@@ -78,6 +80,16 @@ const ListadoFacturas = () => {
 
     return () => unsubscribe();
   }, []);
+
+  const startDelete = (facturaId) => {
+    setDeleteFacturaId(facturaId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const cancelDelete = () => {
+    setDeleteFacturaId(null);
+    setIsDeleteModalOpen(false);
+  }
 
   const deletefactura = async (facturaId) => {
     try {
@@ -227,9 +239,22 @@ const ListadoFacturas = () => {
                       <button>
                         <FontAwesomeIcon onClick={() => downloadPDF(factura.url)} icon={faDownload} />
                       </button>
-                      <button onClick={() => deletefactura(factura.id)}>
+                      {deleteFacturaId === factura.id ? (
+                        <>
+                        <div className='fondo_no'>
+                          <div className='editar'>
+                          <p className='p_editar'>¿Estás seguro que deseas <br /> eliminar esta factura?</p>
+                          <button className='guardar' onClick={() => deletefactura(factura.id)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
+                          <button className='cancelar' onClick={() => cancelDelete()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
+                          </div>
+                        </div>
+                        </>
+                      ): (
+                        <button onClick={() => startDelete(factura.id)}><FontAwesomeIcon icon="fa-solid fa-trash"/></button>
+                      )}
+                      {/* <button onClick={() => deletefactura(factura.id)}>
                         <FontAwesomeIcon icon="fa-solid fa-trash" />
-                      </button>
+                      </button> */}
                     </td>
                   </tr>
                 ))}

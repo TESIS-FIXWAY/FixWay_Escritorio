@@ -32,6 +32,8 @@ const ListarUsuario = () => {
   const [users, setUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const EditarUsuarioModal = ({ user, onSave, onCancel, onInputChange }) => {
@@ -63,6 +65,16 @@ const ListarUsuario = () => {
     return () => unsubscribe();
   }, []);
 
+  const startDelete = (userId) => {
+    setDeleteUserId(userId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const cancelDelete = () => {
+    setDeleteUserId(null);
+    setIsDeleteModalOpen(false);
+  }
+
   const deleteUser = async (userId) => {
     try {
       await deleteDoc(doc(db, 'users', userId));
@@ -70,15 +82,6 @@ const ListarUsuario = () => {
       console.log('Usuario eliminado correctamente.');
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
-    }
-  };
-
-  const handleDeleteUser = (userId) => {
-    const confirmDeletion = window.confirm('¿Estás seguro de que quieres eliminar este usuario?');
-      if (confirmDeletion) {
-      deleteUser(userId);
-    } else {
-      console.log('Cancelado por el usuario.');
     }
   };
 
@@ -241,9 +244,19 @@ const ListarUsuario = () => {
                       ) : (
                         <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-user-pen" /></button>
                       )}
-                      <button onClick={() => handleDeleteUser(user.id)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
+                      {deleteUserId === user.id ? (
+                        <>
+                        <div className='fondo_no'>
+                          <div className='editar'>
+                          <p className='p_editar'>¿Estás seguro que deseas <br /> eliminar este usuario?</p>
+                          <button className='guardar' onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
+                          <button className='cancelar' onClick={() => cancelDelete()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
+                          </div>
+                        </div>
+                        </>
+                      ): (
+                        <button onClick={() => startDelete(user.id)}><FontAwesomeIcon icon={faTrash}/></button>
+                      )}
                     </td>
                   </tr>
                 ))}
