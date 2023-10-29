@@ -49,9 +49,6 @@ const GenerarFactura = () => {
     setShowProductList(false);
   };
 
-  const mostrarListadoProductos = () => {
-    return showProductList ? productosSeleccionados.filter((producto) => producto.cantidad > 0) : [];
-  };
 
   const aumentarCantidad = (id) => {
     setProductosSeleccionados((prevProductos) => {
@@ -186,6 +183,50 @@ const GenerarFactura = () => {
     pdf.save("factura.pdf");
   };
 
+  const toggleProductListView = () => {
+    setShowProductList(!showProductList);
+  };
+
+  const mostrarListadoProductos = () => {
+    if (showProductList) {
+      return (
+        <div className="fondo_no">
+          <div className="editar">
+            <p className="p_editar">Productos Seleccionados</p>
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Costo</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productosSeleccionados.map((item, index) => (
+                  <>
+                    <tr key={index}>
+                      <td>{item.nombreProducto}</td>
+                      <td>{item.costo}</td>
+                      <td>
+                        {item.cantidad}
+                      </td>
+                      <td>
+                        <button onClick={() => aumentarCantidad(item.id)}>+</button>
+                        <button onClick={() => disminuirCantidad(item.id)}>-</button>
+                      </td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+              <button onClick={toggleProductListView}>Ocultar listado de productos</button>
+            </table>
+          </div>
+        </div>
+      );
+    }
+  }
+
   return (
     <>
       <Admin />
@@ -203,23 +244,9 @@ const GenerarFactura = () => {
             Generar Factura
           </button>
           <button onClick={mostrarListadoProductos}>
-            Mostrar listado de productos
+            {showProductList ? "Ocultar Lista" : "Mostrar Lista"}
           </button>
-          {showProductList && (
-            <div className="product-list-modal">
-              <h2>Listado de Productos</h2>
-              <ul>
-                {mostrarListadoProductos().map((producto) => (
-                  <React.Fragment key={producto.id}>
-                    <li>{producto.nombreProducto}</li>
-                    <button onClick={() => aumentarCantidad(producto.id)}>+</button>
-                    <button onClick={() => disminuirCantidad(producto.id)}>-</button>
-                  </React.Fragment>
-                ))}
-              </ul>
-              <button onClick={toggleProductList}>Cerrar</button>
-            </div>
-          )}
+          {showProductList && mostrarListadoProductos()}
           <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} />
         </div>
         <table className="table table-striped">
