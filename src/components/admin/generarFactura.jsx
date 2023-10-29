@@ -2,22 +2,20 @@ import React, { useState } from "react";
 import Admin from "./admin";
 import jsPDF from "jspdf";
 import { db } from "../../firebase";
-import { 
-  collection, 
+import {
+  collection,
   addDoc,
-  setDoc,
   getDocs,
-  updateDoc,
   doc,
   writeBatch,
   FieldValue,
   increment,
-  serverTimestamp
 } from "firebase/firestore";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [showProductList, setShowProductList] = useState(false);
 
   React.useEffect(() => {
     const obtenerInventario = async () => {
@@ -39,11 +37,20 @@ const GenerarFactura = () => {
     if (productoIndex === -1) {
       const productoSeleccionado = inventario.find((producto) => producto.id === id);
       setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 0 }]);
+      setShowProductList(true); // Mostrar la lista al seleccionar un producto
     } else {
       const nuevaLista = [...productosSeleccionados];
       nuevaLista.splice(productoIndex, 1);
       setProductosSeleccionados(nuevaLista);
     }
+  };
+
+  const toggleProductList = () => {
+    setShowProductList(false);
+  };
+
+  const mostrarListadoProductos = () => {
+    return showProductList ? productosSeleccionados.filter((producto) => producto.cantidad > 0) : [];
   };
 
   const aumentarCantidad = (id) => {
@@ -67,6 +74,17 @@ const GenerarFactura = () => {
       return prevProductos.map((producto) => (producto.id === id ? { ...producto, cantidad: nuevaCantidad } : producto));
     });
   };
+
+  const buscadorProducto = (e) => {
+    const { value } = e.target;
+    const inventarioFiltrado = inventario.filter((producto) => {
+      return producto.nombreProducto.toLowerCase().includes(value.toLowerCase());
+    });
+    setInventario(inventarioFiltrado);
+    if (value === "") {
+      window.location.reload();
+    }
+  }
 
   const generarFactura = () => {
     const nuevaFactura = {
@@ -112,7 +130,6 @@ const GenerarFactura = () => {
   
     pdf.setFontSize(24);
     pdf.text("FACTURA", 10, 10);
-    pdf.text("Hans Motors", 10, 10);
     pdf.line(10, 15, pdf.internal.pageSize.getWidth() - 10, 15);
   
     pdf.setFontSize(12);
@@ -154,7 +171,7 @@ const GenerarFactura = () => {
   
     pdf.save("factura.pdf");
   };
-    
+
   return (
     <>
       <Admin />
@@ -164,16 +181,33 @@ const GenerarFactura = () => {
           <button
             onClick={generarFactura}
             style={{
-              backgroundColor: '#6fa0e8'
+              backgroundColor: "#6fa0e8",
             }}
-            // Efecto hover
-            onMouseOver={(e) => e.target.style.backgroundColor = '#87CEEB'} 
-            onMouseOut={(e) => e.target.style.backgroundColor = '#6fa0e8'}  
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}
           >
             Generar Factura
           </button>
+          <button onClick={mostrarListadoProductos}>
+            Mostrar listado de productos
+          </button>
+          {showProductList && (
+            <div className="product-list-modal">
+              <h2>Listado de Productos</h2>
+              <ul>
+                {mostrarListadoProductos().map((producto) => (
+                  <React.Fragment key={producto.id}>
+                    <li>{producto.nombreProducto}</li>
+                    <button onClick={() => aumentarCantidad(producto.id)}>+</button>
+                    <button onClick={() => disminuirCantidad(producto.id)}>-</button>
+                  </React.Fragment>
+                ))}
+              </ul>
+              <button onClick={toggleProductList}>Cerrar</button>
+            </div>
+          )}
+          <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} />
         </div>
-      
         <table className="table table-striped">
           <thead>
             <tr>
@@ -216,6 +250,6 @@ const GenerarFactura = () => {
       </div>
     </>
   );
-}
+};
 
 export default GenerarFactura;

@@ -113,10 +113,6 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-file-lines" />
               <span className='link_name'>Generar Factura</span>
             </Link>
-            <Link to="/listadoFacturasGeneradas" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
-              <span className='link_name'>Listado Facturas Generadas</span>
-            </Link>
             <hr />
             <Link to="/agregarInventario" className='link'>
               <FontAwesomeIcon className='i' icon="fa-solid fa-cart-flatbed" />
