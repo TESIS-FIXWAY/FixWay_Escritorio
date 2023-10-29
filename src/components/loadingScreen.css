@@ -6,16 +6,69 @@
   height: 100vh;
 }
 
-.loader {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
+.progress-bar {
+  width: 300px;
+  height: 20px; 
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  overflow: hidden;
 }
+
+.progress-indicator {
+  width: 0;
+  height: 100%;
+  background-color: #3498db; 
+  animation: progress 2s ease-out forwards;
+}
+
+.animated-text {
+  font-size: 40px; 
+}
+
+.animated-text span {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: appear 0.5s ease-out forwards;
+}
+
+.animated-text span:nth-child(1) { animation-delay: 0.1s; }
+.animated-text span:nth-child(2) { animation-delay: 0.2s; }
+.animated-text span:nth-child(3) { animation-delay: 0.3s; }
+.animated-text span:nth-child(4) { animation-delay: 0.4s; }
+.animated-text span:nth-child(5) { animation-delay: 0.5s; }
+.animated-text span:nth-child(6) { animation-delay: 0.6s; }
+.animated-text span:nth-child(7) { animation-delay: 0.7s; }
+.animated-text span:nth-child(8) { animation-delay: 0.8s; }
+.animated-text span:nth-child(9) { animation-delay: 0.9s; }
+.animated-text span:nth-child(10) { animation-delay: 1s; }
+.animated-text span:nth-child(11) { animation-delay: 1.1s; }
+.animated-text span:nth-child(12) { animation-delay: 1.2s; }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes progress {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+
+
+
+
