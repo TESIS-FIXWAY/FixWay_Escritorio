@@ -162,12 +162,26 @@ const GenerarFactura = () => {
       y += 10; 
     });
   
-    const totalPagar = productosSeleccionados.reduce((total, producto) => {
+    // Calcular el total a pagar sin IVA
+    const totalSinIVA = productosSeleccionados.reduce((total, producto) => {
       const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
       return total + costoTotalProducto;
     }, 0);
-    pdf.text("Total a pagar:", 10, y);
-    pdf.text(`$${totalPagar.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
+
+    // Calcular el IVA (19% del total sin IVA)
+    const iva = totalSinIVA * 0.19;
+
+    // Calcular el nuevo total final (total sin IVA + IVA)
+    const totalFinal = totalSinIVA + iva;
+
+    pdf.text("Total sin IVA:", 10, y);
+    pdf.text(`$${totalSinIVA.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
+
+    pdf.text("IVA (19%):", 10, y);
+    pdf.text(`$${iva.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
+
+    pdf.text("Total final:", 10, y);
+    pdf.text(`$${totalFinal.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
   
     pdf.save("factura.pdf");
   };
