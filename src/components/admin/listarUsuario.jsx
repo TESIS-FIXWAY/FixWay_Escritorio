@@ -73,6 +73,15 @@ const ListarUsuario = () => {
     }
   };
 
+  const handleDeleteUser = (userId) => {
+    const confirmDeletion = window.confirm('¿Estás seguro de que quieres eliminar este usuario?');
+      if (confirmDeletion) {
+      deleteUser(userId);
+    } else {
+      console.log('Cancelado por el usuario.');
+    }
+  };
+
   const startEditing = (userId) => {
     setEditingUserId(userId);
     setIsEditingModalOpen(true);
@@ -232,7 +241,9 @@ const ListarUsuario = () => {
                       ) : (
                         <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-user-pen" /></button>
                       )}
-                      <button onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
+                      <button onClick={() => handleDeleteUser(user.id)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
                     </td>
                   </tr>
                 ))}
