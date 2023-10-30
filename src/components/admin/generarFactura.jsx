@@ -233,9 +233,6 @@ const GenerarFactura = () => {
   }
 
 
-
-
-
   return (
     <>
       <Admin />
@@ -252,7 +249,7 @@ const GenerarFactura = () => {
           >
             Generar Factura
           </button>
-          <button onClick={mostrarListadoProductos}>
+          <button style={{background: "green"}} onClick={mostrarListadoProductos}>
             {showProductList ? "Ocultar Lista" : "Mostrar Lista"}
           </button>
           {showProductList && mostrarListadoProductos()}
@@ -262,10 +259,11 @@ const GenerarFactura = () => {
           <thead>
             <tr>
               <th>Seleccionar</th>
-              <th>Nombre del Producto</th>
+              <th>Nombre <br /> del Producto</th>
               <th>Descripción</th>
               <th>Costo</th>
               <th>Cantidad</th>
+              <th>Cantidad <br /> Seleccionada</th>
             </tr>
           </thead>
           <tbody>
@@ -281,6 +279,7 @@ const GenerarFactura = () => {
                 <td>{item.nombreProducto}</td>
                 <td>{item.descripcion}</td>
                 <td>{item.costo}</td>
+                <td>{item.cantidad}</td>
                 <td>
                   <input
                     type="number"
