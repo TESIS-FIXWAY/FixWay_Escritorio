@@ -187,11 +187,16 @@ const GenerarFactura = () => {
     setShowProductList(!showProductList);
   };
 
+
+
+
+
+
   const mostrarListadoProductos = () => {
     if (showProductList) {
       return (
         <div className="fondo_no">
-          <div className="editar">
+          <div className="editar" style={{ width: '900px' }}>
             <p className="p_editar">Productos Seleccionados</p>
             <table className="table table-striped">
               <thead>
@@ -219,13 +224,17 @@ const GenerarFactura = () => {
                   </>
                 ))}
               </tbody>
-              <button onClick={toggleProductListView}>Ocultar listado de productos</button>
+              <button style={{ background: 'green', margin: '60px 0px 0px'}} onClick={toggleProductListView}>Ocultar listado de productos</button>
             </table>
           </div>
         </div>
       );
     }
   }
+
+
+
+
 
   return (
     <>
