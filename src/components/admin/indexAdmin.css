@@ -1,87 +1,130 @@
-/* cartas de presentacion */
+.body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
 
-.card_admin{
+/* Estilos personalizados para el calendario */
+
+.card_admin_calendario{
+    margin: 0px 20px 0px 0px;
+    width: 100%;
+    display: flex;
+}
+.calendario {
+    width: 100%;
+    padding: 20px;
+    margin: 80px 0px 20px 0px;
+}
+.react-calendar {
+    font-family: 'Poppins', sans-serif;
+    max-width: 300px;
+    background-color: #000; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+.react-calendar__navigation {
+    background-color: #5B5FC7; 
+    color: #000; 
+}
+.react-calendar__navigation__arrow {
+    color: #fff; 
+}
+.react-calendar__tile--now {
+    color: #000; 
+}
+.react-calendar__tile {
+    color: #000; 
+    background-color: #5B5FC7; 
+}
+
+
+
+
+
+
+  .card_admin {
     width: 100%;
     display: flex;
     justify-content: center;
-}
-.card_landing{
+  }
+  
+  .card_section {
     max-width: 800px;
     width: 100%;
-    margin: 180px 20px 20px 20px ;
+    margin: 20px 20px 20px 20px;
     border-radius: 5px;
     overflow: hidden;
     background: #E5DBFF;
     cursor: default;
-    transition: all 400ms ease;  
+    transition: all 400ms ease;
     gap: 20px;
     justify-content: center;
     display: flex;
-    flex-direction: column; 
-}
-.h1_card{
+    flex-direction: column;
+  }
+  
+  .section_title {
     justify-content: center;
     display: flex;
     align-items: center;
-}
-.hr-container {
-    display: flex; 
-    width: 100%; 
+  }
+  
+  .section_hr {
+    display: flex;
+    width: 100%;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     color: #1f1f1f;
-}
-.card_landing hr {
+  }
+  
+  .card_section hr {
     margin: 0px 5% 0px 5%;
-    border: 1px solid #1f1f1f; 
-}          
-.card_landing h1,
-.card_landing .iconos{
-    margin: 1px 0; 
-}
-.p_card{
-    margin: 0px 0px 2px 50px
-}
-
-.hr-container{
-    transform: translateY(30px);
-    opacity: 0;
-    transition: all 0.3s ease-out 0.3s;
-}
-.p_card{
-    transform: translateY(30px);
-    opacity: 0;
-    transition: all 0.3s ease-out 0.3s;
-}
-
-.card_landing .iconos {
-    font-size: 100px; 
-}
-.iconos_boton{
-    justify-content: center;
-    cursor: pointer;
-    margin: 0px 5px 3px 20px;
-    padding: 5px 0px;
-    width: 20%;
-    color: #fff;
-    background: #389CFC;
+    border: 1px solid #1f1f1f;
+  }
+  
+  .section_title,
+  .section_icon {
+    margin: 1px 0;
+  }
+  
+  .section_subtitle {
+    margin: 0px 0px 2px 50px;
+  }
+  
+  .section_icon {
+    font-size: 100px;
+  }
+  
+  .card_functionality {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+    padding: 10px;
+    background-color: #389CFC;
     border-radius: 5px;
-}
-
-
-
-.iconos_boton:hover{
-    background: #1D90FA;
-}
-.card_landing:hover{
-    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
-}
-.card_landing:hover .hr-container{
-    opacity: 1;
-    transform: translateY(0px);
-}
-.card_landing:hover .p_card{
-    opacity: 1;
-    transform: translateY(0px);
-}
-
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card_functionality:hover {
+    background-color: #266bb5;
+  }
+  
+  .functionality_icon {
+    font-size: 25px;
+  }
+  
+  /* Media query for screens with a maximum width of 600px */
+  @media only screen and (max-width: 600px) {
+    .card_section {
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  

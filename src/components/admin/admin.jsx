@@ -87,46 +87,54 @@ const Admin = () => {
       </header> 
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
+      
+
       <div className='contenedor-menu'>
         <div className='cont_menu'>
+          
           <nav>
-            <br />
-            <hr />
-            <Link to="/agregarUsuario" className='link'>
+            <Link to="/indexAdmin" className={`link ${window.location.pathname === '/indexAdmin' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-house" />
+              <span className='link_name'>volver al menu</span>
+            </Link>
+<hr />
+            <Link to="/agregarUsuario" className={`link ${window.location.pathname === '/agregarUsuario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />
               <span className='link_name'>Crear Usuarios</span>
             </Link>
-            <Link to="/listarUsuario" className='link'>
+            <Link to="/listarUsuario" className={`link ${window.location.pathname === '/listarUsuario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
               <span className='link_name'>Listar Usuarios</span>
             </Link>
-            <hr />
-            <Link to="/agregarFactura" className='link'>
+<hr />
+            <Link to="/agregarFactura" className={`link ${window.location.pathname === '/agregarFactura' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" />              
-              <span className='link_name'>Agregar Factura</span>
+              <span className='link_name'>Agregar Factura de proveedor</span>
             </Link>
-            <Link to="/listadoFacturas" className='link'>
+            <Link to="/listadoFacturas" className={`link ${window.location.pathname === '/listadoFacturas' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
-              <span className='link_name'>Listar Factura</span>
+              <span className='link_name'>Listar Facturas de proveedores</span>
             </Link>
-            <Link to="/generarFactura" className='link'>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-lines" />
-              <span className='link_name'>Generar Factura</span>
-            </Link>
-            <hr />
-            <Link to="/agregarInventario" className='link'>
+<hr />
+            <Link to="/agregarInventario" className={`link ${window.location.pathname === '/agregarInventario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-cart-flatbed" />
               <span className='link_name'>Agregar Inventario</span>
             </Link>
-            <Link to="/listarInventario" className='link'>
+            <Link to="/listarInventario" className={`link ${window.location.pathname === '/listarInventario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-boxes-stacked" />
               <span className='link_name'>Listar Inventario</span>
             </Link>
-            <hr />
+<hr />
+            <Link to="/generarFactura" className={`link ${window.location.pathname === '/generarFactura' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-file-lines" />
+              <span className='link_name'>Generar Factura de vendedor</span>
+            </Link>
           </nav>
+
           <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /></label>
         </div>
       </div>
+    
     </div>
   </>
   )
