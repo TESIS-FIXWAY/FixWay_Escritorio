@@ -252,9 +252,6 @@ const ListadoFacturas = () => {
                       ): (
                         <button onClick={() => startDelete(factura.id)}><FontAwesomeIcon icon="fa-solid fa-trash"/></button>
                       )}
-                      {/* <button onClick={() => deletefactura(factura.id)}>
-                        <FontAwesomeIcon icon="fa-solid fa-trash" />
-                      </button> */}
                     </td>
                   </tr>
                 ))}

@@ -7,7 +7,6 @@ import {
 } from "firebase/firestore";
 
 const AgregarInventario = () => {
-  
   const submitHandler = async (e) => {
     e.preventDefault()
     const codigoProducto = e.target.codigoProducto.value

@@ -48,7 +48,6 @@ const GenerarFactura = () => {
     setShowProductList(false);
   };
 
-
   const aumentarCantidad = (id) => {
     setProductosSeleccionados((prevProductos) => {
       return prevProductos.map((producto) =>
@@ -192,11 +191,6 @@ const GenerarFactura = () => {
     setShowProductList(!showProductList);
   };
 
-
-
-
-
-
   const mostrarListadoProductos = () => {
     if (showProductList) {
       return (
@@ -236,7 +230,6 @@ const GenerarFactura = () => {
       );
     }
   }
-
 
   return (
     <>
