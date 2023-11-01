@@ -1,4 +1,4 @@
-import './agregarUsario.css'
+import '../styles/agregarUsuario.css'
 import React from 'react';
 import { db, auth } from "../../firebase";
 import {  

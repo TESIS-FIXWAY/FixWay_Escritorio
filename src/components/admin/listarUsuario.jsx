@@ -1,4 +1,4 @@
-import './listarUsuario.css'
+import '../styles/listarUsuario.css'
 import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";

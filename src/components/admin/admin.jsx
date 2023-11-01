@@ -1,4 +1,4 @@
-import './admin.css'
+import '../styles/admin.css'
 import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
