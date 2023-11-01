@@ -8,8 +8,7 @@ import {
   getDocs,
   doc,
   writeBatch,
-  FieldValue,
-  increment,
+  getDoc,
 } from "firebase/firestore";
 
 const GenerarFactura = () => {
@@ -89,33 +88,39 @@ const GenerarFactura = () => {
         ...producto,
       })),
     };
-
     const facturasCollection = collection(db, "mifacturas");
 
     addDoc(facturasCollection, nuevaFactura)
       .then((nuevaFacturaRef) => {
-        const batch = writeBatch(db);
         productosSeleccionados.forEach((producto) => {
           const productoRef = doc(db, "inventario", producto.id);
-
+  
           if (typeof producto.cantidad === 'number') {
-            batch.update(productoRef, {
-              cantidad: increment(-producto.cantidad),
-            });
+            getDoc(productoRef)
+              .then((doc) => {
+                const batch = writeBatch(db);
+  
+                const existingQuantity = doc.data().cantidad;
+                const newQuantity = existingQuantity - producto.cantidad;
+
+                batch.update(productoRef, { cantidad: newQuantity });
+                
+                batch.commit()
+                  .then(() => {
+                    generarPDF(productosSeleccionados);
+                    setProductosSeleccionados([]);
+                  })
+                  .catch((error) => {
+                    console.error("Error al actualizar el inventario:", error);
+                  });
+              })
+              .catch((error) => {
+                console.error("Error al obtener el documento:", error);
+              });
           } else {
             console.error("Invalid cantidad value:", producto.cantidad);
           }
         });
-
-        batch.commit()
-          .then(() => {
-            generarPDF(productosSeleccionados);
-
-            setProductosSeleccionados([]);
-          })
-          .catch((error) => {
-            console.error("Error al actualizar el inventario:", error);
-          });
       })
       .catch((error) => {
         console.error("Error al agregar la nueva factura:", error);
