@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './LoadingScreen.css';
+import './styles/loadingScreen.css';
 import Car from '../images/car.png'; 
-
 
 const LoadingScreen = () => {
   const [textVisible, setTextVisible] = useState(false);
@@ -20,7 +19,6 @@ const LoadingScreen = () => {
         <div className="text-background">
           <img src={Car} alt="logo" />
           <p className="animated-text">
-            {/* Tu texto aquí */}
           </p>
         </div>
       )}
@@ -46,7 +44,6 @@ const LoadingScreen = () => {
       <div className="progress-bar">
         <div className="progress-indicator"></div>
       </div>
-      
     </div>
   );
 };

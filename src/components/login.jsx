@@ -1,4 +1,4 @@
-import './login.css'
+import './styles/login.css'
 import React, { useState } from "react";
 import { db, auth } from '../firebase'
 import { doc, getDoc } from "firebase/firestore";
