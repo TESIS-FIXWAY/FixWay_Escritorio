@@ -64,18 +64,19 @@ const AgregarUsuario = () => {
   }
 
   function formatSalaryInput(input) {
-    const value = input.value.replace(/[^0-9]/g, ''); // Elimina cualquier caracter no numérico
+    const value = input.value.replace(/[^0-9]/g, ''); 
     if (value.length > 0) {
       input.value = parseInt(value).toLocaleString('es-CL');
     }
   }
   function formatPhoneNumber(input) {
-    const value = input.value.replace(/[^0-9]/g, ''); // Elimina cualquier caracter no numérico
-    const formattedValue = value.slice(-8); // Limita a los últimos 8 dígitos
-    if (formattedValue.length > 0) {
-      input.value = `+56 9 ${formattedValue}`;
+    const value = input.value.replace(/[^0-9]/g, ''); 
+  
+    if (value.length > 0) {
+      const formattedValue = value.slice(-8); 
+      input.value = ` ${formattedValue}`;
     } else {
-      input.value = ''; // Limpiar el campo si no hay dígitos
+      input.value = '+56 9 '; // Si no hay dígitos, se establece el prefijo
     }
   }
 
@@ -109,8 +110,8 @@ const AgregarUsuario = () => {
                     name="rol"
                     required
                   >
-                    <option value="Mecánico">Mecánico</option>
-                    <option value="Administrador">Administrador</option>
+                    <option value="mecanico">mecanico</option>
+                    <option value="administrador">administrador</option>
                   </select>
                 </p>
                 <p>
