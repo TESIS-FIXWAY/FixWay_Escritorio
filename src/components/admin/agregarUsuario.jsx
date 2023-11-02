@@ -63,6 +63,22 @@ const AgregarUsuario = () => {
     }
   }
 
+  function formatSalaryInput(input) {
+    const value = input.value.replace(/[^0-9]/g, ''); // Elimina cualquier caracter no numérico
+    if (value.length > 0) {
+      input.value = parseInt(value).toLocaleString('es-CL');
+    }
+  }
+  function formatPhoneNumber(input) {
+    const value = input.value.replace(/[^0-9]/g, ''); // Elimina cualquier caracter no numérico
+    const formattedValue = value.slice(-8); // Limita a los últimos 8 dígitos
+    if (formattedValue.length > 0) {
+      input.value = `+56 9 ${formattedValue}`;
+    } else {
+      input.value = ''; // Limpiar el campo si no hay dígitos
+    }
+  }
+
   return (
     <>
       <Admin/>
@@ -87,13 +103,15 @@ const AgregarUsuario = () => {
                 <p>
                   <label className='label_formulario'>ROL</label>
                   <br />
-                  <input
+                  <select
                     className='input_formulario'
                     id="rol"
-                    type="text"
                     name="rol"
-                    placeholder="ROL"
-                    required/>
+                    required
+                  >
+                    <option value="Mecánico">Mecánico</option>
+                    <option value="Administrador">Administrador</option>
+                  </select>
                 </p>
                 <p>
                   <label className='label_formulario'>Nombre</label>                  
@@ -126,9 +144,11 @@ const AgregarUsuario = () => {
                     required
                     type="tel"
                     name="telefono"
-                    pattern="[+]56 [0-9]{1} [0-9]{8}"
-                    placeholder="Ejemplo: +56 9 12345678"/>
-                </p>
+                    pattern="[0-9]{8}"
+                    placeholder="Ejemplo: 12345678"
+                    onChange={(e) => formatPhoneNumber(e.target)}
+                  />
+                </p>  
                 <p>
                   <label className='label_formulario'>Direccion</label>
                   <br />
@@ -147,9 +167,12 @@ const AgregarUsuario = () => {
                     className='input_formulario'
                     id="salario"
                     required
-                    type="number"
+                    type="text" 
                     name="salario"
-                    placeholder="Salario"/>
+                    placeholder="Salario"
+                    pattern="[0-9]"  
+                    onChange={(e) => formatSalaryInput(e.target)}
+                  />
                 </p>
                 <p>
                   <label className='label_formulario'>Contraseña</label>
