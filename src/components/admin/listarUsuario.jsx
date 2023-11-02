@@ -166,9 +166,10 @@ const ListarUsuario = () => {
                   <th scope="col">Apellido</th>
                   <th scope="col">Direccion</th>
                   <th scope="col">Telefono</th>
+                  <th scope="col">Correo Electrónico</th> {/* Nueva columna para el correo electrónico */}
                   <th scope="col">Cargo <br /> de trabajo</th>
                   <th scope="col">Salario</th>
-                  <th scope='col'>actualizar</th>
+                  <th scope='col'>Actualizar</th>
                 </tr>
               </thead>
               <tbody>
@@ -179,6 +180,7 @@ const ListarUsuario = () => {
                     <td>{user.apellido}</td>
                     <td>{user.direccion}</td>
                     <td>{user.telefono}</td>
+                    <td>{user.email}</td> {/* Asegúrate de que "email" sea el campo correcto */}
                     <td>{user.rol}</td>
                     <td>{user.salario}</td>
                     <td>
