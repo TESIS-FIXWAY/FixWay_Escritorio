@@ -8,10 +8,19 @@ const LoadingScreen = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setTextVisible(true);
-    }, 500); 
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    const imgTimeout = setTimeout(() => {
+      document.querySelector('.text-background img').classList.add('visible');
+    }, 1000); // Ajusta el tiempo según tus necesidades
+
+    return () => clearTimeout(imgTimeout);
+  }, []);
+
 
   return (
     <div className="loading-screen">
