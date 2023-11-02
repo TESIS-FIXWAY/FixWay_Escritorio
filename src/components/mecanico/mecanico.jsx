@@ -25,7 +25,7 @@ library.add(
   faHouse
 );
 
-const Admin = () => {
+const Mecanico = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -67,7 +67,7 @@ const Admin = () => {
         <div className='contenedor-header'>
           <div className='btn-menu'>
             <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/></label>
-            <Link to="/indexAdmin"  className='menu_home'>
+            <Link to=""  className='menu_home'>
               <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/></label>
             </Link>
           </div>
@@ -93,41 +93,14 @@ const Admin = () => {
         <div className='cont_menu'>
           
           <nav>
-            <Link to="/indexAdmin" className={`link ${window.location.pathname === '/indexAdmin' ? 'active' : ''}`}>
+            <Link to="" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-house" />
               <span className='link_name'>volver al menu</span>
             </Link>
 <hr />
-            <Link to="" className={`link ${window.location.pathname === '/agregarUsuario' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />
-              <span className='link_name'>Crear Usuarios</span>
-            </Link>
-            <Link to="" className={`link ${window.location.pathname === '/listarUsuario' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
-              <span className='link_name'>Listar Usuarios</span>
-            </Link>
-<hr />
-            <Link to="" className={`link ${window.location.pathname === '/agregarFactura' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" />              
-              <span className='link_name'>Agregar Factura de proveedor</span>
-            </Link>
-            <Link to="" className={`link ${window.location.pathname === '/listadoFacturas' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
-              <span className='link_name'>Listar Facturas de proveedores</span>
-            </Link>
-<hr />
-            <Link to="" className={`link ${window.location.pathname === '/agregarInventario' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-cart-flatbed" />
-              <span className='link_name'>Agregar Inventario</span>
-            </Link>
-            <Link to="" className={`link ${window.location.pathname === '/listarInventario' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-boxes-stacked" />
-              <span className='link_name'>Listar Inventario</span>
-            </Link>
-<hr />
-            <Link to="" className={`link ${window.location.pathname === '/generarFactura' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-lines" />
-              <span className='link_name'>Generar Factura de vendedor</span>
+            <Link to="" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-house" />
+              <span className='link_name'>generar cotizacion</span>
             </Link>
           </nav>
 
@@ -140,4 +113,4 @@ const Admin = () => {
   )
 }
 
-export default Admin;
+export default Mecanico;
