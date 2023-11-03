@@ -69,16 +69,7 @@ const AgregarUsuario = () => {
       input.value = parseInt(value).toLocaleString('es-CL');
     }
   }
-  function formatPhoneNumber(input) {
-    const value = input.value.replace(/[^0-9]/g, ''); 
-  
-    if (value.length > 0) {
-      const formattedValue = value.slice(-8); 
-      input.value = ` ${formattedValue}`;
-    } else {
-      input.value = '+56 9 '; // Si no hay dígitos, se establece el prefijo
-    }
-  }
+
 
   return (
     <>
@@ -145,11 +136,9 @@ const AgregarUsuario = () => {
                     required
                     type="tel"
                     name="telefono"
-                    pattern="[0-9]{8}"
-                    placeholder="Ejemplo: 12345678"
-                    onChange={(e) => formatPhoneNumber(e.target)}
-                  />
-                </p>  
+                    pattern="[+]56 [0-9]{1} [0-9]{8}"
+                    placeholder="Ejemplo: +56 9 12345678"/>
+                </p>
                 <p>
                   <label className='label_formulario'>Direccion</label>
                   <br />
@@ -165,14 +154,14 @@ const AgregarUsuario = () => {
                   <label className='label_formulario'>Salario</label>
                   <br />
                   <input
-                    className='input_formulario'
-                    id="salario"
-                    required
-                    type="text" 
-                    name="salario"
-                    placeholder="Salario"
-                    pattern="[0-9]"  
-                    onChange={(e) => formatSalaryInput(e.target)}
+                  className='input_formulario'
+                  id="salario"
+                  required
+                  type="text" 
+                  name="salario"
+                  placeholder="Salario"
+                  pattern="[0-9.,]+"
+                  onChange={(e) => formatSalaryInput(e.target)}
                   />
                 </p>
                 <p>
