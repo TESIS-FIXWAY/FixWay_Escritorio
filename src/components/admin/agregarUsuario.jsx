@@ -101,8 +101,8 @@ const AgregarUsuario = () => {
                     name="rol"
                     required
                   >
-                    <option value="mecanico">mecanico</option>
-                    <option value="administrador">administrador</option>
+                    <option value="mecanico">Mecánico</option>
+                    <option value="administrador">Administrador</option>
                   </select>
                 </p>
                 <p>

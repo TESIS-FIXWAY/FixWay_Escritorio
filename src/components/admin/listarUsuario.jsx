@@ -189,13 +189,18 @@ const ListarUsuario = () => {
                           <div className='fondo_no'>
                             <div className='editar'>
                               <p className='p_editar'>editar usuarios</p>
+
+
                               <p className='p_editar'>
-                                <label className='etiqueta_editar' >rol</label>
-                                <input
-                                type="text"
-                                value={user.rol}
-                                onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}/>
+                                <label className='etiqueta_editar'>Rol</label>
+                                <select className='select_rol'
+                                  value={user.rol}
+                                  onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}>
+                                  <option value="mecanico" className='p_editar'>Mecánico</option>
+                                  <option value="administrador" className='p_editar'>Administrador</option>
+                                </select>
                               </p>
+
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >nombre</label>
                                 <input

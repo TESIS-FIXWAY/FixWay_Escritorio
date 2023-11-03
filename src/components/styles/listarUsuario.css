@@ -150,11 +150,20 @@ tabla tbody td:hover{
 
 
 
+.p_editar select {
+  border: none;
+  width: 398px; 
+  background-color: #fff; 
 
-
-
-/* editar usuarios */
-
+  border-bottom: 1px solid #ccc; /* Puedes ajustar el color según tus necesidades */
+  padding: 8px 15px;
+  margin: 0 5px;
+  outline: none;
+  background-color: transparent; /* Para que el fondo del select sea transparente */
+  -webkit-appearance: none; /* Para quitar la apariencia predeterminada en Chrome y Safari */
+  -moz-appearance: none; /* Para quitar la apariencia predeterminada en Firefox */
+  appearance: none; /* Para quitar la apariencia predeterminada en navegadores modernos */
+}
 
 
 
