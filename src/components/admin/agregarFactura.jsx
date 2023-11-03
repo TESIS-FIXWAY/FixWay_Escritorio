@@ -12,9 +12,12 @@ import {
 } from "firebase/storage";
 import Admin from '../admin/admin';
 
+
+
 const AgregarFactura = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [mensaje, setMensaje] = useState(null);
   const [state, setState] = useState({
     fecha: '',
     proveedor: '',
@@ -46,7 +49,7 @@ const AgregarFactura = () => {
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(`Progreso de la subida: ${progress}%`);
-          alert('Se ha subido el archivo');
+          setMensaje('Se ha subido el archivo');
         },
         (error) => {
           console.error('Error al subir el archivo:', error);
@@ -66,7 +69,7 @@ const AgregarFactura = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!state.fecha || !state.proveedor || !state.detalle) {
-      alert('Datos incompletos');
+      setMensaje('Datos incompletos');
     } else {
       try {
         const timestampNow = serverTimestamp();
@@ -81,6 +84,7 @@ const AgregarFactura = () => {
           url: downloadURL,
         });
         console.log("Documento escrito con ID: ", docRef.id);
+        setMensaje('Se ha guardado correctamente');
       } catch (e) {
         console.error("Error al agregar el documento: ", e);
       } finally {
@@ -144,8 +148,9 @@ const AgregarFactura = () => {
                       <p>
                         <label className='label_formulario'>Seleccionar Archivo</label>
                         <br />
-                        <input type="file" onChange={handleFileChange} className='input_formulario'/>
+                        <input type="file" onChange={handleFileChange} required className='input_formulario'/>
                       </p>
+                      {mensaje && <p className="mensaje">{mensaje}</p>}
                       <p className="block_boton">
                         <button type="submit" disabled={uploading} className='boton_formulario' >Agregar Fatura</button>
                         {uploading && <p>Subiendo Archivo</p> }
