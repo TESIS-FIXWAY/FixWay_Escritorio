@@ -9,32 +9,48 @@ import Admin from "./admin";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import validadorRUT from './validadorRUT';
 
-const AgregarUsuario = () => {
-  async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
-    const infoUsuario = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    ).then((usuarioFirebase) => {
-      return usuarioFirebase;
-    })
 
-    console.log(infoUsuario.user.uid);
-    const docuRef = doc(db, `users/${infoUsuario.user.uid}`);
-    setDoc(docuRef, {
-      rut: rut,
-      rol: rol,
-      nombre: nombre,
-      apellido: apellido,
-      telefono: telefono,
-      direccion: direccion,
-      email: email,
-      password: password,
-      salario: salario
-    });
+const AgregarUsuario = () => {
+  const [mensaje, setMensaje] = React.useState(null);
+
+  async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
+    try {
+      const infoUsuario = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const docuRef = doc(db, `users/${infoUsuario.user.uid}`);
+      await setDoc(docuRef, {
+        rut: rut,
+        rol: rol,
+        nombre: nombre,
+        apellido: apellido,
+        telefono: telefono,
+        direccion: direccion,
+        email: email,
+        password: password,
+        salario: salario
+      });
+
+      setMensaje('Usuario añadido correctamente');
+      // Limpiar campos después de agregar usuario
+      document.getElementById("rut").value = "";
+      document.getElementById("rol").value = "mecanico";
+      document.getElementById("nombre").value = "";
+      document.getElementById("apellido").value = "";
+      document.getElementById("telefono").value = "";
+      document.getElementById("direccion").value = "";
+      document.getElementById("salario").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("email").value = "";
+    } catch (error) {
+      setMensaje(`Error al añadir usuario: ${error.message}`);
+    }
   }
 
-  function submitHandler (e) {
+  function submitHandler(e) {
     e.preventDefault();
     const rut = e.target.elements.rut.value;
     const rol = e.target.elements.rol.value;
@@ -50,21 +66,22 @@ const AgregarUsuario = () => {
     registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
   }
 
+
   function validarRut() {
     const rut = document.getElementById("rut").value;
     const validador = new validadorRUT(rut);
     if (validador.esValido) {
       document.getElementById("rut").value = validador.formateado();
-      console.log("Rut valido");
-      alert("Rut valido");
+      console.log("Rut válido");
+      alert("Rut válido");
     } else {
-      alert("Rut invalido");
-      console.log("Rut invalido");
+      alert("Rut inválido");
+      console.log("Rut inválido");
     }
   }
 
   function formatSalaryInput(input) {
-    const value = input.value.replace(/[^0-9]/g, ''); 
+    const value = input.value.replace(/[^0-9]/g, '');
     if (value.length > 0) {
       input.value = parseInt(value).toLocaleString('es-CL');
     }
@@ -186,7 +203,11 @@ const AgregarUsuario = () => {
                     name="email"
                     placeholder="Correo"/>
                 </p>
+
+
                 <p className='block_boton'>
+                <p className="mensaje">{mensaje}</p>
+
                   <button type="submit" onClick={AgregarUsuario} className='boton_formulario'>
                     Agregar
                   </button>
