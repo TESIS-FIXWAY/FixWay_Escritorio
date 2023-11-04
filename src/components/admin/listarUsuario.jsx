@@ -36,6 +36,11 @@ const ListarUsuario = () => {
   const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const formatSalario = (value) => {
+    // Formatea el salario con separador de miles
+    return parseInt(value, 10).toLocaleString('es-CL');
+  };
+
   const EditarUsuarioModal = ({ user, onSave, onCancel, onInputChange }) => {
     return (
       <div className="editar-modal">
@@ -106,12 +111,34 @@ const ListarUsuario = () => {
     }
   };
 
+
+
+
+
   const handleInputChange = (userId, name, value) => {
+    let updatedValue = value;
+
+    // Formatea el salario al escribir
+    if (name === 'salario') {
+      // Solo mantiene los dígitos y el separador de miles al formatear
+      updatedValue = value.replace(/[^\d]/g, '');
+    }
+
     const updatedUsers = users.map((user) =>
-      user.id === userId ? { ...user, [name]: value } : user
+      user.id === userId ? { ...user, [name]: updatedValue } : user
     );
     setUsers(updatedUsers);
   };
+
+
+
+
+
+
+
+
+
+
 
   const filtrarUsuario = (e) => {
     const texto = e.target.value.toLowerCase();
@@ -182,7 +209,7 @@ const ListarUsuario = () => {
                     <td>{user.telefono}</td>
                     <td>{user.email}</td> {/* Asegúrate de que "email" sea el campo correcto */}
                     <td>{user.rol}</td>
-                    <td>{user.salario}</td>
+                    <td>{formatSalario(user.salario)}</td>
                     <td>
                       {editingUserId === user.id ? (
                         <>
