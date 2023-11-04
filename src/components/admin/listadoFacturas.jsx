@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import Admin from "./admin";
 import { db, storage } from "../../firebase";
 import { 
@@ -236,7 +236,7 @@ const ListadoFacturas = () => {
                         <FontAwesomeIcon icon="fa-solid fa-file-pen" />
                       </button>
                       )}
-                      <button>
+                      <button style={{ backgroundColor: '#1DC258' }}>
                         <FontAwesomeIcon onClick={() => downloadPDF(factura.url)} icon={faDownload} />
                       </button>
                       {deleteFacturaId === factura.id ? (
@@ -250,7 +250,7 @@ const ListadoFacturas = () => {
                         </div>
                         </>
                       ): (
-                        <button onClick={() => startDelete(factura.id)}><FontAwesomeIcon icon="fa-solid fa-trash"/></button>
+                        <button onClick={() => startDelete(factura.id)} style={{ backgroundColor: 'red',}}><FontAwesomeIcon icon="fa-solid fa-trash"/></button>
                       )}
                     </td>
                   </tr>
