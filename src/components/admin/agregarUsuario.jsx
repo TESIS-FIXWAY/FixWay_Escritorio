@@ -12,6 +12,9 @@ import validadorRUT from './validadorRUT';
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = React.useState(null);
+  const [mensajeRut, setMensajeRut] = React.useState(null);
+  const [mensajeValidacion, setMensajeValidacion] = React.useState(null); // Nuevo estado para mensajes de validación
+
 
   async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
     try {
@@ -34,6 +37,7 @@ const AgregarUsuario = () => {
         salario: salario
       });
 
+
       setMensaje('Usuario añadido correctamente');
       // Limpiar campos después de agregar usuario
       document.getElementById("rut").value = "";
@@ -50,33 +54,48 @@ const AgregarUsuario = () => {
     }
   }
 
-  function submitHandler(e) {
-    e.preventDefault();
-    const rut = e.target.elements.rut.value;
-    const rol = e.target.elements.rol.value;
-    const nombre = e.target.elements.nombre.value;
-    const apellido = e.target.elements.apellido.value;
-    const telefono = e.target.elements.telefono.value;
-    const direccion = e.target.elements.direccion.value;
-    const email = e.target.elements.email.value;
-    const password = e.target.elements.password.value;
-    const salario = e.target.elements.salario.value;
+  function validarCampos() {
+    // Realiza validaciones de campos aquí
+    // Por ejemplo, puedes verificar si mensajeRut es "Rut válido", si el campo de nombre no está vacío, etc.
 
-    console.log(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
-    registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
+    if (mensajeRut !== "Rut válido") {
+      setMensajeValidacion("El Rut no es válido");
+      return false;
+    }
+    // Agrega más validaciones según tus requisitos
+
+    return true;
   }
 
 
-  function validarRut() {
+  function submitHandler(e) {
+    e.preventDefault();
+    
+    if (validarCampos()) {
+      const rut = e.target.elements.rut.value;
+      const rol = e.target.elements.rol.value;
+      const nombre = e.target.elements.nombre.value;
+      const apellido = e.target.elements.apellido.value;
+      const telefono = e.target.elements.telefono.value;
+      const direccion = e.target.elements.direccion.value;
+      const email = e.target.elements.email.value;
+      const password = e.target.elements.password.value;
+      const salario = e.target.elements.salario.value;
+
+      console.log(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
+      registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
+    }
+  }
+
+
+  function validarRutOnChange() {
     const rut = document.getElementById("rut").value;
     const validador = new validadorRUT(rut);
     if (validador.esValido) {
       document.getElementById("rut").value = validador.formateado();
-      console.log("Rut válido");
-      alert("Rut válido");
+      setMensajeRut("Rut válido");
     } else {
-      alert("Rut inválido");
-      console.log("Rut inválido");
+      setMensajeRut("Rut inválido");
     }
   }
 
@@ -107,7 +126,9 @@ const AgregarUsuario = () => {
                     name="rut"
                     placeholder="Rut (11.111.111-1)"
                     required
-                    onBlur={validarRut}/>
+                    onChange={validarRutOnChange}  // Utiliza onChange en lugar de onBlur
+                  />
+                  <p className='mensaje_rut'>{mensajeRut}</p>
                 </p>
                 <p>
                   <label className='label_formulario'>ROL</label>
@@ -207,6 +228,7 @@ const AgregarUsuario = () => {
 
                 <p className='block_boton'>
                 <p className="mensaje">{mensaje}</p>
+                <p className='mensaje_validacion'>{mensajeValidacion}</p>
 
                   <button type="submit" onClick={AgregarUsuario} className='boton_formulario'>
                     Agregar
