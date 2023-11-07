@@ -1,35 +1,50 @@
-import React from "react"
-import Admin from "./admin"
-import { db } from "../../firebase"
-import {  
-  doc,
-  setDoc,
-} from "firebase/firestore";
+import React, { useState } from "react";  // Añade { useState } aquí
+import Admin from "./admin";
+import { db } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const AgregarInventario = () => {
+  const [cantidadFormateada, setCantidadFormateada] = useState(""); // Nuevo estado para la cantidad formateada
+
   const submitHandler = async (e) => {
-    e.preventDefault()
-    const codigoProducto = e.target.codigoProducto.value
-    const nombreProducto = e.target.nombreProducto.value
-    const descripcion = e.target.descripcion.value
-    const cantidad = e.target.cantidad.value
-    const costo = e.target.costo.value
-    const categoria = e.target.categoria.value
-    const marca = e.target.marca.value
-    const id = codigoProducto
+    e.preventDefault();
+    const codigoProducto = e.target.codigoProducto.value;
+    const nombreProducto = e.target.nombreProducto.value;
+    const descripcion = e.target.descripcion.value;
+    const cantidad = e.target.cantidad.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
+    const costo = Number(e.target.costo.value); // Convertir a número
+    const categoria = e.target.categoria.value;
+    const marca = e.target.marca.value;
+    const id = codigoProducto;
+    
+    // Formatear el costo como moneda (en este caso, pesos chilenos)
+    const costoFormateado = costo.toLocaleString("es-CL", {
+      style: "currency",
+      currency: "CLP",
+    });
+
+    
     const data = {
       codigoProducto,
       nombreProducto,
       descripcion,
       cantidad,
-      costo,
+      costo: costoFormateado, // Usar el costo formateado
       categoria,
       marca,
-      id
-    }
+      id,
+    };
     await setDoc(doc(db, "inventario", id), data);
-    e.target.reset()
-  }
+    e.target.reset();
+  };
+
+
+  const handleCantidadChange = (e) => {
+    const cantidad = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
+    const cantidadFormateada = cantidad.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Formatea a miles
+    setCantidadFormateada(cantidadFormateada);
+  };
+
 
   return (
     <>
@@ -75,26 +90,30 @@ const AgregarInventario = () => {
                       placeholder="Descripcion"/>
                   </p>
                   <p>
-                    <label className='label_formulario'>Cantidad</label>
+                    <label className="label_formulario">Cantidad</label>
                     <br />
                     <input
-                      className='input_formulario'
+                      className="input_formulario"
                       id="cantidad"
                       required
-                      type="number"
+                      type="text"
                       name="cantidad"
-                      placeholder="Cantidad"/>
+                      placeholder="Cantidad"
+                      value={cantidadFormateada}
+                      onChange={handleCantidadChange} // Utiliza onChange para formatear en tiempo real
+                    />
                   </p>
                   <p>
-                    <label className='label_formulario'>Costo</label>
+                    <label className="label_formulario">Costo</label>
                     <br />
                     <input
-                      className='input_formulario'
+                      className="input_formulario"
                       id="costo"
                       required
                       type="number"
                       name="costo"
-                      placeholder="Costo"/>
+                      placeholder="ejemplo: 10000"
+                    />
                   </p>
                   <p>
                     <label className='label_formulario'>Categoria</label>
@@ -119,7 +138,7 @@ const AgregarInventario = () => {
                       placeholder="Marca"/>
                   </p>
                   <p className='block_boton'>
-                    <button type="submit" className='boton_formulario'>
+                    <button type="submit" className="boton_formulario">
                       Agregar
                     </button>
                   </p>

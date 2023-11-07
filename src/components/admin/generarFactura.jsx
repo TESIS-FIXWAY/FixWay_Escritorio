@@ -191,6 +191,8 @@ const GenerarFactura = () => {
     setShowProductList(!showProductList);
   };
 
+
+
   const mostrarListadoProductos = () => {
     if (showProductList) {
       return (
@@ -208,28 +210,25 @@ const GenerarFactura = () => {
               </thead>
               <tbody>
                 {productosSeleccionados.map((item, index) => (
-                  <>
-                    <tr key={index}>
-                      <td>{item.nombreProducto}</td>
-                      <td>{item.costo}</td>
-                      <td>
-                        {item.cantidad}
-                      </td>
-                      <td>
-                        <button onClick={() => aumentarCantidad(item.id)}>+</button>
-                        <button onClick={() => disminuirCantidad(item.id)}>-</button>
-                      </td>
-                    </tr>
-                  </>
+                  <tr key={index}>
+                    <td>{item.nombreProducto}</td>
+                    <td>{item.costo}</td>
+                    <td>{item.cantidad}</td>
+                    <td>
+                      <button onClick={() => aumentarCantidad(item.id)}>+</button>
+                      <button onClick={() => disminuirCantidad(item.id)}>-</button>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
-              <button style={{ background: 'green', margin: '60px 0px 0px'}} onClick={toggleProductListView}>Ocultar listado de productos</button>
+              <button style={{ background: 'green', margin: '60px 0px 0px' }} onClick={toggleProductListView}>Ocultar listado de productos</button>
             </table>
           </div>
         </div>
       );
     }
-  }
+  };
+
 
   return (
     <>
@@ -247,7 +246,7 @@ const GenerarFactura = () => {
           >
             Generar Factura
           </button>
-          <button style={{background: "green"}} onClick={mostrarListadoProductos}>
+          <button style={{ background: "green" }} onClick={toggleProductListView}>
             {showProductList ? "Ocultar Lista" : "Mostrar Lista"}
           </button>
           {showProductList && mostrarListadoProductos()}
