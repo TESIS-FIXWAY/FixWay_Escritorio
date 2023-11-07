@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Admin from "./admin";
 import jsPDF from "jspdf";
 import { db } from "../../firebase";
@@ -16,7 +16,123 @@ const GenerarFactura = () => {
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [showProductList, setShowProductList] = useState(false);
 
-  React.useEffect(() => {
+
+
+
+
+
+
+
+  const generarPDF = (productosSeleccionados, totalSinIVA, iva, totalFinal) => {
+    const pdf = new jsPDF();
+  
+    pdf.setFontSize(24);
+    pdf.text("FACTURA", 10, 10);
+    pdf.line(10, 15, pdf.internal.pageSize.getWidth() - 10, 15);
+  
+    pdf.setFontSize(12);
+    pdf.setTextColor(0);
+    let y = 30;
+  
+    const columnWidth = 40; // Ancho de las columnas
+  
+    // Encabezados de la tabla
+    pdf.text("Código", 10, y);
+    pdf.text("Nombre", 10 + columnWidth, y);
+    pdf.text("Descripción", 10 + 2 * columnWidth, y);
+    pdf.text("Costo Unitario", 10 + 3 * columnWidth, y);
+    pdf.text("Cantidad", 10 + 4 * columnWidth, y);
+    pdf.text("Costo Total", 10 + 5 * columnWidth, y);
+  
+    y += 10;
+  
+    // Línea separadora de encabezados y datos
+    pdf.line(10, y, pdf.internal.pageSize.getWidth() - 10, y);
+    y += 5;
+  
+    // Detalles de los productos
+    productosSeleccionados.forEach((producto) => {
+      pdf.text(producto.id || "", 10, y);
+      pdf.text(producto.nombreProducto || "", 10 + columnWidth, y);
+    
+      // Dividir la descripción en líneas
+      const descripcionLines = pdf.splitTextToSize(
+        producto.descripcion || "",
+        pdf.internal.pageSize.getWidth() - 20 - 2 * columnWidth
+      );
+      pdf.text(descripcionLines, 10 + 2 * columnWidth, y);
+    
+      pdf.text(producto.costo || "", 10 + 3 * columnWidth, y);
+      pdf.text(
+        producto.cantidad !== undefined ? producto.cantidad.toString() : "",
+        10 + 4 * columnWidth,
+        y
+      );
+    
+      const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
+      pdf.text(
+        `$${costoTotalProducto
+          .toFixed(3)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
+        10 + 5 * columnWidth,
+        y
+      );
+    
+      // Ajustar la posición y para la siguiente línea
+      y += descripcionLines.length * 10;
+    
+      y += 10; // Espacio entre productos
+    });
+  
+    // Línea separadora de datos y totales
+    pdf.line(10, y - 5, pdf.internal.pageSize.getWidth() - 10, y - 5);
+    y += 10;
+  
+    // Totales
+    pdf.text("Total sin IVA:", 10, y);
+    pdf.text(
+      `$${totalSinIVA.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
+      10 + 5 * columnWidth,
+      (y += 10)
+    );
+  
+    pdf.text("IVA (19%):", 10, y);
+    pdf.text(
+      `$${iva.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
+      10 + 5 * columnWidth,
+      (y += 10)
+    );
+  
+    pdf.text("Total final:", 10, y);
+    pdf.text(
+      `$${totalFinal.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
+      10 + 5 * columnWidth,
+      (y += 10)
+    );
+  
+    pdf.save("factura.pdf");
+  };
+  
+
+
+
+
+
+
+
+
+
+
+
+  const totalSinIVA = productosSeleccionados.reduce((total, producto) => {
+    const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
+    return total + costoTotalProducto;
+  }, 0);
+
+  const iva = totalSinIVA * 0.19;
+  const totalFinal = totalSinIVA + iva;
+
+  useEffect(() => {
     const obtenerInventario = async () => {
       try {
         const inventarioSnapshot = await getDocs(collection(db, "inventario"));
@@ -45,7 +161,8 @@ const GenerarFactura = () => {
   };
 
   const toggleProductList = () => {
-    setShowProductList(false);
+    console.log("Toggle Product List");
+    setShowProductList(!showProductList);
   };
 
   const aumentarCantidad = (id) => {
@@ -64,9 +181,21 @@ const GenerarFactura = () => {
     });
   };
 
+  const quitarProducto = (id) => {
+    const nuevaLista = productosSeleccionados.filter((producto) => producto.id !== id);
+    setProductosSeleccionados(nuevaLista);
+  };
+  
   const actualizarCantidadManual = (id, nuevaCantidad) => {
+    const producto = inventario.find((p) => p.id === id);
+  
+    if (producto && nuevaCantidad > producto.cantidad) {
+      alert("No hay suficiente stock disponible");
+      return;
+    }
+  
     setProductosSeleccionados((prevProductos) => {
-      return prevProductos.map((producto) => (producto.id === id ? { ...producto, cantidad: nuevaCantidad } : producto));
+      return prevProductos.map((p) => (p.id === id ? { ...p, cantidad: nuevaCantidad } : p));
     });
   };
 
@@ -124,72 +253,22 @@ const GenerarFactura = () => {
       .catch((error) => {
         console.error("Error al agregar la nueva factura:", error);
       });
+      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
+
   };
 
-  const generarPDF = (productosSeleccionados) => {
-    const pdf = new jsPDF();
-  
-    pdf.setFontSize(24);
-    pdf.text("FACTURA", 10, 10);
-    pdf.line(10, 15, pdf.internal.pageSize.getWidth() - 10, 15);
-  
-    pdf.setFontSize(12);
-    pdf.setTextColor(0);
-    let y = 30;
-  
-    productosSeleccionados.forEach((producto) => {
-      pdf.text("Nombre del producto:", 10, y);
-      pdf.text(producto.nombreProducto || "", 80, y);
-      y += 10;
-  
-      pdf.text("Descripción:", 10, y);
-      pdf.text(producto.descripcion || "", 80, y);
-      y += 10;
-  
-      pdf.text("Costo unitario:", 10, y);
-      pdf.text(producto.costo || "", 80, y);
-      y += 10;
-  
-      pdf.text("Cantidad:", 10, y);
-      pdf.text(producto.cantidad !== undefined ? producto.cantidad.toString() : "", 80, y);
-      y += 10;
-  
-      const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
-      pdf.text("Costo total:", 10, y);
-      pdf.text(`$${costoTotalProducto.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y);
-      y += 10;
-  
-      pdf.line(10, y - 5, pdf.internal.pageSize.getWidth() - 10, y - 5);
-      y += 10; 
-    });
-  
-    // Calcular el total a pagar sin IVA
-    const totalSinIVA = productosSeleccionados.reduce((total, producto) => {
-      const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
-      return total + costoTotalProducto;
-    }, 0);
 
-    // Calcular el IVA (19% del total sin IVA)
-    const iva = totalSinIVA * 0.19;
 
-    // Calcular el nuevo total final (total sin IVA + IVA)
-    const totalFinal = totalSinIVA + iva;
 
-    pdf.text("Total sin IVA:", 10, y);
-    pdf.text(`$${totalSinIVA.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
 
-    pdf.text("IVA (19%):", 10, y);
-    pdf.text(`$${iva.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
 
-    pdf.text("Total final:", 10, y);
-    pdf.text(`$${totalFinal.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`, 80, y += 10);
+
+
   
-    pdf.save("factura.pdf");
-  };
 
-  const toggleProductListView = () => {
-    setShowProductList(!showProductList);
-  };
+  
+
+
 
 
 
@@ -197,12 +276,13 @@ const GenerarFactura = () => {
     if (showProductList) {
       return (
         <div className="fondo_no">
-          <div className="editar" style={{ width: '900px' }}>
+          <div className="editar" style={{ width: '1000px' }}>
             <p className="p_editar">Productos Seleccionados</p>
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th scope="col">Producto</th>
+                  <th scope="col">Código</th>
+                  <th scope="col">Nombre del Producto</th>
                   <th scope="col">Costo</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Acciones</th>
@@ -211,23 +291,42 @@ const GenerarFactura = () => {
               <tbody>
                 {productosSeleccionados.map((item, index) => (
                   <tr key={index}>
+                    <td>{item.id}</td>
                     <td>{item.nombreProducto}</td>
                     <td>{item.costo}</td>
-                    <td>{item.cantidad}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        style={{ width: '80px' }}
+                        value={item.cantidad || 0}
+                        onChange={(e) => {
+                          const nuevaCantidad = parseInt(e.target.value, 10) || 0;
+                          actualizarCantidadManual(item.id, nuevaCantidad);
+                        }}
+                      />
+                    </td>
                     <td>
                       <button onClick={() => aumentarCantidad(item.id)}>+</button>
                       <button onClick={() => disminuirCantidad(item.id)}>-</button>
+                      <button onClick={() => quitarProducto(item.id)} style={{ backgroundColor: "red" }}> Quitar </button>                  
                     </td>
                   </tr>
                 ))}
               </tbody>
-              <button style={{ background: 'green', margin: '60px 0px 0px' }} onClick={toggleProductListView}>Ocultar listado de productos</button>
+              <button style={{ background: 'green', margin: '60px 0px 0px' }} onClick={toggleProductList}>Ocultar listado de productos</button>
             </table>
           </div>
         </div>
       );
     }
   };
+
+
+
+
+
+  
 
 
   return (
@@ -246,12 +345,13 @@ const GenerarFactura = () => {
           >
             Generar Factura
           </button>
-          <button style={{ background: "green" }} onClick={toggleProductListView}>
-            {showProductList ? "Ocultar Lista" : "Mostrar Lista"}
+          <button style={{ background: "green" }} onClick={toggleProductList}>
+            {showProductList ? "Ocultar Lista" : "Mostrar Lista"} ({productosSeleccionados.length})
           </button>
           {showProductList && mostrarListadoProductos()}
           <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} />
         </div>
+
         <table className="table table-striped">
           <thead>
             <tr>
@@ -278,16 +378,16 @@ const GenerarFactura = () => {
                 <td>{item.costo}</td>
                 <td>{item.cantidad}</td>
                 <td>
-                  <input
-                    type="number"
-                    min="0"
-                    style={{ width: '80px' }}
-                    value={productosSeleccionados.find((producto) => producto.id === item.id)?.cantidad || ""}
-                    onChange={(e) => {
-                      const nuevaCantidad = parseInt(e.target.value, 10) || 0;
-                      actualizarCantidadManual(item.id, nuevaCantidad);
-                    }}
-                  />
+                <input
+                  type="number"
+                  min="0"
+                  style={{ width: '80px' }}
+                  value={productosSeleccionados.find((producto) => producto.id === item.id)?.cantidad || ""}
+                  onChange={(e) => {
+                    const nuevaCantidad = parseInt(e.target.value, 10) || 0;
+                    actualizarCantidadManual(item.id, nuevaCantidad);
+                  }}
+                />
                 </td>
               </tr>
             ))}
