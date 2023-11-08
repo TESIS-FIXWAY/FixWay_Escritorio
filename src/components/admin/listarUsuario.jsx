@@ -184,6 +184,7 @@ const ListarUsuario = () => {
               <button className='boton-ingreso' onClick={agregarUsuario}> <FontAwesomeIcon icon="fa-solid fa-user-plus" /> ingresar nuevo usuario</button>
             </div>
           </div>
+          
           <div className='table_section'> 
             <table>
               <thead>

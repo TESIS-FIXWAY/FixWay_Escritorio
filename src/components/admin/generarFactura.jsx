@@ -352,47 +352,50 @@ const GenerarFactura = () => {
           <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} />
         </div>
 
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Seleccionar</th>
-              <th>Nombre <br /> del Producto</th>
-              <th>Descripción</th>
-              <th>Costo</th>
-              <th>Cantidad</th>
-              <th>Cantidad <br /> Seleccionada</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventario.map((item) => (
-              <tr key={item.id}>
-                <td>
-                  <input
-                    type="checkbox"
-                    onChange={() => toggleSeleccionProducto(item.id)}
-                    checked={productosSeleccionados.some((producto) => producto.id === item.id)}
-                  />
-                </td>
-                <td>{item.nombreProducto}</td>
-                <td>{item.descripcion}</td>
-                <td>{item.costo}</td>
-                <td>{item.cantidad}</td>
-                <td>
-                <input
-                  type="number"
-                  min="0"
-                  style={{ width: '80px' }}
-                  value={productosSeleccionados.find((producto) => producto.id === item.id)?.cantidad || ""}
-                  onChange={(e) => {
-                    const nuevaCantidad = parseInt(e.target.value, 10) || 0;
-                    actualizarCantidadManual(item.id, nuevaCantidad);
-                  }}
-                />
-                </td>
+
+        <div className='table_section'> 
+          <table>
+            <thead>
+              <tr>
+                <th>Seleccionar</th>
+                <th>Nombre <br /> del Producto</th>
+                <th>Descripción</th>
+                <th>Costo</th>
+                <th>Cantidad</th>
+                <th>Cantidad <br /> Seleccionada</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {inventario.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={() => toggleSeleccionProducto(item.id)}
+                      checked={productosSeleccionados.some((producto) => producto.id === item.id)}
+                    />
+                  </td>
+                  <td>{item.nombreProducto}</td>
+                  <td>{item.descripcion}</td>
+                  <td>{item.costo}</td>
+                  <td>{item.cantidad}</td>
+                  <td>
+                  <input
+                    type="number"
+                    min="0"
+                    style={{ width: '80px' }}
+                    value={productosSeleccionados.find((producto) => producto.id === item.id)?.cantidad || ""}
+                    onChange={(e) => {
+                      const nuevaCantidad = parseInt(e.target.value, 10) || 0;
+                      actualizarCantidadManual(item.id, nuevaCantidad);
+                    }}
+                  />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
