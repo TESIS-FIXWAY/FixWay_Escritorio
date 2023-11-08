@@ -148,7 +148,7 @@ const GenerarFactura = () => {
 
   const toggleSeleccionProducto = (id) => {
     const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
-
+  
     if (productoIndex === -1) {
       const productoSeleccionado = inventario.find((producto) => producto.id === id);
       setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 0 }]);
@@ -157,6 +157,7 @@ const GenerarFactura = () => {
       const nuevaLista = [...productosSeleccionados];
       nuevaLista.splice(productoIndex, 1);
       setProductosSeleccionados(nuevaLista);
+      setShowProductList(false); // Ocultar la lista al deseleccionar un producto
     }
   };
 
@@ -259,6 +260,7 @@ const GenerarFactura = () => {
                   .then(() => {
                     generarPDF(productosSeleccionados);
                     setProductosSeleccionados([]);
+                    setShowProductList(false);
                   })
                   .catch((error) => {
                     console.error("Error al actualizar el inventario:", error);
@@ -276,6 +278,8 @@ const GenerarFactura = () => {
         console.error("Error al agregar la nueva factura:", error);
       });
       generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
+      setProductosSeleccionados([]);
+      setShowProductList(false);
 
   };
 
