@@ -167,17 +167,39 @@ const GenerarFactura = () => {
 
   const aumentarCantidad = (id) => {
     setProductosSeleccionados((prevProductos) => {
-      return prevProductos.map((producto) =>
-        producto.id === id ? { ...producto, cantidad: producto.cantidad + 1 } : producto
-      );
+      return prevProductos.map((producto) => {
+        if (producto.id === id) {
+          const nuevaCantidad = producto.cantidad + 1;
+          const stock = inventario.find((p) => p.id === id).cantidad;
+  
+          if (nuevaCantidad > stock) {
+            alert("No hay suficiente stock disponible.");
+            return producto;
+          } else {
+            return { ...producto, cantidad: nuevaCantidad };
+          }
+        } else {
+          return producto;
+        }
+      });
     });
   };
 
   const disminuirCantidad = (id) => {
     setProductosSeleccionados((prevProductos) => {
-      return prevProductos.map((producto) =>
-        producto.id === id && producto.cantidad > 0 ? { ...producto, cantidad: producto.cantidad - 1 } : producto
-      );
+      return prevProductos.map((producto) => {
+        if (producto.id === id) {
+          const nuevaCantidad = producto.cantidad - 1;
+          if (nuevaCantidad < 0) {
+            alert("La cantidad no puede ser menor que cero.");
+            return producto;
+          } else {
+            return { ...producto, cantidad: nuevaCantidad };
+          }
+        } else {
+          return producto;
+        }
+      });
     });
   };
 
