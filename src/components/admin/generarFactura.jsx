@@ -258,7 +258,7 @@ const GenerarFactura = () => {
                 
                 batch.commit()
                   .then(() => {
-                    generarPDF(productosSeleccionados);
+                    generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
                     setProductosSeleccionados([]);
                     setShowProductList(false);
                   })
@@ -277,10 +277,6 @@ const GenerarFactura = () => {
       .catch((error) => {
         console.error("Error al agregar la nueva factura:", error);
       });
-      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
-      setProductosSeleccionados([]);
-      setShowProductList(false);
-
   };
 
 
