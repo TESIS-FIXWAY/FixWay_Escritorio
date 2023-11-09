@@ -150,6 +150,7 @@ const ListarUsuario = () => {
       const direccion = user.direccion.toLowerCase();
       const rol = user.rol.toLowerCase();
       const salario = user.salario.toLowerCase();
+      const fechaIngreso = user.fechaIngreso.toLowerCase();
       return (
         nombre.includes(texto) ||
         apellido.includes(texto) ||
@@ -157,7 +158,8 @@ const ListarUsuario = () => {
         telefono.includes(texto) ||
         direccion.includes(texto) ||
         rol.includes(texto) ||
-        salario.includes(texto)
+        salario.includes(texto) ||
+        fechaIngreso.includes(texto)
       );
     });
     setUsers(usuariosFiltrados);
@@ -197,6 +199,7 @@ const ListarUsuario = () => {
                   <th scope="col">Correo Electrónico</th> {/* Nueva columna para el correo electrónico */}
                   <th scope="col">Cargo <br /> de trabajo</th>
                   <th scope="col">Salario</th>
+                  <th scope="col">Fecha <br /> de Ingreso</th>
                   <th scope='col'>Actualizar</th>
                 </tr>
               </thead>
@@ -211,6 +214,7 @@ const ListarUsuario = () => {
                     <td>{user.email}</td> {/* Asegúrate de que "email" sea el campo correcto */}
                     <td>{user.rol}</td>
                     <td>{formatSalario(user.salario)}</td>
+                    <td>{user.fechaIngreso}</td>
                     <td>
                       {editingUserId === user.id ? (
                         <>
@@ -263,6 +267,13 @@ const ListarUsuario = () => {
                                 type="text"
                                 value={user.salario}
                                 onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}/>
+                              </p>
+                              <p className='p_editar'>
+                                <label className='etiqueta_editar'>Fecha de Ingreso</label>
+                                <input 
+                                type="date"
+                                value={user.fechaIngreso}
+                                onChange={(e) => handleInputChange(user.id, 'fechaIngreso', e.target.value)} />
                               </p>
                               <p className='p_editar'>
                                 <label className='etiqueta_editar' >contraseña</label>

@@ -16,7 +16,7 @@ const AgregarUsuario = () => {
   const [mensajeValidacion, setMensajeValidacion] = React.useState(null); // Nuevo estado para mensajes de validación
 
 
-  async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario) {
+  async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso) {
     try {
       const infoUsuario = await createUserWithEmailAndPassword(
         auth,
@@ -34,7 +34,8 @@ const AgregarUsuario = () => {
         direccion: direccion,
         email: email,
         password: password,
-        salario: salario
+        salario: salario,
+        fechaIngreso: fechaIngreso
       });
 
 
@@ -49,6 +50,7 @@ const AgregarUsuario = () => {
       document.getElementById("salario").value = "";
       document.getElementById("password").value = "";
       document.getElementById("email").value = "";
+      document.getElementById("fechaIngreso").value = "";
     } catch (error) {
       setMensaje(`Error al añadir usuario: ${error.message}`);
     }
@@ -81,9 +83,10 @@ const AgregarUsuario = () => {
       const email = e.target.elements.email.value;
       const password = e.target.elements.password.value;
       const salario = e.target.elements.salario.value;
+      const fechaIngreso = e.target.elements.fechaIngreso.value;
 
-      console.log(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
-      registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario);
+      console.log(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso);
+      registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso);
     }
   }
 
@@ -203,15 +206,16 @@ const AgregarUsuario = () => {
                   />
                 </p>
                 <p>
-                  <label className='label_formulario'>Contraseña</label>
+                  <label className='label_formulario'>Fecha de Ingreso</label>
                   <br />
                   <input
                     className='input_formulario'
-                    id="password"
+                    id="fechaIngreso"
                     required
-                    type="text"
-                    name="password"
-                    placeholder="Contraseña"/>
+                    type="date"
+                    name="fechaIngreso"
+                    onChange={(e) => setFechaIngreso(e.target)}
+                  />
                 </p>
                 <p>
                   <label className='label_formulario'>Email</label>
@@ -222,7 +226,20 @@ const AgregarUsuario = () => {
                     required
                     type="text"
                     name="email"
-                    placeholder="Correo"/>
+                    placeholder="Correo"
+                  />
+                </p>
+                <p>
+                  <label className='label_formulario'>Contraseña</label>
+                  <br />
+                  <input
+                    className='input_formulario'
+                    id="password"
+                    required
+                    type="text"
+                    name="password"
+                    placeholder="Contraseña"
+                  />
                 </p>
 
 
