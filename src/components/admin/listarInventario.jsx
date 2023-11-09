@@ -236,13 +236,38 @@ const ListarInventario = () => {
                                   onChange={(e) => handleInputChange(inventario.id, 'nombreProducto', e.target.value)}
                                 />
                               </p>
-                              <p className="p_editar">
+                              {/* <p className="p_editar">
                                 <label htmlFor="">Categoria</label>
                                 <input
                                   type="text"
                                   value={inventario.categoria}
                                   onChange={(e) => handleInputChange(inventario.id, 'categoria', e.target.value)}
                                 />
+                              </p> */}
+                              <p>
+                                <label htmlFor="">Categoria</label>
+                                <br />
+                                <select
+                                  id="categoria"
+                                  required
+                                  name="categoria"
+                                  onChange={(e) => handleInputChange(inventario.id, 'categoria', e.target.value)}
+                                >
+                                  <option value={inventario.categoria} disabled selected>
+                                    Seleccione una categoría
+                                  </option>
+                                  <option value="Sistema de Suspensión">Sistema de Suspensión</option>
+                                  <option value="Afinación del Motor">Afinación del Motor</option>
+                                  <option value="Sistema de Inyección Electrónica">Sistema de Inyección Electrónica</option>
+                                  <option value="Sistema de Escape">Sistema de Escape</option>
+                                  <option value="Sistema de Climatización">Sistema de Climatización</option>
+                                  <option value="Sistema de Lubricación">Sistemas de Lubricación</option>
+                                  <option value="Sistema de Dirección">Sistema de Dirección</option>
+                                  <option value="Sistema de Frenos">Sistema de Frenos</option>
+                                  <option value="Sistema de Encendido">Sistema de Encendido</option>
+                                  <option value="Inspección de Carrocería y Pintura">Inspección de Carrocería y Pintura</option>
+                                  <option value="Sistema de Transmisión">Sistema de Transmisión</option>
+                                </select>
                               </p>
                               <p className="p_editar">
                                 <label htmlFor="">Marca</label>

@@ -132,6 +132,7 @@ const AgregarInventario = () => {
                       <option value="Sistema de Inyección Electrónica">Sistema de Inyección Electrónica</option>
                       <option value="Sistema de Escape">Sistema de Escape</option>
                       <option value="Sistema de Climatización">Sistema de Climatización</option>
+                      <option value="Sistema de Lubricación">Sistema de Lubricación</option>
                       <option value="Sistema de Dirección">Sistema de Dirección</option>
                       <option value="Sistema de Frenos">Sistema de Frenos</option>
                       <option value="Sistema de Encendido">Sistema de Encendido</option>
