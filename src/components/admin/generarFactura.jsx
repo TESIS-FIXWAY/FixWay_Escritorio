@@ -15,6 +15,7 @@ const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [showProductList, setShowProductList] = useState(false);
+  const [tipoPago, setTipoPago] = useState("contado");
 
 
 
@@ -238,6 +239,7 @@ const GenerarFactura = () => {
       productos: productosSeleccionados.map((producto) => ({
         ...producto,
       })),
+      tipoPago: tipoPago,
     };
     const facturasCollection = collection(db, "mifacturas");
 
@@ -298,7 +300,7 @@ const GenerarFactura = () => {
     if (showProductList) {
       return (
         <div className="fondo_no">
-          <div className="editar" style={{ width: '1000px' }}>
+          <div className="editar" style={{ width: '1100px' }}>
             <p className="p_editar">Productos Seleccionados</p>
             <table className="table table-striped">
               <thead>
@@ -306,6 +308,7 @@ const GenerarFactura = () => {
                   <th scope="col">Código</th>
                   <th scope="col">Nombre del Producto</th>
                   <th scope="col">Costo</th>
+                  <th scope="col">Tipo <br /> de pago</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Acciones</th>
                 </tr>
@@ -316,6 +319,16 @@ const GenerarFactura = () => {
                     <td>{item.id}</td>
                     <td>{item.nombreProducto}</td>
                     <td>{item.costo}</td>
+                    <td>
+                      <select
+                        value={tipoPago}
+                        onChange={(e) => setTipoPago(e.target.value)}
+                        style={{ marginLeft: "10px" }}
+                      >
+                        <option value="contado">Contado</option>
+                        <option value="credito">Crédito</option>
+                      </select>
+                    </td>
                     <td>
                       <input
                         type="number"
