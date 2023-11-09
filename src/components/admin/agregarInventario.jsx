@@ -118,13 +118,26 @@ const AgregarInventario = () => {
                   <p>
                     <label className='label_formulario'>Categoria</label>
                     <br />
-                    <input
+                    <select
                       className='input_formulario'
                       id="categoria"
                       required
-                      type="text"
                       name="categoria"
-                      placeholder="Categoria"/>
+                    >
+                      <option value="" disabled selected>
+                        Seleccione una categoría
+                      </option>
+                      <option value="Sistema de Suspensión">Sistema de Suspensión</option>
+                      <option value="Afinación del Motor">Afinación del Motor</option>
+                      <option value="Sistema de Inyección Electrónica">Sistema de Inyección Electrónica</option>
+                      <option value="Sistema de Escape">Sistema de Escape</option>
+                      <option value="Sistema de Climatización">Sistema de Climatización</option>
+                      <option value="Sistema de Dirección">Sistema de Dirección</option>
+                      <option value="Sistema de Frenos">Sistema de Frenos</option>
+                      <option value="Sistema de Encendido">Sistema de Encendido</option>
+                      <option value="Inspección de Carrocería y Pintura">Inspección de Carrocería y Pintura</option>
+                      <option value="Sistema de Transmisión">Sistema de Transmisión</option>
+                    </select>
                   </p>
                   <p>
                     <label className='label_formulario'>Marca</label>
