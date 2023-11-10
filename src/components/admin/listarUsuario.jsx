@@ -37,7 +37,6 @@ const ListarUsuario = () => {
   const navigate = useNavigate();
 
   const formatSalario = (value) => {
-    // Formatea el salario con separador de miles
     return parseInt(value, 10).toLocaleString('es-CL');
   };
 
@@ -118,9 +117,7 @@ const ListarUsuario = () => {
   const handleInputChange = (userId, name, value) => {
     let updatedValue = value;
 
-    // Formatea el salario al escribir
     if (name === 'salario') {
-      // Solo mantiene los dígitos y el separador de miles al formatear
       updatedValue = value.replace(/[^\d]/g, '');
     }
 
@@ -198,7 +195,7 @@ const ListarUsuario = () => {
                   <th scope="col">Telefono</th>
                   <th scope="col">Correo Electrónico</th> {/* Nueva columna para el correo electrónico */}
                   <th scope="col">Cargo <br /> de trabajo</th>
-                  <th scope="col">Salario</th>
+                  <th scope="col">Sueldo</th>
                   <th scope="col">Fecha <br /> de Ingreso</th>
                   <th scope='col'>Actualizar</th>
                 </tr>
@@ -262,7 +259,7 @@ const ListarUsuario = () => {
                                 onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}/>
                               </p>
                               <p className='p_editar'>
-                                <label className='etiqueta_editar' >salario</label>
+                                <label className='etiqueta_editar' >Sueldo</label>
                                 <input
                                 type="text"
                                 value={user.salario}
