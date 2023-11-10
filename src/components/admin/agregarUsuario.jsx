@@ -192,7 +192,7 @@ const AgregarUsuario = () => {
                     placeholder="Direccion"/>
                 </p>
                 <p>
-                  <label className='label_formulario'>Salario</label>
+                  <label className='label_formulario'>Sueldo</label>
                   <br />
                   <input
                   className='input_formulario'
