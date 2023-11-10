@@ -48,49 +48,44 @@ const Login = () => {
 
   return (
     <>
-    <div className='body'>
-
-      <div className="container-form login">
-        <div className="informacion">
-            <div className="info">
-                  <h2>Bienvenido</h2>
-                  <p>taller mecanico Hans Motors</p>
-              </div>
+      <div className='body'>
+        <div className="container-form login">
+          <div className="informacion">
+              <div className="info">
+                    <h2>Bienvenido</h2>
+                    <p>taller mecanico Hans Motors</p>
+                </div>
+            </div>
+            <div className="form-informacion">
+                <div className="form-info-childs">
+                    <h2>Iniciar sesion</h2>
+                    <form className="formulario" onSubmit={handleSumit} >
+                        <label className='label_login'>
+                            <i className='bx bx-envelope' ></i>
+                            <input 
+                              type="email" 
+                              placeholder="email"
+                              id='email'
+                            />
+                        </label>
+                        <label className='label_login'>
+                            <i className='bx bx-lock-alt'></i>                        
+                            <input
+                              type="password" 
+                              placeholder="contrasena"
+                              id='password'
+                            />
+                        </label>
+                        <input 
+                          type="submit" 
+                          value="Iniciar sesion"
+                          className="btn-enviar"
+                        />
+                    </form>
+                </div>
+            </div>
           </div>
-          <div className="form-informacion">
-              <div className="form-info-childs">
-                  <h2>Iniciar sesion</h2>
-                  <form className="formulario" onSubmit={handleSumit} >
-                      <label className='label_login'>
-                          <i className='bx bx-envelope' ></i>
-                          <input 
-                            type="email" 
-                            placeholder="email"
-                            id='email'
-                          />
-                      </label>
-                      <label className='label_login'>
-                          <i className='bx bx-lock-alt'></i>                        
-                          <input
-                            type="password" 
-                            placeholder="contrasena"
-                            id='password'
-                          />
-                      </label>
-                      <input 
-                        type="submit" 
-                        value="Iniciar sesion"
-                        className="btn-enviar"
-                      />
-                  </form>
-              </div>
-          </div>
-        </div>
-
-    </div>
-
-
-      
+      </div>  
     </>
   );
 };

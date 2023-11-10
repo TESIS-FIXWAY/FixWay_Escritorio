@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './styles/loadingScreen.css';
-import Car from '../images/car.png'; 
+import Car from '../images/AutoSinFondo.png'; 
 
 const LoadingScreen = () => {
   const [textVisible, setTextVisible] = useState(false);
@@ -37,7 +37,7 @@ const LoadingScreen = () => {
           <p className="animated-text">
             <span>H</span>
             <span>a</span>
-            <span>m</span>
+            <span>n</span>
             <span>s</span>
             <span> </span>
             <span>M</span>
