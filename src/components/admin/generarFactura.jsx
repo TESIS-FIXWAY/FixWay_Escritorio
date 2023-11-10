@@ -24,95 +24,110 @@ const GenerarFactura = () => {
 
 
 
+
   const generarPDF = (productosSeleccionados, totalSinIVA, iva, totalFinal) => {
+    // Crear un nuevo documento PDF
     const pdf = new jsPDF();
   
+    // Agregar la imagen en la parte superior derecha
+    const imgData =  "../../src/images/LogoSinFoindo.png"; // Reemplazar con la ruta de tu imagen
+    const imgWidth = 50; // Ajustar el ancho de la imagen según sea necesario
+    const imgHeight = 50; // Ajustar la altura de la imagen según sea necesario
+    const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10; // Posición a la derecha
+    const imgY = 10; // Alineado con la parte superior
+    pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
+  
+    // Título "FACTURA" centrado
     pdf.setFontSize(24);
-    pdf.text("FACTURA", 10, 10);
-    pdf.line(10, 15, pdf.internal.pageSize.getWidth() - 10, 15);
+    pdf.text("FACTURA", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
   
+    // Fecha en el lado derecho del encabezado
+    const today = new Date();
+    const dateString = today.toLocaleDateString();
     pdf.setFontSize(12);
-    pdf.setTextColor(0);
-    let y = 30;
-  
-    const columnWidth = 40; // Ancho de las columnas
-  
-    // Encabezados de la tabla
-    pdf.text("Código", 10, y);
-    pdf.text("Nombre", 10 + columnWidth, y);
-    pdf.text("Descripción", 10 + 2 * columnWidth, y);
-    pdf.text("Costo Unitario", 10 + 3 * columnWidth, y);
-    pdf.text("Cantidad", 10 + 4 * columnWidth, y);
-    pdf.text("Costo Total", 10 + 5 * columnWidth, y);
-  
-    y += 10;
-  
-    // Línea separadora de encabezados y datos
-    pdf.line(10, y, pdf.internal.pageSize.getWidth() - 10, y);
-    y += 5;
-  
-    // Detalles de los productos
-    productosSeleccionados.forEach((producto) => {
-      pdf.text(producto.id || "", 10, y);
-      pdf.text(producto.nombreProducto || "", 10 + columnWidth, y);
-    
-      // Dividir la descripción en líneas
-      const descripcionLines = pdf.splitTextToSize(
-        producto.descripcion || "",
-        pdf.internal.pageSize.getWidth() - 20 - 2 * columnWidth
-      );
-      pdf.text(descripcionLines, 10 + 2 * columnWidth, y);
-    
-      pdf.text(producto.costo || "", 10 + 3 * columnWidth, y);
-      pdf.text(
-        producto.cantidad !== undefined ? producto.cantidad.toString() : "",
-        10 + 4 * columnWidth,
-        y
-      );
-    
-      const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
-      pdf.text(
-        `$${costoTotalProducto
-          .toFixed(3)
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
-        10 + 5 * columnWidth,
-        y
-      );
-    
-      // Ajustar la posición y para la siguiente línea
-      y += descripcionLines.length * 10;
-    
-      y += 10; // Espacio entre productos
+    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 50, 20);
+
+    pdf.setFontSize(12);
+    const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
+    const tipoPagoX = 160; // Alineado con el lado izquierdo
+    const tipoPagoY = 55; + imgHeight + 5; // Ajusta la posición vertical según sea necesario
+    pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
+
+    //fin del encabezado
+
+    // Dibujar una línea para separar el encabezado de la tabla
+    const lineY = tipoPagoY + 15; // Ajusta la posición vertical según sea necesario
+    pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
+
+
+    // Tabla del producto
+
+
+    // Reducir el tamaño de la letra
+    const fontSize = 10;
+    pdf.setFontSize(fontSize);
+
+    const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
+    const tableX = 15; // Alineado con el lado izquierdo
+    const tableY = lineY + 10; // Ajusta la posición vertical según sea necesario
+
+    headers.forEach((header, index) => {
+      pdf.text(header, tableX + index * 40, tableY);
     });
-  
-    // Línea separadora de datos y totales
-    pdf.line(10, y - 5, pdf.internal.pageSize.getWidth() - 10, y - 5);
-    y += 10;
-  
-    // Totales
-    pdf.text("Total sin IVA:", 10, y);
-    pdf.text(
-      `$${totalSinIVA.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
-      10 + 5 * columnWidth,
-      (y += 10)
+
+    // Calcular la altura necesaria para mostrar todos los productos
+    const rowSpacing = 3;
+    const productosHeight = productosSeleccionados.reduce(
+      (total, producto) => total + pdf.getTextDimensions(producto.descripcion).h + rowSpacing,
+      0
     );
-  
-    pdf.text("IVA (19%):", 10, y);
-    pdf.text(
-      `$${iva.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
-      10 + 5 * columnWidth,
-      (y += 10)
-    );
-  
-    pdf.text("Total final:", 10, y);
-    pdf.text(
-      `$${totalFinal.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`,
-      10 + 5 * columnWidth,
-      (y += 10)
-    );
-  
+
+    // Mostrar productos seleccionados en la tabla con espaciado
+    let currentY = tableY + 10; // Comenzar después de la cabecera
+    productosSeleccionados.forEach((producto) => {
+      const { h } = pdf.getTextDimensions(producto.descripcion);
+      const lines = pdf.splitTextToSize(producto.descripcion, 50);
+    
+      lines.forEach((line, i) => {
+        pdf.text(line, tableX + 60, currentY);
+        currentY += h + rowSpacing;
+      });
+    
+      pdf.text(producto.nombreProducto, tableX, currentY - 13);
+      pdf.text(producto.cantidad.toString(), tableX + 45, currentY - 13);
+      pdf.text(producto.costo.toString(), tableX + 120, currentY - 13);
+      const totalProducto = producto.cantidad * producto.costo;
+      pdf.text(totalProducto.toString(), tableX + 160, currentY - 10); // Ajuste en la posición Y
+      currentY += h + rowSpacing;
+    });
+
+    // Calcular la altura final de la tabla
+    const tableHeight = Math.max(30, productosHeight + 20); // Mínimo de 30 para la cabecera
+
+
+    pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
+
+    
     pdf.save("factura.pdf");
   };
+
+
+
+
+
+
+
+
+
+
+
+    
+  
+  
+  
+  
+  
+  
   
 
 
@@ -234,14 +249,49 @@ const GenerarFactura = () => {
     }
   }
 
-  const generarFactura = () => {
-    const nuevaFactura = {
-      productos: productosSeleccionados.map((producto) => ({
-        ...producto,
-      })),
-      tipoPago: tipoPago,
-    };
-    const facturasCollection = collection(db, "mifacturas");
+  const generarFactura = async () => {
+    try {
+      const nuevaFactura = {
+        productos: productosSeleccionados.map((producto) => ({
+          ...producto,
+        })),
+        tipoPago: tipoPago,
+      };
+      const facturasCollection = collection(db, "mifacturas");
+      const batch = writeBatch(db);
+
+      // Procesar cada producto
+      for (const producto of productosSeleccionados) {
+        const productoRef = doc(db, "inventario", producto.id);
+
+        if (typeof producto.cantidad === 'number') {
+          const docSnapshot = await getDoc(productoRef);
+          const existingQuantity = docSnapshot.data().cantidad;
+          const newQuantity = existingQuantity - producto.cantidad;
+
+          batch.update(productoRef, { cantidad: newQuantity });
+        } else {
+          console.error("Invalid cantidad value:", producto.cantidad);
+        }
+      }
+
+      // Agregar la nueva factura
+      const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
+
+      // Cometer la transacción
+      await batch.commit();
+
+      // Generar el PDF después de procesar todos los productos
+      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
+
+      // Limpiar los productos seleccionados y ocultar la lista
+      setProductosSeleccionados([]);
+      setShowProductList(false);
+    } catch (error) {
+      console.error("Error al generar la factura:", error);
+    }
+  
+
 
     addDoc(facturasCollection, nuevaFactura)
       .then((nuevaFacturaRef) => {

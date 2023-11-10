@@ -11,25 +11,18 @@ const AgregarInventario = () => {
     const codigoProducto = e.target.codigoProducto.value;
     const nombreProducto = e.target.nombreProducto.value;
     const descripcion = e.target.descripcion.value;
-    const cantidad = e.target.cantidad.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
-    const costo = Number(e.target.costo.value); // Convertir a número
+    const cantidad = e.target.cantidad.value.replace(/[^0-9]/g, "");
+    const costo = Number(e.target.costo.value).toLocaleString("es-CL"); // Formatear el costo con separadores de miles
     const categoria = e.target.categoria.value;
     const marca = e.target.marca.value;
     const id = codigoProducto;
-    
-    // Formatear el costo como moneda (en este caso, pesos chilenos)
-    const costoFormateado = costo.toLocaleString("es-CL", {
-      style: "currency",
-      currency: "CLP",
-    });
 
-    
     const data = {
       codigoProducto,
       nombreProducto,
       descripcion,
       cantidad,
-      costo: costoFormateado, // Usar el costo formateado
+      costo, // Utiliza el costo formateado con separadores de miles
       categoria,
       marca,
       id,
@@ -38,10 +31,9 @@ const AgregarInventario = () => {
     e.target.reset();
   };
 
-
   const handleCantidadChange = (e) => {
-    const cantidad = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
-    const cantidadFormateada = cantidad.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Formatea a miles
+    const cantidad = e.target.value.replace(/[^0-9]/g, "");
+    const cantidadFormateada = cantidad.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     setCantidadFormateada(cantidadFormateada);
   };
 
@@ -110,7 +102,7 @@ const AgregarInventario = () => {
                       className="input_formulario"
                       id="costo"
                       required
-                      type="number"
+                      type="text" // Cambia el tipo a text para evitar caracteres no numéricos
                       name="costo"
                       placeholder="ejemplo: 10000"
                     />
