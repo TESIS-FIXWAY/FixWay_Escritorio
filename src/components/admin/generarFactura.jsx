@@ -82,6 +82,9 @@ const GenerarFactura = () => {
       0
     );
 
+    // Inicializar variable para el neto
+    let neto = 0;
+
     // Mostrar productos seleccionados en la tabla con espaciado
     let currentY = tableY + 10; // Comenzar después de la cabecera
     productosSeleccionados.forEach((producto) => {
@@ -101,11 +104,15 @@ const GenerarFactura = () => {
       currentY += h + rowSpacing;
     });
 
+    // Mostrar el neto fuera de la tabla
+    pdf.text(`Neto: ${neto.toFixed(2)}`, tableX + 120, currentY + 10);
+
     // Calcular la altura final de la tabla
     const tableHeight = Math.max(30, productosHeight + 20); // Mínimo de 30 para la cabecera
 
-
     pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
+
+
 
     
     pdf.save("factura.pdf");
