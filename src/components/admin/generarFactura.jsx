@@ -25,23 +25,19 @@ const GenerarFactura = () => {
 
 
 
-  const generarPDF = (productosSeleccionados, totalSinIVA, iva, totalFinal) => {
-    // Crear un nuevo documento PDF
+  const generarPDF = (productosSeleccionados, totalSinIVA) => {
     const pdf = new jsPDF();
   
-    // Agregar la imagen en la parte superior derecha
-    const imgData =  "../../src/images/LogoSinFoindo.png"; // Reemplazar con la ruta de tu imagen
-    const imgWidth = 50; // Ajustar el ancho de la imagen según sea necesario
-    const imgHeight = 50; // Ajustar la altura de la imagen según sea necesario
-    const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10; // Posición a la derecha
-    const imgY = 10; // Alineado con la parte superior
+    const imgData =  "../../src/images/LogoSinFoindo.png"; 
+    const imgWidth = 50; 
+    const imgHeight = 50; 
+    const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10; 
+    const imgY = 10; 
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
   
-    // Título "FACTURA" centrado
     pdf.setFontSize(24);
     pdf.text("FACTURA", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
-  
-    // Fecha en el lado derecho del encabezado
+    
     const today = new Date();
     const dateString = today.toLocaleDateString();
     pdf.setFontSize(12);
@@ -49,33 +45,27 @@ const GenerarFactura = () => {
 
     pdf.setFontSize(12);
     const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
-    const tipoPagoX = 160; // Alineado con el lado izquierdo
-    const tipoPagoY = 55; + imgHeight + 5; // Ajusta la posición vertical según sea necesario
+    const tipoPagoX = 160; 
+    const tipoPagoY = 55; + imgHeight + 5; 
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
+
 
     //fin del encabezado
 
-    // Dibujar una línea para separar el encabezado de la tabla
-    const lineY = tipoPagoY + 15; // Ajusta la posición vertical según sea necesario
+    const lineY = tipoPagoY + 15; 
     pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
 
-
-    // Tabla del producto
-
-
-    // Reducir el tamaño de la letra
     const fontSize = 10;
     pdf.setFontSize(fontSize);
 
     const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
-    const tableX = 15; // Alineado con el lado izquierdo
-    const tableY = lineY + 10; // Ajusta la posición vertical según sea necesario
+    const tableX = 15; 
+    const tableY = lineY + 10; 
 
     headers.forEach((header, index) => {
       pdf.text(header, tableX + index * 40, tableY);
     });
 
-    // Calcular la altura necesaria para mostrar todos los productos
     const rowSpacing = 3;
     const productosHeight = productosSeleccionados.reduce(
       (total, producto) => total + pdf.getTextDimensions(producto.descripcion).h + rowSpacing,
@@ -85,36 +75,43 @@ const GenerarFactura = () => {
     // Inicializar variable para el neto
     let neto = 0;
 
-    // Mostrar productos seleccionados en la tabla con espaciado
-    let currentY = tableY + 10; // Comenzar después de la cabecera
+    let currentY = tableY + 10; 
     productosSeleccionados.forEach((producto) => {
       const { h } = pdf.getTextDimensions(producto.descripcion);
       const lines = pdf.splitTextToSize(producto.descripcion, 50);
-    
+
       lines.forEach((line, i) => {
         pdf.text(line, tableX + 60, currentY);
         currentY += h + rowSpacing;
       });
-    
-      pdf.text(producto.nombreProducto, tableX, currentY - 13);
-      pdf.text(producto.cantidad.toString(), tableX + 45, currentY - 13);
-      pdf.text(producto.costo.toString(), tableX + 120, currentY - 13);
-      const totalProducto = producto.cantidad * producto.costo;
-      pdf.text(totalProducto.toString(), tableX + 160, currentY - 10); // Ajuste en la posición Y
+
+      pdf.text(producto.nombreProducto, tableX, currentY - 10);
+      pdf.text(producto.cantidad.toString(), tableX + 45, currentY - 10);
+
+      const costoNumerico = parseFloat(producto.costo.replace(/\./g, '').replace(',', '.'));
+
+      pdf.text(costoNumerico.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 120, currentY - 10);
+
+      const totalProducto = producto.cantidad * costoNumerico;
+      pdf.text(totalProducto.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 160, currentY - 10);
+
+      neto += totalProducto; 
+
       currentY += h + rowSpacing;
     });
 
-    // Mostrar el neto fuera de la tabla
-    pdf.text(`Neto: ${neto.toFixed(2)}`, tableX + 120, currentY + 10);
 
-    // Calcular la altura final de la tabla
-    const tableHeight = Math.max(30, productosHeight + 20); // Mínimo de 30 para la cabecera
+    pdf.text(`Neto: ${neto.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
 
+    const iva = neto * 0.19;
+    pdf.text(`Total IVA (19%): ${iva.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
+
+    const totalFinal = neto + iva;
+    pdf.text(`Total Final: ${totalFinal.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
+
+
+    const tableHeight = Math.max(30, productosHeight + 20); 
     pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
-
-
-
-    
     pdf.save("factura.pdf");
   };
 
