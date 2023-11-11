@@ -189,43 +189,7 @@ const GenerarFactura = () => {
     setShowProductList(!showProductList);
   };
 
-  const aumentarCantidad = (id) => {
-    setProductosSeleccionados((prevProductos) => {
-      return prevProductos.map((producto) => {
-        if (producto.id === id) {
-          const nuevaCantidad = producto.cantidad + 1;
-          const stock = inventario.find((p) => p.id === id).cantidad;
 
-          if (nuevaCantidad > stock) {
-            alert("No hay suficiente stock disponible.");
-            return producto;
-          } else {
-            return { ...producto, cantidad: nuevaCantidad };
-          }
-        } else {
-          return producto;
-        }
-      });
-    });
-  };
-
-  const disminuirCantidad = (id) => {
-    setProductosSeleccionados((prevProductos) => {
-      return prevProductos.map((producto) => {
-        if (producto.id === id) {
-          const nuevaCantidad = producto.cantidad - 1;
-          if (nuevaCantidad < 0) {
-            alert("La cantidad no puede ser menor que cero.");
-            return producto;
-          } else {
-            return { ...producto, cantidad: nuevaCantidad };
-          }
-        } else {
-          return producto;
-        }
-      });
-    });
-  };
 
   const quitarProducto = (id) => {
     const nuevaLista = productosSeleccionados.filter((producto) => producto.id !== id);
@@ -285,8 +249,7 @@ const GenerarFactura = () => {
       // Agregar la nueva factura
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
 
-      // Cometer la transacción
-      await batch.commit();
+
 
       // Generar el PDF después de procesar todos los productos
       generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
@@ -407,7 +370,6 @@ const GenerarFactura = () => {
                   <th scope="col">Código</th>
                   <th scope="col">Nombre del Producto</th>
                   <th scope="col">Costo</th>
-                  <th scope="col">Tipo <br /> de pago</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Acciones</th>
                 </tr>
@@ -418,16 +380,6 @@ const GenerarFactura = () => {
                     <td>{item.id}</td>
                     <td>{item.nombreProducto}</td>
                     <td>{item.costo}</td>
-                    <td>
-                      <select
-                        value={tipoPago}
-                        onChange={(e) => setTipoPago(e.target.value)}
-                        style={{ marginLeft: "10px" }}
-                      >
-                        <option value="contado">Contado</option>
-                        <option value="credito">Crédito</option>
-                      </select>
-                    </td>
                     <td>
                       <input
                         type="number"
@@ -441,8 +393,6 @@ const GenerarFactura = () => {
                       />
                     </td>
                     <td>
-                      <button onClick={() => aumentarCantidad(item.id)}>+</button>
-                      <button onClick={() => disminuirCantidad(item.id)}>-</button>
                       <button onClick={() => quitarProducto(item.id)} style={{ backgroundColor: "red" }}>Quitar</button>
                     </td>
                   </tr>
@@ -478,6 +428,15 @@ const GenerarFactura = () => {
           </button>
 
           <button onClick={toggleDiscountMenu} style={{background: "#E74C3C"}}>Añadir Descuento %</button>
+
+          <select
+            value={tipoPago}
+            onChange={(e) => setTipoPago(e.target.value)}
+            style={{ width: '100px' }}
+          >
+            <option value="contado">Contado</option>
+            <option value="credito">Crédito</option>
+          </select>
 
           {showDiscountMenu && mostrarDescuentoMenu()}
 
