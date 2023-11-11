@@ -10,6 +10,18 @@ import {
   writeBatch,
   getDoc,
 } from "firebase/firestore";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faEyeSlash,
+  faFilePdf,
+  faList,
+ } from '@fortawesome/free-solid-svg-icons';
+library.add(
+  faFilePdf,
+  faList,
+  faEyeSlash
+);
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
@@ -364,42 +376,57 @@ const GenerarFactura = () => {
         <div className="fondo_no">
           <div className="editar" style={{ width: '1100px' }}>
             <p className="p_editar">Productos Seleccionados</p>
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Código</th>
-                  <th scope="col">Nombre del Producto</th>
-                  <th scope="col">Costo</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productosSeleccionados.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.id}</td>
-                    <td>{item.nombreProducto}</td>
-                    <td>{item.costo}</td>
-                    <td>
-                      <input
-                        type="number"
-                        min="0"
-                        style={{ width: '80px' }}
-                        value={item.cantidad || 0}
-                        onChange={(e) => {
-                          const nuevaCantidad = parseInt(e.target.value, 10) || 0;
-                          actualizarCantidadManual(item.id, nuevaCantidad);
-                        }}
-                      />
-                    </td>
-                    <td>
-                      <button onClick={() => quitarProducto(item.id)} style={{ backgroundColor: "red" }}>Quitar</button>
-                    </td>
+            <div style={{ maxHeight: '400px', overflowY: 'auto' }}> {/* Establece la altura máxima y agrega scroll si es necesario */}
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Nombre del Producto</th>
+                    <th scope="col">Costo</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-              <button style={{ background: 'green', margin: '60px 0px 0px' }} onClick={toggleProductList}>Ocultar listado de productos</button>
-            </table>
+                </thead>
+                <tbody>
+                  {productosSeleccionados.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.id}</td>
+                      <td>{item.nombreProducto}</td>
+                      <td>{item.costo}</td>
+                      <td>
+                        <input
+                          type="number"
+                          min="0"
+                          style={{ width: '80px' }}
+                          value={item.cantidad || 0}
+                          onChange={(e) => {
+                            const nuevaCantidad = parseInt(e.target.value, 10) || 0;
+                            actualizarCantidadManual(item.id, nuevaCantidad);
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <button onClick={() => quitarProducto(item.id)} style={{ backgroundColor: "red" }}>
+                          <FontAwesomeIcon icon="fa-solid fa-xmark" /> Quitar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <tfoot>
+              <tr>
+                <td colSpan="5">
+                  <button style={{ background: '#E74C3C', marginRight: '10px' }} onClick={() => setProductosSeleccionados([])}>
+                  <FontAwesomeIcon icon="fa-solid fa-trash" /> Vaciar Lista
+                  </button>
+                  <button style={{ background: '#1DC258' }} onClick={toggleProductList}>
+                  <FontAwesomeIcon icon="fa-solid fa-eye-slash" /> Ocultar listado de productos
+                  </button>
+                </td>
+              </tr>
+            </tfoot>
           </div>
         </div>
       );
@@ -424,7 +451,7 @@ const GenerarFactura = () => {
             }}
             onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
             onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}>
-            Generar Factura
+            <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Factura
           </button>
 
           <button onClick={toggleDiscountMenu} style={{background: "#E74C3C"}}>Añadir Descuento %</button>
@@ -441,11 +468,13 @@ const GenerarFactura = () => {
           {showDiscountMenu && mostrarDescuentoMenu()}
 
           <button style={{ background: "#1DC258" }} onClick={toggleProductList}>
-            {showProductList ? "Ocultar Lista" : "Mostrar Lista"} ({productosSeleccionados.length})
+            <FontAwesomeIcon icon="fa-solid fa-list" />
+            {showProductList ? "Ocultar Lista" : " Mostrar Lista"} ({productosSeleccionados.length})
           </button>
 
           {showProductList && mostrarListadoProductos()}
-          <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} />
+          
+          <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} /> 
         </div>
 
 
