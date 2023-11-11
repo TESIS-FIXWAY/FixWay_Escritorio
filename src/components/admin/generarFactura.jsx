@@ -16,8 +16,9 @@ const GenerarFactura = () => {
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [showProductList, setShowProductList] = useState(false);
   const [tipoPago, setTipoPago] = useState("contado");
-
-
+  const [showDiscountMenu, setShowDiscountMenu] = useState(false);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [descuentoMenuValue, setDescuentoMenuValue] = useState('');
 
 
 
@@ -142,7 +143,9 @@ const GenerarFactura = () => {
 
 
 
-
+  const toggleDiscountMenu = () => {
+    setShowDiscountMenu(!showDiscountMenu);
+  };
 
   const totalSinIVA = productosSeleccionados.reduce((total, producto) => {
     const costoTotalProducto = (producto.costo || 0) * (producto.cantidad || 1);
@@ -168,16 +171,16 @@ const GenerarFactura = () => {
 
   const toggleSeleccionProducto = (id) => {
     const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
-  
+
     if (productoIndex === -1) {
       const productoSeleccionado = inventario.find((producto) => producto.id === id);
       setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 0 }]);
-      setShowProductList(true); // Mostrar la lista al seleccionar un producto
+      setShowProductList(false);
     } else {
       const nuevaLista = [...productosSeleccionados];
       nuevaLista.splice(productoIndex, 1);
       setProductosSeleccionados(nuevaLista);
-      setShowProductList(false); // Ocultar la lista al deseleccionar un producto
+      setShowProductList(false);
     }
   };
 
@@ -192,7 +195,7 @@ const GenerarFactura = () => {
         if (producto.id === id) {
           const nuevaCantidad = producto.cantidad + 1;
           const stock = inventario.find((p) => p.id === id).cantidad;
-  
+
           if (nuevaCantidad > stock) {
             alert("No hay suficiente stock disponible.");
             return producto;
@@ -231,7 +234,7 @@ const GenerarFactura = () => {
   
   const actualizarCantidadManual = (id, nuevaCantidad) => {
     const producto = inventario.find((p) => p.id === id);
-  
+
     if (producto && nuevaCantidad > producto.cantidad) {
       alert("No hay suficiente stock disponible");
       return;
@@ -251,7 +254,7 @@ const GenerarFactura = () => {
     if (value === "") {
       window.location.reload();
     }
-  }
+  };
 
   const generarFactura = async () => {
     try {
@@ -346,7 +349,49 @@ const GenerarFactura = () => {
 
   
 
-
+  const handleDescuentoChange = (e) => {
+    const { value } = e.target;
+    if (/^[1-9][0-9]?$|^100$/.test(value) || value === '') {
+      setDescuentoMenuValue(value);
+    }
+  };
+  
+  const aplicarDescuento = () => {
+    const descuento = parseInt(descuentoMenuValue, 10);
+    console.log(`Descuento aplicado: ${descuento}%`);
+    // Puedes agregar lógica adicional aquí para aplicar el descuento a tu factura.
+    // Por ejemplo, podrías ajustar el cálculo del total final.
+  
+    // Oculta el menú de descuentos después de aplicar el descuento
+    setShowDiscountMenu(false);
+  };
+  
+  const cancelarDescuento = () => {
+    // Puedes agregar lógica adicional aquí si es necesario
+    // En este ejemplo, simplemente se oculta el menú de descuentos
+    setShowDiscountMenu(false);
+  };
+  
+  const mostrarDescuentoMenu = () => {
+    if (showDiscountMenu) {
+      return (
+        <div className="fondo_no">
+          <div className="editar" style={{ width: '413px' }}>
+            <div className="descuento-menu">
+              <input
+                type="text"
+                placeholder="Descuento (%)"
+                value={descuentoMenuValue}
+                onChange={handleDescuentoChange}
+              />
+              <button onClick={aplicarDescuento} style={{ background: "#1DC258" }}> Aplicar Descuento</button>
+              <button onClick={cancelarDescuento} style={{background: "#E74C3C"}}>Cancelar Descuento</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
 
 
 
@@ -398,7 +443,7 @@ const GenerarFactura = () => {
                     <td>
                       <button onClick={() => aumentarCantidad(item.id)}>+</button>
                       <button onClick={() => disminuirCantidad(item.id)}>-</button>
-                      <button onClick={() => quitarProducto(item.id)} style={{ backgroundColor: "red" }}> Quitar </button>                  
+                      <button onClick={() => quitarProducto(item.id)} style={{ backgroundColor: "red" }}>Quitar</button>
                     </td>
                   </tr>
                 ))}
@@ -415,8 +460,6 @@ const GenerarFactura = () => {
 
 
 
-  
-
 
   return (
     <>
@@ -425,18 +468,23 @@ const GenerarFactura = () => {
         <div className="table_header">
           <h1>Generar Factura</h1>
           <button
-            onClick={generarFactura}
+            onClick={() => generarPDF(productosSeleccionados)}
             style={{
               backgroundColor: "#6fa0e8",
             }}
             onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}
-          >
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}>
             Generar Factura
           </button>
-          <button style={{ background: "green" }} onClick={toggleProductList}>
+
+          <button onClick={toggleDiscountMenu} style={{background: "#E74C3C"}}>Añadir Descuento %</button>
+
+          {showDiscountMenu && mostrarDescuentoMenu()}
+
+          <button style={{ background: "#1DC258" }} onClick={toggleProductList}>
             {showProductList ? "Ocultar Lista" : "Mostrar Lista"} ({productosSeleccionados.length})
           </button>
+
           {showProductList && mostrarListadoProductos()}
           <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} />
         </div>
