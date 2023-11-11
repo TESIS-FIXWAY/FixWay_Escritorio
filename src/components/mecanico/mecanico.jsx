@@ -93,14 +93,14 @@ const Mecanico = () => {
         <div className='cont_menu'>
           
           <nav>
-            <Link to="" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
+            <Link to="/indexMecanico" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-house" />
               <span className='link_name'>volver al menu</span>
             </Link>
 <hr />
-            <Link to="" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-house" />
-              <span className='link_name'>generar cotizacion</span>
+            <Link to="/gestionMantenciones" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-car" />
+              <span className='link_name'>Gestion Mantenciones</span>
             </Link>
           </nav>
 

@@ -193,7 +193,7 @@ const ListarUsuario = () => {
                   <th scope="col">Apellido</th>
                   <th scope="col">Direccion</th>
                   <th scope="col">Telefono</th>
-                  <th scope="col">Correo Electrónico</th> {/* Nueva columna para el correo electrónico */}
+                  <th scope="col">Correo <br /> Electrónico</th> {/* Nueva columna para el correo electrónico */}
                   <th scope="col">Cargo <br /> de trabajo</th>
                   <th scope="col">Sueldo</th>
                   <th scope="col">Fecha <br /> de Ingreso</th>

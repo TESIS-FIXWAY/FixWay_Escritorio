@@ -46,7 +46,7 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      user.rol === 'administrador' ? navigate("/indexAdmin") : navigate("/mecanico");
+      user.rol === 'administrador' ? navigate("/indexAdmin") : navigate("/indexMecanico");
     } catch (error) {
       console.error("Login failed", error.message);
       setError("Correo o contraseña incorrectos.");

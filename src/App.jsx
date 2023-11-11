@@ -16,6 +16,8 @@ import GenerarFactura from "./components/admin/generarFactura";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
+import IndexMecanico from "./components/mecanico/indexMecanico";
+import GestionMantenciones from "./components/mecanico/gestionMantenciones";
 
 import Error from './components/404';
 
@@ -65,6 +67,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path='/indexMecanico' element={<IndexMecanico />} />
+              <Route path='/gestionMantenciones' element={<GestionMantenciones />} />
               <Route path="*" element={<Error />} />
             </Routes>
           </AuthContextProvider>
