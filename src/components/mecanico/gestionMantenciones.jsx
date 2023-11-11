@@ -5,8 +5,6 @@ import {
   collection,
   onSnapshot,
   query,
-  doc,
-  updateDoc,
 } from "firebase/firestore";
 
 const GestionMantenciones = () => {
@@ -20,31 +18,23 @@ const GestionMantenciones = () => {
       const q = query(mantencionesCollection);
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const todoTasksData = [];
-        const inProgressTasksData = [];
-        const completedTasksData = [];
+        const allTasksData = [];
 
         querySnapshot.forEach((doc) => {
-          const task = { id: doc.id, ...doc.data() };
-          if (task.estado === "Por hacer") {
-            todoTasksData.push(task);
-          } else if (task.estado === "En proceso") {
-            inProgressTasksData.push(task);
-          } else if (task.estado === "Finalizada") {
-            completedTasksData.push(task);
-          }
+          const task = { id: doc.id, ...doc.data(), estado: "Por hacer" };
+          allTasksData.push(task);
         });
 
-        setTodoTasks(todoTasksData);
-        setInProgressTasks(inProgressTasksData);
-        setCompletedTasks(completedTasksData);
+        setTodoTasks(allTasksData);
+        setInProgressTasks([]); // Clear other columns initially
+        setCompletedTasks([]); // Clear other columns initially
       });
 
       return () => unsubscribe();
     };
 
     fetchData();
-  }, []); // Run this effect only once when the component mounts
+  }, []); 
 
   return (
     <>

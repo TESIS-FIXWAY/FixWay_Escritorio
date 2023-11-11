@@ -1,14 +1,15 @@
+/* Example CSS */
 .container-form {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .informacion {
-  background-color: #f0f0f0;
-  border-radius: 8px;
+  background-color: #f4f4f4;
   padding: 20px;
-  margin-top: 20px;
+  border-radius: 10px;
 }
 
 .info h1 {
@@ -23,14 +24,15 @@
 
 .task-column {
   flex: 1;
-  background-color: #e0e0e0;
-  border-radius: 8px;
   padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   margin: 0 10px;
 }
 
 .task-column h2 {
-  color: #333;
+  color: #555;
 }
 
 ul {
@@ -39,8 +41,27 @@ ul {
 }
 
 li {
-  background-color: #ffffff;
-  margin-bottom: 8px;
-  padding: 10px;
-  border-radius: 4px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .task-board {
+    flex-direction: column;
+  }
+
+  .task-column {
+    margin: 10px 0;
+  }
+}
+
+li {
+  transition: background-color 0.3s ease;
+}
+
+li:hover {
+  background-color: #e0e0e0;
 }
