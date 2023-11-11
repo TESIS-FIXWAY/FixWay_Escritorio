@@ -90,10 +90,10 @@ const GenerarFactura = () => {
 
       const costoNumerico = parseFloat(producto.costo.replace(/\./g, '').replace(',', '.'));
 
-      pdf.text(costoNumerico.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 120, currentY - 10);
+      pdf.text(costoNumerico.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 120, currentY - 10);
 
       const totalProducto = producto.cantidad * costoNumerico;
-      pdf.text(totalProducto.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 160, currentY - 10);
+      pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 160, currentY - 10);
 
       neto += totalProducto; 
 
@@ -101,13 +101,13 @@ const GenerarFactura = () => {
     });
 
 
-    pdf.text(`Neto: ${neto.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
+    pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
 
     const iva = neto * 0.19;
-    pdf.text(`Total IVA (19%): ${iva.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
+    pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
 
     const totalFinal = neto + iva;
-    pdf.text(`Total Final: ${totalFinal.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
+    pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
 
 
     const tableHeight = Math.max(30, productosHeight + 20); 
