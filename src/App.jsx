@@ -18,6 +18,7 @@ import GenerarFactura from "./components/admin/generarFactura";
 import Mecanico from "./components/mecanico/mecanico";
 import IndexMecanico from "./components/mecanico/indexMecanico";
 import GestionMantenciones from "./components/mecanico/gestionMantenciones";
+import GenerarQR from "./components/mecanico/GenerarQR";
 
 import Error from './components/404';
 
@@ -69,6 +70,7 @@ function App() {
               />
               <Route path='/indexMecanico' element={<IndexMecanico />} />
               <Route path='/gestionMantenciones' element={<GestionMantenciones />} />
+              <Route path="/generarQR" element={<GenerarQR/>}/>
               <Route path="*" element={<Error />} />
             </Routes>
           </AuthContextProvider>

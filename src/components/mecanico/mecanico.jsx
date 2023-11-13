@@ -102,6 +102,11 @@ const Mecanico = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-car" />
               <span className='link_name'>Gestion Mantenciones</span>
             </Link>
+
+            <Link to="/GenerarQR" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-qrcode" />
+              <span className='link_name'>Generar QR</span>
+            </Link>
           </nav>
 
           <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /></label>
