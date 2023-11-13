@@ -16,12 +16,13 @@
 
 .container_mantencion_tareas {
   background-color: rgba(52, 152, 219, 0.2); /* Fondo azul transparente */
-  margin: 20px; 
+  margin: 20px;
   width: 25%;
-  min-height: 100px; 
+  min-height: 100px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 3, 0.5); /* Agrega una sombra al contorno */
-  cursor: grab; /* Cambia el cursor al estilo "agarre" al pasar el mouse */
+  transition: background-color 0.3s ease, max-height 0.3s ease; /* Agrega transiciones */
+  overflow: hidden;
 }
 
 .container_mantencion_tareas_titulos {
@@ -47,15 +48,20 @@
   background-color: #ecf0f1;
   border: 1px solid #bdc3c7;
   border-radius: 5px;
-  margin-bottom: 15px; /* Ajusta el margen inferior para la separación hacia abajo */
+  margin-bottom: 15px;
   padding: 8px;
-  width: 70%; /* Ajusta el ancho según tus necesidades */
-  margin-left: auto; /* Centra el contenedor horizontalmente */
-  margin-right: auto; /* Centra el contenedor horizontalmente */
-  text-align: center; /* Centra el texto dentro del contenedor */
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  transition: background-color 0.3s ease, max-height 0.3s ease; /* Agrega transiciones */
+  overflow: hidden;
 }
 .task-container:hover {
   background-color: #d5dbdb;
+}
+.task-container.expanded {
+  max-height: 500px; /* Ajusta según sea necesario */
 }
 
 .container_mantencion_tareas ul {
@@ -68,3 +74,4 @@
 .expanded button {
   background-color: #1dc258;
 }
+
