@@ -43,6 +43,7 @@
 
 .animated-text span {
   opacity: 0;
+  color: #3498db;
   transform: translateY(10px);
   animation: appear 0.5s ease-out forwards;
 }

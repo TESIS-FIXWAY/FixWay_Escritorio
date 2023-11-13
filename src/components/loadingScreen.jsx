@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './styles/loadingScreen.css';
-import Car from '../images/AutoSinFondo.png'; 
+import Car from '../images/AutoSinFondo2.png'; 
 
 const LoadingScreen = () => {
   const [textVisible, setTextVisible] = useState(false);

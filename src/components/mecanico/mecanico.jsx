@@ -67,7 +67,7 @@ const Mecanico = () => {
         <div className='contenedor-header'>
           <div className='btn-menu'>
             <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/></label>
-            <Link to=""  className='menu_home'>
+            <Link to="/indexMecanico"  className='menu_home'>
               <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/></label>
             </Link>
           </div>

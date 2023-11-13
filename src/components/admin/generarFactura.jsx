@@ -31,6 +31,7 @@ const GenerarFactura = () => {
   const [showDiscountMenu, setShowDiscountMenu] = useState(false);
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [descuentoMenuValue, setDescuentoMenuValue] = useState('');
+  const [descuentoAplicado, setDescuentoAplicado] = useState(0);
 
 
 
@@ -119,9 +120,10 @@ const GenerarFactura = () => {
     const iva = neto * 0.19;
     pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
 
-    const totalFinal = neto + iva;
+    const totalFinal = neto + iva - descuentoAplicado;
     pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
-
+  
+  
 
     const tableHeight = Math.max(30, productosHeight + 20); 
     pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
@@ -264,7 +266,7 @@ const GenerarFactura = () => {
 
 
       // Generar el PDF después de procesar todos los productos
-      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
+      generarPDF(productosSeleccionados);
 
       // Limpiar los productos seleccionados y ocultar la lista
       setProductosSeleccionados([]);
@@ -336,7 +338,16 @@ const GenerarFactura = () => {
     console.log(`Descuento aplicado: ${descuento}%`);
     // Puedes agregar lógica adicional aquí para aplicar el descuento a tu factura.
     // Por ejemplo, podrías ajustar el cálculo del total final.
+
+    // Calcula el descuento en cantidad
+    const descuentoCantidad = (descuento / 100) * totalSinIVA;
   
+    // Calcula el descuento en el total final
+    const descuentoTotalFinal = (descuento / 100) * (totalSinIVA + (totalSinIVA * 0.19));
+
+    // Actualiza el estado del descuento aplicado
+    setDescuentoAplicado(descuentoTotalFinal);
+
     // Oculta el menú de descuentos después de aplicar el descuento
     setShowDiscountMenu(false);
   };
