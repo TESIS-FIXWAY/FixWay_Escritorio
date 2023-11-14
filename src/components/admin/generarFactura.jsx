@@ -255,6 +255,7 @@ const GenerarFactura = () => {
           const existingQuantity = docSnapshot.data().cantidad;
           const newQuantity = existingQuantity - producto.cantidad;
 
+          // Actualizar la cantidad en el inventario
           batch.update(productoRef, { cantidad: newQuantity });
         } else {
           console.error("Invalid cantidad value:", producto.cantidad);
