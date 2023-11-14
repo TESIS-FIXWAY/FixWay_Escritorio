@@ -4,8 +4,6 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import Admin from "./admin";
-import { Bar } from 'react-chartjs-2';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -32,29 +30,7 @@ library.add(
   faFileLines,
 );
 
-
-const getSelectedPatenteData = () => {
-  return [10, 20, 15, 30];
-};
-
 const IndexAdmin = () => {
-  const [selectedPatente, setSelectedPatente] = useState(getSelectedPatenteData());
-
-  const [chartData, setChartData] = useState({
-    labels: ['Mes1', 'Mes2', 'Mes3', 'Mes4'],
-    datasets: [
-      {
-        label: 'Patentes Ingresadas',
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderWidth: 1,
-        hoverBackgroundColor: 'rgba(75,192,192,0.4)',
-        hoverBorderColor: 'rgba(75,192,192,1)',
-        data: selectedPatente,
-      },
-    ],
-  });
-
   const navigate = useNavigate();
 
   const usuarios = () => {
