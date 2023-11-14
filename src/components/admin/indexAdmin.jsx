@@ -76,9 +76,9 @@ const IndexAdmin = () => {
           </div>
         </div>
 
-        <div className='grafico_barras'>
+        {/* <div className='grafico_barras'>
           <Bar data={chartData} />
-        </div>
+        </div> */}
 
         <div className='contenedor_cartas_iconos'>
 

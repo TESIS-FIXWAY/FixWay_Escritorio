@@ -5,6 +5,16 @@ import QRCode from 'qrcode.react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { 
+  faMagnifyingGlass
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(
+  faMagnifyingGlass
+);
+
 const App = () => {
   const [patentes, setPatentes] = useState([]);
   const [filteredPatentes, setFilteredPatentes] = useState([]);
@@ -45,7 +55,6 @@ const App = () => {
     const inputValue = event.target.value;
     setSearchInput(inputValue);
 
-    // Filtrar las opciones de patentes basadas en la entrada del usuario
     const filteredPatentes = patentes.filter((patente) =>
       patente.toLowerCase().includes(inputValue.toLowerCase())
     );
@@ -57,8 +66,7 @@ const App = () => {
     const inputValue = event.target.value;
     setSearchInput(inputValue);
 
-    // Filtrar las opciones de patentes basadas en la entrada del usuario
-    const filteredPatentes = patentes.filter((patente) =>
+      const filteredPatentes = patentes.filter((patente) =>
       patente.toLowerCase().includes(inputValue.toLowerCase())
     );
 
@@ -94,6 +102,16 @@ const App = () => {
     printWindow.print();
   };
 
+
+  useEffect(() => {
+    const qrCodeCanvas = document.getElementById('qr-code-canvas');
+
+    setTimeout(() => {
+      qrCodeCanvas.classList.add('show');
+    }, 0);
+  }, [qrCodeValue]);
+
+
   return (
     <>
       <Mecanico />
@@ -107,8 +125,8 @@ const App = () => {
           {qrCodeValue && <QRCode id="qr-code-canvas" value={qrCodeValue} />}
           {qrCodeValue && (
             <div>
-              <button onClick={downloadQRCode}>Descargar código QR</button>
-              <button onClick={printQRCode}>Imprimir código QR</button>
+              <button className='boton_qr_descargar_qr' onClick={downloadQRCode}>Descargar código QR</button>
+              <button className='boton_qr_imprimir_qr' onClick={printQRCode}>Imprimir código QR</button>
             </div>
           )}
 
@@ -120,6 +138,7 @@ const App = () => {
             list="patentes-list"
             onInput={handlePatenteInput}
           />
+          <i class="fa-solid fa-magnifying-glass"/>
           <datalist id="patentes-list">
             {filteredPatentes.map((patente) => (
               <option key={patente} value={patente}>
@@ -127,9 +146,9 @@ const App = () => {
               </option>
             ))}
           </datalist>
+
         </div>
         
-
       </div>
     </>
   );

@@ -168,6 +168,7 @@ const GenerarFactura = () => {
 
   const iva = totalSinIVA * 0.19;
   const totalFinal = totalSinIVA + iva;
+  
 
   useEffect(() => {
     const obtenerInventario = async () => {
@@ -263,10 +264,10 @@ const GenerarFactura = () => {
       // Agregar la nueva factura
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
 
-
+      await batch.commit();
 
       // Generar el PDF después de procesar todos los productos
-      generarPDF(productosSeleccionados);
+      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
 
       // Limpiar los productos seleccionados y ocultar la lista
       setProductosSeleccionados([]);
@@ -274,6 +275,7 @@ const GenerarFactura = () => {
     } catch (error) {
       console.error("Error al generar la factura:", error);
     }
+  
   
 
 
@@ -458,19 +460,19 @@ const GenerarFactura = () => {
           <button
             onClick={() => generarFactura(productosSeleccionados)}
             style={{
-              backgroundColor: "#6fa0e8",
+              backgroundColor: "#6fa0e8",height:"45px", marginTop:"10px"
             }}
             onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
             onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}>
             <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Factura
           </button>
 
-          <button onClick={toggleDiscountMenu} style={{background: "#E74C3C"}}>Añadir Descuento %</button>
+          <button onClick={toggleDiscountMenu} style={{background: "#E74C3C",height:"45px", marginTop:"10px"}}>Añadir Descuento %</button>
 
           <select
             value={tipoPago}
             onChange={(e) => setTipoPago(e.target.value)}
-            style={{ width: '100px' }}
+            style={{ width: '100px',height:"45px", marginTop:"10px" }}
           >
             <option value="contado">Contado</option>
             <option value="credito">Crédito</option>
@@ -478,14 +480,14 @@ const GenerarFactura = () => {
 
           {showDiscountMenu && mostrarDescuentoMenu()}
 
-          <button style={{ background: "#1DC258" }} onClick={toggleProductList}>
+          <button style={{ background: "#1DC258",height:"45px", marginTop:"10px"}} onClick={toggleProductList}>
             <FontAwesomeIcon icon="fa-solid fa-list" />
             {showProductList ? "Ocultar Lista" : " Mostrar Lista"} ({productosSeleccionados.length})
           </button>
 
           {showProductList && mostrarListadoProductos()}
           
-          <input type="text" placeholder="Buscar producto" onChange={buscadorProducto} /> 
+          <input style={{height:"45px", marginTop:"10px"}}type="text" placeholder="Buscar producto" onChange={buscadorProducto} /> 
         </div>
 
 
