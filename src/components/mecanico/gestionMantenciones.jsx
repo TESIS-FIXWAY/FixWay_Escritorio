@@ -121,7 +121,7 @@ const GestionMantenciones = () => {
 
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
-                <h2>Finalizadas</h2>
+                <h2>Entregados</h2>
               </div>
               <ul>
                 {completedTasks.map((task) => (
