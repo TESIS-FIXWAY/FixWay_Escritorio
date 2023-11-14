@@ -103,6 +103,11 @@ const Mecanico = () => {
               <span className='link_name'>Gestion Mantenciones</span>
             </Link>
 
+            <Link to="/listarInventarioMecanico" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-cubes" />
+              <span className='link_name'>Listar Inventario</span>
+            </Link>
+
             <Link to="/GenerarQR" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-qrcode" />
               <span className='link_name'>Generar QR</span>
