@@ -112,7 +112,7 @@ const App = () => {
             </div>
           )}
 
-          <input
+          <input className='input_qr'
             type="text"
             value={searchInput}
             onChange={handlePatenteChange}
