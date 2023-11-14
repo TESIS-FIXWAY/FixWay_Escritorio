@@ -1,9 +1,16 @@
 import '../styles/indexAdmin.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import Admin from "./admin";
+import { db } from '../../firebase';
+import { createChart } from 'lightweight-charts';
+import { 
+  collection,
+  getDocs,
+  doc
+} from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -17,7 +24,6 @@ import {
   faFileCirclePlus,
   faFileLines,
 } from '@fortawesome/free-solid-svg-icons';
-
 library.add(
   faUsersGear,
   faReceipt,
@@ -32,7 +38,63 @@ library.add(
 
 const IndexAdmin = () => {
   const navigate = useNavigate();
+  
+  const [data, setData] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const mantencionRef = collection(db, 'mantencion');
+        const snapshot = await getDocs(mantencionRef);
+
+        // Extracting types of maintenance and timestamps from the fetched data
+        const maintenanceData = snapshot.docs.map((doc) => ({
+          tipoMantencion: doc.data().tipoMantencion,
+          timestamp: doc.data().timestamp?.toDate(),
+        }));
+
+        // Count occurrences of each type of maintenance and organize by timestamp
+        const countsByTimestamp = {};
+        maintenanceData.forEach(({ tipoMantencion, timestamp }) => {
+          if (timestamp instanceof Date) {
+            const timestampKey = timestamp.getTime(); // Use timestamp as the key
+            countsByTimestamp[timestampKey] = countsByTimestamp[timestampKey] || {};
+            countsByTimestamp[timestampKey][tipoMantencion] =
+              (countsByTimestamp[timestampKey][tipoMantencion] || 0) + 1;
+          }
+        });
+
+        // Convert counts to chart data format
+        const chartData = Object.keys(countsByTimestamp).map((timestampKey) => {
+          const timestamp = new Date(parseInt(timestampKey, 10));
+          const counts = countsByTimestamp[timestampKey];
+          return {
+            time: timestamp,
+            ...counts,
+          };
+        });
+
+        setData(chartData);
+      } catch (error) {
+        console.error('Error fetching data from "mantencion" collection:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    const chart = createChart(document.getElementById('chart'), { width: 600, height: 300 });
+    const lineSeries = chart.addLineSeries();
+
+    // Set the data for the line chart
+    lineSeries.setData(data);
+
+    return () => {
+      chart.remove();
+    };
+  }, [data]);
+  
   const usuarios = () => {
     navigate('/agregarUsuario')
   }
@@ -58,12 +120,6 @@ const IndexAdmin = () => {
     setSelectedDate(date);
   };
 
-
-  
-
-
-
-
   return (
     <>
       <Admin />
@@ -76,9 +132,10 @@ const IndexAdmin = () => {
           </div>
         </div>
 
-        {/* <div className='grafico_barras'>
-          <Bar data={chartData} />
-        </div> */}
+        <div className='grafico_barras'>
+          <h2>Rendimiento de Mantenciones</h2>
+          <div id="chart"></div>
+        </div>
 
         <div className='contenedor_cartas_iconos'>
 
