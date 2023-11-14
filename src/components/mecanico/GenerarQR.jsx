@@ -47,6 +47,25 @@ const App = () => {
     downloadLink.click();
   };
 
+  const printQRCode = () => {
+    const qrCodeCanvas = document.getElementById('qr-code-canvas');
+    const printWindow = window.open('', '_blank');
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Hans Motors QR</title>
+        </head>
+        <body>
+          <img src="${qrCodeCanvas.toDataURL('image/png')}" />
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.print();
+  }
+
   return (
     <>
       <Mecanico />
@@ -71,6 +90,7 @@ const App = () => {
           {qrCodeValue && (
             <div>
               <button onClick={downloadQRCode}>Descargar código QR</button>
+              <button onClick={printQRCode}>Imprimir código QR</button>
             </div>
           )}
         </div>
