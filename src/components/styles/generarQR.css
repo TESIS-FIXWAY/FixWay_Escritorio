@@ -1,0 +1,31 @@
+.generador_qr_titulo {
+    display: flex;
+    justify-content: center;
+    padding: 30px; /* Ajustado el padding */
+    background-color: #f6f9fc;
+    margin-bottom: 30px;
+  }
+
+input {
+    margin: 20px;
+  }
+
+#qr-code-canvas {
+    margin: 20px;
+    width: 300px;
+    height: 300px;
+    opacity: 0; /* Establece la opacidad inicial a 0 */
+    transition: opacity 0.5s ease; /* Agrega una transición suave de 0.5 segundos */
+  }
+
+  #qr-code-canvas.show {
+    opacity: 1; /* Cuando se aplica la clase 'show', la opacidad se establece en 1 */
+  }
+  
+button {
+    margin: 20px;
+  } 
+
+.container {
+    text-align: center;
+  }

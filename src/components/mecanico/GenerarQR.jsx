@@ -1,3 +1,4 @@
+import '../styles/generarQR.css';
 import React, { useState, useEffect } from 'react';
 import Mecanico from './mecanico';
 import QRCode from 'qrcode.react';
@@ -6,8 +7,10 @@ import { db } from '../../firebase';
 
 const App = () => {
   const [patentes, setPatentes] = useState([]);
+  const [filteredPatentes, setFilteredPatentes] = useState([]);
   const [selectedPatenteId, setSelectedPatenteId] = useState('');
   const [qrCodeValue, setQrCodeValue] = useState('');
+  const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,6 +21,7 @@ const App = () => {
         const nuevasPatentes = querySnapshot.docs.map((doc) => doc.id);
 
         setPatentes(nuevasPatentes);
+        setFilteredPatentes(nuevasPatentes);
       } catch (error) {
         console.error('Error fetching data:', error.message);
       }
@@ -35,6 +39,30 @@ const App = () => {
     } else {
       setQrCodeValue('');
     }
+  };
+
+  const handleSearchInputChange = (event) => {
+    const inputValue = event.target.value;
+    setSearchInput(inputValue);
+
+    // Filtrar las opciones de patentes basadas en la entrada del usuario
+    const filteredPatentes = patentes.filter((patente) =>
+      patente.toLowerCase().includes(inputValue.toLowerCase())
+    );
+
+    setFilteredPatentes(filteredPatentes);
+  };
+
+  const handlePatenteInput = (event) => {
+    const inputValue = event.target.value;
+    setSearchInput(inputValue);
+
+    // Filtrar las opciones de patentes basadas en la entrada del usuario
+    const filteredPatentes = patentes.filter((patente) =>
+      patente.toLowerCase().includes(inputValue.toLowerCase())
+    );
+
+    setFilteredPatentes(filteredPatentes);
   };
 
   const downloadQRCode = () => {
@@ -64,28 +92,18 @@ const App = () => {
 
     printWindow.document.close();
     printWindow.print();
-  }
+  };
 
   return (
     <>
       <Mecanico />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <div>
+
+      <div className="container">
+        <div className='generador_qr_titulo'>
           <h1>Generador de Códigos QR para Patentes</h1>
-          <select value={selectedPatenteId} onChange={handlePatenteChange}>
-            <option value="" disabled>
-              Selecciona una patente
-            </option>
-            {patentes.map((patente) => (
-              <option key={patente} value={patente}>
-                {patente}
-              </option>
-            ))}
-          </select>
+        </div>
+
+        <div>
           {qrCodeValue && <QRCode id="qr-code-canvas" value={qrCodeValue} />}
           {qrCodeValue && (
             <div>
@@ -93,7 +111,26 @@ const App = () => {
               <button onClick={printQRCode}>Imprimir código QR</button>
             </div>
           )}
+
+          <input
+            type="text"
+            value={searchInput}
+            onChange={handlePatenteChange}
+            placeholder="Buscar patente..."
+            list="patentes-list"
+            onInput={handlePatenteInput}
+          />
+          <datalist id="patentes-list">
+            {filteredPatentes.map((patente) => (
+              <option key={patente} value={patente}>
+                {patente}
+              </option>
+            ))}
+          </datalist>
         </div>
+        
+
+      </div>
     </>
   );
 };
