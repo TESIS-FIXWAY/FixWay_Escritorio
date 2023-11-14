@@ -456,7 +456,7 @@ const GenerarFactura = () => {
         <div className="table_header">
           <h1>Generar Factura</h1>
           <button
-            onClick={() => generarPDF(productosSeleccionados)}
+            onClick={() => generarFactura(productosSeleccionados)}
             style={{
               backgroundColor: "#6fa0e8",
             }}
