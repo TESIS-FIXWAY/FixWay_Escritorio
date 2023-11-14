@@ -1,9 +1,10 @@
-import '../styles/indexAdmin.css'
+import '../styles/indexAdmin.css';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import Admin from "./admin";
+import { Bar } from 'react-chartjs-2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -32,7 +33,28 @@ library.add(
 );
 
 
+const getSelectedPatenteData = () => {
+  return [10, 20, 15, 30];
+};
+
 const IndexAdmin = () => {
+  const [selectedPatente, setSelectedPatente] = useState(getSelectedPatenteData());
+
+  const [chartData, setChartData] = useState({
+    labels: ['Mes1', 'Mes2', 'Mes3', 'Mes4'],
+    datasets: [
+      {
+        label: 'Patentes Ingresadas',
+        backgroundColor: 'rgba(75,192,192,0.2)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(75,192,192,0.4)',
+        hoverBorderColor: 'rgba(75,192,192,1)',
+        data: selectedPatente,
+      },
+    ],
+  });
+
   const navigate = useNavigate();
 
   const usuarios = () => {
@@ -60,6 +82,12 @@ const IndexAdmin = () => {
     setSelectedDate(date);
   };
 
+
+  
+
+
+
+
   return (
     <>
       <Admin />
@@ -72,59 +100,49 @@ const IndexAdmin = () => {
           </div>
         </div>
 
-        <div className='card_admin'>
-
-          {/* Sección de Usuarios */}
-          <div className='card_section'>
-            <h1 className='section_title'>Usuarios</h1>
-            <hr className='section_hr' />
-            <FontAwesomeIcon icon="fa-solid fa-users-gear" className='section_icon' />
-            <hr className='section_hr' />
-            <p className='section_subtitle'>Gestiona a los usuarios del taller</p>
-            <div className='card_functionality' onClick={usuarios}>
-              <p>Agregar usuario</p>
-              <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
-            </div>
-            <div className='card_functionality' onClick={listarUsuarios}>
-              <p>Listar usuarios</p>
-              <FontAwesomeIcon icon="fa-solid fa-users-line" className='functionality_icon' />
-            </div>
-          </div>
-
-          {/* Sección de Facturas de Proveedor */}
-          <div className='card_section'>
-            <h1 className='section_title'>Facturas de Proveedor</h1>
-            <hr className='section_hr' />
-            <FontAwesomeIcon icon="fa-solid fa-receipt" className='section_icon' />
-            <hr className='section_hr' />
-            <p className='section_subtitle'>Gestiona las facturas del taller</p>
-            <div className='card_functionality' onClick={facturas}>
-              <p>Agregar factura</p>
-              <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
-            </div>
-            <div className='card_functionality' onClick={listarFacturas}>
-              <p>Listar facturas</p>
-              <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
-            </div>
-          </div>
-
-          {/* Sección de Inventario */}
-          <div className='card_section'>
-            <h1 className='section_title'>Inventario</h1>
-            <hr className='section_hr' />
-            <FontAwesomeIcon icon="fa-solid fa-boxes-stacked" className='section_icon' />
-            <hr className='section_hr' />
-            <p className='section_subtitle'>Gestiona el inventario del taller</p>
-            <div className='card_functionality' onClick={inventario}>
-              <p>Agregar inventario</p>
-              <FontAwesomeIcon icon="fa-solid fa-cart-flatbed" className='functionality_icon' />
-            </div>
-            <div className='card_functionality' onClick={listarInventario}>
-              <p>Listar inventario</p>
-              <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
-            </div>
-          </div>
+        <div className='grafico_barras'>
+          <Bar data={chartData} />
         </div>
+
+        <div className='contenedor_cartas_iconos'>
+
+          <div className='cartas_iconos'  onClick={usuarios}>
+            <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
+            <p>Agregar usuario</p>
+          </div>
+
+          <div className='cartas_iconos' onClick={listarUsuarios}>
+            <FontAwesomeIcon icon="fa-solid fa-users-line" className='functionality_icon' />
+            <p>Listar usuarios</p>
+          </div> 
+
+          <div className='cartas_iconos' onClick={facturas}>
+          <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
+            <p>Agregar factura de proveedores</p>
+          </div>  
+
+          <div className='cartas_iconos' onClick={listarFacturas}>
+            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
+            <p>Listar facturas de proveedores</p>
+          </div> 
+          
+          <div className='cartas_iconos' onClick={inventario}>
+            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
+            <p>Agregar inventario</p>
+          </div> 
+
+          <div className='cartas_iconos' onClick={listarInventario}>
+            <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
+            <p>Listar inventario</p>
+          </div> 
+
+          <div className='cartas_iconos' onClick={listarInventario}>
+            <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
+            <p>Generar factura de vendedor</p>
+          </div> 
+          
+        </div>
+
 
       </div>
       
