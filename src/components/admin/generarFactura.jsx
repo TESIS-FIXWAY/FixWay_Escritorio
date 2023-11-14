@@ -186,10 +186,10 @@ const GenerarFactura = () => {
 
   const toggleSeleccionProducto = (id) => {
     const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
-
+  
     if (productoIndex === -1) {
       const productoSeleccionado = inventario.find((producto) => producto.id === id);
-      setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 0 }]);
+      setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 1 }]); // Set initial quantity to 1
       setShowProductList(false);
     } else {
       const nuevaLista = [...productosSeleccionados];
@@ -213,7 +213,7 @@ const GenerarFactura = () => {
   
   const actualizarCantidadManual = (id, nuevaCantidad) => {
     const producto = inventario.find((p) => p.id === id);
-
+  
     if (producto && nuevaCantidad > producto.cantidad) {
       alert("No hay suficiente stock disponible");
       return;
