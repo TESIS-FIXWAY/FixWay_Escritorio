@@ -55,7 +55,7 @@ const GenerarFactura = () => {
     pdf.setFontSize(12);
     const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
     const tipoPagoX = 160;
-    const tipoPagoY = 55 + imgHeight + 5;
+    const tipoPagoY = imgY + imgHeight + 5; 
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
   
     // Encabezado
@@ -134,12 +134,14 @@ const GenerarFactura = () => {
     setShowDiscountMenu(false);
     
     pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
-    pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50); 
+    pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50);
     
     const tableHeight = Math.max(30, productosHeight + 20);
     pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
     pdf.save("factura.pdf");
   };
+
+
 
   const toggleDiscountMenu = () => {
     setShowDiscountMenu(!showDiscountMenu);
