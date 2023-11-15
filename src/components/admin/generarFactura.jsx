@@ -34,128 +34,112 @@ const GenerarFactura = () => {
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
 
 
-
-
-
-
-
-  const generarPDF = (productosSeleccionados, totalSinIVA) => {
+  const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
   
-    const imgData =  "../../src/images/LogoSinFoindo.png"; 
-    const imgWidth = 50; 
-    const imgHeight = 50; 
-    const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10; 
-    const imgY = 10; 
+    const imgData = "../../src/images/LogoSinFoindo.png";
+    const imgWidth = 50;
+    const imgHeight = 50;
+    const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
+    const imgY = 10;
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
   
     pdf.setFontSize(24);
     pdf.text("FACTURA", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
-    
+  
     const today = new Date();
     const dateString = today.toLocaleDateString();
     pdf.setFontSize(12);
     pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 50, 20);
-
+  
     pdf.setFontSize(12);
     const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
-    const tipoPagoX = 160; 
-    const tipoPagoY = 55; + imgHeight + 5; 
+    const tipoPagoX = 160;
+    const tipoPagoY = 55 + imgHeight + 5;
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
-
-
-    //fin del encabezado
-
-    const lineY = tipoPagoY + 15; 
+  
+    // Encabezado
+  
+    const lineY = tipoPagoY + 15;
     pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
-
+  
     const fontSize = 10;
     pdf.setFontSize(fontSize);
-
+  
     const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
-    const tableX = 15; 
-    const tableY = lineY + 10; 
-
+    const tableX = 15;
+    const tableY = lineY + 10;
+  
     headers.forEach((header, index) => {
       pdf.text(header, tableX + index * 40, tableY);
     });
-
+  
     const rowSpacing = 3;
     const productosHeight = productosSeleccionados.reduce(
       (total, producto) => total + pdf.getTextDimensions(producto.descripcion).h + rowSpacing,
       0
     );
-
+  
     // Inicializar variable para el neto
     let neto = 0;
-
-    let currentY = tableY + 10; 
+  
+    let currentY = tableY + 10;
     productosSeleccionados.forEach((producto) => {
       const { h } = pdf.getTextDimensions(producto.descripcion);
       const lines = pdf.splitTextToSize(producto.descripcion, 50);
-
+  
       lines.forEach((line, i) => {
         pdf.text(line, tableX + 60, currentY);
         currentY += h + rowSpacing;
       });
-
+  
       pdf.text(producto.nombreProducto, tableX, currentY - 10);
       pdf.text(producto.cantidad.toString(), tableX + 45, currentY - 10);
-
+  
       const costoNumerico = parseFloat(producto.costo.replace(/\./g, '').replace(',', '.'));
-
+  
       pdf.text(costoNumerico.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 120, currentY - 10);
-
+  
       const totalProducto = producto.cantidad * costoNumerico;
       pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 160, currentY - 10);
-
-      neto += totalProducto; 
-
+  
+      neto += totalProducto;
+  
       currentY += h + rowSpacing;
     });
-
-
+  
     pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
-
+  
     const iva = neto * 0.19;
     pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
-
-    const totalFinal = neto + iva - descuentoAplicado;
+  
+    // const totalFinal = neto + iva - descuentoAplicado;
+    const totalFinal = neto + iva; 
     pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
-  
-  
 
-    const tableHeight = Math.max(30, productosHeight + 20); 
+    const descuento = parseInt(descuentoMenuValue, 10);
+    // const descuento = (totalSinIVA * descuentoMenuValue) / 100;
+    console.log(`Descuento aplicado: ${descuento}%`);
+
+    // Calcula el descuento en cantidad
+    const descuentoCantidad = (descuento / 100) * totalSinIVA;
+
+    // Calcula el descuento en el total final
+    const descuentoTotalFinal = (descuento / 100) * (totalFinal);
+
+    // Actualiza el estado del descuento aplicado
+    setDescuentoAplicado(descuentoTotalFinal);
+
+    // Oculta el menú de descuentos después de aplicar el descuento
+    setShowDiscountMenu(false);
+    
+    pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
+    pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50); 
+    
+    const tableHeight = Math.max(30, productosHeight + 20);
     pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
     pdf.save("factura.pdf");
   };
-
-
-
-
-
-
-
-
-
-
-
-    
-  
-  
-  
-  
-  
-  
-  
-
-
-
-
-
-
-
-
 
   const toggleDiscountMenu = () => {
     setShowDiscountMenu(!showDiscountMenu);
@@ -203,8 +187,6 @@ const GenerarFactura = () => {
     console.log("Toggle Product List");
     setShowProductList(!showProductList);
   };
-
-
 
   const quitarProducto = (id) => {
     const nuevaLista = productosSeleccionados.filter((producto) => producto.id !== id);
@@ -268,7 +250,7 @@ const GenerarFactura = () => {
       await batch.commit();
 
       // Generar el PDF después de procesar todos los productos
-      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
+      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
 
       // Limpiar los productos seleccionados y ocultar la lista
       setProductosSeleccionados([]);
@@ -277,9 +259,6 @@ const GenerarFactura = () => {
       console.error("Error al generar la factura:", error);
     }
   
-  
-
-
     addDoc(facturasCollection, nuevaFactura)
       .then((nuevaFacturaRef) => {
         productosSeleccionados.forEach((producto) => {
@@ -317,17 +296,6 @@ const GenerarFactura = () => {
         console.error("Error al agregar la nueva factura:", error);
       });
   };
-
-
-
-
-
-
-
-
-  
-
-  
 
   const handleDescuentoChange = (e) => {
     const { value } = e.target;
@@ -381,8 +349,6 @@ const GenerarFactura = () => {
       );
     }
   };
-
-
 
   const mostrarListadoProductos = () => {
     if (showProductList) {
@@ -446,11 +412,6 @@ const GenerarFactura = () => {
       );
     }
   };
-
-
-
-
-
 
   return (
     <>
