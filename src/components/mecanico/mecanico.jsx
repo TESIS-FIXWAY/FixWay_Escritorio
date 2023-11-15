@@ -99,18 +99,23 @@ const Mecanico = () => {
             </Link>
 <hr />
             <Link to="/gestionMantenciones" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-car" />
+              <FontAwesomeIcon icon="fa-solid fa-clipboard-list"  className='i'/>
               <span className='link_name'>Gestion Mantenciones</span>
             </Link>
 
             <Link to="/listarInventarioMecanico" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-cubes" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-list" />
               <span className='link_name'>Listar Inventario</span>
             </Link>
 
             <Link to="/GenerarQR" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-qrcode" />
+              <FontAwesomeIcon icon="fa-solid fa-download" className='i'/>
               <span className='link_name'>Generar QR</span>
+            </Link>
+
+            <Link to="/GenerarListadoMantencion" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-file-pdf" />
+              <span className='link_name'>Generar Listado Mantencion</span>
             </Link>
           </nav>
 
