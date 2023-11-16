@@ -9,7 +9,6 @@ import { createChart } from 'lightweight-charts';
 import { 
   collection,
   getDocs,
-  doc
 } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -38,7 +37,6 @@ library.add(
 
 const IndexAdmin = () => {
   const navigate = useNavigate();
-  
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -46,24 +44,24 @@ const IndexAdmin = () => {
       try {
         const mantencionRef = collection(db, 'mantencion');
         const snapshot = await getDocs(mantencionRef);
-
+  
         // Extracting types of maintenance and timestamps from the fetched data
         const maintenanceData = snapshot.docs.map((doc) => ({
-          tipoMantencion: doc.data().tipoMantencion,
+          kilometrajeMantencion: doc.data().kilometrajeMantencion, // Cambiar aquí
           timestamp: doc.data().timestamp?.toDate(),
         }));
-
+  
         // Count occurrences of each type of maintenance and organize by timestamp
         const countsByTimestamp = {};
-        maintenanceData.forEach(({ tipoMantencion, timestamp }) => {
+        maintenanceData.forEach(({ kilometrajeMantencion, timestamp }) => { // Cambiar aquí
           if (timestamp instanceof Date) {
             const timestampKey = timestamp.getTime(); // Use timestamp as the key
             countsByTimestamp[timestampKey] = countsByTimestamp[timestampKey] || {};
-            countsByTimestamp[timestampKey][tipoMantencion] =
-              (countsByTimestamp[timestampKey][tipoMantencion] || 0) + 1;
+            countsByTimestamp[timestampKey][kilometrajeMantencion] =
+              (countsByTimestamp[timestampKey][kilometrajeMantencion] || 0) + 1; // Cambiar aquí
           }
         });
-
+  
         // Convert counts to chart data format
         const chartData = Object.keys(countsByTimestamp).map((timestampKey) => {
           const timestamp = new Date(parseInt(timestampKey, 10));
@@ -73,24 +71,33 @@ const IndexAdmin = () => {
             ...counts,
           };
         });
-
+  
         setData(chartData);
       } catch (error) {
         console.error('Error fetching data from "mantencion" collection:', error);
       }
     };
-
+  
     fetchData();
   }, []);
-  
-  useEffect(() => {
-    const chart = createChart(document.getElementById('chart'), { width: 600, height: 300 });
-    const lineSeries = chart.addLineSeries();
 
+  useEffect(() => {
+    console.log("Rendering Chart with Data:", data);
+  
+    const chartContainer = document.getElementById('chart');
+    if (!chartContainer) {
+      console.error("Chart container not found!");
+      return;
+    }
+  
+    const chart = createChart(chartContainer, { width: 600, height: 300 });
+    const lineSeries = chart.addLineSeries();
+  
     // Set the data for the line chart
     lineSeries.setData(data);
-
+  
     return () => {
+      console.log("Cleaning up chart");
       chart.remove();
     };
   }, [data]);
