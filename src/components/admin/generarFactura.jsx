@@ -220,6 +220,10 @@ const GenerarFactura = () => {
   };
 
   const generarFactura = async () => {
+    if (productosSeleccionados.length === 0) {
+      alert("No hay productos seleccionados para generar la factura.");
+      return;
+    }
     try {
       const nuevaFactura = {
         productos: productosSeleccionados.map((producto) => ({
