@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 
 const GestionMantenciones = () => {
-  const [todoTasks, setTodoTasks] = useState([]);
+  const [beginTask, setBeginTask] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [expandedTask, setExpandedTask] = useState(null);
@@ -31,7 +31,7 @@ const GestionMantenciones = () => {
         const allTasksData = [];
 
         querySnapshot.forEach((doc) => {
-          const task = { id: doc.id, ...doc.data(), estado: 'pendiente' };
+          const task = { id: doc.id, ...doc.data(), estado: doc.data().estado };
           allTasksData.push(task);
         });
 
@@ -47,7 +47,7 @@ const GestionMantenciones = () => {
         });
 
         // Update state with tasks data
-        setTodoTasks(sortedTasks['pendiente']);
+        setBeginTask(sortedTasks['pendiente']);
         setInProgressTasks(sortedTasks['en proceso']);
         setCompletedTasks(sortedTasks['entregados']);
       });
@@ -63,33 +63,31 @@ const GestionMantenciones = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [beginTask, inProgressTasks, completedTasks]);
+
   const updateTaskStatus = async (task, newStatus) => {
     const taskRef = doc(db, 'mantenciones', task.id);
-
+  
     try {
       await updateDoc(taskRef, { estado: newStatus });
-
+  
       // Update state with the changed tasks
       switch (newStatus) {
         case 'en proceso':
-          setTodoTasks((prevTodoTasks) => prevTodoTasks.filter((t) => t.id !== task.id));
-          setInProgressTasks((prevInProgressTasks) => [...prevInProgressTasks, task]);
-
-
-
-
+          setBeginTask((prevTodoTasks) => prevTodoTasks.filter((t) => t.id !== task.id));
+          if (!inProgressTasks.some((t) => t.id === task.id)) {
+            setInProgressTasks((prevInProgressTasks) => [...prevInProgressTasks, task]);
+          }
           break;
         case 'entregados':
           setInProgressTasks((prevInProgressTasks) =>
             prevInProgressTasks.filter((t) => t.id !== task.id)
           );
-          setCompletedTasks((prevCompletedTasks) => [...prevCompletedTasks, task]);
-
-          // Collapse the expanded task if it is the one that was just completed
-          if (expandedTask === task.id) {
-            setExpandedTask(null);
+          if (!completedTasks.some((t) => t.id === task.id)) {
+            setCompletedTasks((prevCompletedTasks) => [...prevCompletedTasks, task]);
           }
-
           break;
         default:
           break;
@@ -98,6 +96,32 @@ const GestionMantenciones = () => {
       console.error('Error updating task status:', error);
     }
   };
+
+  // const updateTaskStatus = async (task, newStatus) => {
+  //   const taskRef = doc(db, 'mantenciones', task.id);
+
+  //   try {
+  //     await updateDoc(taskRef, { estado: newStatus });
+
+  //     // Update state with the changed tasks
+  //     switch (newStatus) {
+  //       case 'en proceso':
+  //         setBeginTask((prevTodoTasks) => prevTodoTasks.filter((t) => t.id !== task.id));
+  //         setInProgressTasks((prevInProgressTasks) => [...prevInProgressTasks, task]);
+  //         break;
+  //       case 'entregados':
+  //         setInProgressTasks((prevInProgressTasks) =>
+  //           prevInProgressTasks.filter((t) => t.id !== task.id)
+  //         );
+  //         setCompletedTasks((prevCompletedTasks) => [...prevCompletedTasks, task]);
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating task status:', error);
+  //   }
+  // };
 
   // Function to handle expanding/collapsing tasks
   const handleTaskExpand = (taskId) => {
@@ -120,10 +144,10 @@ const GestionMantenciones = () => {
               <div className="container_mantencion_tareas_titulos">
                 <h2>Tareas por hacer</h2>
               </div>
-              <ul style={{ height: calculateContainerHeight(todoTasks) }}>
-                {todoTasks.map((task) => (
+              <ul style={{ height: calculateContainerHeight(beginTask) }}>
+                {beginTask.map((task) => (
                   <div
-                    key={task.id}
+                    key={`${task.id}-${task.estado}`}
                     className={`task-container ${expandedTask === task.id ? 'expanded' : ''}`}
                     onClick={() => handleTaskExpand(task.id)}
                   >
@@ -148,7 +172,7 @@ const GestionMantenciones = () => {
               <ul>
                 {inProgressTasks.map((task) => (
                   <div
-                    key={task.id}
+                    key={`${task.id}-${task.estado}`}
                     className={`task-container ${expandedTask === task.id ? 'expanded' : ''}`}
                     onClick={() => handleTaskExpand(task.id)}
                   >
@@ -173,7 +197,7 @@ const GestionMantenciones = () => {
               <ul>
                 {completedTasks.map((task) => (
                   <div
-                    key={task.id}
+                    key={`${task.id}-${task.estado}`}
                     className={`task-container ${expandedTask === task.id ? 'expanded' : ''}`}
                     // onClick={() => handleTaskExpand(task.id)}
                   >
