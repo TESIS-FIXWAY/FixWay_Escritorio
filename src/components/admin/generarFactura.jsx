@@ -260,6 +260,7 @@ const GenerarFactura = () => {
 
       // Limpiar los productos seleccionados y ocultar la lista
       setProductosSeleccionados([]);
+      setDescuentoMenuValue('');
       setShowProductList(false);
     } catch (error) {
       console.error("Error al generar la factura:", error);
