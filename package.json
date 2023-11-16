@@ -7,7 +7,18 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "test": "jest --watchAll",
+    "eject": "react-scripts eject"
+  },
+  "test": {
+    "runner": "jest",
+    "bundler": "vite",
+    "jestConfig": {
+      "transform": {
+        "^.+\\.jsx?$": "esbuild-jest"
+      }
+    }
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -29,6 +40,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.0",
+    "@testing-library/react": "^14.1.0",
     "@vitejs/plugin-react": "^4.0.3",
     "vite": "^4.4.4"
   }
