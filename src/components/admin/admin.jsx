@@ -107,6 +107,11 @@ const Admin = () => {
               <span className='link_name'>Listar Usuarios</span>
             </Link>
 <hr />
+            <Link to="/gestionMantencionesAdmin" className={`link ${window.location.pathname === '/gestionMantencionesAdmin' ? 'active' : ''}`}>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
+              <span className='link_name'>Gestión de Mantenciones</span>
+            </Link>
+<hr />
             <Link to="/agregarFactura" className={`link ${window.location.pathname === '/agregarFactura' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" />              
               <span className='link_name'>Agregar Factura de proveedor</span>
