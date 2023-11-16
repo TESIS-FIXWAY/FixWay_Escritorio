@@ -97,33 +97,6 @@ const GestionMantenciones = () => {
     }
   };
 
-  // const updateTaskStatus = async (task, newStatus) => {
-  //   const taskRef = doc(db, 'mantenciones', task.id);
-
-  //   try {
-  //     await updateDoc(taskRef, { estado: newStatus });
-
-  //     // Update state with the changed tasks
-  //     switch (newStatus) {
-  //       case 'en proceso':
-  //         setBeginTask((prevTodoTasks) => prevTodoTasks.filter((t) => t.id !== task.id));
-  //         setInProgressTasks((prevInProgressTasks) => [...prevInProgressTasks, task]);
-  //         break;
-  //       case 'entregados':
-  //         setInProgressTasks((prevInProgressTasks) =>
-  //           prevInProgressTasks.filter((t) => t.id !== task.id)
-  //         );
-  //         setCompletedTasks((prevCompletedTasks) => [...prevCompletedTasks, task]);
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating task status:', error);
-  //   }
-  // };
-
-  // Function to handle expanding/collapsing tasks
   const handleTaskExpand = (taskId) => {
     setExpandedTask((prevExpandedTask) =>
       prevExpandedTask === taskId ? null : taskId
