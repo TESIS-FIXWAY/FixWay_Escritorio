@@ -40,16 +40,6 @@ const IndexAdmin = () => {
   const [data, setData] = useState([]);
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    const identifyUser = auth.currentUser;
-    if (identifyUser) {
-      const userRef = doc(db, "users", identifyUser.uid);
-      onSnapshot(userRef, (snapshot) => {
-        setUser(snapshot.data());
-        setLoading(false);
-      });
-    }
-  }, []);
 
   const usuarios = () => {
     navigate('/agregarUsuario')
