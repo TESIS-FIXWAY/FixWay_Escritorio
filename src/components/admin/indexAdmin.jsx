@@ -38,70 +38,19 @@ library.add(
 const IndexAdmin = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const mantencionRef = collection(db, 'mantencion');
-        const snapshot = await getDocs(mantencionRef);
-  
-        // Extracting types of maintenance and timestamps from the fetched data
-        const maintenanceData = snapshot.docs.map((doc) => ({
-          kilometrajeMantencion: doc.data().kilometrajeMantencion, // Cambiar aquí
-          timestamp: doc.data().timestamp?.toDate(),
-        }));
-  
-        // Count occurrences of each type of maintenance and organize by timestamp
-        const countsByTimestamp = {};
-        maintenanceData.forEach(({ kilometrajeMantencion, timestamp }) => { // Cambiar aquí
-          if (timestamp instanceof Date) {
-            const timestampKey = timestamp.getTime(); // Use timestamp as the key
-            countsByTimestamp[timestampKey] = countsByTimestamp[timestampKey] || {};
-            countsByTimestamp[timestampKey][kilometrajeMantencion] =
-              (countsByTimestamp[timestampKey][kilometrajeMantencion] || 0) + 1; // Cambiar aquí
-          }
-        });
-  
-        // Convert counts to chart data format
-        const chartData = Object.keys(countsByTimestamp).map((timestampKey) => {
-          const timestamp = new Date(parseInt(timestampKey, 10));
-          const counts = countsByTimestamp[timestampKey];
-          return {
-            time: timestamp,
-            ...counts,
-          };
-        });
-  
-        setData(chartData);
-      } catch (error) {
-        console.error('Error fetching data from "mantencion" collection:', error);
-      }
-    };
-  
-    fetchData();
+    const identifyUser = auth.currentUser;
+    if (identifyUser) {
+      const userRef = doc(db, "users", identifyUser.uid);
+      onSnapshot(userRef, (snapshot) => {
+        setUser(snapshot.data());
+        setLoading(false);
+      });
+    }
   }, []);
 
-  useEffect(() => {
-    console.log("Rendering Chart with Data:", data);
-  
-    const chartContainer = document.getElementById('chart');
-    if (!chartContainer) {
-      console.error("Chart container not found!");
-      return;
-    }
-  
-    const chart = createChart(chartContainer, { width: 600, height: 300 });
-    const lineSeries = chart.addLineSeries();
-  
-    // Set the data for the line chart
-    lineSeries.setData(data);
-  
-    return () => {
-      console.log("Cleaning up chart");
-      chart.remove();
-    };
-  }, [data]);
-  
   const usuarios = () => {
     navigate('/agregarUsuario')
   }
@@ -120,6 +69,14 @@ const IndexAdmin = () => {
   const listarInventario = () => {
     navigate('/listarInventario')
   }
+  const generarFacturas = () => {
+    navigate('/generarFactura')
+  }
+  const gestionMantenciones = () => {
+    navigate('/gestionMantencionesAdmin')
+  }
+
+
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -127,10 +84,16 @@ const IndexAdmin = () => {
     setSelectedDate(date);
   };
 
+
+
   return (
     <>
       <Admin />
       <div className="tabla_listar">
+
+        <div className='perfil_usuario'>
+
+        </div>
 
         <div className='card_admin_calendario'>
           <div className='calendario'>
@@ -139,49 +102,49 @@ const IndexAdmin = () => {
           </div>
         </div>
 
-        <div className='grafico_barras'>
-          <h2>Rendimiento de Mantenciones</h2>
-          <div id="chart"></div>
-        </div>
-
         <div className='contenedor_cartas_iconos'>
+            <div className='cartas_iconos'  onClick={usuarios}>
+              <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
+              <p>Agregar usuario</p>
+            </div>
 
-          <div className='cartas_iconos'  onClick={usuarios}>
-            <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
-            <p>Agregar usuario</p>
+            <div className='cartas_iconos' onClick={listarUsuarios}>
+              <FontAwesomeIcon icon="fa-solid fa-users-line" className='functionality_icon' />
+              <p>Listar usuarios</p>
+            </div> 
+
+            <div className='cartas_iconos' onClick={gestionMantenciones}>
+            <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
+              <p>Gestion de Mantenciones</p>
+            </div>
+
+            <div className='cartas_iconos' onClick={facturas}>
+            <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
+              <p>Agregar factura de proveedores</p>
+            </div>  
+
+            <div className='cartas_iconos' onClick={listarFacturas}>
+              <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
+              <p>Listar facturas de proveedores</p>
+            </div> 
+
+            <div className='cartas_iconos' onClick={inventario}>
+              <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
+              <p>Agregar inventario</p>
+            </div> 
+
+            <div className='cartas_iconos' onClick={listarInventario}>
+              <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
+              <p>Listar inventario</p>
+            </div> 
+
+            <div className='cartas_iconos' onClick={generarFacturas}>
+              <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
+              <p>Generar factura de vendedor</p>
+            </div> 
           </div>
 
-          <div className='cartas_iconos' onClick={listarUsuarios}>
-            <FontAwesomeIcon icon="fa-solid fa-users-line" className='functionality_icon' />
-            <p>Listar usuarios</p>
-          </div> 
 
-          <div className='cartas_iconos' onClick={facturas}>
-          <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
-            <p>Agregar factura de proveedores</p>
-          </div>  
-
-          <div className='cartas_iconos' onClick={listarFacturas}>
-            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
-            <p>Listar facturas de proveedores</p>
-          </div> 
-          
-          <div className='cartas_iconos' onClick={inventario}>
-            <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
-            <p>Agregar inventario</p>
-          </div> 
-
-          <div className='cartas_iconos' onClick={listarInventario}>
-            <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
-            <p>Listar inventario</p>
-          </div> 
-
-          <div className='cartas_iconos' onClick={listarInventario}>
-            <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
-            <p>Generar factura de vendedor</p>
-          </div> 
-          
-        </div>
 
 
       </div>

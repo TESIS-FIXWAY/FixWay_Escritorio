@@ -4,27 +4,30 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 /* Estilos personalizados para el calendario */
 .card_admin_calendario {
-  margin: 0px 20px 0px 0px;
-  width: 100%;
+  margin: 0px 0px 0px 20px;
+  width: 50%;
   display: flex;
+}
+.tabla_listar{
+  background-color: #B2FFFF;
+  width: 100vw;
+  height: 100vh;
 }
 .calendario {
   width: 100%;
   padding: 20px;
-  margin: 80px 0px 20px 0px;
+  margin: 80px 0px 0px 10%;
 }
 .react-calendar {
   font-family: 'Poppins', sans-serif;
-  max-width: 300px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .react-calendar__navigation {
   background-color: #5B5FC7;
-  color: #000;
+  color: #fff;
 }
 .react-calendar__navigation__arrow {
   color: #fff;
@@ -35,6 +38,7 @@
 .react-calendar__tile {
   color: #000;
 }
+
 
 .card_admin {
   width: 100%;
@@ -111,13 +115,16 @@
 }
 
 .contenedor_cartas_iconos {
-  max-height: 400px; /* Establece la altura máxima deseada */
+  margin: 50px 0px 0px 20px;
+  width: 50%;
+  height: 100; 
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px; /* Ajusta el espacio entre elementos según sea necesario */
-  overflow-y: auto; /* Agrega una barra de desplazamiento si el contenido excede la altura máxima */
-  direction: rtl; /* Establece la dirección del texto de derecha a izquierda */
+  gap: 20px; 
+  overflow-y: auto; 
+  direction: rtl; 
+  background: #1f1f1f;
 }
 
 .cartas_iconos {

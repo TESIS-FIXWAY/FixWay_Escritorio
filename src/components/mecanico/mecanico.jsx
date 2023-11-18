@@ -12,7 +12,8 @@ import {
   faUser,
   faUserPlus,
   faUsers,
-  faHouse
+  faHouse,
+  faQrcode
 } 
 from '@fortawesome/free-solid-svg-icons';
 library.add(
@@ -22,7 +23,8 @@ library.add(
   faUser,
   faUserPlus,
   faUsers,
-  faHouse
+  faHouse,
+  faQrcode
 );
 
 const Mecanico = () => {
@@ -109,7 +111,7 @@ const Mecanico = () => {
             </Link>
 
             <Link to="/GenerarQR" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
-              <FontAwesomeIcon icon="fa-solid fa-download" className='i'/>
+              <FontAwesomeIcon className='i' icon="fa-solid fa-qrcode" />              
               <span className='link_name'>Generar QR</span>
             </Link>
 
