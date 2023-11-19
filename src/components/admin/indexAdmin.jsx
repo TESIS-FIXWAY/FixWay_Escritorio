@@ -4,11 +4,12 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import Admin from "./admin";
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { createChart } from 'lightweight-charts';
 import { 
   collection,
   getDocs,
+  doc, onSnapshot 
 } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -38,8 +39,48 @@ library.add(
 const IndexAdmin = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
+  const [processCount , setInProcessCount] = useState(0);
+  const [pendingCount, setInPendingCount] = useState(0);
+  const [deliveredCount, setInDeliveredCount] = useState(0);
 
+  useEffect(() => {
+    const identifyUser = auth.currentUser;
+    if (identifyUser) {
+      const userRef = doc(db, "users", identifyUser.uid);
+      onSnapshot(userRef, (snapshot) => {
+        setUser(snapshot.data());
+        setLoading(false);
+      });
+    }
+    const fetchMaintenanceCount = async () => {
+      try {
+        const maintenanceCollection = collection(db, 'mantenciones');
+        const maintenanceSnapshot = await getDocs(maintenanceCollection);
+    
+        // Filtrar los documentos por estado
+        const inProcessMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'en proceso');
+        const pendingMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'pendiente');
+        const deliveredMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'entregados');
+    
+        // Obtener los contadores por estado
+        const inProcessCount = inProcessMaintenance.length;
+        const inPendingCount = pendingMaintenance.length;
+        const inDeliveredCount = deliveredMaintenance.length;
+    
+        // Actualizar los estados
+        setInProcessCount(inProcessCount);
+        setInPendingCount(inPendingCount);
+        setInDeliveredCount(inDeliveredCount);
+      } catch (error) {
+        console.error('Error fetching maintenance count:', error);
+      }
+    };
+    
+    
+  
+    fetchMaintenanceCount();
+  }, []);
 
   const usuarios = () => {
     navigate('/agregarUsuario')
@@ -74,15 +115,29 @@ const IndexAdmin = () => {
     setSelectedDate(date);
   };
 
-
-
   return (
     <>
       <Admin />
       <div className="tabla_listar">
-
         <div className='perfil_usuario'>
+          {user && (
+            <div>
+              <br />
+              <br />
+              <br />
+              <p>{user.nombre} {user.apellido}</p>
+              <p>{user.rut}</p>
+              <p>{user.email}</p>
+              <p>{user.direccion}</p>
+              <p>{user.telefono}</p>
+            </div>
+          )}
+        </div>
 
+        <div>
+          <p>Mantenciones pendientes: {pendingCount}</p>
+          <p>Mantenciones en proceso: {processCount}</p>
+          <p>Mantenciones Entregadas: {deliveredCount}</p>
         </div>
 
         <div className='card_admin_calendario'>
