@@ -10,10 +10,16 @@
 // Permite la navegación a las secciones de gestión de mantenciones, listado de usuarios, facturas, listado de facturas, inventario y listado de inventario. 
 
 import '../styles/indexAdmin.css'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
+import { db, auth } from '../../firebase';
+import { 
+  collection,
+  getDocs,
+  doc, onSnapshot 
+} from 'firebase/firestore';
 import Mecanico from './mecanico';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -45,6 +51,34 @@ library.add(
 
 const IndexMecanico = () => {
   const navigate = useNavigate();
+  const [processCount , setInProcessCount] = useState(0);
+  const [pendingCount, setInPendingCount] = useState(0);
+  const [deliveredCount, setInDeliveredCount] = useState(0);
+
+  useEffect(() => {
+    const fetchMaintenanceCount = async () => {
+      try {
+        const maintenanceCollection = collection(db, 'mantenciones');
+        const maintenanceSnapshot = await getDocs(maintenanceCollection);
+    
+        const inProcessMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'en proceso');
+        const pendingMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'pendiente');
+        const deliveredMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'entregados');
+    
+        const inProcessCount = inProcessMaintenance.length;
+        const inPendingCount = pendingMaintenance.length;
+        const inDeliveredCount = deliveredMaintenance.length;
+    
+        setInProcessCount(inProcessCount);
+        setInPendingCount(inPendingCount);
+        setInDeliveredCount(inDeliveredCount);
+      } catch (error) {
+        console.error('Error fetching maintenance count:', error);
+      }
+    };
+    
+    fetchMaintenanceCount();
+  }, []);
 
   const mantenciones = () => {
     navigate('/gestionMantenciones')
@@ -75,6 +109,14 @@ const IndexMecanico = () => {
     <>
       <Mecanico />
       <div className="tabla_listar">
+        <div>
+          <br />
+          <br />
+          <br />
+          <p>Mantenciones pendientes: {pendingCount}</p>
+          <p>Mantenciones en proceso: {processCount}</p>
+          <p>Mantenciones Entregadas: {deliveredCount}</p>
+        </div>
 
         <div className='card_admin_calendario'>
           <div className='calendario'>
