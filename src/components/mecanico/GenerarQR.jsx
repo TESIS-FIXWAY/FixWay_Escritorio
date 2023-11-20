@@ -1,3 +1,15 @@
+// Componente GenerarQR:  
+// Este componente React proporciona una interfaz para generar códigos QR asociados a patentes, 
+// facilitando la descarga e impresión de estos códigos para su uso en el contexto de mantenimientos. 
+
+
+// Funciones y Características Principales:  
+// Recupera datos de patentes desde Firestore al cargar el componente. 
+// Utiliza la biblioteca 'qrcode.react' para la generación dinámica de códigos QR. 
+// Permite la búsqueda de patentes y muestra opciones filtradas en un campo de entrada. 
+// Ofrece botones para descargar e imprimir el código QR de la patente seleccionada. 
+// Proporciona una interfaz amigable y funcionalidades útiles para el manejo de códigos QR. 
+
 import '../styles/generarQR.css';
 import React, { useState, useEffect } from 'react';
 import Mecanico from './mecanico';

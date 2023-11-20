@@ -1,3 +1,17 @@
+// Este componente GestionMantencionesAdmin se encarga de la gestión de tareas de mantenciones. 
+// Permite visualizar, expandir y actualizar el estado de las tareas, clasificándolas en "por hacer", "en proceso" y "entregadas".  
+// Utiliza Firebase Firestore para obtener y actualizar datos de tareas y se integra con el componente Admin para la navegación.  
+// Las tareas se organizan en tres listas según su estado, y se pueden expandir para mostrar detalles adicionales. 
+
+
+// Funciones y características principales: 
+// Visualización y clasificación de tareas por estado. 
+// Expansión de tareas para ver detalles adicionales. 
+// Actualización del estado de las tareas (de "por hacer" a "en proceso" y de "en proceso" a "entregadas"). 
+// Cálculo dinámico de la altura del contenedor basado en el número de tareas. 
+// Obtención y actualización de datos desde Firebase Firestore. 
+// Integración con el componente Admin para la navegación en la aplicación. 
+
 import '../styles/gestionMantenciones.css'
 import React, { useState, useEffect } from 'react';
 import Admin from "./admin";

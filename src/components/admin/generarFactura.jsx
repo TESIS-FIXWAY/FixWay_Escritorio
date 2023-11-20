@@ -1,3 +1,22 @@
+// Este componente GenerarFactura gestiona la interfaz y la lógica para generar facturas de productos. 
+// Permite al usuario seleccionar productos del inventario, ajustar cantidades, aplicar descuentos y elegir el tipo de pago.  
+// Utiliza Firebase Firestore para obtener y actualizar el inventario de productos y para almacenar las facturas generadas en la colección 'mifacturas'.  
+// También utiliza la librería jsPDF para generar archivos PDF de las facturas.  
+// Se integra con FontAwesome para mostrar iconos en la interfaz. 
+
+
+// Funciones y características principales: 
+// Selección de productos del inventario. 
+// Ajuste manual de cantidades y eliminación de productos seleccionados. 
+// Generación de facturas en formato PDF. 
+// Aplicación de descuentos en porcentaje. 
+// Elección del tipo de pago (contado o crédito). 
+// Visualización y ocultamiento de listas de productos y menú de descuentos. 
+// Actualización del inventario después de generar una factura. 
+// Búsqueda de productos en tiempo real. 
+// Visualización de información detallada en la interfaz. 
+// Uso de iconos FontAwesome para mejorar la experiencia del usuario. 
+
 import React, { useState, useEffect } from "react";
 import Admin from "./admin";
 import jsPDF from "jspdf";

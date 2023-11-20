@@ -1,3 +1,20 @@
+// Este componente Admin es parte de la interfaz de usuario para la página de administrador. 
+// Proporciona un encabezado con logotipo, reloj en tiempo real, menú de navegación y opción para cerrar sesión. 
+// También incluye un menú lateral desplegable con enlaces a diversas secciones de gestión, como usuarios, mantenimientos, facturas, inventario y generación de facturas.  
+// El componente utiliza FontAwesome para agregar iconos a los enlaces y botones. 
+// Se encarga de la navegación entre las diferentes secciones y del cierre de sesión del usuario. 
+ 
+
+// Funciones y características principales: 
+// Visualización de información del usuario logueado. 
+// Reloj en tiempo real. 
+// Menú de navegación con enlaces a diferentes secciones. 
+// Menú lateral desplegable con enlaces a secciones específicas. 
+// Uso de FontAwesome para iconos en enlaces y botones. 
+// Manejo de la navegación entre secciones. 
+// Funcionalidad de cerrar sesión. 
+// Enlaces a secciones como agregar/ver usuarios, gestionar mantenimientos, facturas y manejar inventario. 
+
 import '../styles/admin.css'
 import React from 'react';
 import { useNavigate, Link } from "react-router-dom";

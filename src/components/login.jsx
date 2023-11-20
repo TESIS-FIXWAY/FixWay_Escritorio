@@ -1,3 +1,19 @@
+// Componente Login:
+
+// Este componente React implementa la interfaz de inicio de sesión de la aplicación para usuarios.
+// Utiliza Firebase Authentication para gestionar la autenticación de usuarios.
+
+// Funciones y Características Principales:
+
+// - Utiliza el hook `useState` para gestionar el estado del usuario y posibles errores.
+// - Utiliza Firebase Authentication para la gestión de inicio de sesión y escucha de cambios de estado.
+// - Obtiene el rol del usuario desde la base de datos Firestore y lo almacena en el estado.
+// - Redirige al usuario a las páginas de inicio correspondientes según su rol (administrador o mecánico).
+// - Muestra mensajes de error en caso de credenciales incorrectas.
+// - Utiliza estilos CSS para dar formato a la interfaz de inicio de sesión.
+
+
+
 import './styles/login.css'
 import React, { useState } from "react";
 import { db, auth } from '../firebase'

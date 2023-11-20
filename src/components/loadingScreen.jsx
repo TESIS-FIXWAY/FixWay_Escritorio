@@ -1,3 +1,16 @@
+// Componente LoadingScreen:
+
+// Este componente React representa una pantalla de carga con una animación y un indicador de progreso.
+
+// Funciones y Características Principales:
+
+// - Utiliza los hooks `useEffect` y `useState` para controlar la visibilidad de los elementos en diferentes momentos.
+// - Muestra una imagen de un auto y el nombre "Hans Motors" de manera animada.
+// - Utiliza estilos CSS para dar formato y animar los elementos de la pantalla de carga.
+// - Muestra un indicador de progreso en forma de barra.
+
+
+
 import React, { useEffect, useState } from 'react';
 import './styles/loadingScreen.css';
 import Car from '../images/AutoSinFondo2.png'; 

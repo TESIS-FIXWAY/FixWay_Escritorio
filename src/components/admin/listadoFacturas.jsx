@@ -1,4 +1,16 @@
- import React, { useState } from "react";
+// Este componente ListadoFacturas maneja la visualización y gestión del listado de facturas de proveedores. 
+// Proporciona funciones para editar, eliminar y buscar facturas, así como para descargar archivos PDF asociados. 
+// Utiliza FontAwesome para los iconos y React Router para la navegación entre diferentes secciones. 
+
+  
+// Funciones y características principales: 
+// Listado de facturas de proveedores con información detallada. 
+// Funcionalidad para buscar facturas por proveedor, fecha o detalle. 
+// Botón para agregar una nueva factura con navegación a la página correspondiente. 
+// Edición y eliminación de facturas con confirmación a través de modales. 
+// Descarga de archivos PDF asociados a las facturas. 
+
+import React, { useState } from "react";
 import Admin from "./admin";
 import { db, storage } from "../../firebase";
 import { 

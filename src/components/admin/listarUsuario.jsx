@@ -1,3 +1,15 @@
+// Componente ListarUsuario:  
+// Este componente React se encarga de gestionar la visualización, edición y eliminación de usuarios. 
+// Utiliza Firebase Firestore para la base de datos, React Router para la navegación y FontAwesome para iconos. 
+
+
+// Funciones y Características Principales: 
+// Muestra un listado de usuarios. 
+// Permite editar roles, nombres, apellidos, teléfonos, direcciones, salarios, fechas de ingreso y contraseñas. 
+// Ofrece la opción de eliminar usuarios. 
+// Permite buscar usuarios por texto de búsqueda. 
+// Navegación para agregar nuevos usuarios. 
+
 import '../styles/listarUsuario.css'
 import React, { useState } from "react";
 import Admin from "./admin";

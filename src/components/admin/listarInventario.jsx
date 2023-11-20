@@ -1,3 +1,14 @@
+// Componente ListarInventario: 
+// Este componente React gestiona la visualización, edición y eliminación de productos en un inventario. Utiliza Firebase Firestore para la base de datos, React Router para la navegación y FontAwesome para iconos. 
+
+
+// Funciones y Características Principales: 
+// Muestra un listado de productos del inventario. 
+// Permite editar información de productos existentes. 
+// Ofrece la opción de eliminar productos del inventario. 
+// Permite buscar productos por texto de búsqueda. 
+// Navegación para agregar nuevos productos al inventario. 
+
 import React from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";

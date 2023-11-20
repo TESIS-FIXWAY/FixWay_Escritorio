@@ -1,3 +1,20 @@
+// Este componente AgregarUsuario gestiona la interfaz y la lógica para agregar nuevos usuarios al sistema. 
+// Permite al administrador ingresar detalles como el Rut, rol, nombre, apellido, teléfono, dirección, salario, fecha de ingreso, email y contraseña del usuario.  
+// Utiliza Firebase Authentication para registrar el usuario y Firebase Firestore para almacenar los detalles asociados en la colección 'users'. 
+// También utiliza un validador de Rut personalizado y renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
+
+
+// Funciones y características principales: 
+// Registro de nuevos usuarios utilizando Firebase Authentication y Firestore. 
+// Validación en tiempo real del Rut y mensajes de validación. 
+// Formateo del salario y visualización en formato legible. 
+// Validación de campos del formulario antes de registrar el usuario. 
+// Uso del componente Admin para estructurar la página de administración. 
+// Mensajes informativos y de validación en la interfaz del usuario. 
+// Selección de roles mediante un menú desplegable. 
+// Captura y almacenamiento de información del usuario en Firebase Firestore. 
+// Manejo de fechas de ingreso y su almacenamiento en formato adecuado. 
+
 import '../styles/agregarUsuario.css'
 import React from 'react';
 import { db, auth } from "../../firebase";

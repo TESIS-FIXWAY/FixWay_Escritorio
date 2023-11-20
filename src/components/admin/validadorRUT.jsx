@@ -1,3 +1,13 @@
+// Clase ValidadorRUT: 
+// Esta clase proporciona funcionalidades para validar y formatear RUTS chilenos. 
+
+
+// Funciones y Características Principales: 
+// Recibe un RUT como entrada y calcula su dígito verificador. 
+// Valida si el RUT ingresado es válido según el algoritmo chileno. 
+// Ofrece una función para formatear el RUT con puntos y guion, si es válido. 
+// La validación incluye el cálculo y comparación del dígito verificador.
+
 class validadorRUT {
   constructor(rut) {
     this.rut = rut;

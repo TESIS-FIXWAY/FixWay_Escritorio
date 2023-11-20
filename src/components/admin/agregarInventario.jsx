@@ -1,3 +1,17 @@
+// Este componente AgregarInventario gestiona la interfaz y la lógica para agregar productos al inventario de la aplicación. 
+// Permite al usuario ingresar detalles como el código del producto, nombre, descripción, cantidad, costo, categoría y marca. 
+// Utiliza Firebase Firestore para almacenar los detalles del producto en la colección 'inventario'. 
+// También renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
+
+
+// Funciones y características principales: 
+// Captura de datos del formulario para agregar productos al inventario. 
+// Formateo de la cantidad ingresada para mostrarla de manera legible. 
+// Almacenamiento de los detalles del producto en Firebase Firestore. 
+// Uso del componente Admin para estructurar la página de administración. 
+// Validación y envío de datos del formulario para agregar productos al inventario. 
+// Selección de categoría mediante un menú desplegable. 
+
 import React, { useState } from "react";  // Añade { useState } aquí
 import Admin from "./admin";
 import { db } from "../../firebase";

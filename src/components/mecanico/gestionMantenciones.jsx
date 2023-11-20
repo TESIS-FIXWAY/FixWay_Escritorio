@@ -1,3 +1,15 @@
+// Componente GestionMantenciones:  
+// Este componente React proporciona una interfaz para la gestión dinámica de tareas de mantenciones, 
+// dividiéndolas en tres secciones: "Tareas por hacer", "Tareas en proceso" y "Entregados". 
+
+
+// Funciones y Características Principales:  
+// Recupera datos de mantenciones desde Firestore al cargar el componente. 
+// Muestra las tareas organizadas por estado ('pendiente', 'en proceso', 'entregados'). 
+// Permite la expansión de cada tarea para mostrar opciones adicionales. 
+// Permite la actualización del estado de una tarea al ser tomada o finalizada. 
+// Ofrece una interfaz clara y eficiente para la gestión de las mantenciones. 
+
 import '../styles/gestionMantenciones.css'
 import React, { useState, useEffect } from 'react';
 import Mecanico from './mecanico';
