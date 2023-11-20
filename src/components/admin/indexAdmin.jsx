@@ -52,36 +52,24 @@ library.add(
 const IndexAdmin = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [user, setUser] = useState(null);
   const [processCount , setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
 
   useEffect(() => {
-    const identifyUser = auth.currentUser;
-    if (identifyUser) {
-      const userRef = doc(db, "users", identifyUser.uid);
-      onSnapshot(userRef, (snapshot) => {
-        setUser(snapshot.data());
-        setLoading(false);
-      });
-    }
     const fetchMaintenanceCount = async () => {
       try {
         const maintenanceCollection = collection(db, 'mantenciones');
         const maintenanceSnapshot = await getDocs(maintenanceCollection);
     
-        // Filtrar los documentos por estado
         const inProcessMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'en proceso');
         const pendingMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'pendiente');
         const deliveredMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'entregados');
     
-        // Obtener los contadores por estado
         const inProcessCount = inProcessMaintenance.length;
         const inPendingCount = pendingMaintenance.length;
         const inDeliveredCount = deliveredMaintenance.length;
     
-        // Actualizar los estados
         setInProcessCount(inProcessCount);
         setInPendingCount(inPendingCount);
         setInDeliveredCount(inDeliveredCount);
@@ -132,22 +120,11 @@ const IndexAdmin = () => {
     <>
       <Admin />
       <div className="tabla_listar">
-        <div className='perfil_usuario'>
-          {user && (
-            <div>
-              <br />
-              <br />
-              <br />
-              <p>{user.nombre} {user.apellido}</p>
-              <p>{user.rut}</p>
-              <p>{user.email}</p>
-              <p>{user.direccion}</p>
-              <p>{user.telefono}</p>
-            </div>
-          )}
-        </div>
 
         <div>
+          <br />
+          <br />
+          <br />
           <p>Mantenciones pendientes: {pendingCount}</p>
           <p>Mantenciones en proceso: {processCount}</p>
           <p>Mantenciones Entregadas: {deliveredCount}</p>
