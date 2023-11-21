@@ -20,7 +20,7 @@
 import React, { useState, useEffect } from "react";
 import Admin from "./admin";
 import jsPDF from "jspdf";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import {
   collection,
   addDoc,
@@ -28,6 +28,7 @@ import {
   doc,
   writeBatch,
   getDoc,
+  onSnapshot
 } from "firebase/firestore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -52,6 +53,28 @@ const GenerarFactura = () => {
   const [descuentoMenuValue, setDescuentoMenuValue] = useState('');
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
 
+  const [userData, setUserData] = useState(null);
+  const [newName, setNewName] = useState("");
+  const [newApellido, setNewApellido] = useState("");
+  const [rut, setRut] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+    
+  useEffect(() => {
+    const identifyUser = auth.currentUser;
+    if (identifyUser) {
+      const userRef = doc(db, "users", identifyUser.uid);
+      onSnapshot(userRef, (snapshot) => {
+        const userData = snapshot.data();
+        setUserData(userData);
+        setNewName(userData.nombre || "");
+        setNewApellido(userData.apellido || "");
+        setRut(userData.rut || "");
+        setEmail(userData.email || "");
+        setTelefono(userData.telefono || "");
+      });
+    }
+  }, []);
 
   const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
@@ -76,7 +99,32 @@ const GenerarFactura = () => {
     const tipoPagoX = 160;
     const tipoPagoY = imgY + imgHeight + 5; 
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
-  
+
+    pdf.setFontSize(12);
+    const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
+    const userX = imgY + imgHeight + 10;
+    const userY = 160;
+    pdf.text(userText, userX, userY);
+
+    pdf.setFontSize(12);
+    const rutText = `Rut Vendedor: ${userData.rut}`;
+    const rutX = imgY + imgHeight + 10;
+    const rutY = 170;
+    pdf.text(rutText, rutX, rutY);
+    
+    pdf.setFontSize(12);
+    const emailText = `Email Vendedor: ${userData.email}`;
+    const emailX = imgY + imgHeight + 10;
+    const emailY = 180;
+    pdf.text(emailText, emailX, emailY);
+
+    pdf.setFontSize(12);
+    const telefonoText = `Telefono Vendedor: ${userData.telefono}`;
+    const telefonoX = imgY + imgHeight + 10;
+    const telefonoY = 190;
+    pdf.text(telefonoText, telefonoX, telefonoY);
+    
+
     // Encabezado
   
     const lineY = tipoPagoY + 15;
@@ -464,6 +512,7 @@ const GenerarFactura = () => {
           >
             <option value="contado">Contado</option>
             <option value="credito">Crédito</option>
+            <option value="debito">Debito</option>
           </select>
 
           {showDiscountMenu && mostrarDescuentoMenu()}
