@@ -59,6 +59,7 @@ const GenerarFactura = () => {
   const [rut, setRut] = useState("");
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [id, setId] = useState("");
     
   useEffect(() => {
     const identifyUser = auth.currentUser;
@@ -100,6 +101,7 @@ const GenerarFactura = () => {
     const tipoPagoY = imgY + imgHeight + 5; 
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
 
+
     pdf.setFontSize(12);
     const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
     const userX = imgY + imgHeight + 10;
@@ -123,7 +125,7 @@ const GenerarFactura = () => {
     const telefonoX = imgY + imgHeight + 10;
     const telefonoY = 190;
     pdf.text(telefonoText, telefonoX, telefonoY);
-    
+
 
     // Encabezado
   
