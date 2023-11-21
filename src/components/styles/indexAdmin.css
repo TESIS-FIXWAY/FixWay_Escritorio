@@ -10,16 +10,48 @@
   width: 50%;
   display: flex;
 }
-.tabla_listar{
+.tabla_listar {
   background-color: #B2FFFF;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+.card_admin_encabezado {
+  display: flex;
+  padding: 20px;
+  margin: 80px 0px 0px 0%;
+}
+
+.card_admin_mantencion {
+  width: 15%;
+  background-color: #E5DBFF;
+  margin-right: 20px; /* Añade margen derecho para separar las dos secciones */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card_admin_mantencion_in p{
+  padding-bottom: 10px;
+}
+
+.card_admin_calendario {
+  width: 30%;
+  background-color: #E5DBFF;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
 .calendario {
   width: 100%;
-  padding: 20px;
-  margin: 80px 0px 0px 10%;
+
 }
+
+
 .react-calendar {
   font-family: 'Poppins', sans-serif;
   background-color: #fff;
@@ -47,7 +79,6 @@
 }
 
 .card_section {
-  max-width: 800px;
   width: 100%;
   margin: 20px 20px 20px 20px;
   border-radius: 5px;
@@ -116,7 +147,7 @@
 
 .contenedor_cartas_iconos {
   margin: 50px 0px 0px 20px;
-  width: 50%;
+  width: 70%;
   height: 100; 
   display: flex;
   flex-wrap: wrap;

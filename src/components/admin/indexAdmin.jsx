@@ -121,23 +121,31 @@ const IndexAdmin = () => {
       <Admin />
       <div className="tabla_listar">
 
-        <div>
-          <br />
-          <br />
-          <br />
-          <p>Mantenciones pendientes: {pendingCount}</p>
-          <p>Mantenciones en proceso: {processCount}</p>
-          <p>Mantenciones Entregadas: {deliveredCount}</p>
-        </div>
+        <div className='card_admin_encabezado'>
 
-        <div className='card_admin_calendario'>
-          <div className='calendario'>
-            <h1 className=''>Calendario</h1>
-            <Calendar onChange={handleDateChange} value={selectedDate} />
+          <div className='card_admin_mantencion'>
+            <div className='card_admin_mantencion_in'>
+              <p>mantenciones</p>
+              <hr />
+              <p>Mantenciones pendientes:</p>
+              <p>{pendingCount}</p>
+              <hr />
+              <p>Mantenciones en proceso:</p>
+              <p>{processCount}</p>
+              <hr />
+              <p>Mantenciones Entregadas:</p>
+              <p>{deliveredCount}</p>
+            </div>
           </div>
-        </div>
 
-        <div className='contenedor_cartas_iconos'>
+          <div className='card_admin_calendario'>
+            <div className='calendario'>
+              <h1 className=''>Calendario</h1>
+              <Calendar onChange={handleDateChange} value={selectedDate} />
+            </div>
+          </div>
+
+          <div className='contenedor_cartas_iconos'>
             <div className='cartas_iconos'  onClick={usuarios}>
               <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
               <p>Agregar usuario</p>
@@ -178,6 +186,10 @@ const IndexAdmin = () => {
               <p>Generar factura de vendedor</p>
             </div> 
           </div>
+
+        </div>
+
+
 
 
 
