@@ -23,7 +23,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import Admin from "./admin";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import validadorRUT from './validadorRUT';
 
 
@@ -55,7 +55,6 @@ const AgregarUsuario = () => {
         fechaIngreso: fechaIngreso
       });
 
-
       setMensaje('Usuario añadido correctamente');
       // Limpiar campos después de agregar usuario
       document.getElementById("rut").value = "";
@@ -68,6 +67,9 @@ const AgregarUsuario = () => {
       document.getElementById("password").value = "";
       document.getElementById("email").value = "";
       document.getElementById("fechaIngreso").value = "";
+
+      await signOut(auth);
+      
     } catch (error) {
       setMensaje(`Error al añadir usuario: ${error.message}`);
     }

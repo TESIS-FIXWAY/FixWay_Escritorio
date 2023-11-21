@@ -26,7 +26,7 @@
 
 .card_admin_mantencion {
   width: 15%;
-  background-color: #E5DBFF;
+  background-color: #51d1f6;
   margin-right: 20px; /* Añade margen derecho para separar las dos secciones */
   padding: 20px;
   border-radius: 5px;
@@ -39,7 +39,7 @@
 
 .card_admin_calendario {
   width: 30%;
-  background-color: #E5DBFF;
+  background-color: #51d1f6;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -160,7 +160,7 @@
 .cartas_iconos {
   text-align: center;
   padding: 10px;
-  background-color: #E5DBFF;
+  background-color: #51d1f6;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -169,7 +169,7 @@
 }
 
 .cartas_iconos:hover {
-  background-color: #C4B4FF;
+  background-color: #46b7d6;
 }
 
 .functionality_icon {

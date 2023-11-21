@@ -52,11 +52,20 @@ library.add(
 const IndexAdmin = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [user, setUser] = useState(null);
   const [processCount , setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
 
   useEffect(() => {
+    const identifyUser = auth.currentUser;
+    if (identifyUser) {
+      const userRef = doc(db, "users", identifyUser.uid);
+      onSnapshot(userRef, (snapshot) => {
+        setUser(snapshot.data());
+        setLoading(false);
+      });
+    }
     const fetchMaintenanceCount = async () => {
       try {
         const maintenanceCollection = collection(db, 'mantenciones');
@@ -122,6 +131,20 @@ const IndexAdmin = () => {
       <div className="tabla_listar">
 
         <div className='card_admin_encabezado'>
+        <div className='perfil_usuario'>
+          {user && (
+            <div>
+              <br />
+              <br />
+              <br />
+              <p>{user.nombre} {user.apellido}</p>
+              <p>{user.rut}</p>
+              <p>{user.email}</p>
+              <p>{user.direccion}</p>
+              <p>{user.telefono}</p>
+            </div>
+          )}
+        </div>
 
           <div className='card_admin_mantencion'>
             <div className='card_admin_mantencion_in'>
