@@ -149,6 +149,12 @@ const GenerarFactura = () => {
     const tipoPagoY = imgY + imgHeight + 0 ; 
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
 
+    pdf.setFontSize(10);
+    const invoiceNumberText = `N° Factura: ${invoiceNumber}`;
+    const invoiceNumberX = 165;
+    const invoiceNumberY = imgY + imgHeight + 5;
+    pdf.text(invoiceNumberText, invoiceNumberX, invoiceNumberY);
+
 
     pdf.setFontSize(10);
     const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
@@ -173,33 +179,6 @@ const GenerarFactura = () => {
     const telefonoX = 8;
     const telefonoY =imgY + imgHeight + 15;
     pdf.text(telefonoText, telefonoX, telefonoY);
-
-
-    //esto agreggue yo
-    // pdf.setFontSize(10);
-    // const clienteText = `Nombre Cliente: ${clienteSeleccionado?.nombre || ''} ${clienteSeleccionado?.apellido || ''}`;
-
-    // const clienteX = 78;
-    // const clienteY = imgY + imgHeight + 0;
-    // pdf.text(clienteText, clienteX, clienteY);
-
-    // pdf.setFontSize(10);
-    // const rutClienteText = `Rut Cliente: ${clienteSeleccionado?.rut || ''}`;
-    // const rutClienteX = 78;
-    // const rutClienteY = imgY + imgHeight + 5;
-    // pdf.text(rutClienteText, rutClienteX, rutClienteY);
-
-    // pdf.setFontSize(10);
-    // const emailClienteText = `Email Cliente: ${clienteSeleccionado?.email || ''}`;
-    // const emailClienteX = 78;
-    // const emailClienteY = imgY + imgHeight + 10;
-    // pdf.text(emailClienteText, emailClienteX, emailClienteY);
-
-    // pdf.setFontSize(10);
-    // const telefonoClienteText = `Telefono Cliente: ${clienteSeleccionado?.telefono || ''}`;
-    // const telefonoClienteX = 78;
-    // const telefonoClienteY = imgY + imgHeight + 15;
-    // pdf.text(telefonoClienteText, telefonoClienteX, telefonoClienteY);
 
     if (clienteSeleccionado) {
       console.log("Selected client:", clienteSeleccionado);
@@ -358,7 +337,24 @@ const GenerarFactura = () => {
   };
 
 
-
+  function generateInvoiceNumber() {
+    // Generate two random letters
+    const letters = String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
+                    String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  
+    // Generate three random numbers
+    const numbers = Math.floor(100 + Math.random() * 900);
+  
+    // Combine letters and numbers to create the invoice number
+    const invoiceNumber = `${letters}${numbers}`;
+  
+    return invoiceNumber;
+  }
+  
+  // Example usage:
+  const invoiceNumber = generateInvoiceNumber();
+  console.log(invoiceNumber);
+  
 
 
 
@@ -597,12 +593,6 @@ const GenerarFactura = () => {
   const toggleClienteVista = () => {
     setShowClienteVista(!showClienteVista);
   };
-
-  // const handleSeleccionarCliente = (cliente) => {
-  //   console.log("Selected client:", cliente);
-  //   setClienteSeleccionado(cliente);
-  //   toggleClienteVista();
-  // };
 
   const seleccionarCliente = (cliente) => {
     console.log('Selected Client:', cliente);
