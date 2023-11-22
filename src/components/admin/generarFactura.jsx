@@ -30,7 +30,8 @@ import {
   doc,
   writeBatch,
   getDoc,
-  onSnapshot
+  onSnapshot,
+  updateDoc,
 } from "firebase/firestore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -353,9 +354,6 @@ const GenerarFactura = () => {
   
   // Example usage:
   const invoiceNumber = generateInvoiceNumber();
-  console.log(invoiceNumber);
-  
-
 
 
 
@@ -436,39 +434,54 @@ const GenerarFactura = () => {
     }
   };
 
-  const generarFactura = async () => {
+
+
+  const generarFactura = async () => { 
     if (productosSeleccionados.length === 0) {
       alert("No hay productos seleccionados para generar la factura.");
       return;
     }
+
+    let facturasCollection;
+    let nuevaFactura;
+
     try {
-      const nuevaFactura = {
-        productos: productosSeleccionados.map((producto) => ({
-          ...producto,
-        })),
-        tipoPago: tipoPago,
-      };
-      const facturasCollection = collection(db, "mifacturas");
+      facturasCollection = collection(db, "mifacturas");
       const batch = writeBatch(db);
 
       // Procesar cada producto
       for (const producto of productosSeleccionados) {
-        const productoRef = doc(db, "inventario", producto.id);
+          const productoRef = doc(db, "inventario", producto.id);
 
-        if (typeof producto.cantidad === 'number') {
-          const docSnapshot = await getDoc(productoRef);
-          const existingQuantity = docSnapshot.data().cantidad;
-          const newQuantity = existingQuantity - producto.cantidad;
+          if (typeof producto.cantidad === 'number') {
+              const docSnapshot = await getDoc(productoRef);
+              const existingQuantity = docSnapshot.data().cantidad;
+              const newQuantity = existingQuantity - producto.cantidad;
 
-          // Actualizar la cantidad en el inventario
-          batch.update(productoRef, { cantidad: newQuantity });
-        } else {
-          console.error("Invalid cantidad value:", producto.cantidad);
-        }
+              // Actualizar la cantidad en el inventario
+              batch.update(productoRef, { cantidad: newQuantity });
+          } else {
+              console.error("Invalid cantidad value:", producto.cantidad);
+          }
       }
+
+      // Generar el número de factura
+      const invoiceNumber = generateInvoiceNumber();
+
+      // Crear la nueva factura con el número generado
+      nuevaFactura = {
+          productos: productosSeleccionados.map((producto) => ({ ...producto })),
+          tipoPago: tipoPago,
+          invoiceNumber: invoiceNumber,
+      };
 
       // Agregar la nueva factura
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
+
+      // Usar el ID de la factura como invoiceNumber
+      const invoiceId = nuevaFacturaRef.id;
+      nuevaFactura.invoiceNumber = invoiceId;
+      await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
 
       await batch.commit();
 
