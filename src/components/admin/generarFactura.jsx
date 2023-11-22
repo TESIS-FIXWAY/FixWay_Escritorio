@@ -176,30 +176,60 @@ const GenerarFactura = () => {
 
 
     //esto agreggue yo
-    pdf.setFontSize(10);
-    const clienteText = `Nombre Cliente: ${clienteSeleccionado?.nombre || ''} ${clienteSeleccionado?.apellido || ''}`;
+    // pdf.setFontSize(10);
+    // const clienteText = `Nombre Cliente: ${clienteSeleccionado?.nombre || ''} ${clienteSeleccionado?.apellido || ''}`;
 
-    const clienteX = 78;
-    const clienteY = imgY + imgHeight + 0;
-    pdf.text(clienteText, clienteX, clienteY);
+    // const clienteX = 78;
+    // const clienteY = imgY + imgHeight + 0;
+    // pdf.text(clienteText, clienteX, clienteY);
 
-    pdf.setFontSize(10);
-    const rutClienteText = `Rut Cliente: ${clienteSeleccionado?.rut || ''}`;
-    const rutClienteX = 78;
-    const rutClienteY = imgY + imgHeight + 5;
-    pdf.text(rutClienteText, rutClienteX, rutClienteY);
+    // pdf.setFontSize(10);
+    // const rutClienteText = `Rut Cliente: ${clienteSeleccionado?.rut || ''}`;
+    // const rutClienteX = 78;
+    // const rutClienteY = imgY + imgHeight + 5;
+    // pdf.text(rutClienteText, rutClienteX, rutClienteY);
 
-    pdf.setFontSize(10);
-    const emailClienteText = `Email Cliente: ${clienteSeleccionado?.email || ''}`;
-    const emailClienteX = 78;
-    const emailClienteY = imgY + imgHeight + 10;
-    pdf.text(emailClienteText, emailClienteX, emailClienteY);
+    // pdf.setFontSize(10);
+    // const emailClienteText = `Email Cliente: ${clienteSeleccionado?.email || ''}`;
+    // const emailClienteX = 78;
+    // const emailClienteY = imgY + imgHeight + 10;
+    // pdf.text(emailClienteText, emailClienteX, emailClienteY);
 
-    pdf.setFontSize(10);
-    const telefonoClienteText = `Telefono Cliente: ${clienteSeleccionado?.telefono || ''}`;
-    const telefonoClienteX = 78;
-    const telefonoClienteY = imgY + imgHeight + 15;
-    pdf.text(telefonoClienteText, telefonoClienteX, telefonoClienteY);
+    // pdf.setFontSize(10);
+    // const telefonoClienteText = `Telefono Cliente: ${clienteSeleccionado?.telefono || ''}`;
+    // const telefonoClienteX = 78;
+    // const telefonoClienteY = imgY + imgHeight + 15;
+    // pdf.text(telefonoClienteText, telefonoClienteX, telefonoClienteY);
+
+    if (clienteSeleccionado) {
+      console.log("Selected client:", clienteSeleccionado);
+      pdf.setFontSize(10);
+  
+      const clienteText = `Nombre Cliente: ${clienteSeleccionado?.nombre || ''} ${clienteSeleccionado?.apellido || ''}`;
+      const clienteX = 78;
+      const clienteY = imgY + imgHeight + 0;
+      pdf.text(clienteText, clienteX, clienteY);
+    
+      const rutClienteText = `Rut Cliente: ${clienteSeleccionado.rut || ''}`;
+      const rutClienteX = 78;
+      const rutClienteY = imgY + imgHeight + 5;
+      pdf.text(rutClienteText, rutClienteX, rutClienteY);
+    
+      const emailClienteText = `Email Cliente: ${clienteSeleccionado.email || ''}`;
+      const emailClienteX = 78;
+      const emailClienteY = imgY + imgHeight + 10;
+      pdf.text(emailClienteText, emailClienteX, emailClienteY);
+    
+      const telefonoClienteText = `Telefono Cliente: ${clienteSeleccionado.telefono || ''}`;
+      const telefonoClienteX = 78;
+      const telefonoClienteY = imgY + imgHeight + 15;
+      pdf.text(telefonoClienteText, telefonoClienteX, telefonoClienteY);
+    } else {
+      // If clienteSeleccionado is not defined or null, handle accordingly
+      pdf.setFontSize(10);
+      const errorText = "Error: Cliente no seleccionado";
+      pdf.text(errorText, 78, imgY + imgHeight);
+    }
     // hasta  aqui agregue yo
 
 
@@ -567,19 +597,19 @@ const GenerarFactura = () => {
   const toggleClienteVista = () => {
     setShowClienteVista(!showClienteVista);
   };
-  
 
   // const handleSeleccionarCliente = (cliente) => {
+  //   console.log("Selected client:", cliente);
   //   setClienteSeleccionado(cliente);
-  //   toggleClienteVista(); // O puedes decidir si ocultar la lista automáticamente o no
+  //   toggleClienteVista();
   // };
 
-  const handleSeleccionarCliente = (cliente) => {
+  const seleccionarCliente = (cliente) => {
+    console.log('Selected Client:', cliente);
     setClienteSeleccionado(cliente);
-    setSelectedClient(cliente);
-    toggleClienteVista(); // Close the client list view
+    toggleClienteVista();
   };
-
+  
   const mostrarListadoClientes = () => {
     if (showClienteVista) {
       return (
@@ -595,6 +625,7 @@ const GenerarFactura = () => {
               setClienteEmail={setClienteEmail}
               setClienteTelefono={setClienteTelefono}
               toggleClienteVista={toggleClienteVista}
+              seleccionarCliente={seleccionarCliente} // Make sure this is included
             />
           )}
         </>
@@ -626,11 +657,13 @@ const GenerarFactura = () => {
               <input
                 type="text"
                 placeholder="Nombre"
+                id="nombre"
                 value={clienteNombre}
                 onChange={(e) => setClienteNombre(e.target.value)}
               />
               <input
                 type="text"
+                id="apellido"
                 placeholder="Apellido"
                 value={clienteApellido}
                 onChange={(e) => setClienteApellido(e.target.value)}
@@ -647,6 +680,7 @@ const GenerarFactura = () => {
               <input
                 type="text"
                 placeholder="Email"
+                id="email"
                 value={clienteEmail}
                 onChange={(e) => setClienteEmail(e.target.value)}
               />
@@ -654,6 +688,7 @@ const GenerarFactura = () => {
                 type="text"
                 placeholder="Ejemplo: +56 9 12345678"
                 pattern="[+]56 [0-9]{1} [0-9]{8}"
+                id="telefono"
                 value={clienteTelefono}
                 onChange={(e) => setClienteTelefono(e.target.value)}
               />
