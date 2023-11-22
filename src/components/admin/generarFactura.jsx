@@ -175,6 +175,34 @@ const GenerarFactura = () => {
     pdf.text(telefonoText, telefonoX, telefonoY);
 
 
+    //esto agreggue yo
+    pdf.setFontSize(10);
+    const clienteText = `Nombre Cliente: ${clienteSeleccionado?.nombre || ''} ${clienteSeleccionado?.apellido || ''}`;
+
+    const clienteX = 78;
+    const clienteY = imgY + imgHeight + 0;
+    pdf.text(clienteText, clienteX, clienteY);
+
+    pdf.setFontSize(10);
+    const rutClienteText = `Rut Cliente: ${clienteSeleccionado?.rut || ''}`;
+    const rutClienteX = 78;
+    const rutClienteY = imgY + imgHeight + 5;
+    pdf.text(rutClienteText, rutClienteX, rutClienteY);
+
+    pdf.setFontSize(10);
+    const emailClienteText = `Email Cliente: ${clienteSeleccionado?.email || ''}`;
+    const emailClienteX = 78;
+    const emailClienteY = imgY + imgHeight + 10;
+    pdf.text(emailClienteText, emailClienteX, emailClienteY);
+
+    pdf.setFontSize(10);
+    const telefonoClienteText = `Telefono Cliente: ${clienteSeleccionado?.telefono || ''}`;
+    const telefonoClienteX = 78;
+    const telefonoClienteY = imgY + imgHeight + 15;
+    pdf.text(telefonoClienteText, telefonoClienteX, telefonoClienteY);
+    // hasta  aqui agregue yo
+
+
     // Encabezado
     const lineY = tipoPagoY + 20;
     pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
@@ -541,9 +569,15 @@ const GenerarFactura = () => {
   };
   
 
+  // const handleSeleccionarCliente = (cliente) => {
+  //   setClienteSeleccionado(cliente);
+  //   toggleClienteVista(); // O puedes decidir si ocultar la lista automáticamente o no
+  // };
+
   const handleSeleccionarCliente = (cliente) => {
     setClienteSeleccionado(cliente);
-    toggleClienteVista(); // O puedes decidir si ocultar la lista automáticamente o no
+    setSelectedClient(cliente);
+    toggleClienteVista(); // Close the client list view
   };
 
   const mostrarListadoClientes = () => {

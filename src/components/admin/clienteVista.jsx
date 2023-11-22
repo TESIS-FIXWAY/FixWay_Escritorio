@@ -9,7 +9,7 @@ const ClienteVista = ({
   setClienteEmail,
   setClienteTelefono,
   toggleClienteVista,
-  seleccionarCliente
+  // seleccionarCliente
 }) => {
   const agregarCliente = () => {
     // Lógica para agregar un cliente
@@ -38,6 +38,20 @@ const ClienteVista = ({
     } else {
       alert("Por favor, complete al menos nombre, apellido y rut del cliente.");
     }
+  };
+
+  const seleccionarCliente = (cliente) => {
+    // Lógica para seleccionar un cliente
+    setClienteNombre(cliente.nombre);
+    setClienteApellido(cliente.apellido);
+    setClienteRut(cliente.rut);
+    setClienteEmail(cliente.email);
+    setClienteTelefono(cliente.telefono);
+
+    console.log(cliente);
+
+    // Cerrar la vista del cliente
+    toggleClienteVista();
   };
 
   return (
