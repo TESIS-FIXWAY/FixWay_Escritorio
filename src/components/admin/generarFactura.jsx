@@ -21,6 +21,7 @@ import React, { useState, useEffect } from "react";
 import ClienteVista from "./clienteVista";
 import Admin from "./admin";
 import jsPDF from "jspdf";
+import validadorRUT from "./validadorRUT";
 import { db, auth } from "../../firebase";
 import {
   collection,
@@ -69,6 +70,7 @@ const GenerarFactura = () => {
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
   const [id, setId] = useState("");
+  const [mensajeRut, setMensajeRut] = useState("");
     
   useEffect(() => {
     const identifyUser = auth.currentUser;
@@ -87,8 +89,6 @@ const GenerarFactura = () => {
   }, []);
 
   const agregarCliente = async () => {
-    // ... (código anterior)
-
     try {
       const nuevoCliente = {
         nombre: clienteNombre,
@@ -118,12 +118,6 @@ const GenerarFactura = () => {
       console.error("Error al agregar el nuevo cliente:", error);
     }
   };
-
-
-
-
-
-  
 
   const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
@@ -578,6 +572,17 @@ const GenerarFactura = () => {
     setShowAgregarCliente(!showAgregarCliente);
   };
 
+  function validarRutOnChange() {
+    const rut = document.getElementById("rut").value;
+    const validador = new validadorRUT(rut);
+    if (validador.esValido) {
+      document.getElementById("rut").value = validador.formateado();
+      setMensajeRut("Rut válido");
+    } else {
+      setMensajeRut("Rut inválido");
+    }
+  }
+
   const mostrarAgregarCliente = () => {
     if (showAgregarCliente) {
       return (
@@ -598,10 +603,13 @@ const GenerarFactura = () => {
               />
               <input
                 type="text"
-                placeholder="Rut"
+                placeholder="Rut (11.111.111-1)"
                 value={clienteRut}
+                id="rut"
                 onChange={(e) => setClienteRut(e.target.value)}
+                onBlur={validarRutOnChange}
               />
+              <p className='mensaje_rut'>{mensajeRut}</p>
               <input
                 type="text"
                 placeholder="Email"
@@ -610,7 +618,8 @@ const GenerarFactura = () => {
               />
               <input
                 type="text"
-                placeholder="Telefono"
+                placeholder="Ejemplo: +56 9 12345678"
+                pattern="[+]56 [0-9]{1} [0-9]{8}"
                 value={clienteTelefono}
                 onChange={(e) => setClienteTelefono(e.target.value)}
               />
