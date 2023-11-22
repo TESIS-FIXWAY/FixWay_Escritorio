@@ -51,7 +51,7 @@ const GenerarFactura = () => {
   const [tipoPago, setTipoPago] = useState("contado");
   const [showDiscountMenu, setShowDiscountMenu] = useState(false);
   const [discountPercentage, setDiscountPercentage] = useState(0);
-  const [descuentoMenuValue, setDescuentoMenuValue] = useState('');
+  const [descuentoMenuValue, setDescuentoMenuValue] = useState(0);
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
   const [clientes, setClientes] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
@@ -119,67 +119,96 @@ const GenerarFactura = () => {
     }
   };
 
+
+
+
+
+  
+
   const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
   
     const imgData = "../../src/images/LogoSinFoindo.png";
-    const imgWidth = 50;
-    const imgHeight = 50;
+    const imgWidth = 40;
+    const imgHeight = 40;
     const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
-    const imgY = 10;
+    const imgY = -10;
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
   
     pdf.setFontSize(24);
-    pdf.text("FACTURA", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+    pdf.text("Factura Hans Motors", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+
+    // Línea separadora entre el título y el contenido
+    const lineSeparatorY = 20;
+    pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
+
   
     const today = new Date();
     const dateString = today.toLocaleDateString();
-    pdf.setFontSize(12);
-    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 50, 20);
+    pdf.setFontSize(10);
+    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 40);
+
   
-    pdf.setFontSize(12);
+    pdf.setFontSize(10);
     const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
-    const tipoPagoX = 160;
-    const tipoPagoY = imgY + imgHeight + 5; 
+    const tipoPagoX = 165;
+    const tipoPagoY = imgY + imgHeight + 0 ; 
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
 
 
-    pdf.setFontSize(12);
+    pdf.setFontSize(10);
     const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
-    const userX = 160;
-    const userY = imgY + imgHeight + 10;
+    const userX = 8;
+    const userY = imgY + imgHeight + 0;
     pdf.text(userText, userX, userY);
 
-    pdf.setFontSize(12);
+    pdf.setFontSize(10);
     const rutText = `Rut Vendedor: ${userData.rut}`;
-    const rutX = 170;
-    const rutY = imgY + imgHeight + 10;
+    const rutX = 8;
+    const rutY = imgY + imgHeight + 5;
     pdf.text(rutText, rutX, rutY);
     
-    pdf.setFontSize(12);
+    pdf.setFontSize(10);
     const emailText = `Email Vendedor: ${userData.email}`;
-    const emailX = 180;
+    const emailX = 8;
     const emailY =  imgY + imgHeight + 10;
     pdf.text(emailText, emailX, emailY);
 
-    pdf.setFontSize(12);
+    pdf.setFontSize(10);
     const telefonoText = `Telefono Vendedor: ${userData.telefono}`;
-    const telefonoX = 190;
-    const telefonoY =imgY + imgHeight + 10;
+    const telefonoX = 8;
+    const telefonoY =imgY + imgHeight + 15;
     pdf.text(telefonoText, telefonoX, telefonoY);
 
 
     // Encabezado
-  
-    const lineY = tipoPagoY + 15;
-    pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
+    const lineY = tipoPagoY + 20;
+    pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
+
+    // Línea vertical entre el título y el contenido
+    const lineX = 5; 
+    pdf.line(lineX, lineSeparatorY, lineX, tipoPagoY + 20);
+
+    const lineX0 = 75; 
+    pdf.line(lineX0, lineSeparatorY, lineX0, tipoPagoY + 20);
+
+    const lineX1 = 163; 
+    pdf.line(lineX1, lineSeparatorY, lineX1, tipoPagoY + 20);
+
+    const lineX2 = 205; 
+    pdf.line(lineX2, lineSeparatorY, lineX2, tipoPagoY + 20);
+
+
+
+
+    //lista de productos 
   
     const fontSize = 10;
     pdf.setFontSize(fontSize);
   
     const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
-    const tableX = 15;
-    const tableY = lineY + 10;
+    const tableX = 10;
+    const tableY = lineY + 12;
   
     headers.forEach((header, index) => {
       pdf.text(header, tableX + index * 40, tableY);
@@ -218,6 +247,10 @@ const GenerarFactura = () => {
   
       currentY += h + rowSpacing;
     });
+
+    // Dibujar línea horizontal encima del neto
+    pdf.line(5, currentY + 5, pdf.internal.pageSize.getWidth() - 130, currentY + 5);
+
   
     pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
   
@@ -230,10 +263,6 @@ const GenerarFactura = () => {
 
     const descuento = parseInt(descuentoMenuValue, 10);
     // const descuento = (totalSinIVA * descuentoMenuValue) / 100;
-    console.log(`Descuento aplicado: ${descuento}%`);
-
-    // Calcula el descuento en cantidad
-    const descuentoCantidad = (descuento / 100) * totalSinIVA;
 
     // Calcula el descuento en el total final
     const descuentoTotalFinal = (descuento / 100) * (totalFinal);
@@ -247,10 +276,39 @@ const GenerarFactura = () => {
     pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
     pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50);
     
+
+
+    // Dibujar líneas verticales desde el neto hacia abajo
+    const verticalLineX = pdf.internal.pageSize.getWidth() - 130;
+    pdf.line(verticalLineX, currentY + 5, verticalLineX, currentY + 56);
+
+    // Dibujar otra línea vertical paralela
+    const secondVerticalLineX = pdf.internal.pageSize.getWidth() - 205; 
+    pdf.line(secondVerticalLineX, currentY + 5, secondVerticalLineX, currentY + 56);
+
+    // Dibujar línea horizontal después del total final
+    pdf.line(5, currentY + 33, pdf.internal.pageSize.getWidth() - 130, currentY + 33);
+    pdf.line(5, currentY + 56, pdf.internal.pageSize.getWidth() - 130, currentY + 56);
+    
+  
+
+
+
     const tableHeight = Math.max(30, productosHeight + 20);
-    pdf.line(10, lineY, pdf.internal.pageSize.getWidth() - 10, lineY);
+    pdf.line(5, lineY + 5, pdf.internal.pageSize.getWidth() - 5, lineY + 5);
+
+
+    // const lineY2 = tableY + tableHeight;
+    // pdf.line(5, lineY2, pdf.internal.pageSize.getWidth() - 5, lineY2);
+
+
     pdf.save("factura.pdf");
   };
+
+
+
+
+
 
 
 
@@ -443,8 +501,9 @@ const GenerarFactura = () => {
   
   const cancelarDescuento = () => {
     // Puedes agregar lógica adicional aquí si es necesario
-    // En este ejemplo, simplemente se oculta el menú de descuentos
+    // En este ejemplo, simplemente se oculta el menú de descuentos y restablece el valor a 0
     setShowDiscountMenu(false);
+    setDescuentoMenuValue(0); // Restablecer el valor a 0
   };
   
   const mostrarDescuentoMenu = () => {
@@ -733,4 +792,4 @@ const GenerarFactura = () => {
   );
 };
 
-export default GenerarFactura;
+export default GenerarFactura;        
