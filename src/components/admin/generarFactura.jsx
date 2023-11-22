@@ -18,6 +18,7 @@
 // Uso de iconos FontAwesome para mejorar la experiencia del usuario. 
 
 import React, { useState, useEffect } from "react";
+import ClienteVista from "./clienteVista";
 import Admin from "./admin";
 import jsPDF from "jspdf";
 import { db, auth } from "../../firebase";
@@ -52,8 +53,16 @@ const GenerarFactura = () => {
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [descuentoMenuValue, setDescuentoMenuValue] = useState('');
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
-
+  const [clientes, setClientes] = useState([]);
+  const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+  const [clienteNombre, setClienteNombre] = useState("");
+  const [clienteApellido, setClienteApellido] = useState("");
+  const [clienteRut, setClienteRut] = useState("");
+  const [clienteEmail, setClienteEmail] = useState("");
+  const [clienteTelefono, setClienteTelefono] = useState("");
+  const [showClienteVista, setShowClienteVista] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [showAgregarCliente, setShowAgregarCliente] = useState(false);
   const [newName, setNewName] = useState("");
   const [newApellido, setNewApellido] = useState("");
   const [rut, setRut] = useState("");
@@ -76,6 +85,39 @@ const GenerarFactura = () => {
       });
     }
   }, []);
+
+  const agregarCliente = async () => {
+    // ... (código anterior)
+
+    try {
+      const nuevoCliente = {
+        nombre: clienteNombre,
+        apellido: clienteApellido,
+        rut: clienteRut,
+        email: clienteEmail,
+        telefono: clienteTelefono,
+      };
+
+      // Agregar el nuevo cliente a la colección "clientes"
+      const clientesCollection = collection(db, "clientes");
+      const nuevoClienteRef = await addDoc(clientesCollection, nuevoCliente);
+
+      // Actualizar la lista de clientes
+      setClientes([...clientes, { id: nuevoClienteRef.id, ...nuevoCliente }]);
+
+      // Limpiar los campos del nuevo cliente
+      setClienteNombre("");
+      setClienteApellido("");
+      setClienteRut("");
+      setClienteEmail("");
+      setClienteTelefono("");
+
+      // Ocultar la vista de clientes
+      toggleClienteVista();
+    } catch (error) {
+      console.error("Error al agregar el nuevo cliente:", error);
+    }
+  };
 
   const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
@@ -104,26 +146,26 @@ const GenerarFactura = () => {
 
     pdf.setFontSize(12);
     const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
-    const userX = imgY + imgHeight + 10;
-    const userY = 160;
+    const userX = 160;
+    const userY = imgY + imgHeight + 10;
     pdf.text(userText, userX, userY);
 
     pdf.setFontSize(12);
     const rutText = `Rut Vendedor: ${userData.rut}`;
-    const rutX = imgY + imgHeight + 10;
-    const rutY = 170;
+    const rutX = 170;
+    const rutY = imgY + imgHeight + 10;
     pdf.text(rutText, rutX, rutY);
     
     pdf.setFontSize(12);
     const emailText = `Email Vendedor: ${userData.email}`;
-    const emailX = imgY + imgHeight + 10;
-    const emailY = 180;
+    const emailX = 180;
+    const emailY =  imgY + imgHeight + 10;
     pdf.text(emailText, emailX, emailY);
 
     pdf.setFontSize(12);
     const telefonoText = `Telefono Vendedor: ${userData.telefono}`;
-    const telefonoX = imgY + imgHeight + 10;
-    const telefonoY = 190;
+    const telefonoX = 190;
+    const telefonoY =imgY + imgHeight + 10;
     pdf.text(telefonoText, telefonoX, telefonoY);
 
 
@@ -426,6 +468,107 @@ const GenerarFactura = () => {
     }
   };
 
+  useEffect(() => {
+
+    const obtenerClientes = async () => {
+      try {
+        const clientesSnapshot = await getDocs(collection(db, "clientes"));
+        const datosClientes = clientesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setClientes(datosClientes);
+      } catch (error) {
+        console.error("Error al obtener la lista de clientes:", error);
+      }
+    };
+
+    obtenerClientes();
+  }, []);
+
+  const toggleClienteVista = () => {
+    setShowClienteVista(!showClienteVista);
+  };
+  
+
+  const handleSeleccionarCliente = (cliente) => {
+    setClienteSeleccionado(cliente);
+    toggleClienteVista(); // O puedes decidir si ocultar la lista automáticamente o no
+  };
+
+  const mostrarListadoClientes = () => {
+    if (showClienteVista) {
+      return (
+        <>
+          {/* Mostrar la vista del cliente si showClienteVista es verdadero */}
+          {showClienteVista && (
+            <ClienteVista
+              clientes={clientes}
+              setClientes={setClientes}
+              setClienteNombre={setClienteNombre}
+              setClienteApellido={setClienteApellido}
+              setClienteRut={setClienteRut}
+              setClienteEmail={setClienteEmail}
+              setClienteTelefono={setClienteTelefono}
+              toggleClienteVista={toggleClienteVista}
+            />
+          )}
+        </>
+      );
+    }
+  };
+
+  const toggleAgregarCliente = () => {
+    setShowAgregarCliente(!showAgregarCliente);
+  };
+
+  const mostrarAgregarCliente = () => {
+    if (showAgregarCliente) {
+      return (
+        <div className="fondo_no">
+          <div className="editar" style={{ width: "413px" }}>
+            <div className="descuento-menu">
+              <input
+                type="text"
+                placeholder="Nombre"
+                value={clienteNombre}
+                onChange={(e) => setClienteNombre(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Apellido"
+                value={clienteApellido}
+                onChange={(e) => setClienteApellido(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Rut"
+                value={clienteRut}
+                onChange={(e) => setClienteRut(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Email"
+                value={clienteEmail}
+                onChange={(e) => setClienteEmail(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Telefono"
+                value={clienteTelefono}
+                onChange={(e) => setClienteTelefono(e.target.value)}
+              />
+              <button onClick={agregarCliente} style={{ background: "#1DC258" }}>
+                Agregar Cliente
+              </button>
+              <button onClick={toggleAgregarCliente} style={{ background: "#E74C3C" }}>
+                Cancelar
+              </button>
+        
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
+
   const mostrarListadoProductos = () => {
     if (showProductList) {
       return (
@@ -519,13 +662,25 @@ const GenerarFactura = () => {
 
           {showDiscountMenu && mostrarDescuentoMenu()}
 
-          <button style={{ background: "#1DC258",height:"45px", marginTop:"10px"}} onClick={toggleProductList}>
+          <button style={{ background: "#1DC258",height:"45px", marginTop:"10px" }} onClick={toggleProductList}>
             <FontAwesomeIcon icon="fa-solid fa-list" />
             {showProductList ? "Ocultar Lista" : " Mostrar Lista"} ({productosSeleccionados.length})
           </button>
 
           {showProductList && mostrarListadoProductos()}
-          
+
+          <button onClick={toggleAgregarCliente} style={{ background: "#1DC258",height:"45px", marginTop:"10px" }}>
+            Agregar Cliente
+          </button>
+
+          {mostrarAgregarCliente()}
+
+          <button style={{ background: "#1DC258",height:"45px", marginTop:"10px" }} onClick={toggleClienteVista}>
+            <FontAwesomeIcon icon="fa-solid fa-users" style={{left: '15px'}} />
+            Seleccionar Cliente
+          </button>
+          {mostrarListadoClientes()}
+
           <input style={{height:"45px", marginTop:"10px"}}type="text" placeholder="Buscar producto" onChange={buscadorProducto} /> 
         </div>
 

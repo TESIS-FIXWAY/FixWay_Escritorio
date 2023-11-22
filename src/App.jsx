@@ -25,6 +25,7 @@ import AgregarInventario from "./components/admin/agregarInventario";
 import ListarInventario from "./components/admin/listarInventario";
 import GenerarFactura from "./components/admin/generarFactura";
 import GestionMantencionesAdmin from "./components/admin/gestionMantencionAdmin";
+import ClienteVista from "./components/admin/clienteVista";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -75,6 +76,7 @@ function App() {
             <Route path='/listarInventario' element={<ListarInventario />} />
             <Route path='/generarFactura' element={<GenerarFactura />} />
             <Route path='/gestionMantencionesAdmin' element={<GestionMantencionesAdmin />} />
+            <Route path='/clienteVista' element={<ClienteVista />} />
             <Route
               path='/mecanico'
               element={
