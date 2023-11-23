@@ -25,6 +25,7 @@ import {
 import Admin from "./admin";
 import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import validadorRUT from './validadorRUT';
+import { reauthenticateWithCredential, EmailAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 
 
 const AgregarUsuario = () => {
@@ -32,31 +33,24 @@ const AgregarUsuario = () => {
   const [mensajeRut, setMensajeRut] = React.useState(null);
   const [mensajeValidacion, setMensajeValidacion] = React.useState(null); // Nuevo estado para mensajes de validación
 
-  React.useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((usuarioFirebase) => {
-      if (usuarioFirebase) {
-        // Realizar cualquier manejo necesario para el usuario autenticado
-      } else {
-        // Manejar el cierre de sesión o el estado no autenticado
-      }
-    });
-
-    return () => {
-      unsubscribe(); // Desuscribirse cuando el componente se desmonta
-    };
-  }, []);
-
-
   async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso) {
     try {
-      const infoUsuario = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
+      // Sign out the current user (if there is one) to avoid conflicts
+      const currentUser = auth.currentUser;
+      const currentUserCredentials = {
+        email: currentUser.email,
+        password: password,
+      };
+      await signOut(auth);
+      
+      // Create the user in Firebase Authentication
+      const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredentials.user;
+      console.log("user", user);
 
-      const docuRef = doc(db, `users/${infoUsuario.user.uid}`);
-      await setDoc(docuRef, {
+
+      // Create the user in Firestore
+      await setDoc(doc(db, "users", user.uid), {
         rut: rut,
         rol: rol,
         nombre: nombre,
@@ -64,13 +58,14 @@ const AgregarUsuario = () => {
         telefono: telefono,
         direccion: direccion,
         email: email,
-        password: password,
         salario: salario,
-        fechaIngreso: fechaIngreso
+        fechaIngreso: fechaIngreso,
       });
 
+      // Set the success message
+
       setMensaje('Usuario añadido correctamente');
-      // Limpiar campos después de agregar usuario
+      // Clear fields after adding the user
       document.getElementById("rut").value = "";
       document.getElementById("rol").value = "mecanico";
       document.getElementById("nombre").value = "";
@@ -81,7 +76,11 @@ const AgregarUsuario = () => {
       document.getElementById("password").value = "";
       document.getElementById("email").value = "";
       document.getElementById("fechaIngreso").value = "";
-      
+  
+      // Reauthenticate the current user  
+      const credential = EmailAuthProvider.credential(currentUserCredentials.email, currentUserCredentials.password);
+      await reauthenticateWithCredential(currentUser, credential);
+  
     } catch (error) {
       setMensaje(`Error al añadir usuario: ${error.message}`);
     }
