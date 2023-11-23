@@ -63,7 +63,6 @@ const IndexAdmin = () => {
       const userRef = doc(db, "users", identifyUser.uid);
       onSnapshot(userRef, (snapshot) => {
         setUser(snapshot.data());
-        setLoading(false);
       });
     }
     const fetchMaintenanceCount = async () => {

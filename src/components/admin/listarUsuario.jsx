@@ -122,10 +122,6 @@ const ListarUsuario = () => {
     }
   };
 
-
-
-
-
   const handleInputChange = (userId, name, value) => {
     let updatedValue = value;
 
@@ -138,16 +134,6 @@ const ListarUsuario = () => {
     );
     setUsers(updatedUsers);
   };
-
-
-
-
-
-
-
-
-
-
 
   const filtrarUsuario = (e) => {
     const texto = e.target.value.toLowerCase();

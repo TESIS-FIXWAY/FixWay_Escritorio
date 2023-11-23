@@ -34,6 +34,7 @@ import {
   EmailAuthProvider,
 } from 'firebase/auth';
 
+
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
   const [mensajeRut, setMensajeRut] = useState(null);
@@ -52,11 +53,8 @@ const AgregarUsuario = () => {
     fechaIngreso
   ) => {
     try {
-      // Get the current user and credentials
       const currentUser = auth.currentUser;
-      console.log(currentUser);
   
-      // Create the user in Firebase Authentication
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -64,7 +62,6 @@ const AgregarUsuario = () => {
       );
       const newUser = userCredentials.user;
   
-      // Create the user in Firestore
       await setDoc(doc(db, 'users', newUser.uid), {
         rut,
         rol,
@@ -77,29 +74,32 @@ const AgregarUsuario = () => {
         fechaIngreso,
       });
   
-      // Sign out the newly added user using a separate auth instance
-      const newUserAuth = getAuth(); // Create a new auth instance for the new user
-      await signOut(newUserAuth); // Sign out the new user
-  
-      // Set the success message
       setMensaje('Usuario añadido correctamente');
   
-      // Clear fields after adding the user
-      // Note: Consider using state and controlled components
       clearFormFields();
   
-      // Reauthenticate the current user if there was one
-      if (currentUser && currentUser.email && currentUser.password) {
-        const currentUserCredentials = {
-          email: currentUser.email,
-          password: currentUser.password,
-        };
-    
-        await reauthenticateCurrentUser(currentUserCredentials);
+      // Only sign out the new user if there is no currently logged-in user
+      if (!currentUser) {
+        const newUserAuth = getAuth();
+        await signOut(newUserAuth);
       }
   
+      // Reauthenticate the original user if there was one
+      if (currentUser) {
+        if (currentUser.email && currentUser.password) {
+          await reauthenticateCurrentUser(currentUser.email, currentUser.password);
+        }
+      }
     } catch (error) {
-      setMensaje(`Error al añadir usuario: ${error.message}`);
+      if (error.code === 'auth/email-already-in-use') {
+        setMensaje('El correo electrónico ya está en uso');
+      } else if (error.code === 'auth/weak-password') {
+        setMensaje('La contraseña debe tener al menos 6 caracteres');
+      }
+    } finally {
+      setTimeout(() => {
+        setMensaje(null);
+      }, 5000);
     }
   };
 
@@ -179,38 +179,24 @@ const AgregarUsuario = () => {
     });
   };
 
-  const reauthenticateCurrentUser = async () => {
+  const reauthenticateCurrentUser = async (password) => {
     try {
-      const currentUser = auth.currentUser;
+      const currentUser = getAuth().currentUser;
   
       if (!currentUser) {
         throw new Error('No user is currently signed in.');
       }
   
-      // Prompt the user to re-enter their password
-      const passwordProvidedByUser = prompt('Please enter your password');
-  
-      const credential = EmailAuthProvider.credential(
-        currentUser.email,
-        passwordProvidedByUser
-      );
-  
-      await reauthenticateWithCredential(currentUser, credential);
+      const credentials = EmailAuthProvider.credential(currentUser.email, password);
+      await reauthenticateWithCredential(currentUser, credentials);
   
       console.log('Reauthentication successful');
     } catch (error) {
       console.error(`Error during reauthentication: ${error.message}`);
+      throw error; // Re-throw the error to handle it in the caller function
     }
   };
-  
-  // reauthenticateCurrentUser();
 
-  // const reauthenticateCurrentUser = async (credentials) => {
-  //   const { email, password } = credentials;
-  //   const currentUser = auth.currentUser;
-  //   const credential = EmailAuthProvider.credential(email, password);
-  //   await reauthenticateWithCredential(currentUser, credential);
-  // };
 
   return (
     <>

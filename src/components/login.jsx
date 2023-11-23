@@ -97,6 +97,7 @@ const Login = () => {
                     id='email'
                   />
                 </label>
+                <br />
                 <label className='label-login'>
                   <i className='bx bx-lock-alt'></i>                        
                   <input
@@ -105,6 +106,7 @@ const Login = () => {
                     id='password'
                   />
                 </label>
+                <br />
                 <input 
                   type="submit" 
                   value="Iniciar sesion"
