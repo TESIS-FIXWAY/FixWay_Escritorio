@@ -24,6 +24,8 @@ import {
   getDocs,
   doc, onSnapshot 
 } from 'firebase/firestore';
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -36,7 +38,14 @@ import {
   faUsersLine,
   faFileCirclePlus,
   faFileLines,
+  faEnvelope,
+  faLocationDot,
+  faPhone,
+  faSpinner,
+  faRectangleList,
+  
 } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard } from '@fortawesome/free-regular-svg-icons';
 library.add(
   faUsersGear,
   faReceipt,
@@ -47,6 +56,12 @@ library.add(
   faUsersLine,
   faFileCirclePlus,
   faFileLines,
+  faEnvelope,
+  faLocationDot,
+  faPhone,
+  faAddressCard,
+  faSpinner,
+  faRectangleList
 );
 
 const IndexAdmin = () => {
@@ -124,42 +139,14 @@ const IndexAdmin = () => {
     setSelectedDate(date);
   };
 
+
+
   return (
     <>
       <Admin />
+
       <div className="tabla_listar">
-
         <div className='card_admin_encabezado'>
-        <div className='perfil_usuario'>
-          {user && (
-            <div>
-              <br />
-              <br />
-              <br />
-              <p>{user.nombre} {user.apellido}</p>
-              <p>{user.rut}</p>
-              <p>{user.email}</p>
-              <p>{user.direccion}</p>
-              <p>{user.telefono}</p>
-            </div>
-          )}
-        </div>
-
-          <div className='card_admin_mantencion'>
-            <div className='card_admin_mantencion_in'>
-              <p>mantenciones</p>
-              <hr />
-              <p>Mantenciones pendientes:</p>
-              <p>{pendingCount}</p>
-              <hr />
-              <p>Mantenciones en proceso:</p>
-              <p>{processCount}</p>
-              <hr />
-              <p>Mantenciones Entregadas:</p>
-              <p>{deliveredCount}</p>
-            </div>
-          </div>
-
           <div className='card_admin_calendario'>
             <div className='calendario'>
               <h1 className=''>Calendario</h1>
@@ -167,7 +154,47 @@ const IndexAdmin = () => {
             </div>
           </div>
 
+          <div className='perfil_usuario'>
+            <h1 className='perfil_usuario_h1'>perfil de usuario</h1>
+            {user && (
+              <div className='perfil_usuario_lista'>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" /> nombre de usuario:</p>
+                <p className='perfil_usuario_lista_p'>{user.nombre} {user.apellido}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-address-card" /> rut de usuario: </p>
+                <p className='perfil_usuario_lista_p'>{user.rut}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" />correo electronico:</p>
+                <p className='perfil_usuario_lista_p'>{user.email}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" />direccion de usuario:</p>
+                <p className='perfil_usuario_lista_p'>{user.direccion}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" />numero de telefono:</p>
+                <p className='perfil_usuario_lista_p'>{user.telefono}</p>
+              </div>
+            )}
+          </div>
+
+        </div>
+
+
+
+        <div className='card_admin_subencabezado'>
+
+          <div className='card_admin_mantencion'>
+            <div className='card_admin_mantencion_in'>
+              <h1>mantenciones</h1>
+              <hr />
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" bounce /> Mantenciones pendientes:</p>
+              <p className='card_admin_mantencion_p'>{pendingCount}</p>
+              <hr />
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" spinPulse /> Mantenciones en proceso:</p>
+              <p className='card_admin_mantencion_p'>{processCount}</p>
+              <hr />
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-check" bounce /> Mantenciones Entregadas:</p>
+              <p className='card_admin_mantencion_p'>{deliveredCount}</p>
+            </div>
+          </div>
+
           <div className='contenedor_cartas_iconos'>
+            
             <div className='cartas_iconos'  onClick={usuarios}>
               <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
               <p>Agregar usuario</p>
@@ -209,10 +236,8 @@ const IndexAdmin = () => {
             </div> 
           </div>
 
+
         </div>
-
-
-
 
 
 

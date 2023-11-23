@@ -4,53 +4,88 @@
   padding: 0;
   box-sizing: border-box;
 }
-/* Estilos personalizados para el calendario */
-.card_admin_calendario {
-  margin: 0px 0px 0px 20px;
-  width: 50%;
-  display: flex;
-}
+
 .tabla_listar {
-  background-color: #B2FFFF;
+  background-color: #389CFC;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+
 .card_admin_encabezado {
   display: flex;
-  padding: 20px;
-  margin: 80px 0px 0px 0%;
-}
-
-.card_admin_mantencion {
-  width: 15%;
-  background-color: #51d1f6;
-  margin-right: 20px; /* Añade margen derecho para separar las dos secciones */
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.card_admin_mantencion_in p{
-  padding-bottom: 10px;
+  flex-wrap: wrap;
+  height: 50%;
+  padding: 100px 20px 20px 20px;
+  background-color: #1f1f1f;
 }
 
 .card_admin_calendario {
-  width: 30%;
+  width: 100%;
+  max-width: 400px;
+  background-color: #46b7d6;
+}
+
+.perfil_usuario {
+  flex: 1; 
+  min-width: 200px;
+  max-width: 1500px;
+  margin-left: 20px;
+  height: 250px;
   background-color: #51d1f6;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente */
+}
+.perfil_usuario_h1{
+  margin-bottom: 10px; /* Ajusta el espacio entre el h1 y los otros elementos si es necesario */
+}
+.perfil_usuario_lista {
+  display: flex;
+  flex-direction: row; /* Cambiado de 'column' a 'row' */
+  align-items: flex-start;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva línea si no hay suficiente espacio */
+}
+.perfil_usuario_lista_p {
+  width: 50%; /* Establece el ancho al 50% para mostrar en dos columnas */
+  box-sizing: border-box; /* Incluye el padding y border en el ancho */
+  padding: 5px; /* Añade un poco de espacio entre las columnas */
+}
+
+
+
+
+
+
+
+.card_admin_subencabezado{
+  display: flex;
+  flex-wrap: wrap;
+  height: 50%;
+  padding: 20px 20px 20px 20px;
+  background-color: #1f1f1f;
+}
+
+.card_admin_mantencion {
+  width: 100%;
+  max-width: 350px;
+  background-color: #51d1f6;
+  margin-bottom: 20px;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 
-.calendario {
-  width: 100%;
-
+.card_admin_mantencion_p {
+  margin: 10px 0;
 }
 
+
+/* Estilos personalizados para el calendario */
 
 .react-calendar {
   font-family: 'Poppins', sans-serif;
@@ -72,11 +107,12 @@
 }
 
 
-.card_admin {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+
+
+
+
+
+/* cartas de presentacion */
 
 .card_section {
   width: 100%;
@@ -146,9 +182,8 @@
 }
 
 .contenedor_cartas_iconos {
-  margin: 50px 0px 0px 20px;
+  margin: 30px 0px 0px 0px;
   width: 70%;
-  height: 100; 
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -185,10 +220,11 @@
 
 /* Media query for screens with a maximum width of 600px */
 @media only screen and (max-width: 600px) {
-  .card_section {
-    margin: 20px;
-    display: flex;
+  .card_admin_encabezado {
     flex-direction: column;
-    align-items: center;
+  }
+
+  .cartas_iconos {
+    flex: 0 0 calc(50% - 20px);
   }
 }
