@@ -43,9 +43,10 @@ import {
   faPhone,
   faSpinner,
   faRectangleList,
-  
-} from '@fortawesome/free-solid-svg-icons';
-import { faAddressCard } from '@fortawesome/free-regular-svg-icons';
+  faIdCard,
+} 
+from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 library.add(
   faUsersGear,
   faReceipt,
@@ -61,7 +62,9 @@ library.add(
   faPhone,
   faAddressCard,
   faSpinner,
-  faRectangleList
+  faRectangleList,
+  faCircleCheck,
+  faIdCard
 );
 
 const IndexAdmin = () => {
@@ -146,7 +149,9 @@ const IndexAdmin = () => {
       <Admin />
 
       <div className="tabla_listar">
+
         <div className='card_admin_encabezado'>
+          
           <div className='card_admin_calendario'>
             <div className='calendario'>
               <h1 className=''>Calendario</h1>
@@ -160,13 +165,13 @@ const IndexAdmin = () => {
               <div className='perfil_usuario_lista'>
                 <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" /> nombre de usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.nombre} {user.apellido}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-address-card" /> rut de usuario: </p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" /> rut de usuario: </p>
                 <p className='perfil_usuario_lista_p'>{user.rut}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" />correo electronico:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" /> correo electronico:</p>
                 <p className='perfil_usuario_lista_p'>{user.email}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" />direccion de usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" /> direccion de usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.direccion}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" />numero de telefono:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" /> numero de telefono:</p>
                 <p className='perfil_usuario_lista_p'>{user.telefono}</p>
               </div>
             )}
@@ -188,7 +193,7 @@ const IndexAdmin = () => {
               <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" spinPulse /> Mantenciones en proceso:</p>
               <p className='card_admin_mantencion_p'>{processCount}</p>
               <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-check" bounce /> Mantenciones Entregadas:</p>
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-regular fa-circle-check" /> Mantenciones Entregadas:</p>
               <p className='card_admin_mantencion_p'>{deliveredCount}</p>
             </div>
           </div>

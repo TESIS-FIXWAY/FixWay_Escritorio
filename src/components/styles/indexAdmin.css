@@ -6,7 +6,6 @@
 }
 
 .tabla_listar {
-  background-color: #389CFC;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -19,35 +18,40 @@
   flex-wrap: wrap;
   height: 50%;
   padding: 100px 20px 20px 20px;
-  background-color: #1f1f1f;
+  background-color: #fff;
 }
 
 .card_admin_calendario {
   width: 100%;
   max-width: 400px;
-  background-color: #46b7d6;
+  background-color: #E5DBFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  padding: 20px; 
 }
 
 .perfil_usuario {
   flex: 1; 
-  min-width: 200px;
-  max-width: 1500px;
   margin-left: 20px;
   height: 250px;
-  background-color: #51d1f6;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #E5DBFF;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra horizontalmente */
+  align-items: center; 
+  padding: 0px 20px;
 }
 .perfil_usuario_h1{
-  margin-bottom: 10px; /* Ajusta el espacio entre el h1 y los otros elementos si es necesario */
+  margin-bottom: 10px; 
 }
 .perfil_usuario_lista {
+  max-width: 390px;
   display: flex;
+  background-color: #E5DBFF;
   flex-direction: row; /* Cambiado de 'column' a 'row' */
   align-items: flex-start;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva línea si no hay suficiente espacio */
+  flex-wrap: wrap; 
 }
 .perfil_usuario_lista_p {
   width: 50%; /* Establece el ancho al 50% para mostrar en dos columnas */
@@ -66,19 +70,25 @@
   flex-wrap: wrap;
   height: 50%;
   padding: 20px 20px 20px 20px;
-  background-color: #1f1f1f;
+  background-color: #fff;
 }
 
 .card_admin_mantencion {
   width: 100%;
-  max-width: 350px;
-  background-color: #51d1f6;
+  max-width: 400px;
   margin-bottom: 20px;
+  background-color: #E5DBFF;
+  padding: 20px;
+}
+.card_admin_mantencion_in{
+  background-color: #51d1f6;
+  width: 100%;
+  max-width: 350px;
+  height: 100%;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 
 .card_admin_mantencion_p {
   margin: 10px 0;
@@ -182,14 +192,17 @@
 }
 
 .contenedor_cartas_iconos {
-  margin: 30px 0px 0px 0px;
-  width: 70%;
+  flex: 1; 
+  margin: -100px 0px 20px 20px;
+  width: 100%;
   display: flex;
+  background-color: #E5DBFF;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px; 
   overflow-y: auto; 
   direction: rtl; 
+  padding: 20px;
 }
 
 .cartas_iconos {
@@ -199,18 +212,26 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  flex: 0 0 calc(33.33% - 20px); /* Distribuye los elementos en 3 columnas con un espacio de 20px */
-  max-width: 250px; /* Establece el ancho máximo deseado */
-}
+  flex: 0 0 calc(33.33% - 20px);
+  max-width: 200px;
+  max-height: 200px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ }
 
-.cartas_iconos:hover {
+ .cartas_iconos:hover {
   background-color: #46b7d6;
-}
+ }
 
-.functionality_icon {
+ .functionality_icon {
   font-size: 25px;
   margin-bottom: 10px;
-}
+ }
 
 .grafico_barras {
   width: 100%;
