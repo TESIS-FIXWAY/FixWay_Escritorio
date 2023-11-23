@@ -32,13 +32,27 @@ const AgregarUsuario = () => {
   const [mensajeRut, setMensajeRut] = React.useState(null);
   const [mensajeValidacion, setMensajeValidacion] = React.useState(null); // Nuevo estado para mensajes de validación
 
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((usuarioFirebase) => {
+      if (usuarioFirebase) {
+        // Realizar cualquier manejo necesario para el usuario autenticado
+      } else {
+        // Manejar el cierre de sesión o el estado no autenticado
+      }
+    });
+
+    return () => {
+      unsubscribe(); // Desuscribirse cuando el componente se desmonta
+    };
+  }, []);
+
 
   async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso) {
     try {
       const infoUsuario = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
 
       const docuRef = doc(db, `users/${infoUsuario.user.uid}`);
@@ -67,8 +81,6 @@ const AgregarUsuario = () => {
       document.getElementById("password").value = "";
       document.getElementById("email").value = "";
       document.getElementById("fechaIngreso").value = "";
-
-      await signOut(auth);
       
     } catch (error) {
       setMensaje(`Error al añadir usuario: ${error.message}`);
