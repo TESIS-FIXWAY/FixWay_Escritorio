@@ -120,6 +120,9 @@ const GenerarFactura = () => {
     }
   };
 
+
+  
+
   const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
   
@@ -256,7 +259,12 @@ const GenerarFactura = () => {
     let neto = 0;
   
     let currentY = tableY + 10;
+    const hasEnoughSpace = () => currentY + 30 < pdf.internal.pageSize.getHeight();
     productosSeleccionados.forEach((producto) => {
+      if (!hasEnoughSpace()) {
+        pdf.addPage();
+        currentY = 20; // Reset Y position on the new page
+      }
       const { h } = pdf.getTextDimensions(producto.descripcion);
       const lines = pdf.splitTextToSize(producto.descripcion, 50);
   
@@ -336,6 +344,11 @@ const GenerarFactura = () => {
 
     pdf.save("factura.pdf");
   };
+
+
+
+
+
 
 
   function generateInvoiceNumber() {
