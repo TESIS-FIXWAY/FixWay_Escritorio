@@ -15,94 +15,106 @@
 // Captura y almacenamiento de información del usuario en Firebase Firestore. 
 // Manejo de fechas de ingreso y su almacenamiento en formato adecuado. 
 
-import '../styles/agregarUsuario.css'
-import React from 'react';
-import { db, auth } from "../../firebase";
-import {  
+import '../styles/agregarUsuario.css';
+import React, { useState } from 'react';
+import { db, auth } from '../../firebase';
+import {
   doc,
   setDoc,
-} from "firebase/firestore";
-import Admin from "./admin";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+} from 'firebase/firestore';
+import Admin from './admin';
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  getAuth,
+} from 'firebase/auth';
 import validadorRUT from './validadorRUT';
-import { reauthenticateWithCredential, EmailAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
-
+import {
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from 'firebase/auth';
 
 const AgregarUsuario = () => {
-  const [mensaje, setMensaje] = React.useState(null);
-  const [mensajeRut, setMensajeRut] = React.useState(null);
-  const [mensajeValidacion, setMensajeValidacion] = React.useState(null); // Nuevo estado para mensajes de validación
+  const [mensaje, setMensaje] = useState(null);
+  const [mensajeRut, setMensajeRut] = useState(null);
+  const [mensajeValidacion, setMensajeValidacion] = useState(null);
 
-  async function registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso) {
+  const registrarUsuario = async (
+    rut,
+    rol,
+    nombre,
+    apellido,
+    telefono,
+    direccion,
+    email,
+    password,
+    salario,
+    fechaIngreso
+  ) => {
     try {
-      // Sign out the current user (if there is one) to avoid conflicts
+      // Get the current user and credentials
       const currentUser = auth.currentUser;
-      const currentUserCredentials = {
-        email: currentUser.email,
-        password: password,
-      };
-      await signOut(auth);
-      
-      // Create the user in Firebase Authentication
-      const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredentials.user;
-      console.log("user", user);
-
-
-      // Create the user in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        rut: rut,
-        rol: rol,
-        nombre: nombre,
-        apellido: apellido,
-        telefono: telefono,
-        direccion: direccion,
-        email: email,
-        salario: salario,
-        fechaIngreso: fechaIngreso,
-      });
-
-      // Set the success message
-
-      setMensaje('Usuario añadido correctamente');
-      // Clear fields after adding the user
-      document.getElementById("rut").value = "";
-      document.getElementById("rol").value = "mecanico";
-      document.getElementById("nombre").value = "";
-      document.getElementById("apellido").value = "";
-      document.getElementById("telefono").value = "";
-      document.getElementById("direccion").value = "";
-      document.getElementById("salario").value = "";
-      document.getElementById("password").value = "";
-      document.getElementById("email").value = "";
-      document.getElementById("fechaIngreso").value = "";
+      console.log(currentUser);
   
-      // Reauthenticate the current user  
-      const credential = EmailAuthProvider.credential(currentUserCredentials.email, currentUserCredentials.password);
-      await reauthenticateWithCredential(currentUser, credential);
+      // Create the user in Firebase Authentication
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const newUser = userCredentials.user;
+  
+      // Create the user in Firestore
+      await setDoc(doc(db, 'users', newUser.uid), {
+        rut,
+        rol,
+        nombre,
+        apellido,
+        telefono,
+        direccion,
+        email,
+        salario,
+        fechaIngreso,
+      });
+  
+      // Sign out the newly added user using a separate auth instance
+      const newUserAuth = getAuth(); // Create a new auth instance for the new user
+      await signOut(newUserAuth); // Sign out the new user
+  
+      // Set the success message
+      setMensaje('Usuario añadido correctamente');
+  
+      // Clear fields after adding the user
+      // Note: Consider using state and controlled components
+      clearFormFields();
+  
+      // Reauthenticate the current user if there was one
+      if (currentUser && currentUser.email && currentUser.password) {
+        const currentUserCredentials = {
+          email: currentUser.email,
+          password: currentUser.password,
+        };
+    
+        await reauthenticateCurrentUser(currentUserCredentials);
+      }
   
     } catch (error) {
       setMensaje(`Error al añadir usuario: ${error.message}`);
     }
-  }
+  };
 
-  function validarCampos() {
-    // Realiza validaciones de campos aquí
-    // Por ejemplo, puedes verificar si mensajeRut es "Rut válido", si el campo de nombre no está vacío, etc.
-
-    if (mensajeRut !== "Rut válido") {
-      setMensajeValidacion("El Rut no es válido");
+  const validarCampos = () => {
+    if (mensajeRut !== 'Rut válido') {
+      setMensajeValidacion('El Rut no es válido');
       return false;
     }
-    // Agrega más validaciones según tus requisitos
-
+    // Add more validations as needed
     return true;
-  }
+  };
 
-
-  function submitHandler(e) {
+  const submitHandler = (e) => {
     e.preventDefault();
-    
+
     if (validarCampos()) {
       const rut = e.target.elements.rut.value;
       const rol = e.target.elements.rol.value;
@@ -115,30 +127,90 @@ const AgregarUsuario = () => {
       const salario = e.target.elements.salario.value;
       const fechaIngreso = e.target.elements.fechaIngreso.value;
 
-      console.log(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso);
-      registrarUsuario(rut, rol, nombre, apellido, telefono, direccion, email, password, salario, fechaIngreso);
+      registrarUsuario(
+        rut,
+        rol,
+        nombre,
+        apellido,
+        telefono,
+        direccion,
+        email,
+        password,
+        salario,
+        fechaIngreso
+      );
     }
-  }
+  };
 
-
-  function validarRutOnChange() {
-    const rut = document.getElementById("rut").value;
+  const validarRutOnChange = () => {
+    const rut = document.getElementById('rut').value;
     const validador = new validadorRUT(rut);
     if (validador.esValido) {
-      document.getElementById("rut").value = validador.formateado();
-      setMensajeRut("Rut válido");
+      document.getElementById('rut').value = validador.formateado();
+      setMensajeRut('Rut válido');
     } else {
-      setMensajeRut("Rut inválido");
+      setMensajeRut('Rut inválido');
     }
-  }
+  };
 
-  function formatSalaryInput(input) {
+  const formatSalaryInput = (input) => {
     const value = input.value.replace(/[^0-9]/g, '');
     if (value.length > 0) {
       input.value = parseInt(value).toLocaleString('es-CL');
     }
-  }
+  };
 
+  const clearFormFields = () => {
+    const fieldIds = [
+      'rut',
+      'rol',
+      'nombre',
+      'apellido',
+      'telefono',
+      'direccion',
+      'salario',
+      'password',
+      'email',
+      'fechaIngreso',
+    ];
+
+    fieldIds.forEach((fieldId) => {
+      document.getElementById(fieldId).value = '';
+    });
+  };
+
+  const reauthenticateCurrentUser = async () => {
+    try {
+      const currentUser = auth.currentUser;
+  
+      if (!currentUser) {
+        throw new Error('No user is currently signed in.');
+      }
+  
+      // Prompt the user to re-enter their password
+      const passwordProvidedByUser = prompt('Please enter your password');
+  
+      const credential = EmailAuthProvider.credential(
+        currentUser.email,
+        passwordProvidedByUser
+      );
+  
+      await reauthenticateWithCredential(currentUser, credential);
+  
+      console.log('Reauthentication successful');
+    } catch (error) {
+      console.error(`Error during reauthentication: ${error.message}`);
+    }
+  };
+  
+  // reauthenticateCurrentUser();
+
+  // const reauthenticateCurrentUser = async (credentials) => {
+  //   const { email, password } = credentials;
+  //   const currentUser = auth.currentUser;
+  //   const credential = EmailAuthProvider.credential(email, password);
+  //   await reauthenticateWithCredential(currentUser, credential);
+  // };
 
   return (
     <>
