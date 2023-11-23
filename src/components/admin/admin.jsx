@@ -29,7 +29,8 @@ import {
   faUser,
   faUserPlus,
   faUsers,
-  faHouse
+  faHouse,
+  faReceipt
 } 
 from '@fortawesome/free-solid-svg-icons';
 library.add(
@@ -39,7 +40,8 @@ library.add(
   faUser,
   faUserPlus,
   faUsers,
-  faHouse
+  faHouse,
+  faReceipt
 );
 
 const Admin = () => {
@@ -125,7 +127,7 @@ const Admin = () => {
             </Link>
 <hr />
             <Link to="/gestionMantencionesAdmin" className={`link ${window.location.pathname === '/gestionMantencionesAdmin' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-rectangle-list" bounce />              
               <span className='link_name'>Gestión de Mantenciones</span>
             </Link>
 <hr />
@@ -148,7 +150,7 @@ const Admin = () => {
             </Link>
 <hr />
             <Link to="/generarFactura" className={`link ${window.location.pathname === '/generarFactura' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-lines" />
+              <FontAwesomeIcon className='i' icon="fa-solid fa-receipt" />              
               <span className='link_name'>Generar Factura de vendedor</span>
             </Link>
           </nav>

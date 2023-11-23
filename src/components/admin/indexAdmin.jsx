@@ -187,7 +187,7 @@ const IndexAdmin = () => {
             <div className='card_admin_mantencion_in'>
               <h1>mantenciones</h1>
               <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" bounce /> Mantenciones pendientes:</p>
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" /> Mantenciones pendientes:</p>
               <p className='card_admin_mantencion_p'>{pendingCount}</p>
               <hr />
               <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" spinPulse /> Mantenciones en proceso:</p>
@@ -206,12 +206,12 @@ const IndexAdmin = () => {
             </div>
 
             <div className='cartas_iconos' onClick={listarUsuarios}>
-              <FontAwesomeIcon icon="fa-solid fa-users-line" className='functionality_icon' />
+            <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-users" />
               <p>Listar usuarios</p>
             </div> 
 
             <div className='cartas_iconos' onClick={gestionMantenciones}>
-            <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
+              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-rectangle-list" />              
               <p>Gestion de Mantenciones</p>
             </div>
 
@@ -221,22 +221,22 @@ const IndexAdmin = () => {
             </div>  
 
             <div className='cartas_iconos' onClick={listarFacturas}>
-              <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
+              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-clipboard-list" />
               <p>Listar facturas de proveedores</p>
             </div> 
 
             <div className='cartas_iconos' onClick={inventario}>
-              <FontAwesomeIcon icon="fa-solid fa-file-lines" className='functionality_icon' />
+              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-cart-flatbed" />              
               <p>Agregar inventario</p>
             </div> 
 
             <div className='cartas_iconos' onClick={listarInventario}>
-              <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
+              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-boxes-stacked" />
               <p>Listar inventario</p>
             </div> 
 
             <div className='cartas_iconos' onClick={generarFacturas}>
-              <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
+              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-receipt" />              
               <p>Generar factura de vendedor</p>
             </div> 
           </div>
