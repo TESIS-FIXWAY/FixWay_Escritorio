@@ -121,11 +121,7 @@ const GenerarFactura = () => {
   };
 
 
-
-
-
-
-
+  
 
   const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
@@ -241,37 +237,17 @@ const GenerarFactura = () => {
 
 
     //lista de productos 
-
-
-
+  
     const fontSize = 10;
     pdf.setFontSize(fontSize);
   
-
     const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
     const tableX = 10;
     const tableY = lineY + 12;
-
-    // Ajusta la posición del eje x para cada título del encabezado
-    pdf.text(headers[0], tableX + 10, tableY);
-    pdf.text(headers[1], tableX + 41, tableY);
-    pdf.text(headers[2], tableX + 80, tableY);
-    pdf.text(headers[3], tableX + 140, tableY);
-    pdf.text(headers[4], tableX + 170, tableY);
-    pdf.text(headers[5], tableX + 250, tableY);
-
-
-    const tableLineY = tableY - 5;
-    pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
-
-
-    const tableLineY1 = tableY + 3;
-    pdf.line(5, tableLineY1, pdf.internal.pageSize.getWidth() - 5, tableLineY1);
-
   
-    // headers.forEach((header, index) => {
-    //   pdf.text(header, tableX + index * 40, tableY);
-    // });
+    headers.forEach((header, index) => {
+      pdf.text(header, tableX + index * 40, tableY);
+    });
   
     const rowSpacing = 3;
     const productosHeight = productosSeleccionados.reduce(
@@ -279,22 +255,6 @@ const GenerarFactura = () => {
       0
     );
   
-    // Líneas verticales en la tabla
-    const tableLineX1 = tableX + 40;
-    const tableLineX2 = tableX + 120;
-    const tableLineX3 = tableX + 160;
-    const tableLineX4 = pdf.internal.pageSize.getWidth() - 143;
-    const tableLineX5 = pdf.internal.pageSize.getWidth() - 205;
-    const tableLineX6 = pdf.internal.pageSize.getWidth() - 5;
-
-    pdf.line(tableLineX1, tableLineY, tableLineX1, tableY + productosHeight - 4);
-    pdf.line(tableLineX2, tableLineY, tableLineX2, tableY + productosHeight - 4);
-    pdf.line(tableLineX3, tableLineY, tableLineX3, tableY + productosHeight - 4);
-    pdf.line(tableLineX4, tableLineY, tableLineX4, tableY + productosHeight - 4);
-    pdf.line(tableLineX5, tableLineY, tableLineX5, tableY + productosHeight - 4);
-    pdf.line(tableLineX6, tableLineY, tableLineX6, tableY + productosHeight - 4);
-
-
     // Inicializar variable para el neto
     let neto = 0;
   
@@ -374,6 +334,9 @@ const GenerarFactura = () => {
 
 
 
+    const tableHeight = Math.max(30, productosHeight + 20);
+    pdf.line(5, lineY + 5, pdf.internal.pageSize.getWidth() - 5, lineY + 5);
+
 
     // const lineY2 = tableY + tableHeight;
     // pdf.line(5, lineY2, pdf.internal.pageSize.getWidth() - 5, lineY2);
@@ -381,9 +344,6 @@ const GenerarFactura = () => {
 
     pdf.save("factura.pdf");
   };
-
-
-
 
 
 
@@ -487,7 +447,103 @@ const GenerarFactura = () => {
     }
   };
 
+  // const generarFactura = async () => { 
+  //   if (productosSeleccionados.length === 0) {
+  //     alert("No hay productos seleccionados para generar la factura.");
+  //     return;
+  //   }
 
+  //   let facturasCollection;
+  //   let nuevaFactura;
+
+  //   try {
+  //     facturasCollection = collection(db, "mifacturas");
+  //     const batch = writeBatch(db);
+
+  //     // Procesar cada producto
+  //     for (const producto of productosSeleccionados) {
+  //         const productoRef = doc(db, "inventario", producto.id);
+
+  //         if (typeof producto.cantidad === 'number') {
+  //             const docSnapshot = await getDoc(productoRef);
+  //             const existingQuantity = docSnapshot.data().cantidad;
+  //             const newQuantity = existingQuantity - producto.cantidad;
+
+  //             // Actualizar la cantidad en el inventario
+  //             batch.update(productoRef, { cantidad: newQuantity });
+  //         } else {
+  //             console.error("Invalid cantidad value:", producto.cantidad);
+  //         }
+  //     }
+
+  //     // Generar el número de factura
+  //     const invoiceNumber = generateInvoiceNumber();
+
+  //     // Crear la nueva factura con el número generado
+  //     nuevaFactura = {
+  //         productos: productosSeleccionados.map((producto) => ({ ...producto })),
+  //         tipoPago: tipoPago,
+  //         invoiceNumber: invoiceNumber,
+  //     };
+
+  //     // Agregar la nueva factura
+  //     const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
+
+  //     // Usar el ID de la factura como invoiceNumber
+  //     const invoiceId = nuevaFacturaRef.id;
+  //     nuevaFactura.invoiceNumber = invoiceId;
+  //     await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
+
+  //     await batch.commit();
+
+  //     // Generar el PDF después de procesar todos los productos
+  //     generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
+
+  //     // Limpiar los productos seleccionados y ocultar la lista
+  //     setProductosSeleccionados([]);
+  //     setDescuentoMenuValue('');
+  //     setShowProductList(false);
+  //   } catch (error) {
+  //     console.error("Error al generar la factura:", error);
+  //   }
+  
+  //   addDoc(facturasCollection, nuevaFactura)
+  //     .then((nuevaFacturaRef) => {
+  //       productosSeleccionados.forEach((producto) => {
+  //         const productoRef = doc(db, "inventario", producto.id);
+  
+  //         if (typeof producto.cantidad === 'number') {
+  //           getDoc(productoRef)
+  //             .then((doc) => {
+  //               const batch = writeBatch(db);
+  
+  //               const existingQuantity = doc.data().cantidad;
+  //               const newQuantity = existingQuantity - producto.cantidad;
+
+  //               batch.update(productoRef, { cantidad: newQuantity });
+                
+  //               batch.commit()
+  //                 .then(() => {
+  //                   generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
+  //                   setProductosSeleccionados([]);
+  //                   setShowProductList(false);
+  //                 })
+  //                 .catch((error) => {
+  //                   console.error("Error al actualizar el inventario:", error);
+  //                 });
+  //             })
+  //             .catch((error) => {
+  //               console.error("Error al obtener el documento:", error);
+  //             });
+  //         } else {
+  //           console.error("Invalid cantidad value:", producto.cantidad);
+  //         }
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error al agregar la nueva factura:", error);
+  //     });
+  // };
 
   const generarFactura = async () => {
     if (productosSeleccionados.length === 0) {
