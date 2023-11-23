@@ -16,105 +16,83 @@
 // Manejo de fechas de ingreso y su almacenamiento en formato adecuado. 
 
 import '../styles/agregarUsuario.css';
-import React, { useState } from 'react';
-import { db, auth } from '../../firebase';
+import { useState, useEffect } from 'react';
 import {
-  doc,
-  setDoc,
-} from 'firebase/firestore';
-import Admin from './admin';
-import {
+  getAuth,
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  getAuth,
-} from 'firebase/auth';
-import validadorRUT from './validadorRUT';
-import {
-  reauthenticateWithCredential,
   EmailAuthProvider,
+  reauthenticateWithCredential,
 } from 'firebase/auth';
-
+import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { db, auth } from '../../firebase'; // Import your Firebase configuration
+import Admin from './admin';
+import validadorRUT from './validadorRUT';
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
   const [mensajeRut, setMensajeRut] = useState(null);
   const [mensajeValidacion, setMensajeValidacion] = useState(null);
 
-  const registrarUsuario = async (
-    rut,
-    rol,
-    nombre,
-    apellido,
-    telefono,
-    direccion,
-    email,
-    password,
-    salario,
-    fechaIngreso
-  ) => {
-    try {
-      const currentUser = auth.currentUser;
-  
-      const userCredentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const newUser = userCredentials.user;
-  
-      await setDoc(doc(db, 'users', newUser.uid), {
-        rut,
-        rol,
-        nombre,
-        apellido,
-        telefono,
-        direccion,
-        email,
-        salario,
-        fechaIngreso,
+  const identifyUser = auth.currentUser;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (identifyUser) {
+      const userRef = doc(db, 'users', identifyUser.uid);
+      onSnapshot(userRef, (snapshot) => {
+        setUser(snapshot.data());
       });
-  
-      setMensaje('Usuario añadido correctamente');
-  
-      clearFormFields();
-  
-      // Only sign out the new user if there is no currently logged-in user
+    }
+  }, [identifyUser]);
+
+  const reauthenticateCurrentUser = async (password) => {
+    try {
+      const currentUser = getAuth().currentUser;
+
       if (!currentUser) {
-        const newUserAuth = getAuth();
-        await signOut(newUserAuth);
+        console.log('No user is currently signed in.');
+        return;
       }
-  
-      // Reauthenticate the original user if there was one
-      if (currentUser) {
-        if (currentUser.email && currentUser.password) {
-          await reauthenticateCurrentUser(currentUser.email, currentUser.password);
-        }
+
+      if (
+        currentUser.email &&
+        currentUser.providerData.some((info) => info.providerId === 'password')
+      ) {
+        const credentials = EmailAuthProvider.credential(currentUser.email, password);
+        await reauthenticateWithCredential(currentUser, credentials);
+        console.log('Reauthentication successful', currentUser.uid);
+      } else {
+        console.error('User does not have email and password credentials.');
       }
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        setMensaje('El correo electrónico ya está en uso');
-      } else if (error.code === 'auth/weak-password') {
-        setMensaje('La contraseña debe tener al menos 6 caracteres');
-      }
-    } finally {
-      setTimeout(() => {
-        setMensaje(null);
-      }, 5000);
+      console.error('Error during reauthentication:', error);
+      throw error;
     }
   };
 
-  const validarCampos = () => {
-    if (mensajeRut !== 'Rut válido') {
-      setMensajeValidacion('El Rut no es válido');
-      return false;
+  const handleLogin = async (email, password) => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredentials.user;
+
+      // Reauthenticate the user
+      await reauthenticateCurrentUser(password);
+
+      // Rest of your logic
+      // ...
+
+    } catch (error) {
+      // Handle login errors
+      console.error('Login error:', error);
+      setMensaje('Error during login');
     }
-    // Add more validations as needed
-    return true;
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     if (validarCampos()) {
       const rut = e.target.elements.rut.value;
       const rol = e.target.elements.rol.value;
@@ -126,22 +104,53 @@ const AgregarUsuario = () => {
       const password = e.target.elements.password.value;
       const salario = e.target.elements.salario.value;
       const fechaIngreso = e.target.elements.fechaIngreso.value;
-
-      registrarUsuario(
-        rut,
-        rol,
-        nombre,
-        apellido,
-        telefono,
-        direccion,
-        email,
-        password,
-        salario,
-        fechaIngreso
-      );
+  
+      try {
+        // Store the currently logged-in user
+        const currentUser = auth.currentUser;
+  
+        // Sign out the current user
+        await signOut(auth);
+  
+        // Create a new user
+        const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+        const newUser = userCredentials.user;
+  
+        // Set user data in Firestore
+        await setDoc(doc(db, 'users', newUser.uid), {
+          rut,
+          rol,
+          nombre,
+          apellido,
+          telefono,
+          direccion,
+          email,
+          salario,
+          fechaIngreso,
+        });
+  
+        setMensaje('Usuario añadido correctamente');
+  
+        // Sign in the previous user
+        if (currentUser) {
+          const credentials = EmailAuthProvider.credential(currentUser.email, password);
+          await reauthenticateWithCredential(currentUser, credentials);
+        }
+  
+  
+        // Clear form fields
+        clearFormFields();
+  
+      } catch (error) {
+        // Handle errors
+        console.error('Error during user registration:', error);
+      } finally {
+        setTimeout(() => {
+          setMensaje(null);
+        }, 5000);
+      }
     }
   };
-
   const validarRutOnChange = () => {
     const rut = document.getElementById('rut').value;
     const validador = new validadorRUT(rut);
@@ -151,6 +160,15 @@ const AgregarUsuario = () => {
     } else {
       setMensajeRut('Rut inválido');
     }
+  };
+
+  const validarCampos = () => {
+    if (mensajeRut !== 'Rut válido') {
+      setMensajeValidacion('El Rut no es válido');
+      return false;
+    }
+    // Add more validations as needed
+    return true;
   };
 
   const formatSalaryInput = (input) => {
@@ -179,23 +197,7 @@ const AgregarUsuario = () => {
     });
   };
 
-  const reauthenticateCurrentUser = async (password) => {
-    try {
-      const currentUser = getAuth().currentUser;
-  
-      if (!currentUser) {
-        throw new Error('No user is currently signed in.');
-      }
-  
-      const credentials = EmailAuthProvider.credential(currentUser.email, password);
-      await reauthenticateWithCredential(currentUser, credentials);
-  
-      console.log('Reauthentication successful');
-    } catch (error) {
-      console.error(`Error during reauthentication: ${error.message}`);
-      throw error; // Re-throw the error to handle it in the caller function
-    }
-  };
+
 
 
   return (
@@ -335,7 +337,11 @@ const AgregarUsuario = () => {
                 <p className="mensaje">{mensaje}</p>
                 <p className='mensaje_validacion'>{mensajeValidacion}</p>
 
-                  <button type="submit" onClick={AgregarUsuario} className='boton_formulario'>
+                  <button 
+                    type="submit" 
+                    // onClick={AgregarUsuario} 
+                    className='boton_formulario'
+                  >
                     Agregar
                   </button>
                 </p>
