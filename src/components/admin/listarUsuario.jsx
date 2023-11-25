@@ -46,6 +46,7 @@ const ListarUsuario = () => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
   const formatSalario = (value) => {
@@ -79,7 +80,7 @@ const ListarUsuario = () => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [refresh]);
 
   const startDelete = (userId) => {
     setDeleteUserId(userId);
@@ -137,34 +138,28 @@ const ListarUsuario = () => {
 
   const filtrarUsuario = (e) => {
     const texto = e.target.value.toLowerCase();
-    const usuariosFiltrados = users.filter((user) => {
-      const nombre = user.nombre.toLowerCase();
-      const apellido = user.apellido.toLowerCase();
-      const rut = user.rut.toLowerCase();
-      const telefono = user.telefono.toLowerCase();
-      const direccion = user.direccion.toLowerCase();
-      const rol = user.rol.toLowerCase();
-      const salario = user.salario.toLowerCase();
-      const fechaIngreso = user.fechaIngreso.toLowerCase();
+    const filtro = users.filter((user) => {
       return (
-        nombre.includes(texto) ||
-        apellido.includes(texto) ||
-        rut.includes(texto) ||
-        telefono.includes(texto) ||
-        direccion.includes(texto) ||
-        rol.includes(texto) ||
-        salario.includes(texto) ||
-        fechaIngreso.includes(texto)
+        user.nombre.toLowerCase().includes(texto) ||
+        user.apellido.toLowerCase().includes(texto) ||
+        user.rut.toLowerCase().includes(texto) ||
+        user.telefono.toLowerCase().includes(texto) ||
+        user.direccion.toLowerCase().includes(texto) ||
+        user.email.toLowerCase().includes(texto) ||
+        user.rol.toLowerCase().includes(texto) ||
+        user.salario.toLowerCase().includes(texto) ||
+        user.fechaIngreso.toLowerCase().includes(texto)
       );
     });
-    setUsers(usuariosFiltrados);
-    if (texto === '') {
-      window.location.reload();
+    setUsers(filtro);
+
+    if(texto === '') {
+      setRefresh((prevRefresh) => !prevRefresh);
     }
-    if (usuariosFiltrados.map((user) => user.nombre).length === 0 ) {
-      return alert('No se encontraron usuarios con ese nombre');
-    }
-  }
+  };
+
+
+
   const agregarUsuario = () => {
     navigate('/agregarUsuario');
   }
