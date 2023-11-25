@@ -2,8 +2,6 @@
 // Permite al administrador ingresar detalles como el Rut, rol, nombre, apellido, teléfono, dirección, salario, fecha de ingreso, email y contraseña del usuario.  
 // Utiliza Firebase Authentication para registrar el usuario y Firebase Firestore para almacenar los detalles asociados en la colección 'users'. 
 // También utiliza un validador de Rut personalizado y renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
-
-
 // Funciones y características principales: 
 // Registro de nuevos usuarios utilizando Firebase Authentication y Firestore. 
 // Validación en tiempo real del Rut y mensajes de validación. 
@@ -26,7 +24,10 @@ import {
   reauthenticateWithCredential,
 } from 'firebase/auth';
 import { doc, setDoc, onSnapshot } from 'firebase/firestore';
-import { db, auth } from '../../firebase'; // Import your Firebase configuration
+import { 
+  db,
+  auth,
+} from '../../firebase'; // Import your Firebase configuration
 import Admin from './admin';
 import validadorRUT from './validadorRUT';
 
@@ -47,48 +48,41 @@ const AgregarUsuario = () => {
     }
   }, [identifyUser]);
 
-  const reauthenticateCurrentUser = async (password) => {
+  const handleLogout = async () => {
     try {
-      const currentUser = getAuth().currentUser;
-
-      if (!currentUser) {
-        console.log('No user is currently signed in.');
-        return;
-      }
-
-      if (
-        currentUser.email &&
-        currentUser.providerData.some((info) => info.providerId === 'password')
-      ) {
-        const credentials = EmailAuthProvider.credential(currentUser.email, password);
-        await reauthenticateWithCredential(currentUser, credentials);
-        console.log('Reauthentication successful', currentUser.uid);
-      } else {
-        console.error('User does not have email and password credentials.');
-      }
+      await signOut(auth);
+      setUser(null);
+      // Optionally, you can also clear any other user-related state variables
     } catch (error) {
-      console.error('Error during reauthentication:', error);
-      throw error;
+      console.error('Error during logout:', error);
     }
   };
 
-  const handleLogin = async (email, password) => {
-    try {
-      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredentials.user;
+  // const reauthenticateCurrentUser = async (password) => {
+  //   try {
+  //     const currentUser = getAuth().currentUser;
 
-      // Reauthenticate the user
-      await reauthenticateCurrentUser(password);
+  //     if (!currentUser) {
+  //       console.log('No user is currently signed in.');
+  //       return;
+  //     }
 
-      // Rest of your logic
-      // ...
+  //     if (
+  //       currentUser.email &&
+  //       currentUser.providerData.some((info) => info.providerId === 'password')
+  //     ) {
+  //       const credentials = EmailAuthProvider.credential(currentUser.email, password);
+  //       await reauthenticateWithCredential(currentUser, credentials);
+  //       console.log('Reauthentication successful', currentUser.uid);
+  //     } else {
+  //       console.error('User does not have email and password credentials.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during reauthentication:', error);
+  //     throw error;
+  //   }
+  // };
 
-    } catch (error) {
-      // Handle login errors
-      console.error('Login error:', error);
-      setMensaje('Error during login');
-    }
-  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -108,10 +102,7 @@ const AgregarUsuario = () => {
       try {
         // Store the currently logged-in user
         const currentUser = auth.currentUser;
-  
-        // Sign out the current user
-        await signOut(auth);
-  
+
         // Create a new user
         const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
         const newUser = userCredentials.user;
@@ -130,16 +121,22 @@ const AgregarUsuario = () => {
         });
   
         setMensaje('Usuario añadido correctamente');
+
+        signOut(auth.newUser);
   
         // Sign in the previous user
-        if (currentUser) {
-          const credentials = EmailAuthProvider.credential(currentUser.email, password);
-          await reauthenticateWithCredential(currentUser, credentials);
-        }
-  
-  
+        // if (currentUser) {
+        //   const credentials = EmailAuthProvider.credential(currentUser.email, password);
+        //   await reauthenticateWithCredential(currentUser, credentials);
+        // }
         // Clear form fields
         clearFormFields();
+
+        // Clear validation messages
+        setMensajeValidacion(null);
+        setMensajeRut(null);  
+
+        return reauthenticateCurrentUser(password);
   
       } catch (error) {
         // Handle errors
@@ -151,6 +148,9 @@ const AgregarUsuario = () => {
       }
     }
   };
+
+
+
   const validarRutOnChange = () => {
     const rut = document.getElementById('rut').value;
     const validador = new validadorRUT(rut);
@@ -197,8 +197,35 @@ const AgregarUsuario = () => {
     });
   };
 
+  const logoutAndReauthenticate = async () => {
+    try {
+      // Cerrar sesión
+      await signOut(auth);
 
+      // Preguntar por las credenciales
+      const userEmail = prompt('Ingrese su correo electrónico:');
+      const userPassword = prompt('Ingrese su contraseña:');
 
+      // Volver a autenticar al usuario
+      await signInWithEmailAndPassword(auth, userEmail, userPassword);
+
+      // Limpiar campos de formulario
+      clearFormFields();
+
+      // Actualizar estado del usuario
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const userRef = doc(db, 'users', currentUser.uid);
+        onSnapshot(userRef, (snapshot) => {
+          setUser(snapshot.data());
+        });
+      }
+
+      console.log('Sesión cerrada y reiniciada correctamente');
+    } catch (error) {
+      console.error('Error durante el cierre de sesión y reinicio:', error);
+    }
+  };
 
   return (
     <>
@@ -331,18 +358,18 @@ const AgregarUsuario = () => {
                     placeholder="Contraseña"
                   />
                 </p>
-
-
                 <p className='block_boton'>
                 <p className="mensaje">{mensaje}</p>
                 <p className='mensaje_validacion'>{mensajeValidacion}</p>
-
                   <button 
                     type="submit" 
                     // onClick={AgregarUsuario} 
                     className='boton_formulario'
                   >
                     Agregar
+                  </button>
+                  <button type="button" onClick={logoutAndReauthenticate} className='boton_formulario'>
+                    Cerrar Sesión y Reiniciar
                   </button>
                 </p>
               </form>
