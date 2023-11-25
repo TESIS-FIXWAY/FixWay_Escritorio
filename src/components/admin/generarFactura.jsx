@@ -3,8 +3,6 @@
 // Utiliza Firebase Firestore para obtener y actualizar el inventario de productos y para almacenar las facturas generadas en la colección 'mifacturas'.  
 // También utiliza la librería jsPDF para generar archivos PDF de las facturas.  
 // Se integra con FontAwesome para mostrar iconos en la interfaz. 
-
-
 // Funciones y características principales: 
 // Selección de productos del inventario. 
 // Ajuste manual de cantidades y eliminación de productos seleccionados. 
@@ -119,13 +117,6 @@ const GenerarFactura = () => {
       console.error("Error al agregar el nuevo cliente:", error);
     }
   };
-
-
-
-
-
-
-
 
   const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
@@ -370,26 +361,11 @@ const GenerarFactura = () => {
     pdf.line(5, currentY + 33, pdf.internal.pageSize.getWidth() - 130, currentY + 33);
     pdf.line(5, currentY + 56, pdf.internal.pageSize.getWidth() - 130, currentY + 56);
     
-  
-
-
-
-
     // const lineY2 = tableY + tableHeight;
     // pdf.line(5, lineY2, pdf.internal.pageSize.getWidth() - 5, lineY2);
 
-
     pdf.save("factura.pdf");
   };
-
-
-
-
-
-
-
-
-
 
   function generateInvoiceNumber() {
     // Generate two random letters
@@ -408,9 +384,6 @@ const GenerarFactura = () => {
   // Example usage:
   const invoiceNumber = generateInvoiceNumber();
 
-
-
-
   const toggleDiscountMenu = () => {
     setShowDiscountMenu(!showDiscountMenu);
   };
@@ -422,7 +395,6 @@ const GenerarFactura = () => {
 
   const iva = totalSinIVA * 0.19;
   const totalFinal = totalSinIVA + iva;
-  
 
   useEffect(() => {
     const obtenerInventario = async () => {
@@ -848,7 +820,6 @@ const GenerarFactura = () => {
 
           <input style={{height:"45px", marginTop:"10px"}}type="text" placeholder="Buscar producto" onChange={buscadorProducto} /> 
         </div>
-
 
         <div className='table_section'> 
           <table>
