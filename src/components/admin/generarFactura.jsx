@@ -487,8 +487,6 @@ const GenerarFactura = () => {
     }
   };
 
-
-
   const generarFactura = async () => {
     if (productosSeleccionados.length === 0) {
       alert("No hay productos seleccionados para generar la factura.");
@@ -518,6 +516,9 @@ const GenerarFactura = () => {
   
             // Actualizar la cantidad en el inventario
             batch.update(productoRef, { cantidad: newQuantity });
+            
+            // Actualizar la cantidad en el producto seleccionado
+            producto.cantidad = newQuantity;
           } else {
             console.error("Invalid existingQuantity value:", existingQuantity);
           }
@@ -547,7 +548,7 @@ const GenerarFactura = () => {
       await batch.commit();
   
       // Generar el PDF después de procesar todos los productos
-      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
+      generarPDF(nuevaFactura.productos, totalSinIVA, iva, totalFinal, descuentoAplicado);
   
       // Limpiar los productos seleccionados y ocultar la lista
       setProductosSeleccionados([]);

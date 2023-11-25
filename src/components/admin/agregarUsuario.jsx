@@ -16,18 +16,19 @@
 import '../styles/agregarUsuario.css';
 import { useState, useEffect } from 'react';
 import {
-  getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
 } from 'firebase/auth';
-import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { 
+  doc, 
+  setDoc, 
+  onSnapshot 
+} from 'firebase/firestore';
 import { 
   db,
   auth,
-} from '../../firebase'; // Import your Firebase configuration
+} from '../../firebase'; 
 import Admin from './admin';
 import validadorRUT from './validadorRUT';
 
@@ -35,7 +36,6 @@ const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
   const [mensajeRut, setMensajeRut] = useState(null);
   const [mensajeValidacion, setMensajeValidacion] = useState(null);
-
   const identifyUser = auth.currentUser;
   const [user, setUser] = useState(null);
 
@@ -52,37 +52,10 @@ const AgregarUsuario = () => {
     try {
       await signOut(auth);
       setUser(null);
-      // Optionally, you can also clear any other user-related state variables
     } catch (error) {
       console.error('Error during logout:', error);
     }
   };
-
-  // const reauthenticateCurrentUser = async (password) => {
-  //   try {
-  //     const currentUser = getAuth().currentUser;
-
-  //     if (!currentUser) {
-  //       console.log('No user is currently signed in.');
-  //       return;
-  //     }
-
-  //     if (
-  //       currentUser.email &&
-  //       currentUser.providerData.some((info) => info.providerId === 'password')
-  //     ) {
-  //       const credentials = EmailAuthProvider.credential(currentUser.email, password);
-  //       await reauthenticateWithCredential(currentUser, credentials);
-  //       console.log('Reauthentication successful', currentUser.uid);
-  //     } else {
-  //       console.error('User does not have email and password credentials.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error during reauthentication:', error);
-  //     throw error;
-  //   }
-  // };
-
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -98,7 +71,7 @@ const AgregarUsuario = () => {
       const password = e.target.elements.password.value;
       const salario = e.target.elements.salario.value;
       const fechaIngreso = e.target.elements.fechaIngreso.value;
-  
+
       try {
         // Store the currently logged-in user
         const currentUser = auth.currentUser;
@@ -123,13 +96,7 @@ const AgregarUsuario = () => {
         setMensaje('Usuario añadido correctamente');
 
         signOut(auth.newUser);
-  
-        // Sign in the previous user
-        // if (currentUser) {
-        //   const credentials = EmailAuthProvider.credential(currentUser.email, password);
-        //   await reauthenticateWithCredential(currentUser, credentials);
-        // }
-        // Clear form fields
+
         clearFormFields();
 
         // Clear validation messages
@@ -363,7 +330,6 @@ const AgregarUsuario = () => {
                 <p className='mensaje_validacion'>{mensajeValidacion}</p>
                   <button 
                     type="submit" 
-                    // onClick={AgregarUsuario} 
                     className='boton_formulario'
                   >
                     Agregar
