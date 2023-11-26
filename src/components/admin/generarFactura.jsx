@@ -458,47 +458,69 @@ const GenerarFactura = () => {
       window.location.reload();
     }
   };
-
-  const generarFactura = async () => { 
+  
+  const generarFactura = async () => {
     if (productosSeleccionados.length === 0) {
       alert("No hay productos seleccionados para generar la factura.");
       return;
     }
+  
     let facturasCollection;
     let nuevaFactura;
+  
     try {
       facturasCollection = collection(db, "mifacturas");
       const batch = writeBatch(db);
+  
       // Procesar cada producto
       for (const producto of productosSeleccionados) {
-          const productoRef = doc(db, "inventario", producto.id);
-          if (typeof producto.cantidad === 'number') {
-              const docSnapshot = await getDoc(productoRef);
-              const existingQuantity = docSnapshot.data().cantidad;
-              const newQuantity = existingQuantity - producto.cantidad;
-              // Actualizar la cantidad en el inventario
-              batch.update(productoRef, { cantidad: newQuantity });
-          } else {
-              console.error("Invalid cantidad value:", producto.cantidad);
+        const productoRef = doc(db, "inventario", producto.id);
+  
+        if (typeof producto.cantidad === 'number') {
+          const docSnapshot = await getDoc(productoRef);
+          const existingQuantity = docSnapshot.data().cantidad;
+  
+          // Verificar si hay suficiente cantidad en inventario
+          if (existingQuantity < producto.cantidad) {
+            alert(`No hay suficiente stock para ${producto.nombre}.`);
+            return;
           }
+  
+          const newQuantity = existingQuantity - producto.cantidad;
+  
+          // Actualizar la cantidad en el inventario
+          batch.update(productoRef, { cantidad: newQuantity });
+        } else {
+          console.error("Invalid cantidad value:", producto.cantidad);
+        }
       }
+  
       // Generar el número de factura
       const invoiceNumber = generateInvoiceNumber();
+  
       // Crear la nueva factura con el número generado
       nuevaFactura = {
-          productos: productosSeleccionados.map((producto) => ({ ...producto })),
-          tipoPago: tipoPago,
-          invoiceNumber: invoiceNumber,
+        productos: productosSeleccionados.map((producto) => ({ ...producto })),
+        tipoPago: tipoPago,
+        invoiceNumber: invoiceNumber,
       };
+  
       // Agregar la nueva factura
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
+  
       // Usar el ID de la factura como invoiceNumber
       const invoiceId = nuevaFacturaRef.id;
       nuevaFactura.invoiceNumber = invoiceId;
+  
+      // Actualizar la factura con el ID como invoiceNumber
       await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
+  
+      // Commit de la actualización del inventario
       await batch.commit();
+  
       // Generar el PDF después de procesar todos los productos
       generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
+  
       // Limpiar los productos seleccionados y ocultar la lista
       setProductosSeleccionados([]);
       setDescuentoMenuValue('');
@@ -506,44 +528,9 @@ const GenerarFactura = () => {
     } catch (error) {
       console.error("Error al generar la factura:", error);
     }
-  
-    addDoc(facturasCollection, nuevaFactura)
-      .then((nuevaFacturaRef) => {
-        productosSeleccionados.forEach((producto) => {
-          const productoRef = doc(db, "inventario", producto.id);
-  
-          if (typeof producto.cantidad === 'number') {
-            getDoc(productoRef)
-              .then((doc) => {
-                const batch = writeBatch(db);
-  
-                const existingQuantity = doc.data().cantidad;
-                const newQuantity = existingQuantity - producto.cantidad;
-                batch.update(productoRef, { cantidad: newQuantity });
-                
-                batch.commit()
-                  .then(() => {
-                    generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal);
-                    setProductosSeleccionados([]);
-                    setShowProductList(false);
-                  })
-                  .catch((error) => {
-                    console.error("Error al actualizar el inventario:", error);
-                  });
-              })
-              .catch((error) => {
-                console.error("Error al obtener el documento:", error);
-              });
-          } else {
-            console.error("Invalid cantidad value:", producto.cantidad);
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("Error al agregar la nueva factura:", error);
-      });
   };
   
+
   const handleDescuentoChange = (e) => {
     const { value } = e.target;
     if (/^[1-9][0-9]?$|^100$/.test(value) || value === '') {
