@@ -1,8 +1,6 @@
 // Componente GenerarListadoMantencion:  
 // Este componente React se encarga de generar un listado de mantenciones en formato PDF, 
 // permitiendo a los mecánicos descargar información detallada de cada mantención. 
-
-  
 // Funciones y Características Principales: 
 // Recupera datos de mantenciones desde Firestore al cargar el componente. 
 // Ofrece una interfaz que muestra una tabla con información clave de cada mantención. 

@@ -1,8 +1,6 @@
 // Componente Mecanico:  
 // Este componente React representa la barra de navegación y menú lateral para usuarios con el rol de Mecánico. 
-// - Proporciona acceso a diversas funcionalidades y permite la navegación fluida entre las secciones de la aplicación. 
-
-
+// Proporciona acceso a diversas funcionalidades y permite la navegación fluida entre las secciones de la aplicación. 
 // Funciones y Características Principales: 
 // Utiliza estilos específicos para la interfaz del Mecánico importados desde 'admin.css'. 
 // Incluye un reloj que muestra la hora actual en tiempo real. 

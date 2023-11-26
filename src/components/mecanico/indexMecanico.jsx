@@ -14,11 +14,10 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
-import { db, auth } from '../../firebase';
+import { db } from '../../firebase';
 import { 
   collection,
   getDocs,
-  doc, onSnapshot 
 } from 'firebase/firestore';
 import Mecanico from './mecanico';
 

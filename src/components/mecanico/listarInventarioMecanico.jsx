@@ -1,8 +1,6 @@
 // Componente ListarInventarioMecanico: 
 // Este componente React representa la página de listado de inventario para usuarios con el rol de Mecánico. 
 // Proporciona acceso a funciones relacionadas con el inventario, como visualizar y gestionar los elementos existentes. 
-
-
 // Funciones y Características Principales: 
 // Incluye la importación de estilos específicos para la interfaz de administrador. 
 // Utiliza el componente 'Mecanico' para mostrar la barra de navegación y mantener la coherencia visual. 
