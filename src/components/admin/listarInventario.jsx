@@ -1,7 +1,5 @@
 // Componente ListarInventario: 
 // Este componente React gestiona la visualización, edición y eliminación de productos en un inventario. Utiliza Firebase Firestore para la base de datos, React Router para la navegación y FontAwesome para iconos. 
-
-
 // Funciones y Características Principales: 
 // Muestra un listado de productos del inventario. 
 // Permite editar información de productos existentes. 
@@ -9,7 +7,7 @@
 // Permite buscar productos por texto de búsqueda. 
 // Navegación para agregar nuevos productos al inventario. 
 
-import React from "react";
+import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
 import { 
@@ -43,11 +41,12 @@ library.add(
 );
 
 const ListarInventario = () => {
-  const [inventario, setInventario] = React.useState([]);
-  const [editingInventarioId, setEditingInventarioId] = React.useState(null);
-  const [isEditingModalOpen, setIsEditingModalOpen] = React.useState(false);
-  const [deleteInventarioId, setDeleteInventarioId] = React.useState(null);
-  const [IsDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  const [inventario, setInventario] = useState([]);
+  const [editingInventarioId, setEditingInventarioId] = useState(null);
+  const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+  const [deleteInventarioId, setDeleteInventarioId] = useState(null);
+  const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
   const EditarInventarioModal = ({ inventario, onSave, onCancel, onInputChange }) => {
@@ -107,7 +106,7 @@ const ListarInventario = () => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [refresh]);
   
   const startDelete = (inventarioId) => {
     setDeleteInventarioId(inventarioId);
@@ -178,10 +177,10 @@ const ListarInventario = () => {
         costoLower.includes(texto)
       );
     });
-
     setInventario(inventarioFiltrados);
+
     if (texto === '') {
-      window.location.reload();
+      setRefresh((prevRefresh) => !prevRefresh);
     }
   };
   

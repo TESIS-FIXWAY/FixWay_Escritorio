@@ -1,8 +1,6 @@
 // Este componente ListadoFacturas maneja la visualización y gestión del listado de facturas de proveedores. 
 // Proporciona funciones para editar, eliminar y buscar facturas, así como para descargar archivos PDF asociados. 
 // Utiliza FontAwesome para los iconos y React Router para la navegación entre diferentes secciones. 
-
-  
 // Funciones y características principales: 
 // Listado de facturas de proveedores con información detallada. 
 // Funcionalidad para buscar facturas por proveedor, fecha o detalle. 
@@ -51,6 +49,7 @@ const ListadoFacturas = () => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteFacturaId, setDeleteFacturaId] = useState(null);
   const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const EditarUsuarioModalFactura = ({ factura, onSave, onCancel, onInputChange }) => {
     return (
@@ -91,7 +90,7 @@ const ListadoFacturas = () => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [refresh]);
 
   const startDelete = (facturaId) => {
     setDeleteFacturaId(facturaId);
@@ -147,11 +146,9 @@ const ListadoFacturas = () => {
       );
     });
     setFacturas(facturasFiltrados);
+
     if (texto === '') {
-      window.location.reload();
-    }
-    if (usuariosFiltrados.map((factura) => factura.fecha).length === 0 ) {
-      return alert('No se encontraron facturas con esa fecha');
+      setRefresh((prevRefresh) => !prevRefresh);
     }
   }
 
