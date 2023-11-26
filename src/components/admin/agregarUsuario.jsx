@@ -330,9 +330,6 @@ const AgregarUsuario = () => {
                   >
                     Agregar
                   </button>
-                  {/* <button type="button" onClick={logoutAndReauthenticate} className='boton_formulario'>
-                    Cerrar Sesión y Reiniciar
-                  </button> */}
                 </p>
               </form>
             </div>
