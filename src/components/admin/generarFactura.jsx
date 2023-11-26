@@ -70,6 +70,7 @@ const GenerarFactura = () => {
   const [telefono, setTelefono] = useState("");
   const [id, setId] = useState("");
   const [mensajeRut, setMensajeRut] = useState("");
+  const [actualizacion, setActualizacion] = useState(0)
     
   useEffect(() => {
     const identifyUser = auth.currentUser;
@@ -365,6 +366,7 @@ const GenerarFactura = () => {
     // pdf.line(5, lineY2, pdf.internal.pageSize.getWidth() - 5, lineY2);
 
     pdf.save("factura.pdf");
+    setActualizacion((prevActualizacion) => prevActualizacion + 1);
   };
 
   function generateInvoiceNumber() {
@@ -408,7 +410,7 @@ const GenerarFactura = () => {
     };
 
     obtenerInventario();
-  }, []);
+  }, [actualizacion]);
 
   const toggleSeleccionProducto = (id) => {
     const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
@@ -525,11 +527,11 @@ const GenerarFactura = () => {
       setProductosSeleccionados([]);
       setDescuentoMenuValue('');
       setShowProductList(false);
+      setActualizacion((prevActualizacion) => prevActualizacion + 1);
     } catch (error) {
       console.error("Error al generar la factura:", error);
     }
   };
-  
 
   const handleDescuentoChange = (e) => {
     const { value } = e.target;

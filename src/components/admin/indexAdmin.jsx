@@ -141,7 +141,7 @@ const IndexAdmin = () => {
         <div className='card_admin_encabezado'>
           <div className='card_admin_calendario'>
             <div className='calendario'>
-              <h1 className=''>Calendario</h1>
+              {/* <h1 className=''>Calendario</h1> */}
               <Calendar onChange={handleDateChange} value={selectedDate} />
             </div>
           </div>
