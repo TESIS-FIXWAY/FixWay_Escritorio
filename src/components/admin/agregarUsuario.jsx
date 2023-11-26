@@ -95,15 +95,11 @@ const AgregarUsuario = () => {
   
         setMensaje('Usuario añadido correctamente');
 
-        signOut(auth.newUser);
+        await logoutAndReauthenticate();
 
         clearFormFields();
-
-        // Clear validation messages
         setMensajeValidacion(null);
-        setMensajeRut(null);  
-
-        return reauthenticateCurrentUser(password);
+        setMensajeRut(null);
   
       } catch (error) {
         // Handle errors
@@ -334,9 +330,9 @@ const AgregarUsuario = () => {
                   >
                     Agregar
                   </button>
-                  <button type="button" onClick={logoutAndReauthenticate} className='boton_formulario'>
+                  {/* <button type="button" onClick={logoutAndReauthenticate} className='boton_formulario'>
                     Cerrar Sesión y Reiniciar
-                  </button>
+                  </button> */}
                 </p>
               </form>
             </div>
