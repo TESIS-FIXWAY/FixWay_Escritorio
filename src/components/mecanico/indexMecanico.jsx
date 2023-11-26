@@ -1,8 +1,6 @@
 // Componente IndexMecanico:  
 // Este componente React sirve como la página de inicio para los usuarios con el rol de Mecánico. 
 // Proporciona acceso rápido a diversas funcionalidades a través de tarjetas interactivas y un calendario. 
-
-
 // Funciones y Características Principales 
 // Contiene tarjetas interactivas que permiten navegar a diferentes secciones de la aplicación. 
 // Incluye un calendario interactivo para visualizar y gestionar eventos relacionados con el trabajo. 
