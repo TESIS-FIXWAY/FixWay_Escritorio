@@ -3,8 +3,6 @@
 // También incluye un menú lateral desplegable con enlaces a diversas secciones de gestión, como usuarios, mantenimientos, facturas, inventario y generación de facturas.  
 // El componente utiliza FontAwesome para agregar iconos a los enlaces y botones. 
 // Se encarga de la navegación entre las diferentes secciones y del cierre de sesión del usuario. 
- 
-
 // Funciones y características principales: 
 // Visualización de información del usuario logueado. 
 // Reloj en tiempo real. 

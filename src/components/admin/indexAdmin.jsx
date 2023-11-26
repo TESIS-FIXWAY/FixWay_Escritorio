@@ -2,8 +2,6 @@
 // Proporciona acceso rápido a diversas funcionalidades, como agregar y listar usuarios, gestionar mantenciones, agregar y listar facturas de proveedores, agregar y listar inventario, y generar facturas de vendedores.  
 // Utiliza FontAwesome para los iconos y React Router para la navegación. 
 // Además, incluye un calendario que permite seleccionar fechas y muestra eventos relacionados. 
-  
-
 // Funciones y características principales: 
 // Navegación rápida a través de iconos a diferentes secciones de la aplicación. 
 // Utilización de FontAwesome para la visualización de iconos. 
@@ -24,8 +22,6 @@ import {
   getDocs,
   doc, onSnapshot 
 } from 'firebase/firestore';
-
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -104,8 +100,6 @@ const IndexAdmin = () => {
       }
     };
     
-    
-  
     fetchMaintenanceCount();
   }, []);
 
@@ -134,55 +128,42 @@ const IndexAdmin = () => {
     navigate('/gestionMantencionesAdmin')
   }
 
-
-
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-
-
   return (
     <>
       <Admin />
-
       <div className="tabla_listar">
-
         <div className='card_admin_encabezado'>
-          
           <div className='card_admin_calendario'>
             <div className='calendario'>
               <h1 className=''>Calendario</h1>
               <Calendar onChange={handleDateChange} value={selectedDate} />
             </div>
           </div>
-
           <div className='perfil_usuario'>
-            <h1 className='perfil_usuario_h1'>perfil de usuario</h1>
+            <h1 className='perfil_usuario_h1'>Perfil de Usuario</h1>
             {user && (
               <div className='perfil_usuario_lista'>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" /> nombre de usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" /> Nombre de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.nombre} {user.apellido}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" /> rut de usuario: </p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" /> RUT de Usuario: </p>
                 <p className='perfil_usuario_lista_p'>{user.rut}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" /> correo electronico:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" /> Correo Electronico:</p>
                 <p className='perfil_usuario_lista_p'>{user.email}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" /> direccion de usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" /> Direccion de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.direccion}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" /> numero de telefono:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" /> Telefono de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.telefono}</p>
               </div>
             )}
           </div>
-
         </div>
-
-
-
         <div className='card_admin_subencabezado'>
-
           <div className='card_admin_mantencion'>
             <div className='card_admin_mantencion_in'>
               <h1>mantenciones</h1>
@@ -197,57 +178,42 @@ const IndexAdmin = () => {
               <p className='card_admin_mantencion_p'>{deliveredCount}</p>
             </div>
           </div>
-
           <div className='contenedor_cartas_iconos'>
-            
             <div className='cartas_iconos'  onClick={usuarios}>
               <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
               <p>Agregar usuario</p>
             </div>
-
             <div className='cartas_iconos' onClick={listarUsuarios}>
             <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-users" />
               <p>Listar usuarios</p>
             </div> 
-
             <div className='cartas_iconos' onClick={gestionMantenciones}>
               <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-rectangle-list" />              
               <p>Gestion de Mantenciones</p>
             </div>
-
             <div className='cartas_iconos' onClick={facturas}>
             <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
               <p>Agregar factura de proveedores</p>
             </div>  
-
             <div className='cartas_iconos' onClick={listarFacturas}>
               <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-clipboard-list" />
               <p>Listar facturas de proveedores</p>
             </div> 
-
             <div className='cartas_iconos' onClick={inventario}>
               <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-cart-flatbed" />              
               <p>Agregar inventario</p>
             </div> 
-
             <div className='cartas_iconos' onClick={listarInventario}>
               <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-boxes-stacked" />
               <p>Listar inventario</p>
             </div> 
-
             <div className='cartas_iconos' onClick={generarFacturas}>
               <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-receipt" />              
               <p>Generar factura de vendedor</p>
             </div> 
           </div>
-
-
         </div>
-
-
-
       </div>
-      
     </>
   );
 };

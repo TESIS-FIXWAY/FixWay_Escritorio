@@ -2,7 +2,6 @@
 // Permite al usuario ingresar información como la fecha, el proveedor, el detalle y adjuntar un archivo. 
 // Utiliza Firebase para almacenar el archivo en la nube y guarda los detalles de la factura en la base de datos. 
 // También renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
-
 // Funciones y características principales: 
 // Manejo de formularios para ingresar detalles de la factura. 
 // Subida de archivos a Firebase Storage y obtención de la URL de descarga. 
@@ -23,8 +22,6 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import Admin from '../admin/admin';
-
-
 
 const AgregarFactura = () => {
   const [file, setFile] = useState(null);

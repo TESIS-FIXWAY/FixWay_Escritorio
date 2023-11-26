@@ -2,8 +2,6 @@
 // Permite visualizar, expandir y actualizar el estado de las tareas, clasificándolas en "por hacer", "en proceso" y "entregadas".  
 // Utiliza Firebase Firestore para obtener y actualizar datos de tareas y se integra con el componente Admin para la navegación.  
 // Las tareas se organizan en tres listas según su estado, y se pueden expandir para mostrar detalles adicionales. 
-
-
 // Funciones y características principales: 
 // Visualización y clasificación de tareas por estado. 
 // Expansión de tareas para ver detalles adicionales. 

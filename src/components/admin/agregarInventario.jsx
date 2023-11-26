@@ -2,8 +2,6 @@
 // Permite al usuario ingresar detalles como el código del producto, nombre, descripción, cantidad, costo, categoría y marca. 
 // Utiliza Firebase Firestore para almacenar los detalles del producto en la colección 'inventario'. 
 // También renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
-
-
 // Funciones y características principales: 
 // Captura de datos del formulario para agregar productos al inventario. 
 // Formateo de la cantidad ingresada para mostrarla de manera legible. 
