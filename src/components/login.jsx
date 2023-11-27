@@ -77,7 +77,9 @@ const Login = () => {
 
   return (
     <>
+    
       <div className='body'>
+
         <div className="container-form login">
           <div className="informacion">
             <div className="info">
@@ -121,6 +123,17 @@ const Login = () => {
             </div>
           </div>
         </div>
+
+
+        <footer className='footer_login'>
+          <div className='waves'>
+            <div className='wave' id='wave1'></div>
+            <div className='wave' id='wave2'></div>
+            <div className='wave' id='wave3'></div>
+            <div className='wave' id='wave4'></div>
+          </div>
+        </footer>
+        
       </div>  
     </>
   );
