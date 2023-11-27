@@ -166,8 +166,8 @@ const AgregarUsuario = () => {
       await signOut(auth);
 
       // Preguntar por las credenciales del usuario
-      const userEmail = prompt('Ingrese su correo electrónico:');
-      const userPassword = prompt('Ingrese su contraseña:');
+      const userEmail = prompt('Ingrese su correo electronico para agregar un nuevo usuario:');
+      const userPassword = prompt('ingrese su contraseña para confirmar:');
 
       // Volver a autenticar al usuario
       await signInWithEmailAndPassword(auth, userEmail, userPassword);
