@@ -200,7 +200,7 @@ const ListarInventario = () => {
       <Admin />
         <div className="tabla_listar">
           <div className="table_header">
-            <p>Listado Inventario</p>
+            <h1>Listado Inventario</h1>
             <div>
               <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder="buscar factura" onChange={filtrarInventario}/>

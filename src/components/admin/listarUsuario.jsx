@@ -165,7 +165,7 @@ const ListarUsuario = () => {
       <Admin />
         <div className='tabla_listar'>
           <div className='table_header'>
-            <p>listar usuarios</p>
+            <h1>listar usuarios</h1>
             <div>
               <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
