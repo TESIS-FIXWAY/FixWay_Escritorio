@@ -14,13 +14,11 @@ import Mecanico from './mecanico';
 import QRCode from 'qrcode.react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons';
-
 library.add(
   faMagnifyingGlass
 );
@@ -78,6 +76,7 @@ const App = () => {
 
       const filteredPatentes = patentes.filter((patente) =>
       patente.toLowerCase().includes(inputValue.toLowerCase())
+
     );
 
     setFilteredPatentes(filteredPatentes);
@@ -93,73 +92,39 @@ const App = () => {
     downloadLink.click();
   };
 
-  const printQRCode = () => {
-    const qrCodeCanvas = document.getElementById('qr-code-canvas');
-    const printWindow = window.open('', '_blank');
-
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Hans Motors QR</title>
-        </head>
-        <body>
-          <img src="${qrCodeCanvas.toDataURL('image/png')}" />
-        </body>
-      </html>
-    `);
-
-    printWindow.document.close();
-    printWindow.print();
-  };
-
-
-  useEffect(() => {
-    const qrCodeCanvas = document.getElementById('qr-code-canvas');
-
-    setTimeout(() => {
-      qrCodeCanvas.classList.add('show');
-    }, 0);
-  }, [qrCodeValue]);
-
 
   return (
     <>
       <Mecanico />
-
-      <div className="container">
-        <div className='generador_qr_titulo'>
-          <h1>Generador de Códigos QR para Patentes</h1>
+        <div className="container">
+          <div className='generador_qr_titulo'>
+            <h1>Generador de Códigos QR para Patentes</h1>
+          </div>
+          <div>
+            {qrCodeValue && <QRCode id="qr-code-canvas" value={qrCodeValue} />}
+            {qrCodeValue && (
+              <div>
+                <button className='boton_qr_descargar_qr' onClick={downloadQRCode}>Descargar código QR</button>
+              </div>
+            )}
+            <input className='input_qr'
+              type="text"
+              value={searchInput}
+              onChange={handlePatenteChange}
+              placeholder="Buscar patente..."
+              list="patentes-list"
+              onInput={handlePatenteInput}
+            />
+            <i class="fa-solid fa-magnifying-glass"/>
+            <datalist id="patentes-list">
+              {filteredPatentes.map((patente) => (
+                <option key={patente} value={patente}>
+                  {patente}
+                </option>
+              ))}
+            </datalist>
+          </div>
         </div>
-
-        <div>
-          {qrCodeValue && <QRCode id="qr-code-canvas" value={qrCodeValue} />}
-          {qrCodeValue && (
-            <div>
-              <button className='boton_qr_descargar_qr' onClick={downloadQRCode}>Descargar código QR</button>
-              <button className='boton_qr_imprimir_qr' onClick={printQRCode}>Imprimir código QR</button>
-            </div>
-          )}
-
-          <input className='input_qr'
-            type="text"
-            value={searchInput}
-            onChange={handlePatenteChange}
-            placeholder="Buscar patente..."
-            list="patentes-list"
-            onInput={handlePatenteInput}
-          />
-          <i class="fa-solid fa-magnifying-glass"/>
-          <datalist id="patentes-list">
-            {filteredPatentes.map((patente) => (
-              <option key={patente} value={patente}>
-                {patente}
-              </option>
-            ))}
-          </datalist>
-
-        </div>
-        
-      </div>
     </>
   );
 };

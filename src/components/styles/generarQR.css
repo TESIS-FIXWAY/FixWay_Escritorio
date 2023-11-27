@@ -35,3 +35,7 @@ button {
 .boton_qr_imprimir_qr{
   background-color: #6fa0e8 ;
 }
+
+.boton_qr_descargar_qr:hover{
+  background-color: #c0392b ;
+}
