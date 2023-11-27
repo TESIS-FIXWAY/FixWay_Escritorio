@@ -98,15 +98,19 @@ const Login = () => {
                   />
                 </label>
                 <br />
+                <br />
+                
                 <label className='label-login'>
                   <i className='bx bx-lock-alt'></i>                        
                   <input
                     type="password" 
-                    placeholder="contrasena"
+                    placeholder="contraseña"
                     id='password'
                   />
                 </label>
                 <br />
+                <br />
+              
                 <input 
                   type="submit" 
                   value="Iniciar sesion"

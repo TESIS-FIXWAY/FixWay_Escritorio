@@ -122,6 +122,7 @@
     margin-bottom: 15px;
     border-radius: 10px;
     padding: 0 10px;
+    width: 600px;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
   }
@@ -134,6 +135,9 @@
     outline: none;
     border-radius: 10px;
     color: #333;
+  }
+  .label-login input{
+    width: 250px;
   }
   
   .formulario label i{
