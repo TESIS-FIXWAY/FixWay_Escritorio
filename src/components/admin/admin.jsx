@@ -83,9 +83,9 @@ const Admin = () => {
       <header className='header'>
         <div className='contenedor-header'>
           <div className='btn-menu'>
-            <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu'/></label>
+            <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-bars" className='icon-menu' /></label>
             <Link to="/indexAdmin"  className='menu_home'>
-              <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu'/></label>
+              <label><FontAwesomeIcon icon="fa-solid fa-house" className='icon-menu' beat/></label>
             </Link>
           </div>
           <div className='logo'>

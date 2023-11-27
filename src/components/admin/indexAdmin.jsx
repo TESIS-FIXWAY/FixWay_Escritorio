@@ -138,6 +138,8 @@ const IndexAdmin = () => {
     <>
       <Admin />
       <div className="tabla_listar">
+
+
         <div className='card_admin_encabezado'>
           <div className='card_admin_calendario'>
             <div className='calendario'>
@@ -163,6 +165,8 @@ const IndexAdmin = () => {
             )}
           </div>
         </div>
+
+
         <div className='card_admin_subencabezado'>
           <div className='card_admin_mantencion'>
             <div className='card_admin_mantencion_in'>
@@ -213,6 +217,8 @@ const IndexAdmin = () => {
             </div> 
           </div>
         </div>
+
+        
       </div>
     </>
   );
