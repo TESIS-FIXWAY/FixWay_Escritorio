@@ -171,7 +171,7 @@ const IndexAdmin = () => {
               <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" /> Mantenciones pendientes:</p>
               <p className='card_admin_mantencion_p'>{pendingCount}</p>
               <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" spinPulse /> Mantenciones en proceso:</p>
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" /> Mantenciones en proceso:</p>
               <p className='card_admin_mantencion_p'>{processCount}</p>
               <hr />
               <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-regular fa-circle-check" /> Mantenciones Entregadas:</p>
