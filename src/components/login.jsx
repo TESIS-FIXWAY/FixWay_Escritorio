@@ -13,11 +13,38 @@
 // - Utiliza estilos CSS para dar formato a la interfaz de inicio de sesión.
 
 import './styles/login.css'
+import Car from '../images/AutoSinFondo2.png'; 
 import React, { useState, useEffect } from "react";
 import { db, auth } from '../firebase'
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faBars,
+  faArrowLeft,
+  faArrowRightFromBracket,
+  faUser,
+  faUserPlus,
+  faUsers,
+  faHouse,
+  faReceipt,
+  faCircleUser
+} 
+from '@fortawesome/free-solid-svg-icons';
+library.add(
+  faBars,
+  faArrowLeft,
+  faArrowRightFromBracket,
+  faUser,
+  faUserPlus,
+  faUsers,
+  faHouse,
+  faReceipt,
+  faCircleUser
+);
 
 const Login = () => {
   const [user, setUser] = useState(null);
@@ -77,54 +104,55 @@ const Login = () => {
 
   return (
     <>
-    
       <div className='body'>
-
-        <div className="container-form login">
+        <div className="container_form">
           <div className="informacion">
             <div className="info">
               <h2>Bienvenido</h2>
-              <p>taller mecanico <br /> Hans Motors</p>
+              <br />
+              <br />
+              <img src={Car} alt="logo" className='imagen' />
+              <br />
+              <br />
+              <p>Taller Mecánico <br /> Hans Motors</p>
             </div>
           </div>
           <div className="form-informacion">
             <div className="form-info-childs">
-              <h2>Iniciar sesion</h2>
+              <h2>Login</h2>
               <form className="formulario" onSubmit={handleSumit}>
                 <label className='label-login'>
-                  <i className='bx bx-envelope' ></i>
-                  <input 
-                    type="email" 
-                    placeholder="email"
+                  <i className='bx bx-envelope'></i>
+                  <input
+                    type="email"
+                    placeholder="Email"
                     id='email'
                   />
                 </label>
                 <br />
                 <br />
-                
+  
                 <label className='label-login'>
-                  <i className='bx bx-lock-alt'></i>                        
+                  <i className='bx bx-lock-alt'></i>
                   <input
-                    type="password" 
-                    placeholder="contraseña"
+                    type="password"
+                    placeholder="Contraseña"
                     id='password'
                   />
                 </label>
                 <br />
                 <br />
-              
-                <input 
-                  type="submit" 
-                  value="Iniciar sesion"
+  
+                <input
+                  type="submit"
+                  value="Iniciar Sesión"
                   className="btn-enviar"
                 />
               </form>
-              {error && <p style={{marginTop: 10, fontSize: 15}}>{error}</p>}
+              {error && <p style={{ marginTop: 10, fontSize: 15 }}>{error}</p>}
             </div>
           </div>
         </div>
-
-
         <footer className='footer_login'>
           <div className='waves'>
             <div className='wave' id='wave1'></div>
@@ -132,9 +160,20 @@ const Login = () => {
             <div className='wave' id='wave3'></div>
             <div className='wave' id='wave4'></div>
           </div>
+          <h1>contactos</h1>
+          <ul className='menu_footer'>
+            <li> <a href="#" >Samuel Gajardo</a></li>
+            <li> <a href="#">Sebastián Quintana</a></li>
+            <li> <a href="#">Benjamín Garrido</a></li>
+          </ul>
+          <ul className='menu_footer'>
+            <li> <a href="#" >+56 9 9773 1366</a></li>
+            <li> <a href="#">+56 9 5641 4395</a></li>
+            <li> <a href="#">+56 9 8470 9534</a></li>
+          </ul>         
+          <p>©2023 Instituto Inacap | Programadores </p> 
         </footer>
-        
-      </div>  
+      </div>
     </>
   );
 };
