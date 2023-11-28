@@ -808,13 +808,14 @@ const GenerarFactura = () => {
 
           {showProductList && mostrarListadoProductos()}
 
-          <button onClick={toggleAgregarCliente} style={{ background: "#1DC258",height:"45px", marginTop:"10px" }}>
+          <button onClick={toggleAgregarCliente} style={{ background: "#42a5f5",height:"45px", marginTop:"10px" }}>
+            <FontAwesomeIcon icon="fa-solid fa-user-plus" />
             Agregar Cliente
           </button>
 
           {mostrarAgregarCliente()}
 
-          <button style={{ background: "#1DC258",height:"45px", marginTop:"10px" }} onClick={toggleClienteVista}>
+          <button style={{ background: "#009688",height:"45px", marginTop:"10px" }} onClick={toggleClienteVista}>
             <FontAwesomeIcon icon="fa-solid fa-users" style={{left: '15px'}} />
             Seleccionar Cliente
           </button>
