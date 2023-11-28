@@ -106,21 +106,65 @@ const IndexMecanico = () => {
     <>
       <Mecanico />
       <div className="tabla_listar">
-        <div>
-          <br />
-          <br />
-          <br />
-          <p>Mantenciones Pendientes: {pendingCount}</p>
-          <p>Mantenciones En Proceso: {processCount}</p>
-          <p>Mantenciones Entregadas: {deliveredCount}</p>
+
+        <div className='card_admin_encabezado'>
+
+          <div className='card_admin_calendario'>
+            <div className='calendario'>
+              <h1 className=''>Calendario</h1>
+              <Calendar onChange={handleDateChange} value={selectedDate} />
+            </div>
+          </div>
+
         </div>
 
-        <div className='card_admin_calendario'>
-          <div className='calendario'>
-            <h1 className=''>Calendario</h1>
-            <Calendar onChange={handleDateChange} value={selectedDate} />
-          </div>
+        <div className='card_admin_subencabezado'>
+
+          <div className='card_admin_mantencion'>
+              <div className='card_admin_mantencion_in'>
+                <h1>Mantenciones</h1>
+                <hr />
+                <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" /> Mantenciones Pendientes:</p>
+                <p className='card_admin_mantencion_p'>{pendingCount}</p>
+                <hr />
+                <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" /> Mantenciones En Proceso:</p>
+                <p className='card_admin_mantencion_p'>{processCount}</p>
+                <hr />
+                <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-regular fa-circle-check" /> Mantenciones Entregadas:</p>
+                <p className='card_admin_mantencion_p'>{deliveredCount}</p>
+              </div>
+            </div>
+            <div className='contenedor_cartas_iconos'>
+                <div className='cartas_iconos'  onClick={mantenciones}>
+                  <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
+                  <p>Agregar usuario</p>
+                </div>
+                <div className='cartas_iconos' onClick={listarUsuarios}>
+                <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-users" />
+                  <p>Listar usuarios</p>
+                </div> 
+                <div className='cartas_iconos' onClick={facturas}>
+                  <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-rectangle-list" />              
+                  <p>Gestion de Mantenciones</p>
+                </div>
+                <div className='cartas_iconos' onClick={listarFacturas}>
+                <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
+                  <p>Agregar factura de proveedores</p>
+                </div>  
+                <div className='cartas_iconos' onClick={inventario}>
+                  <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-clipboard-list" />
+                  <p>Listar facturas de proveedores</p>
+                </div> 
+                <div className='cartas_iconos' onClick={listarInventario}>
+                  <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-cart-flatbed" />              
+                  <p>Agregar inventario</p>
+                </div> 
+              </div>
+
         </div>
+
+
+
       </div>
     </>
   );
