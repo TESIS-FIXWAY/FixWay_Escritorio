@@ -157,7 +157,7 @@ const Login = () => {
             <div className='wave' id='wave3'></div>
             <div className='wave' id='wave4'></div>
           </div>
-          <h1>contactos</h1>
+          <h1>CONTACTOS</h1>
           <ul className='menu_footer'>
             <li> <a href="#" >Samuel Gajardo</a></li>
             <li> <a href="#">Sebastián Quintana</a></li>
