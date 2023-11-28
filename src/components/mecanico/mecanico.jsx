@@ -110,7 +110,7 @@ const Mecanico = () => {
 <hr />
             <Link to="/gestionMantenciones" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon icon="fa-solid fa-clipboard-list"  className='i'/>
-              <span className='link_name'>Gestion Mantenciones</span>
+              <span className='link_name'>Gestion de Mantenciones</span>
             </Link>
             <Link to="/listarInventarioMecanico" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-list" />

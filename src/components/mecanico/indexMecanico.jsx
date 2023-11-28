@@ -135,31 +135,23 @@ const IndexMecanico = () => {
               </div>
             </div>
             <div className='contenedor_cartas_iconos'>
-                <div className='cartas_iconos'  onClick={mantenciones}>
-                  <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
-                  <p>Agregar usuario</p>
-                </div>
-                <div className='cartas_iconos' onClick={listarUsuarios}>
-                <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-users" />
-                  <p>Listar usuarios</p>
-                </div> 
-                <div className='cartas_iconos' onClick={facturas}>
-                  <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-rectangle-list" />              
-                  <p>Gestion de Mantenciones</p>
-                </div>
-                <div className='cartas_iconos' onClick={listarFacturas}>
-                <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
-                  <p>Agregar factura de proveedores</p>
-                </div>  
-                <div className='cartas_iconos' onClick={inventario}>
-                  <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-clipboard-list" />
-                  <p>Listar facturas de proveedores</p>
-                </div> 
-                <div className='cartas_iconos' onClick={listarInventario}>
-                  <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-cart-flatbed" />              
-                  <p>Agregar inventario</p>
-                </div> 
+              <div className='cartas_iconos' onClick={facturas}>
+                <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
+                <p>Gestion de Mantenciones</p>
               </div>
+              <div className='cartas_iconos' onClick={listarFacturas}>
+                <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-list" />
+                <p>Listar Inventario</p>
+              </div>  
+              <div className='cartas_iconos' onClick={inventario}>
+                <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-qrcode" />              
+                <p>Generar QR</p>
+              </div> 
+              <div className='cartas_iconos' onClick={listarInventario}>
+                <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-file-pdf" />             
+                <p>Generar Listado Mantencion</p>
+              </div> 
+            </div>
 
         </div>
 
