@@ -125,7 +125,7 @@ const GestionMantenciones = () => {
           <div className="container_mantencion">
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
-                <h2>Tareas por hacer</h2>
+                <h2>Tareas por Hacer</h2>
               </div>
               <ul style={{ height: calculateContainerHeight(beginTask) }}>
                 {beginTask.map((task) => (
@@ -140,7 +140,7 @@ const GestionMantenciones = () => {
                     </li>
                     {expandedTask === task.id && (
                       <button onClick={() => updateTaskStatus(task, 'en proceso')}>
-                        Tomar tarea
+                        Tomar Tarea
                       </button>
                     )}
                   </div>
@@ -150,7 +150,7 @@ const GestionMantenciones = () => {
 
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
-                <h2>Tareas en proceso</h2>
+                <h2>Tareas en Proceso</h2>
               </div>
               <ul>
                 {inProgressTasks.map((task) => (
@@ -182,7 +182,6 @@ const GestionMantenciones = () => {
                   <div
                     key={`${task.id}-${task.estado}`}
                     className={`task-container ${expandedTask === task.id ? 'expanded' : ''}`}
-                    // onClick={() => handleTaskExpand(task.id)}
                   >
                     <li>
                       {task.id} <br />

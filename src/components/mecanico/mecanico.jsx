@@ -91,7 +91,7 @@ const Mecanico = () => {
             <p>{formatTime(currentTime)}</p>
           </div>
           <nav className='menu'>
-            <a>Mecanico</a>
+            <a>Mecánico</a>
           </nav>
         </div>
         <button type='submit' onClick={handleLogout} className='boton_salir'>
@@ -100,42 +100,34 @@ const Mecanico = () => {
       </header> 
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
-      
-
       <div className='contenedor-menu'>
         <div className='cont_menu'>
-          
           <nav>
             <Link to="/indexMecanico" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-house" />
-              <span className='link_name'>volver al menu</span>
+              <span className='link_name'>Volver al Menú</span>
             </Link>
 <hr />
             <Link to="/gestionMantenciones" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon icon="fa-solid fa-clipboard-list"  className='i'/>
               <span className='link_name'>Gestion Mantenciones</span>
             </Link>
-
             <Link to="/listarInventarioMecanico" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-list" />
               <span className='link_name'>Listar Inventario</span>
             </Link>
-
             <Link to="/GenerarQR" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-qrcode" />              
               <span className='link_name'>Generar QR</span>
             </Link>
-
             <Link to="/GenerarListadoMantencion" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-file-pdf" />
               <span className='link_name'>Generar Listado Mantencion</span>
             </Link>
           </nav>
-
           <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /></label>
         </div>
       </div>
-    
     </div>
   </>
   )

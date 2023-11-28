@@ -91,9 +91,9 @@ const ListarInventario = () => {
             <table>
               <thead>
                 <tr>
-                  <th scope="col">Codigo Producto</th>
+                  <th scope="col">Código Producto</th>
                   <th scope="col">Nombre <br /> Producto</th>
-                  <th scope="col">Categoria</th>
+                  <th scope="col">Categoría</th>
                   <th scope="col">Marca</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Costo</th>

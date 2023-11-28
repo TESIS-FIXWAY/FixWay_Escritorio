@@ -110,8 +110,8 @@ const IndexMecanico = () => {
           <br />
           <br />
           <br />
-          <p>Mantenciones pendientes: {pendingCount}</p>
-          <p>Mantenciones en proceso: {processCount}</p>
+          <p>Mantenciones Pendientes: {pendingCount}</p>
+          <p>Mantenciones En Proceso: {processCount}</p>
           <p>Mantenciones Entregadas: {deliveredCount}</p>
         </div>
 
@@ -121,11 +121,7 @@ const IndexMecanico = () => {
             <Calendar onChange={handleDateChange} value={selectedDate} />
           </div>
         </div>
-
-        
-
       </div>
-      
     </>
   );
 };

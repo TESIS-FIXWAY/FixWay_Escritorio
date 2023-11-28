@@ -69,9 +69,8 @@ const GenerarListadoMantencion = () => {
       <Mecanico />
       <div className="tabla_listar">
         <div className="table_header">
-          <h1>Generar Listado Mantencion</h1>
+          <h1>Generar Listado Mantención</h1>
         </div>
-
         <div className="table_section">
           <table>
             <thead>
