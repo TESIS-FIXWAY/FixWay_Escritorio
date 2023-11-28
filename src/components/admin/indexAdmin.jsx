@@ -147,15 +147,15 @@ const IndexAdmin = () => {
             <h1 className='perfil_usuario_h1'>Perfil de Usuario</h1>
             {user && (
               <div className='perfil_usuario_lista'>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" /> Nombre de Usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" />Nombre de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.nombre} {user.apellido}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" /> RUT de Usuario: </p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" />RUT de Usuario: </p>
                 <p className='perfil_usuario_lista_p'>{user.rut}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" /> Correo Electronico:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" />Correo Electrónico:</p>
                 <p className='perfil_usuario_lista_p'>{user.email}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" /> Direccion de Usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" />Dirección de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.direccion}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" /> Telefono de Usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" />Teléfono de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.telefono}</p>
               </div>
             )}
