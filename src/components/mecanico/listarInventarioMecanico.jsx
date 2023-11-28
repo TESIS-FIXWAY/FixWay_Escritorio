@@ -37,7 +37,6 @@ library.add(
   faFileCirclePlus
 );
 
-
 const ListarInventario = () => {
     const [inventario, setInventario] = React.useState([]);
   const [filteredInventario, setFilteredInventario] = React.useState([]);
@@ -75,13 +74,12 @@ const ListarInventario = () => {
     setFilteredInventario(inventarioFiltrados);
   };
   
-
   return (
     <>
       <Mecanico />
         <div className="tabla_listar">
           <div className="table_header">
-            <p>Listado Inventario</p>
+            <h1>Listado Inventario</h1>
             <div>
                 <FontAwesomeIcon icon="magnifying-glass" />
                 <input type="text" placeholder="Buscar Inventario" onChange={filtrarInventario}/>
