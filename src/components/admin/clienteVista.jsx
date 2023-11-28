@@ -50,9 +50,9 @@ const ClienteVista = ({
               <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
-                <th scope="col">Rut</th>
+                <th scope="col">RUT</th>
                 <th scope="col">Email</th>
-                <th scope="col">Telefono</th>
+                <th scope="col">Teléfono</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>

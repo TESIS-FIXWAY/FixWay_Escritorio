@@ -16,7 +16,6 @@ import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import Admin from "./admin";
 import { db, auth } from '../../firebase';
-import { createChart } from 'lightweight-charts';
 import { 
   collection,
   getDocs,
@@ -138,12 +137,9 @@ const IndexAdmin = () => {
     <>
       <Admin />
       <div className="tabla_listar">
-
-
         <div className='card_admin_encabezado'>
           <div className='card_admin_calendario'>
             <div className='calendario'>
-              {/* <h1 className=''>Calendario</h1> */}
               <Calendar onChange={handleDateChange} value={selectedDate} />
             </div>
           </div>
@@ -165,17 +161,15 @@ const IndexAdmin = () => {
             )}
           </div>
         </div>
-
-
         <div className='card_admin_subencabezado'>
           <div className='card_admin_mantencion'>
             <div className='card_admin_mantencion_in'>
-              <h1>mantenciones</h1>
+              <h1>Mantenciones</h1>
               <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" /> Mantenciones pendientes:</p>
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" /> Mantenciones Pendientes:</p>
               <p className='card_admin_mantencion_p'>{pendingCount}</p>
               <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" /> Mantenciones en proceso:</p>
+              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" /> Mantenciones En Proceso:</p>
               <p className='card_admin_mantencion_p'>{processCount}</p>
               <hr />
               <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-regular fa-circle-check" /> Mantenciones Entregadas:</p>
@@ -217,8 +211,6 @@ const IndexAdmin = () => {
             </div> 
           </div>
         </div>
-
-        
       </div>
     </>
   );

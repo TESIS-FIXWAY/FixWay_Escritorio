@@ -53,7 +53,7 @@ const ListarInventario = () => {
     return (
       <div className="editar-modal">
         <p>Editar inventario</p>
-        <label htmlFor="">Codigo Producto</label>
+        <label htmlFor="">Código Producto</label>
         <input
           type="text"
           value={inventario.codigoProducto}
@@ -65,7 +65,7 @@ const ListarInventario = () => {
           value={inventario.nombreProducto}
           onChange={(e) => onInputChange('nombreProducto', e.target.value)}
         />
-        <label htmlFor="">Categoria</label>
+        <label htmlFor="">Categoría</label>
         <input
           type="text"
           value={inventario.categoria}
@@ -211,9 +211,9 @@ const ListarInventario = () => {
             <table>
               <thead>
                 <tr>
-                  <th scope="col">Codigo Producto</th>
+                  <th scope="col">Código Producto</th>
                   <th scope="col">Nombre <br /> Producto</th>
-                  <th scope="col">Categoria</th>
+                  <th scope="col">Categoría</th>
                   <th scope="col">Marca</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Costo</th>
@@ -253,14 +253,6 @@ const ListarInventario = () => {
                                   onChange={(e) => handleInputChange(inventario.id, 'nombreProducto', e.target.value)}
                                 />
                               </p>
-                              {/* <p className="p_editar">
-                                <label htmlFor="">Categoria</label>
-                                <input
-                                  type="text"
-                                  value={inventario.categoria}
-                                  onChange={(e) => handleInputChange(inventario.id, 'categoria', e.target.value)}
-                                />
-                              </p> */}
                               <p>
                                 <label htmlFor="">Categoria</label>
                                 <br />

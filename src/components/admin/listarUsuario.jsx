@@ -165,7 +165,7 @@ const ListarUsuario = () => {
       <Admin />
         <div className='tabla_listar'>
           <div className='table_header'>
-            <h1>listar usuarios</h1>
+            <h1>Listar Usuarios</h1>
             <div>
               <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
               <input type="text" placeholder='buscar usuario' onChange={filtrarUsuario} />
@@ -180,8 +180,8 @@ const ListarUsuario = () => {
                   <th scope="col">Rut</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Apellido</th>
-                  <th scope="col">Direccion</th>
-                  <th scope="col">Telefono</th>
+                  <th scope="col">Dirección</th>
+                  <th scope="col">Teléfono</th>
                   <th scope="col">Correo <br /> Electrónico</th> {/* Nueva columna para el correo electrónico */}
                   <th scope="col">Cargo <br /> de trabajo</th>
                   <th scope="col">Sueldo</th>
@@ -206,7 +206,7 @@ const ListarUsuario = () => {
                         <>
                           <div className='fondo_no'>
                             <div className='editar'>
-                              <p className='p_editar'>editar usuarios</p>
+                              <p className='p_editar'>Editar Usuarios</p>
                               <p className='p_editar'>
                                 <label className='etiqueta_editar'>Rol</label>
                                 <select className='select_rol'
@@ -217,28 +217,28 @@ const ListarUsuario = () => {
                                 </select>
                               </p>
                               <p className='p_editar'>
-                                <label className='etiqueta_editar' >nombre</label>
+                                <label className='etiqueta_editar' >Nombre</label>
                                 <input
                                 type="text"
                                 value={user.nombre}
                                 onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}/>
                               </p>
                               <p className='p_editar'>
-                                <label className='etiqueta_editar' >apellido</label>
+                                <label className='etiqueta_editar' >Apellido</label>
                                 <input
                                 type="text"
                                 value={user.apellido}
                                 onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}/>
                               </p>
                               <p className='p_editar'>
-                                <label className='etiqueta_editar' >telefono</label>
+                                <label className='etiqueta_editar' >Teléfono</label>
                                 <input
                                 type="text"
                                 value={user.telefono}
                                 onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}/>
                               </p>
                               <p className='p_editar'>
-                                <label className='etiqueta_editar' >direccion</label>
+                                <label className='etiqueta_editar' >Dirección</label>
                                 <input
                                 type="text"
                                 value={user.direccion}
@@ -259,7 +259,7 @@ const ListarUsuario = () => {
                                 onChange={(e) => handleInputChange(user.id, 'fechaIngreso', e.target.value)} />
                               </p>
                               <p className='p_editar'>
-                                <label className='etiqueta_editar' >contraseña</label>
+                                <label className='etiqueta_editar' >Contraseña</label>
                                 <input
                                 type="text"
                                 value={user.password}
@@ -277,7 +277,7 @@ const ListarUsuario = () => {
                         <>
                         <div className='fondo_no'>
                           <div className='editar'>
-                          <p className='p_editar'>¿Estás seguro que deseas <br /> eliminar este usuario?</p>
+                          <p className='p_editar'>¿Estás seguro de que deseas <br /> eliminar este usuario?</p>
                           <button className='guardar' onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
                           <button className='cancelar' onClick={() => cancelDelete()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
                           </div>

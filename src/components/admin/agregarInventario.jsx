@@ -60,7 +60,7 @@ const AgregarInventario = () => {
                 <h1 className='formulario_titulo'>Agregar Inventario</h1>
                 <form className="formulario_form"onSubmit={submitHandler}>
                   <p>
-                    <label className='label_formulario'>Codigo Producto</label>
+                    <label className='label_formulario'>Código Producto</label>
                     <br />
                     <input
                       className='input_formulario'
@@ -83,7 +83,7 @@ const AgregarInventario = () => {
                       required/>
                   </p>
                   <p>
-                    <label className='label_formulario'>Descripcion</label>                  
+                    <label className='label_formulario'>Descripción</label>                  
                     <br />
                     <input
                       className='input_formulario'
@@ -120,7 +120,7 @@ const AgregarInventario = () => {
                     />
                   </p>
                   <p>
-                    <label className='label_formulario'>Categoria</label>
+                    <label className='label_formulario'>Categoría</label>
                     <br />
                     <select
                       className='input_formulario'

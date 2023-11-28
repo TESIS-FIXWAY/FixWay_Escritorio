@@ -93,7 +93,7 @@ const AgregarUsuario = () => {
           fechaIngreso,
         });
   
-        setMensaje('Usuario añadido correctamente');
+        setMensaje('Usuario añadido Correctamente');
 
         await logoutAndReauthenticate();
 
@@ -119,9 +119,9 @@ const AgregarUsuario = () => {
     const validador = new validadorRUT(rut);
     if (validador.esValido) {
       document.getElementById('rut').value = validador.formateado();
-      setMensajeRut('Rut válido');
+      setMensajeRut('RUT válido');
     } else {
-      setMensajeRut('Rut inválido');
+      setMensajeRut('RUT inválido');
     }
   };
 
@@ -166,8 +166,8 @@ const AgregarUsuario = () => {
       await signOut(auth);
 
       // Preguntar por las credenciales del usuario
-      const userEmail = prompt('Ingrese su correo electronico para agregar un nuevo usuario:');
-      const userPassword = prompt('ingrese su contraseña para confirmar:');
+      const userEmail = prompt('Ingrese su correo electrónico para agregar un nuevo usuario:');
+      const userPassword = prompt('Ingrese su contraseña para confirmar:');
 
       // Volver a autenticar al usuario
       await signInWithEmailAndPassword(auth, userEmail, userPassword);
@@ -200,7 +200,7 @@ const AgregarUsuario = () => {
               <h1 className='formulario_titulo'>Agregar Usuario</h1>
               <form className="formulario_form"onSubmit={submitHandler}>
                 <p>
-                  <label className='label_formulario'>Rut</label>
+                  <label className='label_formulario'>RUT</label>
                   <br />
                   <input
                     className='input_formulario'
@@ -249,7 +249,7 @@ const AgregarUsuario = () => {
                     placeholder="Apellido"/>
                 </p>
                 <p>
-                  <label className='label_formulario'>Telefono</label>
+                  <label className='label_formulario'>Teléfono</label>
                   <br />
                   <input
                     className='input_formulario'
@@ -261,7 +261,7 @@ const AgregarUsuario = () => {
                     placeholder="Ejemplo: +56 9 12345678"/>
                 </p>
                 <p>
-                  <label className='label_formulario'>Direccion</label>
+                  <label className='label_formulario'>Dirección</label>
                   <br />
                   <input
                     className='input_formulario'

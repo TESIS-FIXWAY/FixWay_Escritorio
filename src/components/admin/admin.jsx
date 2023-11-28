@@ -104,15 +104,12 @@ const Admin = () => {
       </header> 
       <div className='capa'></div>
       <input type='checkbox' id='btn-menu'></input>
-      
-
       <div className='contenedor-menu'>
         <div className='cont_menu'>
-          
           <nav>
             <Link to="/indexAdmin" className={`link ${window.location.pathname === '/indexAdmin' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-house" bounce/>
-              <span className='link_name'>volver al menu</span>
+              <span className='link_name'>Volver al Menú</span>
             </Link>
 <hr />
             <Link to="/agregarUsuario" className={`link ${window.location.pathname === '/agregarUsuario' ? 'active' : ''}`}>
@@ -131,11 +128,11 @@ const Admin = () => {
 <hr />
             <Link to="/agregarFactura" className={`link ${window.location.pathname === '/agregarFactura' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" bounce/>              
-              <span className='link_name'>Agregar Factura de proveedor</span>
+              <span className='link_name'>Agregar Factura de Proveedor</span>
             </Link>
             <Link to="/listadoFacturas" className={`link ${window.location.pathname === '/listadoFacturas' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" bounce/>
-              <span className='link_name'>Listar Facturas de proveedores</span>
+              <span className='link_name'>Listar Facturas de Proveedores</span>
             </Link>
 <hr />
             <Link to="/agregarInventario" className={`link ${window.location.pathname === '/agregarInventario' ? 'active' : ''}`}>
@@ -149,14 +146,12 @@ const Admin = () => {
 <hr />
             <Link to="/generarFactura" className={`link ${window.location.pathname === '/generarFactura' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-receipt" bounce/>              
-              <span className='link_name'>Generar Factura de vendedor</span>
+              <span className='link_name'>Generar Factura de Vendedor</span>
             </Link>
           </nav>
-
           <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /></label>
         </div>
       </div>
-    
     </div>
   </>
   )

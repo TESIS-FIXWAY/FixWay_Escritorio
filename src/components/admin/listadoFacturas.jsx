@@ -252,7 +252,7 @@ const ListadoFacturas = () => {
                         <>
                         <div className='fondo_no'>
                           <div className='editar'>
-                          <p className='p_editar'>¿Estás seguro que deseas <br /> eliminar esta factura?</p>
+                          <p className='p_editar'>¿Estás seguro de que deseas <br /> eliminar esta factura?</p>
                           <button className='guardar' onClick={() => deletefactura(factura.id)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
                           <button className='cancelar' onClick={() => cancelDelete()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
                           </div>

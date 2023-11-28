@@ -796,7 +796,7 @@ const GenerarFactura = () => {
           >
             <option value="contado">Contado</option>
             <option value="credito">Crédito</option>
-            <option value="debito">Debito</option>
+            <option value="debito">Débito</option>
           </select>
 
           {showDiscountMenu && mostrarDescuentoMenu()}

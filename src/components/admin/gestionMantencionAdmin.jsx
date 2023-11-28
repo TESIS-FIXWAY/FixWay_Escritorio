@@ -123,7 +123,6 @@ const GestionMantencionesAdmin = () => {
           <div className="container_mantencion_titulo">
             <h1>Gestión de Mantenciones</h1>
           </div>
-
           <div className="container_mantencion">
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
@@ -144,7 +143,6 @@ const GestionMantencionesAdmin = () => {
                 ))}
               </ul>
             </div>
-
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
                 <h2>Tareas en proceso</h2>
@@ -164,7 +162,6 @@ const GestionMantencionesAdmin = () => {
                 ))}
               </ul>
             </div>
-
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
                 <h2>Entregados</h2>
@@ -174,7 +171,6 @@ const GestionMantencionesAdmin = () => {
                   <div
                     key={`${task.id}-${task.estado}`}
                     className={`task-container ${expandedTask === task.id ? 'expanded' : ''}`}
-                    // onClick={() => handleTaskExpand(task.id)}
                   >
                     <li>
                       {task.id} <br />
