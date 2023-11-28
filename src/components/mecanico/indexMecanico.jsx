@@ -12,13 +12,14 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { 
   collection,
   getDocs,
+  doc, 
+  onSnapshot
 } from 'firebase/firestore';
 import Mecanico from './mecanico';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -45,14 +46,21 @@ library.add(
   faFileLines,
 );
 
-
 const IndexMecanico = () => {
   const navigate = useNavigate();
   const [processCount , setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const identifyUser = auth.currentUser;
+    if (identifyUser) {
+      const userRef = doc(db, "users", identifyUser.uid);
+      onSnapshot(userRef, (snapshot) => {
+        setUser(snapshot.data());
+      });
+    }
     const fetchMaintenanceCount = async () => {
       try {
         const maintenanceCollection = collection(db, 'mantenciones');
@@ -77,23 +85,20 @@ const IndexMecanico = () => {
     fetchMaintenanceCount();
   }, []);
 
-  const mantenciones = () => {
+  const mantencion = () => {
     navigate('/gestionMantenciones')
   }
-  const listarUsuarios = () => {
-    navigate('/listarUsuario')
+
+  const inventarioMecanico = () => {
+    navigate('/listarInventarioMecanico')
   }
-  const facturas = () => {
-    navigate('/agregarFactura')
+
+  const generadorQR = () => {
+    navigate('/generarQR')
   }
-  const listarFacturas = () => {
-    navigate('/listadoFacturas')
-  }
-  const inventario = () => {
-    navigate('/agregarInventario')
-  }
-  const listarInventario = () => {
-    navigate('/listarInventario')
+
+  const generadorListadoMantencion = () => {
+    navigate('/generarListadoMantencion')
   }
 
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -106,20 +111,32 @@ const IndexMecanico = () => {
     <>
       <Mecanico />
       <div className="tabla_listar">
-
         <div className='card_admin_encabezado'>
-
           <div className='card_admin_calendario'>
             <div className='calendario'>
               <h1 className=''>Calendario</h1>
               <Calendar onChange={handleDateChange} value={selectedDate} />
             </div>
           </div>
-
+          <div className='perfil_usuario'>
+            <h1 className='perfil_usuario_h1'>Perfil de Usuario</h1>
+            {user && (
+              <div className='perfil_usuario_lista'>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" />Nombre de Usuario:</p>
+                <p className='perfil_usuario_lista_p'>{user.nombre} {user.apellido}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" />RUT de Usuario: </p>
+                <p className='perfil_usuario_lista_p'>{user.rut}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" />Correo Electrónico:</p>
+                <p className='perfil_usuario_lista_p'>{user.email}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" />Dirección de Usuario:</p>
+                <p className='perfil_usuario_lista_p'>{user.direccion}</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" />Teléfono de Usuario:</p>
+                <p className='perfil_usuario_lista_p'>{user.telefono}</p>
+              </div>
+            )}
+          </div>
         </div>
-
         <div className='card_admin_subencabezado'>
-
           <div className='card_admin_mantencion'>
               <div className='card_admin_mantencion_in'>
                 <h1>Mantenciones</h1>
@@ -135,28 +152,24 @@ const IndexMecanico = () => {
               </div>
             </div>
             <div className='contenedor_cartas_iconos'>
-              <div className='cartas_iconos' onClick={facturas}>
+              <div className='cartas_iconos' onClick={mantencion}>
                 <FontAwesomeIcon icon="fa-solid fa-clipboard-list" className='functionality_icon' />
                 <p>Gestion de Mantenciones</p>
               </div>
-              <div className='cartas_iconos' onClick={listarFacturas}>
+              <div className='cartas_iconos' onClick={inventarioMecanico}>
                 <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-list" />
                 <p>Listar Inventario</p>
               </div>  
-              <div className='cartas_iconos' onClick={inventario}>
+              <div className='cartas_iconos' onClick={generadorQR}>
                 <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-qrcode" />              
                 <p>Generar QR</p>
               </div> 
-              <div className='cartas_iconos' onClick={listarInventario}>
+              <div className='cartas_iconos' onClick={generadorListadoMantencion}>
                 <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-file-pdf" />             
                 <p>Generar Listado Mantencion</p>
               </div> 
             </div>
-
         </div>
-
-
-
       </div>
     </>
   );

@@ -64,7 +64,6 @@ library.add(
 
 const IndexAdmin = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
   const [user, setUser] = useState(null);
   const [processCount , setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
