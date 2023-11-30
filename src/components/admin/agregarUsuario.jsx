@@ -38,6 +38,7 @@ const AgregarUsuario = () => {
   const [mensajeValidacion, setMensajeValidacion] = useState(null);
   const identifyUser = auth.currentUser;
   const [user, setUser] = useState(null);
+  const [fechaIngreso, setFechaIngreso] = useState(null);
 
   useEffect(() => {
     if (identifyUser) {
