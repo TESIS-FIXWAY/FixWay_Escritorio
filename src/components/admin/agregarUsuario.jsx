@@ -126,7 +126,7 @@ const AgregarUsuario = () => {
   };
 
   const validarCampos = () => {
-    if (mensajeRut !== 'Rut válido') {
+    if (mensajeRut !== 'RUT válido') {
       setMensajeValidacion('El Rut no es válido');
       return false;
     }
