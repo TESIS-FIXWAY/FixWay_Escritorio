@@ -20,9 +20,9 @@ import AgregarFactura from "./components/admin/agregarFactura";
 import ListadoFacturas from "./components/admin/listadoFacturas";
 import AgregarInventario from "./components/admin/agregarInventario";
 import ListarInventario from "./components/admin/listarInventario";
-import GenerarFactura from "./components/admin/generarFactura";
+import GenerarFactura from "./components/admin/factura/generarFactura";
 import GestionMantencionesAdmin from "./components/admin/gestionMantencionAdmin";
-import ClienteVista from "./components/admin/clienteVista";
+import ClienteVista from "./components/admin/factura/clienteVista";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
