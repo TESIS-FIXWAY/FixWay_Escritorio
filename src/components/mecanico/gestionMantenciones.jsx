@@ -1,9 +1,9 @@
 // Componente GestionMantenciones:  
 // Este componente React proporciona una interfaz para la gestión dinámica de tareas de mantenciones, 
-// dividiéndolas en tres secciones: "Tareas por hacer", "Tareas en proceso" y "Entregados". 
+// dividiéndolas en tres secciones: "Tareas por hacer", "Tareas en proceso" y "Terminado". 
 // Funciones y Características Principales:  
 // Recupera datos de mantenciones desde Firestore al cargar el componente. 
-// Muestra las tareas organizadas por estado ('pendiente', 'en proceso', 'entregados'). 
+// Muestra las tareas organizadas por estado ('pendiente', 'en proceso', 'Terminado'). 
 // Permite la expansión de cada tarea para mostrar opciones adicionales. 
 // Permite la actualización del estado de una tarea al ser tomada o finalizada. 
 // Ofrece una interfaz clara y eficiente para la gestión de las mantenciones. 
@@ -45,11 +45,11 @@ const GestionMantenciones = () => {
           allTasksData.push(task);
         });
 
-        // Sort tasks based on estado ('pendiente', 'en proceso', 'entregados')
+        // Sort tasks based on estado ('pendiente', 'en proceso', 'terminado')
         const sortedTasks = {
           'pendiente': [],
           'en proceso': [],
-          'entregados': [],
+          'terminado': [],
         };
 
         allTasksData.forEach((task) => {
@@ -59,7 +59,7 @@ const GestionMantenciones = () => {
         // Update state with tasks data
         setBeginTask(sortedTasks['pendiente']);
         setInProgressTasks(sortedTasks['en proceso']);
-        setCompletedTasks(sortedTasks['entregados']);
+        setCompletedTasks(sortedTasks['terminado']);
       });
 
       return () => unsubscribe();
@@ -91,7 +91,7 @@ const GestionMantenciones = () => {
             setInProgressTasks((prevInProgressTasks) => [...prevInProgressTasks, task]);
           }
           break;
-        case 'entregados':
+        case 'terminado':
           setInProgressTasks((prevInProgressTasks) =>
             prevInProgressTasks.filter((t) => t.id !== task.id)
           );
@@ -164,7 +164,7 @@ const GestionMantenciones = () => {
                       {task.descripcion}
                     </li>
                     {expandedTask === task.id && (
-                      <button onClick={() => updateTaskStatus(task, 'entregados')}>
+                      <button onClick={() => updateTaskStatus(task, 'terminado')}>
                         Finalizar Tarea
                       </button>
                     )}
@@ -175,7 +175,7 @@ const GestionMantenciones = () => {
 
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
-                <h2>Entregados</h2>
+                <h2>Terminado</h2>
               </div>
               <ul>
                 {completedTasks.map((task) => (
