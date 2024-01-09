@@ -22,6 +22,8 @@ import {
 
 const GestionMantenciones = () => {
   const [beginTask, setBeginTask] = useState([]);
+  const [priorityTasks, setPriorityTasks] = useState([]);
+  const [specialAttentionTasks, setSpecialAttentionTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [expandedTask, setExpandedTask] = useState(null);
@@ -48,6 +50,8 @@ const GestionMantenciones = () => {
         // Sort tasks based on estado ('pendiente', 'en proceso', 'terminado')
         const sortedTasks = {
           'pendiente': [],
+          'prioridad': [],
+          'atencion especial': [],
           'en proceso': [],
           'terminado': [],
         };
@@ -58,8 +62,10 @@ const GestionMantenciones = () => {
 
         // Update state with tasks data
         setBeginTask(sortedTasks['pendiente']);
-        setInProgressTasks(sortedTasks['en proceso']);
-        setCompletedTasks(sortedTasks['terminado']);
+          setPriorityTasks(sortedTasks['prioridad']);
+          setSpecialAttentionTasks(sortedTasks['atencion especial']);
+          setInProgressTasks(sortedTasks['en proceso']);
+          setCompletedTasks(sortedTasks['terminado']);
       });
 
       return () => unsubscribe();
