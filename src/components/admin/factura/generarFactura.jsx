@@ -27,6 +27,9 @@ library.add(
   faList,
   faEyeSlash
 );
+import AgregarCliente from "./agregarCliente";
+import ListadoProductos from "./listadoProductos";
+import AplicarDescuento from "./aplicarDescuento";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
@@ -500,20 +503,13 @@ const GenerarFactura = () => {
   const mostrarDescuentoMenu = () => {
     if (showDiscountMenu) {
       return (
-        <div className="fondo_no">
-          <div className="editar" style={{ width: '413px' }}>
-            <div className="descuento-menu">
-              <input
-                type="text"
-                placeholder="Descuento (%)"
-                value={descuentoMenuValue}
-                onChange={handleDescuentoChange}
-              />
-              <button onClick={aplicarDescuento} style={{ background: "#1DC258" }}> Aplicar Descuento</button>
-              <button onClick={cancelarDescuento} style={{background: "#E74C3C"}}>Cancelar Descuento</button>
-            </div>
-          </div>
-        </div>
+        <AplicarDescuento 
+          showDiscountMenu={showDiscountMenu}
+          descuentoMenuValue={descuentoMenuValue}
+          handleDescuentoChange={handleDescuentoChange}
+          aplicarDescuento={aplicarDescuento}
+          cancelarDescuento={cancelarDescuento}
+        />
       );
     }
   };
@@ -596,56 +592,23 @@ const GenerarFactura = () => {
   const mostrarAgregarCliente = () => {
     if (showAgregarCliente) {
       return (
-        <div className="fondo_no">
-          <div className="editar" style={{ width: "413px" }}>
-            <div className="descuento-menu">
-              <input
-                type="text"
-                placeholder="Nombre"
-                id="nombre"
-                value={clienteNombre}
-                onChange={(e) => setClienteNombre(e.target.value)}
-              />
-              <input
-                type="text"
-                id="apellido"
-                placeholder="Apellido"
-                value={clienteApellido}
-                onChange={(e) => setClienteApellido(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Rut (11.111.111-1)"
-                value={clienteRut}
-                id="rut"
-                onChange={(e) => setClienteRut(e.target.value)}
-                onBlur={validarRutOnChange}
-              />
-              <p className='mensaje_rut'>{mensajeRut}</p>
-              <input
-                type="text"
-                placeholder="Email"
-                id="email"
-                value={clienteEmail}
-                onChange={(e) => setClienteEmail(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Ejemplo: +56 9 12345678"
-                pattern="[+]56 [0-9]{1} [0-9]{8}"
-                id="telefono"
-                value={clienteTelefono}
-                onChange={(e) => setClienteTelefono(e.target.value)}
-              />
-              <button onClick={agregarCliente} style={{ background: "#1DC258" }}>
-                Agregar Cliente
-              </button>
-              <button onClick={toggleAgregarCliente} style={{ background: "#E74C3C" }}>
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
+        <AgregarCliente
+          showAgregarCliente={showAgregarCliente}
+          clienteNombre={clienteNombre}
+          clienteApellido={clienteApellido}
+          clienteRut={clienteRut}
+          clienteEmail={clienteEmail}
+          clienteTelefono={clienteTelefono}
+          setClienteNombre={setClienteNombre}
+          setClienteApellido={setClienteApellido}
+          setClienteRut={setClienteRut}
+          setClienteEmail={setClienteEmail}
+          setClienteTelefono={setClienteTelefono}
+          agregarCliente={agregarCliente}
+          toggleAgregarCliente={toggleAgregarCliente}
+          mensajeRut={mensajeRut}
+          validarRutOnChange={validarRutOnChange}
+        />
       );
     }
   };
@@ -653,62 +616,14 @@ const GenerarFactura = () => {
   const mostrarListadoProductos = () => {
     if (showProductList) {
       return (
-        <div className="fondo_no">
-          <div className="editar" style={{ width: '1100px' }}>
-            <p className="p_editar">Productos Seleccionados</p>
-            <div style={{ maxHeight: '400px', overflowY: 'auto' }}> {/* Establece la altura máxima y agrega scroll si es necesario */}
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Código</th>
-                    <th scope="col">Nombre del Producto</th>
-                    <th scope="col">Costo</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productosSeleccionados.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.id}</td>
-                      <td>{item.nombreProducto}</td>
-                      <td>{item.costo}</td>
-                      <td>
-                        <input
-                          type="number"
-                          min="0"
-                          style={{ width: '80px' }}
-                          value={item.cantidad || 0}
-                          onChange={(e) => {
-                            const nuevaCantidad = parseInt(e.target.value, 10) || 0;
-                            actualizarCantidadManual(item.id, nuevaCantidad);
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <button onClick={() => quitarProducto(item.id)} style={{ backgroundColor: "red" }}>
-                          <FontAwesomeIcon icon="fa-solid fa-xmark" /> Quitar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <tfoot>
-              <tr>
-                <td colSpan="5">
-                  <button style={{ background: '#E74C3C', marginRight: '10px' }} onClick={() => setProductosSeleccionados([])}>
-                  <FontAwesomeIcon icon="fa-solid fa-trash" /> Vaciar Lista
-                  </button>
-                  <button style={{ background: '#1DC258' }} onClick={toggleProductList}>
-                  <FontAwesomeIcon icon="fa-solid fa-eye-slash" /> Ocultar listado de productos
-                  </button>
-                </td>
-              </tr>
-            </tfoot>
-          </div>
-        </div>
+        <ListadoProductos
+            showProductList={showProductList}
+            productosSeleccionados={productosSeleccionados}
+            actualizarCantidadManual={actualizarCantidadManual}
+            quitarProducto={quitarProducto}
+            setProductosSeleccionados={setProductosSeleccionados}
+            toggleProductList={toggleProductList}
+        />
       );
     }
   };
