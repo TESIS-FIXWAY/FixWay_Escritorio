@@ -1,20 +1,3 @@
-// Este componente GenerarFactura gestiona la interfaz y la lógica para generar facturas de productos. 
-// Permite al usuario seleccionar productos del inventario, ajustar cantidades, aplicar descuentos y elegir el tipo de pago.  
-// Utiliza Firebase Firestore para obtener y actualizar el inventario de productos y para almacenar las facturas generadas en la colección 'mifacturas'.  
-// También utiliza la librería jsPDF para generar archivos PDF de las facturas.  
-// Se integra con FontAwesome para mostrar iconos en la interfaz. 
-// Funciones y características principales: 
-// Selección de productos del inventario. 
-// Ajuste manual de cantidades y eliminación de productos seleccionados. 
-// Generación de facturas en formato PDF. 
-// Aplicación de descuentos en porcentaje. 
-// Elección del tipo de pago (contado o crédito). 
-// Visualización y ocultamiento de listas de productos y menú de descuentos. 
-// Actualización del inventario después de generar una factura. 
-// Búsqueda de productos en tiempo real. 
-// Visualización de información detallada en la interfaz. 
-// Uso de iconos FontAwesome para mejorar la experiencia del usuario. 
-
 import React, { useState, useEffect } from "react";
 import ClienteVista from "./clienteVista";
 import Admin from "../admin";
@@ -30,6 +13,7 @@ import {
   getDoc,
   onSnapshot,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -98,304 +82,259 @@ const GenerarFactura = () => {
         telefono: clienteTelefono,
       };
 
-      // Agregar el nuevo cliente a la colección "clientes"
       const clientesCollection = collection(db, "clientes");
       const nuevoClienteRef = await addDoc(clientesCollection, nuevoCliente);
 
-      // Actualizar la lista de clientes
       setClientes([...clientes, { id: nuevoClienteRef.id, ...nuevoCliente }]);
-
-      // Limpiar los campos del nuevo cliente
       setClienteNombre("");
       setClienteApellido("");
       setClienteRut("");
       setClienteEmail("");
       setClienteTelefono("");
-
-      // Ocultar la vista de clientes
       toggleClienteVista();
     } catch (error) {
       console.error("Error al agregar el nuevo cliente:", error);
     }
   };
 
-  const generarPDF = (productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado) => {
-    return (
-      <generarPDF 
-        productosSeleccionados={productosSeleccionados}
-        totalSinIVA={totalSinIVA}
-        iva={iva}
-        totalFinal={totalFinal}
-        descuentoAplicado={descuentoAplicado}
-      />
+  const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
+    const pdf = new jsPDF();
+    const imgData = "../../src/images/LogoSinFoindo.png";
+    const imgWidth = 40;
+    const imgHeight = 40;
+    const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
+    const imgY = -10;
+    pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
+  
+    pdf.setFontSize(24);
+    pdf.text("Factura Hans Motors", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+
+    // Línea separadora entre el título y el contenido
+    const lineSeparatorY = 20;
+    pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
+
+    const today = new Date();
+    const dateString = today.toLocaleDateString();
+    pdf.setFontSize(10);
+    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 40);
+
+  
+    pdf.setFontSize(10);
+    const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
+    const tipoPagoX = 165;
+    const tipoPagoY = imgY + imgHeight + 0 ; 
+    pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
+
+    pdf.setFontSize(10);
+    const invoiceNumberText = `N° Factura: ${invoiceNumber}`;
+    const invoiceNumberX = 165;
+    const invoiceNumberY = imgY + imgHeight + 5;
+    pdf.text(invoiceNumberText, invoiceNumberX, invoiceNumberY);
+
+
+    pdf.setFontSize(10);
+    const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
+    const userX = 8;
+    const userY = imgY + imgHeight + 0;
+    pdf.text(userText, userX, userY);
+
+    pdf.setFontSize(10);
+    const rutText = `Rut Vendedor: ${userData.rut}`;
+    const rutX = 8;
+    const rutY = imgY + imgHeight + 5;
+    pdf.text(rutText, rutX, rutY);
+    
+    pdf.setFontSize(10);
+    const emailText = `Email Vendedor: ${userData.email}`;
+    const emailX = 8;
+    const emailY =  imgY + imgHeight + 10;
+    pdf.text(emailText, emailX, emailY);
+
+    pdf.setFontSize(10);
+    const telefonoText = `Telefono Vendedor: ${userData.telefono}`;
+    const telefonoX = 8;
+    const telefonoY =imgY + imgHeight + 15;
+    pdf.text(telefonoText, telefonoX, telefonoY);
+
+    if (clienteSeleccionado) {
+      console.log("Selected client:", clienteSeleccionado);
+      pdf.setFontSize(10);
+  
+      const clienteText = `Nombre Cliente: ${clienteSeleccionado?.nombre || ''} ${clienteSeleccionado?.apellido || ''}`;
+      const clienteX = 78;
+      const clienteY = imgY + imgHeight + 0;
+      pdf.text(clienteText, clienteX, clienteY);
+    
+      const rutClienteText = `Rut Cliente: ${clienteSeleccionado.rut || ''}`;
+      const rutClienteX = 78;
+      const rutClienteY = imgY + imgHeight + 5;
+      pdf.text(rutClienteText, rutClienteX, rutClienteY);
+    
+      const emailClienteText = `Email Cliente: ${clienteSeleccionado.email || ''}`;
+      const emailClienteX = 78;
+      const emailClienteY = imgY + imgHeight + 10;
+      pdf.text(emailClienteText, emailClienteX, emailClienteY);
+    
+      const telefonoClienteText = `Telefono Cliente: ${clienteSeleccionado.telefono || ''}`;
+      const telefonoClienteX = 78;
+      const telefonoClienteY = imgY + imgHeight + 15;
+      pdf.text(telefonoClienteText, telefonoClienteX, telefonoClienteY);
+    } else {
+      pdf.setFontSize(10);
+      const errorText = "Error: Cliente no seleccionado";
+      pdf.text(errorText, 78, imgY + imgHeight);
+    }
+    // Encabezado
+    const lineY = tipoPagoY + 20;
+    pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
+
+    // Línea vertical entre el título y el contenido
+    const lineX = 5; 
+    pdf.line(lineX, lineSeparatorY, lineX, tipoPagoY + 20);
+
+    const lineX0 = 75; 
+    pdf.line(lineX0, lineSeparatorY, lineX0, tipoPagoY + 20);
+
+    const lineX1 = 163; 
+    pdf.line(lineX1, lineSeparatorY, lineX1, tipoPagoY + 20);
+
+    const lineX2 = 205; 
+    pdf.line(lineX2, lineSeparatorY, lineX2, tipoPagoY + 20);
+
+    //lista de productos 
+
+    const fontSize = 10;
+    pdf.setFontSize(fontSize);
+  
+
+    const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
+    const tableX = 10;
+    const tableY = lineY + 12;
+
+    // Ajusta la posición del eje x para cada título del encabezado
+    pdf.text(headers[0], tableX + 10, tableY);
+    pdf.text(headers[1], tableX + 41, tableY);
+    pdf.text(headers[2], tableX + 80, tableY);
+    pdf.text(headers[3], tableX + 140, tableY);
+    pdf.text(headers[4], tableX + 170, tableY);
+    pdf.text(headers[5], tableX + 250, tableY);
+
+
+    const tableLineY = tableY - 5;
+    pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
+
+
+    const tableLineY1 = tableY + 3;
+    pdf.line(5, tableLineY1, pdf.internal.pageSize.getWidth() - 5, tableLineY1);
+
+  
+    // headers.forEach((header, index) => {
+    //   pdf.text(header, tableX + index * 40, tableY);
+    // });
+  
+    const rowSpacing = 3;
+    const productosHeight = productosSeleccionados.reduce(
+      (total, producto) => total + pdf.getTextDimensions(producto.descripcion).h + rowSpacing,
+      0
     );
+  
+    // Líneas verticales en la tabla
+    const tableLineX1 = tableX + 40;
+    const tableLineX2 = tableX + 120;
+    const tableLineX3 = tableX + 160;
+    const tableLineX4 = pdf.internal.pageSize.getWidth() - 143;
+    const tableLineX5 = pdf.internal.pageSize.getWidth() - 205;
+    const tableLineX6 = pdf.internal.pageSize.getWidth() - 5;
+
+    pdf.line(tableLineX1, tableLineY, tableLineX1, tableY + productosHeight - 4);
+    pdf.line(tableLineX2, tableLineY, tableLineX2, tableY + productosHeight - 4);
+    pdf.line(tableLineX3, tableLineY, tableLineX3, tableY + productosHeight - 4);
+    pdf.line(tableLineX4, tableLineY, tableLineX4, tableY + productosHeight - 4);
+    pdf.line(tableLineX5, tableLineY, tableLineX5, tableY + productosHeight - 4);
+    pdf.line(tableLineX6, tableLineY, tableLineX6, tableY + productosHeight - 4);
+
+
+    // Inicializar variable para el neto
+    let neto = 0;
+  
+    let currentY = tableY + 10;
+    const hasEnoughSpace = () => currentY + 30 < pdf.internal.pageSize.getHeight();
+    productosSeleccionados.forEach((producto) => {
+      if (!hasEnoughSpace()) {
+        pdf.addPage();
+        currentY = 20; // Reset Y position on the new page
+      }
+      const { h } = pdf.getTextDimensions(producto.descripcion);
+      const lines = pdf.splitTextToSize(producto.descripcion, 50);
+  
+      lines.forEach((line, i) => {
+        pdf.text(line, tableX + 60, currentY);
+        currentY += h + rowSpacing;
+      });
+  
+      pdf.text(producto.nombreProducto, tableX, currentY - 10);
+      pdf.text(producto.cantidad.toString(), tableX + 45, currentY - 10);
+  
+      const costoNumerico = parseFloat(producto.costo.replace(/\./g, '').replace(',', '.'));
+  
+      pdf.text(costoNumerico.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 120, currentY - 10);
+  
+      const totalProducto = producto.cantidad * costoNumerico;
+      pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 160, currentY - 10);
+  
+      neto += totalProducto;
+  
+      currentY += h + rowSpacing;
+    });
+
+    // Dibujar línea horizontal encima del neto
+    pdf.line(5, currentY + 5, pdf.internal.pageSize.getWidth() - 130, currentY + 5);
+  
+    pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
+  
+    const iva = neto * 0.19;
+    pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
+  
+    // const totalFinal = neto + iva - descuentoAplicado;
+    const totalFinal = neto + iva; 
+    pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
+
+    const descuento = parseInt(descuentoMenuValue, 10);
+    // const descuento = (totalSinIVA * descuentoMenuValue) / 100;
+    // Calcula el descuento en el total final
+    const descuentoTotalFinal = (descuento / 100) * (totalFinal);
+    
+    // Actualiza el estado del descuento aplicado
+    setDescuentoAplicado(descuentoTotalFinal);
+
+    // Oculta el menú de descuentos después de aplicar el descuento
+    setShowDiscountMenu(false);
+    
+    pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
+    pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50);
+
+    const verticalLineX = pdf.internal.pageSize.getWidth() - 130;
+    pdf.line(verticalLineX, currentY + 5, verticalLineX, currentY + 56);
+
+    const secondVerticalLineX = pdf.internal.pageSize.getWidth() - 205; 
+    pdf.line(secondVerticalLineX, currentY + 5, secondVerticalLineX, currentY + 56);
+
+    pdf.line(5, currentY + 33, pdf.internal.pageSize.getWidth() - 130, currentY + 33);
+    pdf.line(5, currentY + 56, pdf.internal.pageSize.getWidth() - 130, currentY + 56);
+
+    pdf.save("factura.pdf");
+    setActualizacion((prevActualizacion) => prevActualizacion + 1);
   };
 
-  // const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
-  //   const pdf = new jsPDF();
-  
-  //   const imgData = "../../src/images/LogoSinFoindo.png";
-  //   const imgWidth = 40;
-  //   const imgHeight = 40;
-  //   const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
-  //   const imgY = -10;
-  //   pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
-  
-  //   pdf.setFontSize(24);
-  //   pdf.text("Factura Hans Motors", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
-
-  //   // Línea separadora entre el título y el contenido
-  //   const lineSeparatorY = 20;
-  //   pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
-
-  
-  //   const today = new Date();
-  //   const dateString = today.toLocaleDateString();
-  //   pdf.setFontSize(10);
-  //   pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 40);
-
-  
-  //   pdf.setFontSize(10);
-  //   const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
-  //   const tipoPagoX = 165;
-  //   const tipoPagoY = imgY + imgHeight + 0 ; 
-  //   pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
-
-  //   pdf.setFontSize(10);
-  //   const invoiceNumberText = `N° Factura: ${invoiceNumber}`;
-  //   const invoiceNumberX = 165;
-  //   const invoiceNumberY = imgY + imgHeight + 5;
-  //   pdf.text(invoiceNumberText, invoiceNumberX, invoiceNumberY);
-
-
-  //   pdf.setFontSize(10);
-  //   const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
-  //   const userX = 8;
-  //   const userY = imgY + imgHeight + 0;
-  //   pdf.text(userText, userX, userY);
-
-  //   pdf.setFontSize(10);
-  //   const rutText = `Rut Vendedor: ${userData.rut}`;
-  //   const rutX = 8;
-  //   const rutY = imgY + imgHeight + 5;
-  //   pdf.text(rutText, rutX, rutY);
-    
-  //   pdf.setFontSize(10);
-  //   const emailText = `Email Vendedor: ${userData.email}`;
-  //   const emailX = 8;
-  //   const emailY =  imgY + imgHeight + 10;
-  //   pdf.text(emailText, emailX, emailY);
-
-  //   pdf.setFontSize(10);
-  //   const telefonoText = `Telefono Vendedor: ${userData.telefono}`;
-  //   const telefonoX = 8;
-  //   const telefonoY =imgY + imgHeight + 15;
-  //   pdf.text(telefonoText, telefonoX, telefonoY);
-
-  //   if (clienteSeleccionado) {
-  //     console.log("Selected client:", clienteSeleccionado);
-  //     pdf.setFontSize(10);
-  
-  //     const clienteText = `Nombre Cliente: ${clienteSeleccionado?.nombre || ''} ${clienteSeleccionado?.apellido || ''}`;
-  //     const clienteX = 78;
-  //     const clienteY = imgY + imgHeight + 0;
-  //     pdf.text(clienteText, clienteX, clienteY);
-    
-  //     const rutClienteText = `Rut Cliente: ${clienteSeleccionado.rut || ''}`;
-  //     const rutClienteX = 78;
-  //     const rutClienteY = imgY + imgHeight + 5;
-  //     pdf.text(rutClienteText, rutClienteX, rutClienteY);
-    
-  //     const emailClienteText = `Email Cliente: ${clienteSeleccionado.email || ''}`;
-  //     const emailClienteX = 78;
-  //     const emailClienteY = imgY + imgHeight + 10;
-  //     pdf.text(emailClienteText, emailClienteX, emailClienteY);
-    
-  //     const telefonoClienteText = `Telefono Cliente: ${clienteSeleccionado.telefono || ''}`;
-  //     const telefonoClienteX = 78;
-  //     const telefonoClienteY = imgY + imgHeight + 15;
-  //     pdf.text(telefonoClienteText, telefonoClienteX, telefonoClienteY);
-  //   } else {
-  //     // If clienteSeleccionado is not defined or null, handle accordingly
-  //     pdf.setFontSize(10);
-  //     const errorText = "Error: Cliente no seleccionado";
-  //     pdf.text(errorText, 78, imgY + imgHeight);
-  //   }
-  //   // hasta  aqui agregue yo
-
-
-  //   // Encabezado
-  //   const lineY = tipoPagoY + 20;
-  //   pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
-
-  //   // Línea vertical entre el título y el contenido
-  //   const lineX = 5; 
-  //   pdf.line(lineX, lineSeparatorY, lineX, tipoPagoY + 20);
-
-  //   const lineX0 = 75; 
-  //   pdf.line(lineX0, lineSeparatorY, lineX0, tipoPagoY + 20);
-
-  //   const lineX1 = 163; 
-  //   pdf.line(lineX1, lineSeparatorY, lineX1, tipoPagoY + 20);
-
-  //   const lineX2 = 205; 
-  //   pdf.line(lineX2, lineSeparatorY, lineX2, tipoPagoY + 20);
-
-
-
-
-  //   //lista de productos 
-
-
-
-  //   const fontSize = 10;
-  //   pdf.setFontSize(fontSize);
-  
-
-  //   const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
-  //   const tableX = 10;
-  //   const tableY = lineY + 12;
-
-  //   // Ajusta la posición del eje x para cada título del encabezado
-  //   pdf.text(headers[0], tableX + 10, tableY);
-  //   pdf.text(headers[1], tableX + 41, tableY);
-  //   pdf.text(headers[2], tableX + 80, tableY);
-  //   pdf.text(headers[3], tableX + 140, tableY);
-  //   pdf.text(headers[4], tableX + 170, tableY);
-  //   pdf.text(headers[5], tableX + 250, tableY);
-
-
-  //   const tableLineY = tableY - 5;
-  //   pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
-
-
-  //   const tableLineY1 = tableY + 3;
-  //   pdf.line(5, tableLineY1, pdf.internal.pageSize.getWidth() - 5, tableLineY1);
-
-  
-  //   // headers.forEach((header, index) => {
-  //   //   pdf.text(header, tableX + index * 40, tableY);
-  //   // });
-  
-  //   const rowSpacing = 3;
-  //   const productosHeight = productosSeleccionados.reduce(
-  //     (total, producto) => total + pdf.getTextDimensions(producto.descripcion).h + rowSpacing,
-  //     0
-  //   );
-  
-  //   // Líneas verticales en la tabla
-  //   const tableLineX1 = tableX + 40;
-  //   const tableLineX2 = tableX + 120;
-  //   const tableLineX3 = tableX + 160;
-  //   const tableLineX4 = pdf.internal.pageSize.getWidth() - 143;
-  //   const tableLineX5 = pdf.internal.pageSize.getWidth() - 205;
-  //   const tableLineX6 = pdf.internal.pageSize.getWidth() - 5;
-
-  //   pdf.line(tableLineX1, tableLineY, tableLineX1, tableY + productosHeight - 4);
-  //   pdf.line(tableLineX2, tableLineY, tableLineX2, tableY + productosHeight - 4);
-  //   pdf.line(tableLineX3, tableLineY, tableLineX3, tableY + productosHeight - 4);
-  //   pdf.line(tableLineX4, tableLineY, tableLineX4, tableY + productosHeight - 4);
-  //   pdf.line(tableLineX5, tableLineY, tableLineX5, tableY + productosHeight - 4);
-  //   pdf.line(tableLineX6, tableLineY, tableLineX6, tableY + productosHeight - 4);
-
-
-  //   // Inicializar variable para el neto
-  //   let neto = 0;
-  
-  //   let currentY = tableY + 10;
-  //   const hasEnoughSpace = () => currentY + 30 < pdf.internal.pageSize.getHeight();
-  //   productosSeleccionados.forEach((producto) => {
-  //     if (!hasEnoughSpace()) {
-  //       pdf.addPage();
-  //       currentY = 20; // Reset Y position on the new page
-  //     }
-  //     const { h } = pdf.getTextDimensions(producto.descripcion);
-  //     const lines = pdf.splitTextToSize(producto.descripcion, 50);
-  
-  //     lines.forEach((line, i) => {
-  //       pdf.text(line, tableX + 60, currentY);
-  //       currentY += h + rowSpacing;
-  //     });
-  
-  //     pdf.text(producto.nombreProducto, tableX, currentY - 10);
-  //     pdf.text(producto.cantidad.toString(), tableX + 45, currentY - 10);
-  
-  //     const costoNumerico = parseFloat(producto.costo.replace(/\./g, '').replace(',', '.'));
-  
-  //     pdf.text(costoNumerico.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 120, currentY - 10);
-  
-  //     const totalProducto = producto.cantidad * costoNumerico;
-  //     pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 160, currentY - 10);
-  
-  //     neto += totalProducto;
-  
-  //     currentY += h + rowSpacing;
-  //   });
-
-  //   // Dibujar línea horizontal encima del neto
-  //   pdf.line(5, currentY + 5, pdf.internal.pageSize.getWidth() - 130, currentY + 5);
-
-  
-  //   pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
-  
-  //   const iva = neto * 0.19;
-  //   pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
-  
-  //   // const totalFinal = neto + iva - descuentoAplicado;
-  //   const totalFinal = neto + iva; 
-  //   pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
-
-  //   const descuento = parseInt(descuentoMenuValue, 10);
-  //   // const descuento = (totalSinIVA * descuentoMenuValue) / 100;
-
-  //   // Calcula el descuento en el total final
-  //   const descuentoTotalFinal = (descuento / 100) * (totalFinal);
-
-  //   // Actualiza el estado del descuento aplicado
-  //   setDescuentoAplicado(descuentoTotalFinal);
-
-  //   // Oculta el menú de descuentos después de aplicar el descuento
-  //   setShowDiscountMenu(false);
-    
-  //   pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
-  //   pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50);
-    
-
-
-  //   // Dibujar líneas verticales desde el neto hacia abajo
-  //   const verticalLineX = pdf.internal.pageSize.getWidth() - 130;
-  //   pdf.line(verticalLineX, currentY + 5, verticalLineX, currentY + 56);
-
-  //   // Dibujar otra línea vertical paralela
-  //   const secondVerticalLineX = pdf.internal.pageSize.getWidth() - 205; 
-  //   pdf.line(secondVerticalLineX, currentY + 5, secondVerticalLineX, currentY + 56);
-
-  //   // Dibujar línea horizontal después del total final
-  //   pdf.line(5, currentY + 33, pdf.internal.pageSize.getWidth() - 130, currentY + 33);
-  //   pdf.line(5, currentY + 56, pdf.internal.pageSize.getWidth() - 130, currentY + 56);
-    
-  //   // const lineY2 = tableY + tableHeight;
-  //   // pdf.line(5, lineY2, pdf.internal.pageSize.getWidth() - 5, lineY2);
-
-  //   pdf.save("factura.pdf");
-  //   setActualizacion((prevActualizacion) => prevActualizacion + 1);
-  // };
-
   function generateInvoiceNumber() {
-    // Generate two random letters
     const letters = String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
                     String.fromCharCode(65 + Math.floor(Math.random() * 26));
   
-    // Generate three random numbers
     const numbers = Math.floor(100 + Math.random() * 900);
-  
-    // Combine letters and numbers to create the invoice number
     const invoiceNumber = `${letters}${numbers}`;
-  
     return invoiceNumber;
   }
   
-  // Example usage:
   const invoiceNumber = generateInvoiceNumber();
 
   const toggleDiscountMenu = () => {
@@ -485,57 +424,45 @@ const GenerarFactura = () => {
     try {
       facturasCollection = collection(db, "mifacturas");
       const batch = writeBatch(db);
-  
-      // Procesar cada producto
+
       for (const producto of productosSeleccionados) {
         const productoRef = doc(db, "inventario", producto.id);
   
         if (typeof producto.cantidad === 'number') {
           const docSnapshot = await getDoc(productoRef);
           const existingQuantity = docSnapshot.data().cantidad;
-  
-          // Verificar si hay suficiente cantidad en inventario
+
           if (existingQuantity < producto.cantidad) {
             alert(`No hay suficiente stock para ${producto.nombre}.`);
             return;
           }
   
           const newQuantity = existingQuantity - producto.cantidad;
-  
-          // Actualizar la cantidad en el inventario
+
           batch.update(productoRef, { cantidad: newQuantity });
         } else {
           console.error("Invalid cantidad value:", producto.cantidad);
         }
       }
-  
-      // Generar el número de factura
+
       const invoiceNumber = generateInvoiceNumber();
-  
-      // Crear la nueva factura con el número generado
       nuevaFactura = {
         productos: productosSeleccionados.map((producto) => ({ ...producto })),
         tipoPago: tipoPago,
         invoiceNumber: invoiceNumber,
       };
   
-      // Agregar la nueva factura
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
-  
-      // Usar el ID de la factura como invoiceNumber
+
       const invoiceId = nuevaFacturaRef.id;
       nuevaFactura.invoiceNumber = invoiceId;
-  
-      // Actualizar la factura con el ID como invoiceNumber
+
       await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
-  
-      // Commit de la actualización del inventario
+
       await batch.commit();
-  
-      // Generar el PDF después de procesar todos los productos
+
       generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
   
-      // Limpiar los productos seleccionados y ocultar la lista
       setProductosSeleccionados([]);
       setDescuentoMenuValue('');
       setShowProductList(false);
@@ -555,27 +482,19 @@ const GenerarFactura = () => {
   const aplicarDescuento = () => {
     const descuento = parseInt(descuentoMenuValue, 10);
     console.log(`Descuento aplicado: ${descuento}%`);
-    // Puedes agregar lógica adicional aquí para aplicar el descuento a tu factura.
-    // Por ejemplo, podrías ajustar el cálculo del total final.
 
-    // Calcula el descuento en cantidad
     const descuentoCantidad = (descuento / 100) * totalSinIVA;
-  
-    // Calcula el descuento en el total final
+
     const descuentoTotalFinal = (descuento / 100) * (totalSinIVA + (totalSinIVA * 0.19));
 
-    // Actualiza el estado del descuento aplicado
     setDescuentoAplicado(descuentoTotalFinal);
 
-    // Oculta el menú de descuentos después de aplicar el descuento
     setShowDiscountMenu(false);
   };
   
   const cancelarDescuento = () => {
-    // Puedes agregar lógica adicional aquí si es necesario
-    // En este ejemplo, simplemente se oculta el menú de descuentos y restablece el valor a 0
     setShowDiscountMenu(false);
-    setDescuentoMenuValue(0); // Restablecer el valor a 0
+    setDescuentoMenuValue(0); 
   };
   
   const mostrarDescuentoMenu = () => {
@@ -600,7 +519,6 @@ const GenerarFactura = () => {
   };
 
   useEffect(() => {
-
     const obtenerClientes = async () => {
       try {
         const clientesSnapshot = await getDocs(collection(db, "clientes"));
@@ -623,12 +541,24 @@ const GenerarFactura = () => {
     setClienteSeleccionado(cliente);
     toggleClienteVista();
   };
+
+  const eliminarCliente = async (clienteId) => {
+    try {
+      const clienteDocRef = doc(db, "clientes", clienteId);
+      
+      await deleteDoc(clienteDocRef);
+
+      setClientes(clientes.filter(cliente => cliente.id !== clienteId));
+      console.log("Cliente eliminado correctamente");
+    } catch (error) {
+      console.error("Error al eliminar el cliente:", error);
+    }
+  };
   
   const mostrarListadoClientes = () => {
     if (showClienteVista) {
       return (
         <>
-          {/* Mostrar la vista del cliente si showClienteVista es verdadero */}
           {showClienteVista && (
             <ClienteVista
               clientes={clientes}
@@ -639,15 +569,14 @@ const GenerarFactura = () => {
               setClienteEmail={setClienteEmail}
               setClienteTelefono={setClienteTelefono}
               toggleClienteVista={toggleClienteVista}
-              seleccionarCliente={seleccionarCliente} // Make sure this is included
-            />
+              seleccionarCliente={seleccionarCliente}
+              eliminarCliente={eliminarCliente} 
+           />
           )}
         </>
       );
     }
   };
-
-  
 
   const toggleAgregarCliente = () => {
     setShowAgregarCliente(!showAgregarCliente);
@@ -714,7 +643,6 @@ const GenerarFactura = () => {
               <button onClick={toggleAgregarCliente} style={{ background: "#E74C3C" }}>
                 Cancelar
               </button>
-        
             </div>
           </div>
         </div>

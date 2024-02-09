@@ -9,10 +9,10 @@ const ClienteVista = ({
   setClienteEmail,
   setClienteTelefono,
   toggleClienteVista,
-  seleccionarCliente
+  seleccionarCliente,
+  eliminarCliente 
 }) => {
   const agregarCliente = () => {
-    // Lógica para agregar un cliente
     const nuevoCliente = {
       nombre: setClienteNombre,
       apellido: setClienteApellido,
@@ -21,23 +21,23 @@ const ClienteVista = ({
       telefono: setClienteTelefono
     };
 
-    // Asegúrate de validar los datos antes de agregar el cliente
     if (nuevoCliente.nombre && nuevoCliente.apellido && nuevoCliente.rut) {
-      // Actualizar el estado de clientes
       setClientes([...clientes, nuevoCliente]);
 
-      // Limpiar los campos después de agregar el cliente
       setClienteNombre("");
       setClienteApellido("");
       setClienteRut("");
       setClienteEmail("");
       setClienteTelefono("");
 
-      // Cerrar la vista del cliente
       toggleClienteVista();
     } else {
       alert("Por favor, complete al menos nombre, apellido y rut del cliente.");
     }
+  }; 
+
+  const handleEliminarCliente = (clienteId) => {
+    eliminarCliente(clienteId); 
   };
 
   return (
@@ -66,6 +66,7 @@ const ClienteVista = ({
                   <td>{item.telefono}</td>
                   <td>
                     <button onClick={() => seleccionarCliente(item)}>Seleccionar</button>
+                    <button onClick={() => handleEliminarCliente(item.id)}>Eliminar</button> 
                   </td>
                 </tr>
               ))}

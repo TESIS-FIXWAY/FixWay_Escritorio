@@ -2,16 +2,13 @@ import jsPDF from "jspdf";
 
 const GenerarPDF = ({
   productosSeleccionados,
-  totalSinIVA,
-  descuentoAplicado,
-  clienteSeleccionado,
   tipoPago,
-  invoiceNumber,
   userData,
+  clienteSeleccionado,
+  invoiceNumber,
   descuentoMenuValue,
   setDescuentoAplicado,
-  setShowDiscountMenu,
-  setActualizacion
+  setShowDiscountMenu
 }) => {
 
   const pdf = new jsPDF();
