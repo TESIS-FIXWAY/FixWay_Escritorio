@@ -11,7 +11,8 @@ const ClienteVista = ({
   setClienteTelefono,
   toggleClienteVista,
   seleccionarCliente,
-  eliminarCliente 
+  eliminarCliente,
+  filtrarCliente
 }) => {
   const agregarCliente = () => {
     const nuevoCliente = {
@@ -45,6 +46,11 @@ const ClienteVista = ({
     <div className="fondo_no">
       <div className="editar" style={{ width: '1100px' }}>
         <p className="p_editar">Lista Clientes</p>
+        <input
+          type="text"
+          placeholder="Buscar cliente..."
+          onChange={filtrarCliente}
+        />
         <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <table className="table table-striped">
             <thead>

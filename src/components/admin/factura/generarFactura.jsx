@@ -17,16 +17,8 @@ import {
 } from "firebase/firestore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faEyeSlash,
-  faFilePdf,
-  faList,
- } from '@fortawesome/free-solid-svg-icons';
-library.add(
-  faFilePdf,
-  faList,
-  faEyeSlash
-);
+import { faEyeSlash, faFilePdf, faList } from '@fortawesome/free-solid-svg-icons';
+library.add( faFilePdf, faList, faEyeSlash );
 import AgregarCliente from "./agregarCliente";
 import ListadoProductos from "./listadoProductos";
 import AplicarDescuento from "./aplicarDescuento";
@@ -58,6 +50,7 @@ const GenerarFactura = () => {
   const [id, setId] = useState("");
   const [mensajeRut, setMensajeRut] = useState("");
   const [actualizacion, setActualizacion] = useState(0)
+  const [refresh, setRefresh] = useState(false);
     
   useEffect(() => {
     const identifyUser = auth.currentUser;
@@ -121,7 +114,6 @@ const GenerarFactura = () => {
     pdf.setFontSize(10);
     pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 40);
 
-  
     pdf.setFontSize(10);
     const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
     const tipoPagoX = 165;
@@ -133,7 +125,6 @@ const GenerarFactura = () => {
     const invoiceNumberX = 165;
     const invoiceNumberY = imgY + imgHeight + 5;
     pdf.text(invoiceNumberText, invoiceNumberX, invoiceNumberY);
-
 
     pdf.setFontSize(10);
     const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
@@ -209,7 +200,6 @@ const GenerarFactura = () => {
     const fontSize = 10;
     pdf.setFontSize(fontSize);
   
-
     const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
     const tableX = 10;
     const tableY = lineY + 12;
@@ -225,7 +215,6 @@ const GenerarFactura = () => {
 
     const tableLineY = tableY - 5;
     pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
-
 
     const tableLineY1 = tableY + 3;
     pdf.line(5, tableLineY1, pdf.internal.pageSize.getWidth() - 5, tableLineY1);
@@ -255,7 +244,6 @@ const GenerarFactura = () => {
     pdf.line(tableLineX4, tableLineY, tableLineX4, tableY + productosHeight - 4);
     pdf.line(tableLineX5, tableLineY, tableLineX5, tableY + productosHeight - 4);
     pdf.line(tableLineX6, tableLineY, tableLineX6, tableY + productosHeight - 4);
-
 
     // Inicializar variable para el neto
     let neto = 0;
@@ -485,9 +473,7 @@ const GenerarFactura = () => {
   const aplicarDescuento = () => {
     const descuento = parseInt(descuentoMenuValue, 10);
     console.log(`Descuento aplicado: ${descuento}%`);
-
     const descuentoCantidad = (descuento / 100) * totalSinIVA;
-
     const descuentoTotalFinal = (descuento / 100) * (totalSinIVA + (totalSinIVA * 0.19));
 
     setDescuentoAplicado(descuentoTotalFinal);
@@ -526,7 +512,7 @@ const GenerarFactura = () => {
     };
 
     obtenerClientes();
-  }, []);
+  }, [refresh]);
 
   const toggleClienteVista = () => {
     setShowClienteVista(!showClienteVista);
@@ -550,6 +536,24 @@ const GenerarFactura = () => {
       console.error("Error al eliminar el cliente:", error);
     }
   };
+
+  const filtrarCliente = (e) => {
+    const texto = e.target.value.toLowerCase();
+    const filtro = clientes.filter((clientes) => {
+      return (
+        clientes.nombre.toLowerCase().includes(texto) ||
+        clientes.apellido.toLowerCase().includes(texto) ||
+        clientes.rut.toLowerCase().includes(texto) ||
+        clientes.email.toLowerCase().includes(texto) ||
+        clientes.telefono.toLowerCase().includes(texto)
+      );
+    });
+    setClientes(filtro);
+
+    if(texto === '') {
+      setRefresh((prevRefresh) => !prevRefresh);
+    }
+  };
   
   const mostrarListadoClientes = () => {
     if (showClienteVista) {
@@ -567,6 +571,7 @@ const GenerarFactura = () => {
               toggleClienteVista={toggleClienteVista}
               seleccionarCliente={seleccionarCliente}
               eliminarCliente={eliminarCliente} 
+              filtrarCliente={filtrarCliente}
            />
           )}
         </>

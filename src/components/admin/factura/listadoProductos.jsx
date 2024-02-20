@@ -11,7 +11,7 @@ export default function ListadoProductos ({ showProductList, productosSelecciona
                             <thead>
                                 <tr>
                                     <th scope="col">Código</th>
-                                    <th scope="col">Nombre del Producto</th>
+                                    <th scope="col">Nombre del <br /> Producto</th>
                                     <th scope="col">Costo</th>
                                     <th scope="col">Cantidad</th>
                                     <th scope="col">Acciones</th>
