@@ -1,4 +1,5 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ClienteVista = ({
   clientes,
@@ -43,7 +44,7 @@ const ClienteVista = ({
   return (
     <div className="fondo_no">
       <div className="editar" style={{ width: '1100px' }}>
-        <p className="p_editar">Clientes</p>
+        <p className="p_editar">Lista Clientes</p>
         <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <table className="table table-striped">
             <thead>
@@ -65,8 +66,8 @@ const ClienteVista = ({
                   <td>{item.email}</td>
                   <td>{item.telefono}</td>
                   <td>
-                    <button onClick={() => seleccionarCliente(item)}>Seleccionar</button>
-                    <button onClick={() => handleEliminarCliente(item.id)}>Eliminar</button> 
+                    <button onClick={() => seleccionarCliente(item)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
+                    <button onClick={() => handleEliminarCliente(item.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button> 
                   </td>
                 </tr>
               ))}
