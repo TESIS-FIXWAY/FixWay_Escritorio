@@ -13,8 +13,8 @@ export default function AplicarDescuento ({ showDiscountMenu, descuentoMenuValue
                           value={descuentoMenuValue}
                           onChange={handleDescuentoChange}
                       />
-                      <button onClick={aplicarDescuento} style={{ background: "#1DC258" }}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
-                      <button onClick={cancelarDescuento} style={{ background: "#E74C3C" }}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
+                      <button onClick={aplicarDescuento} style={{ background: "#1DC258" }}>Aplicar <FontAwesomeIcon icon="fa-solid fa-check" /></button>
+                      <button onClick={cancelarDescuento} style={{ background: "#E74C3C" }}>Cancelar <FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
                   </div>
               </div>
           </div>
