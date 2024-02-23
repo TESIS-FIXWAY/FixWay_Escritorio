@@ -3,7 +3,7 @@ import ClienteVista from "./clienteVista";
 import Admin from "../admin";
 import jsPDF from "jspdf";
 import validadorRUT from "../validadorRUT";
-import { db, auth } from "../../../firebase";
+import { db, auth, storage } from "../../../firebase";
 import {
   collection,
   addDoc,
@@ -15,6 +15,7 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { ref, uploadString } from "firebase/storage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEyeSlash, faFilePdf, faList } from '@fortawesome/free-solid-svg-icons';
@@ -90,6 +91,66 @@ const GenerarFactura = () => {
       toggleClienteVista();
     } catch (error) {
       console.error("Error al agregar el nuevo cliente:", error);
+    }
+  };
+
+  const generarFactura = async () => {
+    if (productosSeleccionados.length === 0) {
+      alert("No hay productos seleccionados para generar la factura.");
+      return;
+    }
+  
+    let facturasCollection;
+    let nuevaFactura;
+  
+    try {
+      facturasCollection = collection(db, "mifacturas");
+      const batch = writeBatch(db);
+
+      for (const producto of productosSeleccionados) {
+        const productoRef = doc(db, "inventario", producto.id);
+  
+        if (typeof producto.cantidad === 'number') {
+          const docSnapshot = await getDoc(productoRef);
+          const existingQuantity = docSnapshot.data().cantidad;
+
+          if (existingQuantity < producto.cantidad) {
+            alert(`No hay suficiente stock para ${producto.nombre}.`);
+            return;
+          }
+  
+          const newQuantity = existingQuantity - producto.cantidad;
+
+          batch.update(productoRef, { cantidad: newQuantity });
+        } else {
+          console.error("Invalid cantidad value:", producto.cantidad);
+        }
+      }
+
+      const invoiceNumber = generateInvoiceNumber();
+      nuevaFactura = {
+        productos: productosSeleccionados.map((producto) => ({ ...producto })),
+        tipoPago: tipoPago,
+        invoiceNumber: invoiceNumber,
+      };
+  
+      const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
+
+      const invoiceId = nuevaFacturaRef.id;
+      nuevaFactura.invoiceNumber = invoiceId;
+
+      await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
+
+      await batch.commit();
+
+      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
+  
+      setProductosSeleccionados([]);
+      setDescuentoMenuValue('');
+      setShowProductList(false);
+      setActualizacion((prevActualizacion) => prevActualizacion + 1);
+    } catch (error) {
+      console.error("Error al generar la factura:", error);
     }
   };
 
@@ -212,18 +273,12 @@ const GenerarFactura = () => {
     pdf.text(headers[4], tableX + 170, tableY);
     pdf.text(headers[5], tableX + 250, tableY);
 
-
     const tableLineY = tableY - 5;
     pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
 
     const tableLineY1 = tableY + 3;
     pdf.line(5, tableLineY1, pdf.internal.pageSize.getWidth() - 5, tableLineY1);
 
-  
-    // headers.forEach((header, index) => {
-    //   pdf.text(header, tableX + index * 40, tableY);
-    // });
-  
     const rowSpacing = 3;
     const productosHeight = productosSeleccionados.reduce(
       (total, producto) => total + pdf.getTextDimensions(producto.descripcion).h + rowSpacing,
@@ -313,7 +368,7 @@ const GenerarFactura = () => {
     pdf.line(5, currentY + 33, pdf.internal.pageSize.getWidth() - 130, currentY + 33);
     pdf.line(5, currentY + 56, pdf.internal.pageSize.getWidth() - 130, currentY + 56);
 
-    pdf.save("factura.pdf");
+    pdf.save(`factura_${invoiceNumber}.pdf`);
     setActualizacion((prevActualizacion) => prevActualizacion + 1);
   };
 
@@ -403,66 +458,6 @@ const GenerarFactura = () => {
     }
   };
   
-  const generarFactura = async () => {
-    if (productosSeleccionados.length === 0) {
-      alert("No hay productos seleccionados para generar la factura.");
-      return;
-    }
-  
-    let facturasCollection;
-    let nuevaFactura;
-  
-    try {
-      facturasCollection = collection(db, "mifacturas");
-      const batch = writeBatch(db);
-
-      for (const producto of productosSeleccionados) {
-        const productoRef = doc(db, "inventario", producto.id);
-  
-        if (typeof producto.cantidad === 'number') {
-          const docSnapshot = await getDoc(productoRef);
-          const existingQuantity = docSnapshot.data().cantidad;
-
-          if (existingQuantity < producto.cantidad) {
-            alert(`No hay suficiente stock para ${producto.nombre}.`);
-            return;
-          }
-  
-          const newQuantity = existingQuantity - producto.cantidad;
-
-          batch.update(productoRef, { cantidad: newQuantity });
-        } else {
-          console.error("Invalid cantidad value:", producto.cantidad);
-        }
-      }
-
-      const invoiceNumber = generateInvoiceNumber();
-      nuevaFactura = {
-        productos: productosSeleccionados.map((producto) => ({ ...producto })),
-        tipoPago: tipoPago,
-        invoiceNumber: invoiceNumber,
-      };
-  
-      const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
-
-      const invoiceId = nuevaFacturaRef.id;
-      nuevaFactura.invoiceNumber = invoiceId;
-
-      await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
-
-      await batch.commit();
-
-      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
-  
-      setProductosSeleccionados([]);
-      setDescuentoMenuValue('');
-      setShowProductList(false);
-      setActualizacion((prevActualizacion) => prevActualizacion + 1);
-    } catch (error) {
-      console.error("Error al generar la factura:", error);
-    }
-  };
-
   const handleDescuentoChange = (e) => {
     const { value } = e.target;
     if (/^[1-9][0-9]?$|^100$/.test(value) || value === '') {
@@ -531,7 +526,6 @@ const GenerarFactura = () => {
       await deleteDoc(clienteDocRef);
 
       setClientes(clientes.filter(cliente => cliente.id !== clienteId));
-      console.log("Cliente eliminado correctamente");
     } catch (error) {
       console.error("Error al eliminar el cliente:", error);
     }
@@ -685,7 +679,6 @@ const GenerarFactura = () => {
 
           <input style={{height:"45px", marginTop:"10px"}}type="text" placeholder="Buscar producto" onChange={buscadorProducto} /> 
         </div>
-
         <div className='table_section'> 
           <table>
             <thead>
