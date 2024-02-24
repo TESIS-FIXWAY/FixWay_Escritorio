@@ -1,12 +1,3 @@
-// Componente App:
-// Este componente React sirve como el componente principal de la aplicación.
-// Configura las rutas y organiza la estructura general de la aplicación.
-// Funciones y Características Principales:
-// - Utiliza React Router para gestionar las rutas y la navegación en la aplicación.
-// - Utiliza un componente `LoadingScreen` para mostrar una pantalla de carga mientras se carga la aplicación.
-// - Envuelve las rutas relacionadas con el administrador y el mecánico en el componente `ProtectedRoute` para asegurar que solo los usuarios autenticados tengan acceso.
-// - Configura las rutas para diferentes componentes, incluyendo páginas de inicio de sesión, vistas de administrador y mecánico, y una página de error 404.
-
 import React, { useState } from "react";
 //componets (vistas)
 import Login from './components/login';
@@ -23,6 +14,7 @@ import ListarInventario from "./components/admin/listarInventario";
 import GenerarFactura from "./components/admin/factura/generarFactura";
 import GestionMantencionesAdmin from "./components/admin/gestionMantencionAdmin";
 import ClienteVista from "./components/admin/factura/clienteVista";
+import ListadoMisFacturas from "./components/admin/listadoMisFacturas";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -74,6 +66,7 @@ function App() {
             <Route path='/generarFactura' element={<GenerarFactura />} />
             <Route path='/gestionMantencionesAdmin' element={<GestionMantencionesAdmin />} />
             <Route path='/clienteVista' element={<ClienteVista />} />
+            <Route path='/listadoMisFacturas' element={<ListadoMisFacturas />} />
             <Route
               path='/mecanico'
               element={
