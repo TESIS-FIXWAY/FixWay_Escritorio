@@ -154,7 +154,7 @@ const GenerarFactura = () => {
     }
   };
 
-  const generarPDF = (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
+  const generarPDF = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
     const imgData = "../../src/images/LogoSinFoindo.png";
     const imgWidth = 40;
@@ -370,6 +370,17 @@ const GenerarFactura = () => {
 
     pdf.save(`factura_${invoiceNumber}.pdf`);
     setActualizacion((prevActualizacion) => prevActualizacion + 1);
+
+    // Convertir el PDF a una cadena base64
+    const pdfBase64 = pdf.output('datauristring');
+    const storageRef = ref(storage, 'misFacturas/' + invoiceNumber + '.pdf');
+
+    try {
+        await uploadString(storageRef, pdfBase64, 'data_url');
+        console.log('PDF guardado en el Storage de Firebase');
+    } catch (error) {
+        console.error('Error al guardar el PDF en el Storage:', error);
+    }
   };
 
   function generateInvoiceNumber() {
