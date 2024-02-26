@@ -1,17 +1,7 @@
-// Componente ListarUsuario:  
-// Este componente React se encarga de gestionar la visualización, edición y eliminación de usuarios. 
-// Utiliza Firebase Firestore para la base de datos, React Router para la navegación y FontAwesome para iconos. 
-// Funciones y Características Principales: 
-// Muestra un listado de usuarios. 
-// Permite editar roles, nombres, apellidos, teléfonos, direcciones, salarios, fechas de ingreso y contraseñas. 
-// Ofrece la opción de eliminar usuarios. 
-// Permite buscar usuarios por texto de búsqueda. 
-// Navegación para agregar nuevos usuarios. 
-
-import '../styles/listarUsuario.css'
+import '../../styles/listarUsuario.css'
 import React, { useState } from "react";
-import Admin from "./admin";
-import { db } from "../../firebase";
+import Admin from "../admin";
+import { db } from "../../../firebase";
 import { 
   collection, 
   onSnapshot, 
@@ -19,8 +9,10 @@ import {
   doc, 
   updateDoc 
 } from "firebase/firestore";
+import { getAuth, updatePassword } from 'firebase/auth';
 import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import EditarUsuarioModal from './editarUsuarioModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -44,6 +36,8 @@ const ListarUsuario = () => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
@@ -51,24 +45,13 @@ const ListarUsuario = () => {
     return parseInt(value, 10).toLocaleString('es-CL');
   };
 
-  const EditarUsuarioModal = ({ user, onSave, onCancel, onInputChange }) => {
-    return (
-      <div className="editar-modal">
-        <p>Editar usuario</p>
-        <label htmlFor="">Rol</label>
-        <input
-          type="text"
-          value={user.rol}
-          onChange={(e) => onInputChange('rol', e.target.value)}
-        />
-        <button onClick={onSave}>
-          <FontAwesomeIcon icon="fa-solid fa-check" />
-        </button>
-        <button onClick={onCancel}>
-          <FontAwesomeIcon icon="fa-solid fa-xmark" />
-        </button>
-      </div>
-    );
+  const editarUsuarioModal = ({ user, onSave, onCancel, onInputChange }) => {
+    <EditarUsuarioModal 
+      user={user}
+      onSave={onSave}
+      onCancel={onCancel}
+      onInputChange={onInputChange}
+    />
   };
 
   React.useEffect(() => {
@@ -134,6 +117,24 @@ const ListarUsuario = () => {
     setUsers(updatedUsers);
   };
 
+  const updatePasswordHandler = async () => {
+    if (!newPassword) {
+      setError('La nueva contraseña no puede estar vacía.');
+      return;
+    }
+
+    const auth = getAuth();
+    try {
+      await updatePassword(auth.currentUser, newPassword);
+      console.log('Contraseña actualizada correctamente.');
+      setNewPassword('');
+      setError(null);
+    } catch (error) {
+      console.error('Error al actualizar la contraseña:', error);
+      setError('Error al actualizar la contraseña. Por favor, inténtalo de nuevo.');
+    }
+  };
+
   const filtrarUsuario = (e) => {
     const texto = e.target.value.toLowerCase();
     const filtro = users.filter((user) => {
@@ -172,7 +173,6 @@ const ListarUsuario = () => {
               <button className='boton-ingreso' onClick={agregarUsuario}> <FontAwesomeIcon icon="fa-solid fa-user-plus" /> ingresar nuevo usuario</button>
             </div>
           </div>
-          
           <div className='table_section'> 
             <table>
               <thead>
@@ -182,7 +182,7 @@ const ListarUsuario = () => {
                   <th scope="col">Apellido</th>
                   <th scope="col">Dirección</th>
                   <th scope="col">Teléfono</th>
-                  <th scope="col">Correo <br /> Electrónico</th> {/* Nueva columna para el correo electrónico */}
+                  <th scope="col">Correo <br /> Electrónico</th> 
                   <th scope="col">Cargo <br /> de trabajo</th>
                   <th scope="col">Sueldo</th>
                   <th scope="col">Fecha <br /> de Ingreso</th>
@@ -197,7 +197,7 @@ const ListarUsuario = () => {
                     <td>{user.apellido}</td>
                     <td>{user.direccion}</td>
                     <td>{user.telefono}</td>
-                    <td>{user.email}</td> {/* Asegúrate de que "email" sea el campo correcto */}
+                    <td>{user.email}</td> 
                     <td>{user.rol}</td>
                     <td>{formatSalario(user.salario)}</td>
                     <td>{user.fechaIngreso}</td>
@@ -263,8 +263,7 @@ const ListarUsuario = () => {
                                 <input
                                 type="text"
                                 value={user.password}
-                                onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}/>
-                              </p>
+                                onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}/>                              </p>
                               <button className='guardar' onClick={() => saveEdit(user.id, user)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
                               <button className='cancelar' onClick={() => cancelEditing()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
                             </div>
