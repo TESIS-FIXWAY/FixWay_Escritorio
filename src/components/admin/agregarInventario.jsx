@@ -1,22 +1,10 @@
-// Este componente AgregarInventario gestiona la interfaz y la lógica para agregar productos al inventario de la aplicación. 
-// Permite al usuario ingresar detalles como el código del producto, nombre, descripción, cantidad, costo, categoría y marca. 
-// Utiliza Firebase Firestore para almacenar los detalles del producto en la colección 'inventario'. 
-// También renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
-// Funciones y características principales: 
-// Captura de datos del formulario para agregar productos al inventario. 
-// Formateo de la cantidad ingresada para mostrarla de manera legible. 
-// Almacenamiento de los detalles del producto en Firebase Firestore. 
-// Uso del componente Admin para estructurar la página de administración. 
-// Validación y envío de datos del formulario para agregar productos al inventario. 
-// Selección de categoría mediante un menú desplegable. 
-
-import React, { useState } from "react";  // Añade { useState } aquí
+import React, { useState } from "react";  
 import Admin from "./admin";
 import { db } from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
 
 const AgregarInventario = () => {
-  const [cantidadFormateada, setCantidadFormateada] = useState(""); // Nuevo estado para la cantidad formateada
+  const [cantidadFormateada, setCantidadFormateada] = useState(""); 
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -24,7 +12,7 @@ const AgregarInventario = () => {
     const nombreProducto = e.target.nombreProducto.value;
     const descripcion = e.target.descripcion.value;
     const cantidad = e.target.cantidad.value.replace(/[^0-9]/g, "");
-    const costo = Number(e.target.costo.value).toLocaleString("es-CL"); // Formatear el costo con separadores de miles
+    const costo = Number(e.target.costo.value).toLocaleString("es-CL"); 
     const categoria = e.target.categoria.value;
     const marca = e.target.marca.value;
     const id = codigoProducto;
@@ -34,7 +22,7 @@ const AgregarInventario = () => {
       nombreProducto,
       descripcion,
       cantidad,
-      costo, // Utiliza el costo formateado con separadores de miles
+      costo, 
       categoria,
       marca,
       id,
@@ -48,7 +36,6 @@ const AgregarInventario = () => {
     const cantidadFormateada = cantidad.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     setCantidadFormateada(cantidadFormateada);
   };
-
 
   return (
     <>
@@ -104,7 +91,7 @@ const AgregarInventario = () => {
                       name="cantidad"
                       placeholder="Cantidad"
                       value={cantidadFormateada}
-                      onChange={handleCantidadChange} // Utiliza onChange para formatear en tiempo real
+                      onChange={handleCantidadChange} 
                     />
                   </p>
                   <p>
@@ -114,7 +101,7 @@ const AgregarInventario = () => {
                       className="input_formulario"
                       id="costo"
                       required
-                      type="text" // Cambia el tipo a text para evitar caracteres no numéricos
+                      type="text" 
                       name="costo"
                       placeholder="ejemplo: 10000"
                     />

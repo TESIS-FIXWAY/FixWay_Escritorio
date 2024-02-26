@@ -1,16 +1,6 @@
-// Este componente ListadoFacturas maneja la visualización y gestión del listado de facturas de proveedores. 
-// Proporciona funciones para editar, eliminar y buscar facturas, así como para descargar archivos PDF asociados. 
-// Utiliza FontAwesome para los iconos y React Router para la navegación entre diferentes secciones. 
-// Funciones y características principales: 
-// Listado de facturas de proveedores con información detallada. 
-// Funcionalidad para buscar facturas por proveedor, fecha o detalle. 
-// Botón para agregar una nueva factura con navegación a la página correspondiente. 
-// Edición y eliminación de facturas con confirmación a través de modales. 
-// Descarga de archivos PDF asociados a las facturas. 
-
 import React, { useState } from "react";
-import Admin from "./admin";
-import { db, storage } from "../../firebase";
+import Admin from "../admin";
+import { db, storage } from "../../../firebase";
 import { 
   collection, 
   onSnapshot, 
@@ -22,6 +12,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import EditarUsuarioModalFactura from "./editarUsuarioModalFactura";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
   faFilePen, 
@@ -51,36 +42,15 @@ const ListadoFacturas = () => {
   const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
-  const EditarUsuarioModalFactura = ({ factura, onSave, onCancel, onInputChange }) => {
+  const editarUsuarioModalFactura = ({ factura, onSave, onCancel, onInputChange }) => {
     return (
-      <div className="editar-modal">
-        <p>Editar factura</p>
-        <label htmlFor="">Proveedor</label>
-        <input
-          type="text"
-          value={factura.proveedor}
-          onChange={(e) => onInputChange('proveedor', e.target.value)}
-        />
-        <label htmlFor="">Fecha</label>
-        <input 
-          type="date"
-          value={factura.fecha}
-          onChange={(e) => onInputChange('fecha', e.target.value)}
-        />
-        <label htmlFor="">Detalle</label>
-        <input
-          type="text"
-          value={factura.detalle}
-          onChange={(e) => onInputChange('detalle', e.target.value)}
-        />
-        <button onClick={onSave}>
-          <FontAwesomeIcon icon="fa-solid fa-check" />
-        </button>
-        <button onClick={onCancel}>
-          <FontAwesomeIcon icon="fa-solid fa-xmark" />
-        </button>
-      </div>
-    );
+      <EditarUsuarioModalFactura 
+        factura={factura}
+        onSave={onSave}
+        onCancel={onCancel}
+        onInputChange={onInputChange}
+      />
+    ) 
   }
 
   React.useEffect(() => {

@@ -1,14 +1,3 @@
-// Este componente IndexAdmin gestiona la interfaz de usuario para la sección de administrador. 
-// Proporciona acceso rápido a diversas funcionalidades, como agregar y listar usuarios, gestionar mantenciones, agregar y listar facturas de proveedores, agregar y listar inventario, y generar facturas de vendedores.  
-// Utiliza FontAwesome para los iconos y React Router para la navegación. 
-// Además, incluye un calendario que permite seleccionar fechas y muestra eventos relacionados. 
-// Funciones y características principales: 
-// Navegación rápida a través de iconos a diferentes secciones de la aplicación. 
-// Utilización de FontAwesome para la visualización de iconos. 
-// Calendario interactivo para la selección de fechas. 
-// Integración con React Router para la navegación. 
-// Acceso a funciones como agregar y listar usuarios, gestionar mantenciones, entre otras. 
-
 import '../styles/indexAdmin.css';
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';

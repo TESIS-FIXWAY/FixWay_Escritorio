@@ -1,18 +1,3 @@
-// Este componente Admin es parte de la interfaz de usuario para la página de administrador. 
-// Proporciona un encabezado con logotipo, reloj en tiempo real, menú de navegación y opción para cerrar sesión. 
-// También incluye un menú lateral desplegable con enlaces a diversas secciones de gestión, como usuarios, mantenimientos, facturas, inventario y generación de facturas.  
-// El componente utiliza FontAwesome para agregar iconos a los enlaces y botones. 
-// Se encarga de la navegación entre las diferentes secciones y del cierre de sesión del usuario. 
-// Funciones y características principales: 
-// Visualización de información del usuario logueado. 
-// Reloj en tiempo real. 
-// Menú de navegación con enlaces a diferentes secciones. 
-// Menú lateral desplegable con enlaces a secciones específicas. 
-// Uso de FontAwesome para iconos en enlaces y botones. 
-// Manejo de la navegación entre secciones. 
-// Funcionalidad de cerrar sesión. 
-// Enlaces a secciones como agregar/ver usuarios, gestionar mantenimientos, facturas y manejar inventario. 
-
 import '../styles/admin.css'
 import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
@@ -61,7 +46,7 @@ const Admin = () => {
       minute: 'numeric',
       second: 'numeric',
       hour12: true,
-      timeZone: 'America/Santiago', // Zona horaria de Santiago, Chile
+      timeZone: 'America/Santiago', 
     };
     return time.toLocaleTimeString('en-US', options);
   };
@@ -111,7 +96,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-house" bounce/>
               <span className='link_name'>Volver al Menú</span>
             </Link>
-<hr />
+            <hr />
             <Link to="/agregarUsuario" className={`link ${window.location.pathname === '/agregarUsuario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" bounce/>
               <span className='link_name'>Crear Usuarios</span>
@@ -120,12 +105,12 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-users" bounce/>
               <span className='link_name'>Listar Usuarios</span>
             </Link>
-<hr />
+            <hr />
             <Link to="/gestionMantencionesAdmin" className={`link ${window.location.pathname === '/gestionMantencionesAdmin' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-rectangle-list" bounce />              
               <span className='link_name'>Gestión de Mantenciones</span>
             </Link>
-<hr />
+            <hr />
             <Link to="/agregarFactura" className={`link ${window.location.pathname === '/agregarFactura' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" bounce/>              
               <span className='link_name'>Agregar Factura de Proveedor</span>
@@ -138,7 +123,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" bounce/>
               <span className='link_name'>Listar de Mis Facturas</span>
             </Link>
-<hr />
+            <hr />
             <Link to="/agregarInventario" className={`link ${window.location.pathname === '/agregarInventario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-cart-flatbed" bounce/>
               <span className='link_name'>Agregar Inventario</span>
@@ -147,7 +132,7 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-boxes-stacked" bounce/>
               <span className='link_name'>Listar Inventario</span>
             </Link>
-<hr />
+            <hr />
             <Link to="/generarFactura" className={`link ${window.location.pathname === '/generarFactura' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-receipt" bounce/>              
               <span className='link_name'>Generar Factura de Vendedor</span>

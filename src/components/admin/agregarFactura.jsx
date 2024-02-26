@@ -1,14 +1,3 @@
-// Este componente AgregarFactura maneja la interfaz y lógica para agregar una factura en la aplicación. 
-// Permite al usuario ingresar información como la fecha, el proveedor, el detalle y adjuntar un archivo. 
-// Utiliza Firebase para almacenar el archivo en la nube y guarda los detalles de la factura en la base de datos. 
-// También renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
-// Funciones y características principales: 
-// Manejo de formularios para ingresar detalles de la factura. 
-// Subida de archivos a Firebase Storage y obtención de la URL de descarga. 
-// Almacenamiento de detalles de la factura en Firebase Firestore. 
-// Uso del componente Admin para estructurar la página de administración. 
-// Validación de datos antes de la subida y almacenamiento. 
-
 import React, { useState } from 'react';
 import { storage, db } from '../../firebase';
 import { 

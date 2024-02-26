@@ -1,18 +1,3 @@
-// Este componente AgregarUsuario gestiona la interfaz y la lógica para agregar nuevos usuarios al sistema. 
-// Permite al administrador ingresar detalles como el Rut, rol, nombre, apellido, teléfono, dirección, salario, fecha de ingreso, email y contraseña del usuario.  
-// Utiliza Firebase Authentication para registrar el usuario y Firebase Firestore para almacenar los detalles asociados en la colección 'users'. 
-// También utiliza un validador de Rut personalizado y renderiza el componente Admin para proporcionar la estructura general de la página de administración. 
-// Funciones y características principales: 
-// Registro de nuevos usuarios utilizando Firebase Authentication y Firestore. 
-// Validación en tiempo real del Rut y mensajes de validación. 
-// Formateo del salario y visualización en formato legible. 
-// Validación de campos del formulario antes de registrar el usuario. 
-// Uso del componente Admin para estructurar la página de administración. 
-// Mensajes informativos y de validación en la interfaz del usuario. 
-// Selección de roles mediante un menú desplegable. 
-// Captura y almacenamiento de información del usuario en Firebase Firestore. 
-// Manejo de fechas de ingreso y su almacenamiento en formato adecuado. 
-
 import '../styles/agregarUsuario.css';
 import { useState, useEffect } from 'react';
 import {
@@ -25,10 +10,7 @@ import {
   setDoc, 
   onSnapshot 
 } from 'firebase/firestore';
-import { 
-  db,
-  auth,
-} from '../../firebase'; 
+import { db, auth } from '../../firebase'; 
 import Admin from './admin';
 import validadorRUT from './validadorRUT';
 
@@ -74,14 +56,10 @@ const AgregarUsuario = () => {
       const fechaIngreso = e.target.elements.fechaIngreso.value;
 
       try {
-        // Store the currently logged-in user
         const currentUser = auth.currentUser;
-
-        // Create a new user
         const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
         const newUser = userCredentials.user;
   
-        // Set user data in Firestore
         await setDoc(doc(db, 'users', newUser.uid), {
           rut,
           rol,
@@ -101,9 +79,7 @@ const AgregarUsuario = () => {
         clearFormFields();
         setMensajeValidacion(null);
         setMensajeRut(null);
-  
       } catch (error) {
-        // Handle errors
         console.error('Error during user registration:', error);
       } finally {
         setTimeout(() => {
@@ -112,8 +88,6 @@ const AgregarUsuario = () => {
       }
     }
   };
-
-
 
   const validarRutOnChange = () => {
     const rut = document.getElementById('rut').value;
@@ -131,7 +105,6 @@ const AgregarUsuario = () => {
       setMensajeValidacion('El Rut no es válido');
       return false;
     }
-    // Add more validations as needed
     return true;
   };
 
@@ -163,20 +136,15 @@ const AgregarUsuario = () => {
 
   const logoutAndReauthenticate = async () => {
     try {
-      // Cerrar sesión
       await signOut(auth);
 
-      // Preguntar por las credenciales del usuario
-      const userEmail = prompt('Ingrese su correo electrónico para agregar un nuevo usuario:');
+      const userEmail = prompt('Ingrese su correo electrónico para agregar el nuevo usuario:');
       const userPassword = prompt('Ingrese su contraseña para confirmar:');
 
-      // Volver a autenticar al usuario
       await signInWithEmailAndPassword(auth, userEmail, userPassword);
 
-      // Limpiar campos de formulario
       clearFormFields();
 
-      // Actualizar estado del usuario
       const currentUser = auth.currentUser;
       if (currentUser) {
         const userRef = doc(db, 'users', currentUser.uid);
