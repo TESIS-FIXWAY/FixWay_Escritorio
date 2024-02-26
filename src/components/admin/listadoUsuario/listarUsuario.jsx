@@ -7,10 +7,9 @@ import {
   onSnapshot, 
   query, 
   doc, 
-  updateDoc 
+  updateDoc,
+  deleteDoc
 } from "firebase/firestore";
-import { getAuth, updatePassword } from 'firebase/auth';
-import { deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import EditarUsuarioModal from './editarUsuarioModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -115,24 +114,6 @@ const ListarUsuario = () => {
       user.id === userId ? { ...user, [name]: updatedValue } : user
     );
     setUsers(updatedUsers);
-  };
-
-  const updatePasswordHandler = async () => {
-    if (!newPassword) {
-      setError('La nueva contraseña no puede estar vacía.');
-      return;
-    }
-
-    const auth = getAuth();
-    try {
-      await updatePassword(auth.currentUser, newPassword);
-      console.log('Contraseña actualizada correctamente.');
-      setNewPassword('');
-      setError(null);
-    } catch (error) {
-      console.error('Error al actualizar la contraseña:', error);
-      setError('Error al actualizar la contraseña. Por favor, inténtalo de nuevo.');
-    }
   };
 
   const filtrarUsuario = (e) => {
@@ -258,12 +239,6 @@ const ListarUsuario = () => {
                                 value={user.fechaIngreso}
                                 onChange={(e) => handleInputChange(user.id, 'fechaIngreso', e.target.value)} />
                               </p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar' >Contraseña</label>
-                                <input
-                                type="text"
-                                value={user.password}
-                                onChange={(e) => handleInputChange(user.id, 'password', e.target.value)}/>                              </p>
                               <button className='guardar' onClick={() => saveEdit(user.id, user)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
                               <button className='cancelar' onClick={() => cancelEditing()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
                             </div>

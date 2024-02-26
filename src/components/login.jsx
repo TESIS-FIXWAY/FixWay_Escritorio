@@ -1,22 +1,10 @@
-// Componente Login:
-// Este componente React implementa la interfaz de inicio de sesión de la aplicación para usuarios.
-// Utiliza Firebase Authentication para gestionar la autenticación de usuarios.
-// Funciones y Características Principales:
-// - Utiliza el hook `useState` para gestionar el estado del usuario y posibles errores.
-// - Utiliza Firebase Authentication para la gestión de inicio de sesión y escucha de cambios de estado.
-// - Obtiene el rol del usuario desde la base de datos Firestore y lo almacena en el estado.
-// - Redirige al usuario a las páginas de inicio correspondientes según su rol (administrador o mecánico).
-// - Muestra mensajes de error en caso de credenciales incorrectas.
-// - Utiliza estilos CSS para dar formato a la interfaz de inicio de sesión.
-
 import './styles/login.css'
 import Car from '../images/AutoSinFondo2.png'; 
 import React, { useState, useEffect } from "react";
 import { db, auth } from '../firebase'
 import { doc, getDoc } from "firebase/firestore";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -46,6 +34,7 @@ library.add(
 const Login = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [resetPasswordSent, setResetPasswordSent] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,7 +47,7 @@ const Login = () => {
     });
 
     return () => {
-      unsubscribe(); // Ensure to unsubscribe when the component unmounts
+      unsubscribe(); 
     };
   }, []);
 
@@ -92,8 +81,18 @@ const Login = () => {
     }
   }
 
+  async function handleForgotPassword() {
+    const email = prompt("Ingresa tu correo electrónico:");
+  
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetPasswordSent(true);
+    } catch (error) {
+      console.error("Error al enviar el correo electrónico de restablecimiento de contraseña:", error);
+      setError("Error al enviar el correo electrónico de restablecimiento de contraseña.");
+    }
+  }
   useEffect(() => {
-    // Redirect user based on their role when user state changes
     if (user) {
       user.rol === 'administrador' ? navigate("/indexAdmin") : navigate("/indexMecanico");
     }
@@ -147,6 +146,9 @@ const Login = () => {
                 />
               </form>
               {error && <p style={{ marginTop: 10, fontSize: 15 }}>{error}</p>}
+              <div className='body'>
+                <a href="#" onClick={handleForgotPassword}>Olvidé mi contraseña</a>
+              </div>
             </div>
           </div>
         </div>
