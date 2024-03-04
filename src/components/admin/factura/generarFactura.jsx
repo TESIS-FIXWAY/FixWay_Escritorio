@@ -383,6 +383,127 @@ const GenerarFactura = () => {
     }
   };
 
+  const generarBoleta = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
+    let neto = 0;
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: [80, 210], // Cambiado a 80mm de ancho
+    });
+
+    const imgData = "../../src/images/LogoSinFoindo.png";
+    const imgWidth = 40;
+    const imgHeight = 40;
+    const imgX = 20;
+    const imgY = 10;
+    pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
+  
+    pdf.setFontSize(14);
+    pdf.text("Boleta Hans Motors", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+
+    // Línea separadora entre el título y el contenido
+    const lineSeparatorY = 20;
+    pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
+
+    const today = new Date();
+    const dateString = today.toLocaleDateString();
+    pdf.setFontSize(8);
+    pdf.text(`Fecha: ${dateString}`, 5, 30);
+
+    // Encabezado
+    const lineY = 25;
+    pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
+
+    // Línea vertical entre el título y el contenido
+    const lineX = 5; 
+    pdf.line(lineX, lineSeparatorY, lineX, 60);
+
+    const lineX0 = 30; 
+    pdf.line(lineX0, lineSeparatorY, lineX0, 60);
+
+    const lineX1 = 55; 
+    pdf.line(lineX1, lineSeparatorY, lineX1, 60);
+
+    const lineX2 = 75; 
+    pdf.line(lineX2, lineSeparatorY, lineX2, 60);
+
+    //lista de productos 
+
+    const fontSize = 8;
+    pdf.setFontSize(fontSize);
+  
+    const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
+    const tableX = 5;
+    const tableY = 65;
+
+    // Ajusta la posición del eje x para cada título del encabezado
+    pdf.text(headers[0], tableX + 3, tableY);
+    pdf.text(headers[1], tableX + 15, tableY);
+    pdf.text(headers[2], tableX + 30, tableY);
+    pdf.text(headers[3], tableX + 50, tableY);
+    pdf.text(headers[4], tableX + 60, tableY);
+    pdf.text(headers[5], tableX + 70, tableY);
+
+    const tableLineY = tableY - 3;
+    pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
+
+    const rowSpacing = 2;
+    let currentY = tableY + 5;
+    const hasEnoughSpace = () => currentY + 15 < pdf.internal.pageSize.getHeight();
+    productosSeleccionados.forEach((producto) => {
+        if (!hasEnoughSpace()) {
+            pdf.addPage();
+            currentY = 20; // Reset Y position on the new page
+        }
+        pdf.text(producto.nombreProducto, tableX, currentY);
+        pdf.text(producto.cantidad.toString(), tableX + 15, currentY);
+    
+        const costoNumerico = parseFloat(producto.costo.replace(/\./g, '').replace(',', '.'));
+    
+        pdf.text(costoNumerico.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 30, currentY);
+    
+        const totalProducto = producto.cantidad * costoNumerico;
+        pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 50, currentY);
+    
+        neto += totalProducto;
+    
+        currentY += 10;
+    });
+
+    // Dibujar línea horizontal encima del neto
+    pdf.line(5, currentY + 5, pdf.internal.pageSize.getWidth() - 20, currentY + 5);
+  
+    pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
+  
+    const iva = neto * 0.19;
+    pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
+  
+    const totalFinal = neto + iva; 
+    pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
+
+    const descuento = parseInt(descuentoMenuValue, 10);
+    const descuentoTotalFinal = (descuento / 100) * (totalFinal);
+    
+    setDescuentoAplicado(descuentoTotalFinal);
+    setShowDiscountMenu(false);
+    
+    pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
+    pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50);
+
+    pdf.save(`boleta_${invoiceNumber}.pdf`);
+    setActualizacion((prevActualizacion) => prevActualizacion + 1);
+
+    const pdfBase64 = pdf.output('datauristring');
+    const storageRef = ref(storage, 'misFacturas/' + invoiceNumber + '.pdf');
+
+    try {
+        await uploadString(storageRef, pdfBase64, 'data_url');
+        console.log('PDF guardado en el Storage de Firebase');
+    } catch (error) {
+        console.error('Error al guardar el PDF en el Storage:', error);
+    }
+  };
+
   function generateInvoiceNumber() {
     const letters = String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
                     String.fromCharCode(65 + Math.floor(Math.random() * 26));
@@ -652,6 +773,15 @@ const GenerarFactura = () => {
             onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
             onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}>
             <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Factura
+          </button>
+          <button
+            onClick={() => generarBoleta(productosSeleccionados)}
+            style={{
+              backgroundColor: "#D4AFB9",height:"45px", marginTop:"10px"
+            }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}>
+            <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Boleta
           </button>
 
           <button onClick={toggleDiscountMenu} style={{background: "#E74C3C",height:"45px", marginTop:"10px"}}>Añadir Descuento %</button>
