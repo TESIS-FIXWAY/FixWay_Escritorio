@@ -30,7 +30,6 @@ const GenerarFactura = () => {
   const [showProductList, setShowProductList] = useState(false);
   const [tipoPago, setTipoPago] = useState("contado");
   const [showDiscountMenu, setShowDiscountMenu] = useState(false);
-  const [discountPercentage, setDiscountPercentage] = useState(0);
   const [descuentoMenuValue, setDescuentoMenuValue] = useState(0);
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
   const [clientes, setClientes] = useState([]);
@@ -166,7 +165,6 @@ const GenerarFactura = () => {
     pdf.setFontSize(24);
     pdf.text("Factura Hans Motors", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
 
-    // Línea separadora entre el título y el contenido
     const lineSeparatorY = 20;
     pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
 
@@ -342,14 +340,10 @@ const GenerarFactura = () => {
     pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
 
     const descuento = parseInt(descuentoMenuValue, 10);
-    // const descuento = (totalSinIVA * descuentoMenuValue) / 100;
-    // Calcula el descuento en el total final
     const descuentoTotalFinal = (descuento / 100) * (totalFinal);
     
-    // Actualiza el estado del descuento aplicado
     setDescuentoAplicado(descuentoTotalFinal);
 
-    // Oculta el menú de descuentos después de aplicar el descuento
     setShowDiscountMenu(false);
     
     pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
@@ -486,7 +480,6 @@ const GenerarFactura = () => {
         currentY += 10;
     });
 
-    // Dibujar línea horizontal encima del neto
     pdf.line(5, currentY + 5, pdf.internal.pageSize.getWidth() - 20, currentY + 5);
 
     pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
@@ -613,7 +606,6 @@ const GenerarFactura = () => {
     const descuentoTotalFinal = (descuento / 100) * (totalSinIVA + (totalSinIVA * 0.19));
 
     setDescuentoAplicado(descuentoTotalFinal);
-
     setShowDiscountMenu(false);
   };
   
@@ -877,4 +869,4 @@ const GenerarFactura = () => {
   );
 };
 
-export default GenerarFactura;        
+export default GenerarFactura;
