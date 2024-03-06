@@ -398,30 +398,30 @@ const GenerarFactura = () => {
     pdf.setFontSize(14);
     pdf.text("Boleta Hans Motors", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
 
-    const lineSeparatorY = 20;
+    const lineSeparatorY = -1;
 
     pdf.setFontSize(6);
     const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
     const userX = 5;
-    const userY = imgY + imgHeight + 12;
+    const userY = imgY + imgHeight + 6;
     pdf.text(userText, userX, userY);
 
     pdf.setFontSize(6);
     const rutText = `Rut Vendedor: ${userData.rut}`;
     const rutX = 5;
-    const rutY = imgY + imgHeight + 14;
+    const rutY = imgY + imgHeight + 8;
     pdf.text(rutText, rutX, rutY);
 
     pdf.setFontSize(6);
     const emailText = `Email Vendedor: ${userData.email}`;
     const emailX = 5;
-    const emailY =  imgY + imgHeight + 16;
+    const emailY =  imgY + imgHeight + 10;
     pdf.text(emailText, emailX, emailY);
 
     pdf.setFontSize(6);
     const invoiceNumberText = `N° Boleta: ${invoiceNumber}`;
     const invoiceNumberX = 52;
-    const invoiceNumberY = imgY + imgHeight + 14;
+    const invoiceNumberY = imgY + imgHeight + 10;
     pdf.text(invoiceNumberText, invoiceNumberX, invoiceNumberY);
 
     const today = new Date();
@@ -429,10 +429,18 @@ const GenerarFactura = () => {
     const dateX = pdf.internal.pageSize.getWidth() - pdf.getStringUnitWidth(dateString) * pdf.internal.getFontSize() - 5;
     pdf.text(`Fecha: ${dateString}`, dateX, userY);
 
+    const hour = String(today.getHours()).padStart(2, '0');
+    const minute = String(today.getMinutes()).padStart(2, '0');
+    const second = String(today.getSeconds()).padStart(2, '0');
+    const dateStringHora = `${hour}:${minute}:${second}`
+    const dateXH = pdf.internal.pageSize.getWidth() - pdf.getStringUnitWidth(dateString) * pdf.internal.getFontSize() - 5;
+    const userYX = imgY + imgHeight + 8;
+    pdf.text(`Hora: ${dateStringHora}`, dateXH, userYX);
+
     pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
 
     // Encabezado
-    const lineY = 25;
+    const lineY = 18;
     pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
 
     // Lista de productos
@@ -441,13 +449,16 @@ const GenerarFactura = () => {
 
     const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
     const tableX = 5;
-    const tableY = 35;
+    const tableY = 29;
 
     // Ajusta la posición del eje x para cada título del encabezado
     pdf.text(headers[0], tableX, tableY);      // producto
     pdf.text(headers[1], tableX + 24, tableY); // cantitadad
     pdf.text(headers[3], tableX + 38, tableY); // precio u
     pdf.text(headers[5], tableX + 55, tableY); // totalProducto
+
+    const lineY2 = 30;
+    pdf.line(5, lineY2, pdf.internal.pageSize.getWidth() - 5, lineY2);
 
       const tableLineY = tableY - 3;
       pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
@@ -481,10 +492,10 @@ const GenerarFactura = () => {
     pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
 
     const iva = neto * 0.19;
-    pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 15);
+    pdf.text(`IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 15);
 
     const totalFinal = neto + iva;
-    pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
+    pdf.text(`Total: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
     
     setActualizacion((prevActualizacion) => prevActualizacion + 1);
 
