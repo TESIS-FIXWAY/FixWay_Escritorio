@@ -304,7 +304,7 @@ const GenerarFactura = () => {
     productosSeleccionados.forEach((producto) => {
       if (!hasEnoughSpace()) {
         pdf.addPage();
-        currentY = 20; // Reset Y position on the new page
+        currentY = 20; 
       }
       const { h } = pdf.getTextDimensions(producto.descripcion);
       const lines = pdf.splitTextToSize(producto.descripcion, 50);
@@ -389,103 +389,103 @@ const GenerarFactura = () => {
     });
 
     const imgData = "../../src/images/LogoSinFoindo.png";
-    const imgWidth = 40;
-    const imgHeight = 40;
-    const imgX = 20;
-    const imgY = 10;
+    const imgWidth = 20;
+    const imgHeight = 20;
+    const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
+    const imgY = -5;
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
-  
+
     pdf.setFontSize(14);
     pdf.text("Boleta Hans Motors", pdf.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
 
-    // Línea separadora entre el título y el contenido
     const lineSeparatorY = 20;
-    pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
+
+    pdf.setFontSize(6);
+    const userText = `Nombre Vendedor: ${userData.nombre} ${userData.apellido} `;
+    const userX = 5;
+    const userY = imgY + imgHeight + 12;
+    pdf.text(userText, userX, userY);
+
+    pdf.setFontSize(6);
+    const rutText = `Rut Vendedor: ${userData.rut}`;
+    const rutX = 5;
+    const rutY = imgY + imgHeight + 14;
+    pdf.text(rutText, rutX, rutY);
+
+    pdf.setFontSize(6);
+    const emailText = `Email Vendedor: ${userData.email}`;
+    const emailX = 5;
+    const emailY =  imgY + imgHeight + 16;
+    pdf.text(emailText, emailX, emailY);
+
+    pdf.setFontSize(6);
+    const invoiceNumberText = `N° Boleta: ${invoiceNumber}`;
+    const invoiceNumberX = 52;
+    const invoiceNumberY = imgY + imgHeight + 14;
+    pdf.text(invoiceNumberText, invoiceNumberX, invoiceNumberY);
 
     const today = new Date();
     const dateString = today.toLocaleDateString();
-    pdf.setFontSize(8);
-    pdf.text(`Fecha: ${dateString}`, 5, 30);
+    const dateX = pdf.internal.pageSize.getWidth() - pdf.getStringUnitWidth(dateString) * pdf.internal.getFontSize() - 5;
+    pdf.text(`Fecha: ${dateString}`, dateX, userY);
+
+    pdf.line(5, lineSeparatorY, pdf.internal.pageSize.getWidth() - 5, lineSeparatorY);
 
     // Encabezado
     const lineY = 25;
     pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
 
-    // Línea vertical entre el título y el contenido
-    const lineX = 5; 
-    pdf.line(lineX, lineSeparatorY, lineX, 60);
-
-    const lineX0 = 30; 
-    pdf.line(lineX0, lineSeparatorY, lineX0, 60);
-
-    const lineX1 = 55; 
-    pdf.line(lineX1, lineSeparatorY, lineX1, 60);
-
-    const lineX2 = 75; 
-    pdf.line(lineX2, lineSeparatorY, lineX2, 60);
-
-    //lista de productos 
-
-    const fontSize = 8;
+    // Lista de productos
+    const fontSize = 6;
     pdf.setFontSize(fontSize);
-  
+
     const headers = ["Producto", "Cantidad", "Descripción", "Precio U.", "Total", "Total Producto"];
     const tableX = 5;
-    const tableY = 65;
+    const tableY = 35;
 
     // Ajusta la posición del eje x para cada título del encabezado
-    pdf.text(headers[0], tableX + 3, tableY);
-    pdf.text(headers[1], tableX + 15, tableY);
-    pdf.text(headers[2], tableX + 30, tableY);
-    pdf.text(headers[3], tableX + 50, tableY);
-    pdf.text(headers[4], tableX + 60, tableY);
-    pdf.text(headers[5], tableX + 70, tableY);
+    pdf.text(headers[0], tableX, tableY);      // producto
+    pdf.text(headers[1], tableX + 24, tableY); // cantitadad
+    pdf.text(headers[3], tableX + 38, tableY); // precio u
+    pdf.text(headers[5], tableX + 55, tableY); // totalProducto
 
-    const tableLineY = tableY - 3;
-    pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
+      const tableLineY = tableY - 3;
+      pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
 
-    const rowSpacing = 2;
     let currentY = tableY + 5;
     const hasEnoughSpace = () => currentY + 15 < pdf.internal.pageSize.getHeight();
     productosSeleccionados.forEach((producto) => {
         if (!hasEnoughSpace()) {
             pdf.addPage();
-            currentY = 20; // Reset Y position on the new page
+            currentY = 20; 
         }
-        pdf.text(producto.nombreProducto, tableX, currentY);
-        pdf.text(producto.cantidad.toString(), tableX + 15, currentY);
-    
+        pdf.text(producto.nombreProducto, tableX , currentY);
+
+        pdf.text(producto.cantidad.toString(), tableX + 28, currentY);
+
         const costoNumerico = parseFloat(producto.costo.replace(/\./g, '').replace(',', '.'));
-    
-        pdf.text(costoNumerico.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 30, currentY);
-    
+
+        pdf.text(costoNumerico.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 39, currentY);
+
         const totalProducto = producto.cantidad * costoNumerico;
-        pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 50, currentY);
-    
+        pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 58, currentY);
+
         neto += totalProducto;
-    
+
         currentY += 10;
     });
 
     // Dibujar línea horizontal encima del neto
     pdf.line(5, currentY + 5, pdf.internal.pageSize.getWidth() - 20, currentY + 5);
-  
-    pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
-  
-    const iva = neto * 0.19;
-    pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
-  
-    const totalFinal = neto + iva; 
-    pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
 
-    const descuento = parseInt(descuentoMenuValue, 10);
-    const descuentoTotalFinal = (descuento / 100) * (totalFinal);
+    pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
+
+    const iva = neto * 0.19;
+    pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 15);
+
+    const totalFinal = neto + iva;
+    pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
     
-    setDescuentoAplicado(descuentoTotalFinal);
-    setShowDiscountMenu(false);
-    
-    pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
-    pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50);
     setActualizacion((prevActualizacion) => prevActualizacion + 1);
 
     const pdfBase64 = pdf.output('datauristring');
@@ -544,7 +544,7 @@ const GenerarFactura = () => {
   
     if (productoIndex === -1) {
       const productoSeleccionado = inventario.find((producto) => producto.id === id);
-      setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 1 }]); // Set initial quantity to 1
+      setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 1 }]); 
       setShowProductList(false);
     } else {
       const nuevaLista = [...productosSeleccionados];
