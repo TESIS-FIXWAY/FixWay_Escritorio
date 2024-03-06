@@ -548,7 +548,7 @@ const GenerarFactura = () => {
     };
 
     obtenerInventario();
-  }, [actualizacion]);
+  }, [actualizacion, refresh]);
 
   const toggleSeleccionProducto = (id) => {
     const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
@@ -595,7 +595,7 @@ const GenerarFactura = () => {
     });
     setInventario(inventarioFiltrado);
     if (value === "") {
-      window.location.reload();
+      setRefresh((prevRefresh) => !prevRefresh);
     }
   };
   

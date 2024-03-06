@@ -69,7 +69,7 @@ const ListadoMisFacturas = () => {
       <Admin/>
       <div className="tabla_listar">
         <div className="table_header">
-          <h1>Listado de Mis Facturas</h1>
+          <h1>Listado de Mis Facturas / Boletas</h1>
           <div>
             <FontAwesomeIcon icon="magnifying-glass" />
             <input type="text" placeholder="buscar factura" onChange={filtrarFactura}/>

@@ -121,7 +121,7 @@ const Admin = () => {
             </Link>
             <Link to="/listadoMisFacturas" className={`link ${window.location.pathname === '/listadoMisFacturas' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" bounce/>
-              <span className='link_name'>Listar de Mis Facturas</span>
+              <span className='link_name'>Listar de Mis Facturas <br /> / Boletas</span>
             </Link>
             <hr />
             <Link to="/agregarInventario" className={`link ${window.location.pathname === '/agregarInventario' ? 'active' : ''}`}>
