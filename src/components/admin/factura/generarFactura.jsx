@@ -239,11 +239,10 @@ const GenerarFactura = () => {
       const errorText = "Error: Cliente no seleccionado";
       pdf.text(errorText, 78, imgY + imgHeight);
     }
-    // Encabezado
+
     const lineY = tipoPagoY + 20;
     pdf.line(5, lineY, pdf.internal.pageSize.getWidth() - 5, lineY);
 
-    // Línea vertical entre el título y el contenido
     const lineX = 5; 
     pdf.line(lineX, lineSeparatorY, lineX, tipoPagoY + 20);
 
@@ -284,8 +283,7 @@ const GenerarFactura = () => {
       (total, producto) => total + pdf.getTextDimensions(producto.descripcion).h + rowSpacing,
       0
     );
-  
-    // Líneas verticales en la tabla
+
     const tableLineX1 = tableX + 40;
     const tableLineX2 = tableX + 120;
     const tableLineX3 = tableX + 160;
@@ -300,9 +298,7 @@ const GenerarFactura = () => {
     pdf.line(tableLineX5, tableLineY, tableLineX5, tableY + productosHeight - 4);
     pdf.line(tableLineX6, tableLineY, tableLineX6, tableY + productosHeight - 4);
 
-    // Inicializar variable para el neto
     let neto = 0;
-  
     let currentY = tableY + 10;
     const hasEnoughSpace = () => currentY + 30 < pdf.internal.pageSize.getHeight();
     productosSeleccionados.forEach((producto) => {
@@ -368,13 +364,14 @@ const GenerarFactura = () => {
     pdf.line(5, currentY + 33, pdf.internal.pageSize.getWidth() - 130, currentY + 33);
     pdf.line(5, currentY + 56, pdf.internal.pageSize.getWidth() - 130, currentY + 56);
 
-    pdf.save(`factura_${invoiceNumber}.pdf`);
     setActualizacion((prevActualizacion) => prevActualizacion + 1);
 
-    // Convertir el PDF a una cadena base64
     const pdfBase64 = pdf.output('datauristring');
     const storageRef = ref(storage, 'misFacturas/' + invoiceNumber + '.pdf');
-
+    const blob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    URL.revokeObjectURL(url);
     try {
         await uploadString(storageRef, pdfBase64, 'data_url');
         console.log('PDF guardado en el Storage de Firebase');
@@ -382,13 +379,13 @@ const GenerarFactura = () => {
         console.error('Error al guardar el PDF en el Storage:', error);
     }
   };
-
+  
   const generarBoleta = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     let neto = 0;
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
-      format: [80, 210], // Cambiado a 80mm de ancho
+      format: [80, 210], 
     });
 
     const imgData = "../../src/images/LogoSinFoindo.png";
@@ -489,13 +486,14 @@ const GenerarFactura = () => {
     
     pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
     pdf.text(`Total Final con Descuento: ${(totalFinal - descuentoTotalFinal).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 50);
-
-    pdf.save(`boleta_${invoiceNumber}.pdf`);
     setActualizacion((prevActualizacion) => prevActualizacion + 1);
 
     const pdfBase64 = pdf.output('datauristring');
     const storageRef = ref(storage, 'misFacturas/' + invoiceNumber + '.pdf');
-
+    const blob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    URL.revokeObjectURL(url);
     try {
         await uploadString(storageRef, pdfBase64, 'data_url');
         console.log('PDF guardado en el Storage de Firebase');
