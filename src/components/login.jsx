@@ -5,31 +5,6 @@ import { db, auth } from '../firebase'
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faBars,
-  faArrowLeft,
-  faArrowRightFromBracket,
-  faUser,
-  faUserPlus,
-  faUsers,
-  faHouse,
-  faReceipt,
-  faCircleUser
-} 
-from '@fortawesome/free-solid-svg-icons';
-library.add(
-  faBars,
-  faArrowLeft,
-  faArrowRightFromBracket,
-  faUser,
-  faUserPlus,
-  faUsers,
-  faHouse,
-  faReceipt,
-  faCircleUser
-);
 
 const Login = () => {
   const [user, setUser] = useState(null);

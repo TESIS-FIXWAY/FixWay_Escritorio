@@ -1,12 +1,3 @@
-// Componente IndexMecanico:  
-// Este componente React sirve como la página de inicio para los usuarios con el rol de Mecánico. 
-// Proporciona acceso rápido a diversas funcionalidades a través de tarjetas interactivas y un calendario. 
-// Funciones y Características Principales 
-// Contiene tarjetas interactivas que permiten navegar a diferentes secciones de la aplicación. 
-// Incluye un calendario interactivo para visualizar y gestionar eventos relacionados con el trabajo. 
-// Utiliza iconos FontAwesome para mejorar la estética y facilitar la identificación de las funcionalidades. 
-// Permite la navegación a las secciones de gestión de mantenciones, listado de usuarios, facturas, listado de facturas, inventario y listado de inventario. 
-
 import '../styles/indexAdmin.css'
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
@@ -51,6 +42,7 @@ const IndexMecanico = () => {
   const [processCount , setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -100,8 +92,6 @@ const IndexMecanico = () => {
   const generadorListadoMantencion = () => {
     navigate('/generarListadoMantencion')
   }
-
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleDateChange = (date) => {
     setSelectedDate(date);

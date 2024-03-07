@@ -1,14 +1,3 @@
-// Componente Mecanico:  
-// Este componente React representa la barra de navegación y menú lateral para usuarios con el rol de Mecánico. 
-// Proporciona acceso a diversas funcionalidades y permite la navegación fluida entre las secciones de la aplicación. 
-// Funciones y Características Principales: 
-// Utiliza estilos específicos para la interfaz del Mecánico importados desde 'admin.css'. 
-// Incluye un reloj que muestra la hora actual en tiempo real. 
-// Permite la navegación a la página de inicio ('indexMecanico') mediante un botón en el menú. 
-// Ofrece accesos directos a las secciones de gestión de mantenciones, listar inventario, generar códigos QR, y generar listados de mantenciones en el menú lateral. 
-// Utiliza FontAwesome para incluir iconos visuales en la interfaz y mejorar la experiencia del usuario. 
-// Permite al usuario cerrar sesión con el botón 'Salir' y redirige a la página de inicio al hacerlo. 
-
 import '../styles/admin.css'
 import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
@@ -57,7 +46,7 @@ const Mecanico = () => {
       minute: 'numeric',
       second: 'numeric',
       hour12: true,
-      timeZone: 'America/Santiago', // Zona horaria de Santiago, Chile
+      timeZone: 'America/Santiago', 
     };
     return time.toLocaleTimeString('en-US', options);
   };
@@ -107,7 +96,7 @@ const Mecanico = () => {
               <FontAwesomeIcon className='i' icon="fa-solid fa-house" />
               <span className='link_name'>Volver al Menú</span>
             </Link>
-<hr />
+            <hr />
             <Link to="/gestionMantenciones" className={`link ${window.location.pathname === '' ? 'active' : ''}`}>
               <FontAwesomeIcon icon="fa-solid fa-clipboard-list"  className='i'/>
               <span className='link_name'>Gestion de Mantenciones</span>

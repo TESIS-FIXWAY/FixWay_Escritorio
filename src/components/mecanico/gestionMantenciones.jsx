@@ -1,13 +1,3 @@
-// Componente GestionMantenciones:  
-// Este componente React proporciona una interfaz para la gestión dinámica de tareas de mantenciones, 
-// dividiéndolas en tres secciones: "Tareas por hacer", "Tareas en proceso" y "Terminado". 
-// Funciones y Características Principales:  
-// Recupera datos de mantenciones desde Firestore al cargar el componente. 
-// Muestra las tareas organizadas por estado ('pendiente', 'en proceso', 'Terminado'). 
-// Permite la expansión de cada tarea para mostrar opciones adicionales. 
-// Permite la actualización del estado de una tarea al ser tomada o finalizada. 
-// Ofrece una interfaz clara y eficiente para la gestión de las mantenciones. 
-
 import '../styles/gestionMantenciones.css'
 import React, { useState, useEffect } from 'react';
 import Mecanico from './mecanico';
@@ -28,12 +18,10 @@ const GestionMantenciones = () => {
   const [completedTasks, setCompletedTasks] = useState([]);
   const [expandedTask, setExpandedTask] = useState(null);
 
-  // Function to calculate container height based on the number of tasks
   const calculateContainerHeight = (tasks) => {
     return tasks.length === 0 ? '200px' : `${tasks.length * 40}px`;
   };
 
-  // Function to fetch initial data from Firestore
   const fetchData = async () => {
     try {
       const mantencionesCollection = collection(db, 'mantenciones');
@@ -47,7 +35,6 @@ const GestionMantenciones = () => {
           allTasksData.push(task);
         });
 
-        // Sort tasks based on estado ('pendiente', 'en proceso', 'terminado')
         const sortedTasks = {
           'pendiente': [],
           'prioridad': [],
@@ -60,7 +47,6 @@ const GestionMantenciones = () => {
           sortedTasks[task.estado].push(task);
         });
 
-        // Update state with tasks data
         setBeginTask(sortedTasks['pendiente']);
           setPriorityTasks(sortedTasks['prioridad']);
           setSpecialAttentionTasks(sortedTasks['atencion especial']);
@@ -74,7 +60,6 @@ const GestionMantenciones = () => {
     }
   };
 
-  // useEffect to fetch initial data from Firestore
   useEffect(() => {
     fetchData();
   }, []);
@@ -89,7 +74,6 @@ const GestionMantenciones = () => {
     try {
       await updateDoc(taskRef, { estado: newStatus });
   
-      // Update state with the changed tasks
       switch (newStatus) {
         case 'en proceso':
           setBeginTask((prevTodoTasks) => prevTodoTasks.filter((t) => t.id !== task.id));
@@ -153,7 +137,6 @@ const GestionMantenciones = () => {
                 ))}
               </ul>
             </div>
-
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
                 <h2>Tareas en Proceso</h2>
@@ -178,7 +161,6 @@ const GestionMantenciones = () => {
                 ))}
               </ul>
             </div>
-
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
                 <h2>Terminado</h2>
