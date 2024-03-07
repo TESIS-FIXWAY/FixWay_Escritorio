@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ClienteVista from "./clienteVista";
 import Admin from "../admin";
 import jsPDF from "jspdf";
 import validadorRUT from "../validadorRUT";
@@ -23,6 +22,7 @@ library.add( faFilePdf, faList, faEyeSlash );
 import AgregarCliente from "./agregarCliente";
 import ListadoProductos from "./listadoProductos";
 import AplicarDescuento from "./aplicarDescuento";
+import ClienteVista from "./clienteVista";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
@@ -254,7 +254,6 @@ const GenerarFactura = () => {
     pdf.line(lineX2, lineSeparatorY, lineX2, tipoPagoY + 20);
 
     //lista de productos 
-
     const fontSize = 10;
     pdf.setFontSize(fontSize);
   
@@ -327,15 +326,13 @@ const GenerarFactura = () => {
       currentY += h + rowSpacing;
     });
 
-    // Dibujar línea horizontal encima del neto
     pdf.line(5, currentY + 5, pdf.internal.pageSize.getWidth() - 130, currentY + 5);
   
     pdf.text(`Neto: ${neto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 10);
   
     const iva = neto * 0.19;
     pdf.text(`Total IVA (19%): ${iva.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 20);
-  
-    // const totalFinal = neto + iva - descuentoAplicado;
+
     const totalFinal = neto + iva; 
     pdf.text(`Total Final: ${totalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 30);
 
@@ -343,7 +340,6 @@ const GenerarFactura = () => {
     const descuentoTotalFinal = (descuento / 100) * (totalFinal);
     
     setDescuentoAplicado(descuentoTotalFinal);
-
     setShowDiscountMenu(false);
     
     pdf.text(`Descuento: ${descuentoTotalFinal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`, tableX + 0, currentY + 40);
@@ -445,7 +441,6 @@ const GenerarFactura = () => {
     const tableX = 5;
     const tableY = 29;
 
-    // Ajusta la posición del eje x para cada título del encabezado
     pdf.text(headers[0], tableX, tableY);      // producto
     pdf.text(headers[1], tableX + 24, tableY); // cantitadad
     pdf.text(headers[3], tableX + 38, tableY); // precio u
@@ -454,8 +449,8 @@ const GenerarFactura = () => {
     const lineY2 = 30;
     pdf.line(5, lineY2, pdf.internal.pageSize.getWidth() - 5, lineY2);
 
-      const tableLineY = tableY - 3;
-      pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
+    const tableLineY = tableY - 3;
+    pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);
 
     let currentY = tableY + 5;
     const hasEnoughSpace = () => currentY + 15 < pdf.internal.pageSize.getHeight();
@@ -476,7 +471,6 @@ const GenerarFactura = () => {
         pdf.text(totalProducto.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.'), tableX + 58, currentY);
 
         neto += totalProducto;
-
         currentY += 10;
     });
 
@@ -545,7 +539,6 @@ const GenerarFactura = () => {
 
   const toggleSeleccionProducto = (id) => {
     const productoIndex = productosSeleccionados.findIndex((producto) => producto.id === id);
-  
     if (productoIndex === -1) {
       const productoSeleccionado = inventario.find((producto) => producto.id === id);
       setProductosSeleccionados([...productosSeleccionados, { ...productoSeleccionado, cantidad: 1 }]); 
@@ -570,12 +563,10 @@ const GenerarFactura = () => {
   
   const actualizarCantidadManual = (id, nuevaCantidad) => {
     const producto = inventario.find((p) => p.id === id);
-  
     if (producto && nuevaCantidad > producto.cantidad) {
       alert("No hay suficiente stock disponible");
       return;
     }
-  
     setProductosSeleccionados((prevProductos) => {
       return prevProductos.map((p) => (p.id === id ? { ...p, cantidad: nuevaCantidad } : p));
     });
@@ -655,9 +646,8 @@ const GenerarFactura = () => {
   const eliminarCliente = async (clienteId) => {
     try {
       const clienteDocRef = doc(db, "clientes", clienteId);
-      
       await deleteDoc(clienteDocRef);
-
+      
       setClientes(clientes.filter(cliente => cliente.id !== clienteId));
     } catch (error) {
       console.error("Error al eliminar el cliente:", error);
@@ -784,9 +774,7 @@ const GenerarFactura = () => {
             onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}>
             <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Boleta
           </button>
-
           <button onClick={toggleDiscountMenu} style={{background: "#E74C3C",height:"45px", marginTop:"10px"}}>Añadir Descuento %</button>
-
           <select
             value={tipoPago}
             onChange={(e) => setTipoPago(e.target.value)}
