@@ -127,7 +127,6 @@ const Login = () => {
                 </label>
                 <br />
                 <br />
-  
                 <label className='label-login'>
                   <i className='bx bx-lock-alt'></i>
                   <input
@@ -138,7 +137,6 @@ const Login = () => {
                 </label>
                 <br />
                 <br />
-  
                 <input
                   type="submit"
                   value="Iniciar Sesión"
@@ -146,9 +144,8 @@ const Login = () => {
                 />
               </form>
               {error && <p style={{ marginTop: 10, fontSize: 15 }}>{error}</p>}
-              <div className='body'>
-                <a href="#" onClick={handleForgotPassword}>Olvidé mi contraseña</a>
-              </div>
+              <br />
+              <a href="#" className='resetPassword' onClick={handleForgotPassword}>Olvidé mi Contraseña</a>
             </div>
           </div>
         </div>
@@ -170,7 +167,7 @@ const Login = () => {
             <li> <a href="#">+56 9 5641 4395</a></li>
             <li> <a href="#">+56 9 8470 9534</a></li>
           </ul>         
-          <p>©2023 Instituto Inacap | Programadores </p> 
+          <p>©2024 Instituto Inacap | Programadores </p> 
         </footer>
       </div>
     </>
