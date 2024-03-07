@@ -812,7 +812,7 @@ const GenerarFactura = () => {
       <Admin />
       <div className="tabla_listar">
         <div className="table_header">
-          <h1>Generar Factura</h1>
+          <h1>Generar <br /> Factura</h1>
           <button
             onClick={() => generarFactura(productosSeleccionados)}
             style={{

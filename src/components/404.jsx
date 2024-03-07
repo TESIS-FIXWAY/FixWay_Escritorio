@@ -5,7 +5,7 @@ export default function Error() {
   const navigate = useNavigate();
 
   setTimeout(() => {
-    navigate("/admin");
+    navigate("/");
   }
     , 3000);
     return (
