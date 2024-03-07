@@ -103,46 +103,45 @@ const GenerarFactura = () => {
     let nuevaFactura;
   
     try {
-      facturasCollection = collection(db, "mifacturas");
+      facturasCollection = collection(db, "misFacturas");
       const batch = writeBatch(db);
-
+  
       for (const producto of productosSeleccionados) {
         const productoRef = doc(db, "inventario", producto.id);
   
         if (typeof producto.cantidad === 'number') {
           const docSnapshot = await getDoc(productoRef);
           const existingQuantity = docSnapshot.data().cantidad;
-
+  
           if (existingQuantity < producto.cantidad) {
             alert(`No hay suficiente stock para ${producto.nombre}.`);
             return;
           }
   
           const newQuantity = existingQuantity - producto.cantidad;
-
+  
           batch.update(productoRef, { cantidad: newQuantity });
         } else {
           console.error("Invalid cantidad value:", producto.cantidad);
         }
       }
-
+  
       const invoiceNumber = generateInvoiceNumber();
+      const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       nuevaFactura = {
-        productos: productosSeleccionados.map((producto) => ({ ...producto })),
-        tipoPago: tipoPago,
         invoiceNumber: invoiceNumber,
+        tipo:"Factura",
+        total: total.toString(), 
       };
   
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
-
+  
       const invoiceId = nuevaFacturaRef.id;
       nuevaFactura.invoiceNumber = invoiceId;
-
+  
       await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
-
-      await batch.commit();
-
-      generarPDF(productosSeleccionados, totalSinIVA, iva, totalFinal, descuentoAplicado);
+  
+      generarPDF(productosSeleccionados, totalSinIVA);
   
       setProductosSeleccionados([]);
       setDescuentoMenuValue('');
@@ -368,9 +367,66 @@ const GenerarFactura = () => {
     } catch (error) {
         console.error('Error al guardar el PDF en el Storage:', error);
     }
+    return totalFinal - descuentoAplicado;
   };
+
+  const generarBoleta = async () => {
+    if (productosSeleccionados.length === 0) {
+      alert("No hay productos seleccionados para generar la boleta.");
+      return;
+    }
   
-  const generarBoleta = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
+    let boletasCollection;
+    let nuevaBoleta;
+  
+    try {
+      boletasCollection = collection(db, "misBoletas");
+      const batch = writeBatch(db);
+  
+      for (const producto of productosSeleccionados) {
+        const productoRef = doc(db, "inventario", producto.id);
+  
+        if (typeof producto.cantidad === 'number') {
+          const docSnapshot = await getDoc(productoRef);
+          const existingQuantity = docSnapshot.data().cantidad;
+  
+          if (existingQuantity < producto.cantidad) {
+            alert(`No hay suficiente stock para ${producto.nombre}.`);
+            return;
+          }
+  
+          const newQuantity = existingQuantity - producto.cantidad;
+  
+          batch.update(productoRef, { cantidad: newQuantity });
+        } else {
+          console.error("Invalid cantidad value:", producto.cantidad);
+        }
+      }
+      
+      const totalBoleta = await generarBoletaPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
+      const boletaNumber = generateInvoiceNumber();
+      nuevaBoleta = {
+        boletaNumber: boletaNumber,
+        tipo: "Boleta",
+        total: totalBoleta, 
+      };
+  
+      const nuevaBoletaRef = await addDoc(boletasCollection, nuevaBoleta);
+  
+      const boletaId = nuevaBoletaRef.id;
+      nuevaBoleta.boletaNumber = boletaId;
+  
+      await updateDoc(doc(boletasCollection, boletaId), nuevaBoleta);
+  
+      generarBoletaPDF(productosSeleccionados);
+      setProductosSeleccionados([]);
+      setActualizacion((prevActualizacion) => prevActualizacion + 1);
+    } catch (error) {
+      console.error("Error al generar la boleta:", error);
+    }
+  };
+
+  const generarBoletaPDF = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     let neto = 0;
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -498,6 +554,7 @@ const GenerarFactura = () => {
     } catch (error) {
         console.error('Error al guardar el PDF en el Storage:', error);
     }
+    return totalFinal;
   };
 
   function generateInvoiceNumber() {
