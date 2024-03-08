@@ -128,10 +128,13 @@ const GenerarFactura = () => {
   
       const invoiceNumber = generateInvoiceNumber();
       const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
+      const fecha = new Date().toLocaleDateString(); // Guarda la fecha actual como un string ISO
+  
       nuevaFactura = {
         invoiceNumber: invoiceNumber,
-        tipo:"Factura",
-        total: total.toString(), 
+        tipo: "Factura",
+        total: total.toString(),
+        fecha: fecha, // Guarda la fecha en el objeto de la factura
       };
   
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
@@ -141,8 +144,6 @@ const GenerarFactura = () => {
   
       await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
   
-      generarPDF(productosSeleccionados, totalSinIVA);
-  
       setProductosSeleccionados([]);
       setDescuentoMenuValue('');
       setShowProductList(false);
@@ -150,7 +151,7 @@ const GenerarFactura = () => {
     } catch (error) {
       console.error("Error al generar la factura:", error);
     }
-  };
+  };  
 
   const generarPDF = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
@@ -402,13 +403,15 @@ const GenerarFactura = () => {
           console.error("Invalid cantidad value:", producto.cantidad);
         }
       }
-      
+  
       const totalBoleta = await generarBoletaPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const boletaNumber = generateInvoiceNumber();
+      const fecha = new Date().toLocaleDateString(); 
       nuevaBoleta = {
         boletaNumber: boletaNumber,
         tipo: "Boleta",
-        total: totalBoleta, 
+        total: totalBoleta,
+        fecha: fecha, 
       };
   
       const nuevaBoletaRef = await addDoc(boletasCollection, nuevaBoleta);
@@ -424,7 +427,7 @@ const GenerarFactura = () => {
     } catch (error) {
       console.error("Error al generar la boleta:", error);
     }
-  };
+  };  
 
   const generarBoletaPDF = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     let neto = 0;
