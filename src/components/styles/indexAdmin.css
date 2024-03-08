@@ -12,7 +12,6 @@
   flex-direction: column;
 }
 
-
 .card_admin_encabezado {
   display: flex;
   flex-wrap: wrap;
@@ -42,27 +41,25 @@
   align-items: center; 
   padding: 0px 20px;
 }
+
 .perfil_usuario_h1{
   margin-bottom: 10px; 
 }
+
 .perfil_usuario_lista {
   max-width: 390px;
   display: flex;
   background-color: #E5DBFF;
-  flex-direction: row; /* Cambiado de 'column' a 'row' */
+  flex-direction: row; 
   align-items: flex-start;
   flex-wrap: wrap; 
 }
+
 .perfil_usuario_lista_p {
-  width: 50%; /* Establece el ancho al 50% para mostrar en dos columnas */
-  box-sizing: border-box; /* Incluye el padding y border en el ancho */
-  padding: 5px; /* Añade un poco de espacio entre las columnas */
+  width: 50%; 
+  box-sizing: border-box; 
+  padding: 5px; 
 }
-
-
-
-
-
 
 
 .card_admin_subencabezado{
@@ -94,7 +91,6 @@
   margin: 10px 0;
 }
 
-
 /* Estilos personalizados para el calendario */
 
 .react-calendar {
@@ -115,12 +111,6 @@
 .react-calendar__tile {
   color: #000;
 }
-
-
-
-
-
-
 
 /* cartas de presentacion */
 
@@ -239,7 +229,6 @@
   margin: 20px auto;
 }
 
-/* Media query for screens with a maximum width of 600px */
 @media only screen and (max-width: 600px) {
   .card_admin_encabezado {
     flex-direction: column;
@@ -248,4 +237,58 @@
   .cartas_iconos {
     flex: 0 0 calc(50% - 20px);
   }
+}
+
+.btn-Grafico {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.graficos {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.graficos.mostrar {
+  display: flex;
+}
+
+
+.grafico {
+  margin-bottom: 20px;
+}
+
+.btn-Ocultar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #dc3545; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.icono-grafico {
+  margin-right: 5px; 
+  font-size: 25px;
+  margin-top: -10px;
 }

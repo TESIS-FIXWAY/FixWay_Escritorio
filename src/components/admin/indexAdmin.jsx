@@ -12,6 +12,8 @@ import {
   onSnapshot 
 } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartBar } from '@fortawesome/free-solid-svg-icons';
+import { faChartBar as farChartBar } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
   faUsersGear,
@@ -29,6 +31,7 @@ import {
   faSpinner,
   faRectangleList,
   faIdCard,
+  faChartColumn
 } 
 from '@fortawesome/free-solid-svg-icons';
 import { faAddressCard, faCircleCheck } from '@fortawesome/free-regular-svg-icons';
@@ -49,7 +52,8 @@ library.add(
   faSpinner,
   faRectangleList,
   faCircleCheck,
-  faIdCard
+  faIdCard,
+  faChartColumn
 );
 import GraficoMisBoletas from './graficos/graficoMisBoletas';
 import GraficoMisFacturas from './graficos/graficoMisFacturas';
@@ -60,6 +64,8 @@ const IndexAdmin = () => {
   const [processCount , setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showCharts, setShowCharts] = useState(false);  
 
   useEffect(() => {
     const identifyUser = auth.currentUser;
@@ -118,10 +124,12 @@ const IndexAdmin = () => {
     navigate('/gestionMantencionesAdmin')
   }
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
+  };
+
+  const toggleCharts = () => {
+    setShowCharts(!showCharts);
   };
 
   return (
@@ -138,15 +146,15 @@ const IndexAdmin = () => {
             <h1 className='perfil_usuario_h1'>Perfil de Usuario</h1>
             {user && (
               <div className='perfil_usuario_lista'>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" />Nombre de Usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" /> Nombre de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.nombre} {user.apellido}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" />RUT de Usuario: </p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" /> RUT de Usuario: </p>
                 <p className='perfil_usuario_lista_p'>{user.rut}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" />Correo Electrónico:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" /> Correo Electrónico:</p>
                 <p className='perfil_usuario_lista_p'>{user.email}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" />Dirección de Usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" /> Dirección de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.direccion}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" />Teléfono de Usuario:</p>
+                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" /> Teléfono de Usuario:</p>
                 <p className='perfil_usuario_lista_p'>{user.telefono}</p>
               </div>
             )}
@@ -200,10 +208,22 @@ const IndexAdmin = () => {
               <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-receipt" />              
               <p>Generar factura de vendedor</p>
             </div> 
-          </div>
-          <div>
-            <GraficoMisBoletas />
-            <GraficoMisFacturas />
+            <div className='cartas_iconos' onClick={toggleCharts}>
+              <FontAwesomeIcon
+                icon={showCharts ? farChartBar : faChartBar}
+                className="icono-grafico"
+              />
+              <p>Mostrar Gráficos</p>
+              {showCharts && (
+                <>
+                  <div className={`graficos ${showCharts ? 'mostrar' : ''}`}>
+                    <GraficoMisBoletas className='grafico' />
+                    <GraficoMisFacturas className='grafico' />
+                  </div>
+                  <button onClick={toggleCharts} className='btn-Ocultar'>Ocultar Gráficos</button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
