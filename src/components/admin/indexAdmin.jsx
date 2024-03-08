@@ -8,7 +8,8 @@ import { db, auth } from '../../firebase';
 import { 
   collection,
   getDocs,
-  doc, onSnapshot 
+  doc, 
+  onSnapshot 
 } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -50,6 +51,8 @@ library.add(
   faCircleCheck,
   faIdCard
 );
+import GraficoMisBoletas from './graficos/graficoMisBoletas';
+import GraficoMisFacturas from './graficos/graficoMisFacturas';
 
 const IndexAdmin = () => {
   const navigate = useNavigate();
@@ -197,6 +200,10 @@ const IndexAdmin = () => {
               <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-receipt" />              
               <p>Generar factura de vendedor</p>
             </div> 
+          </div>
+          <div>
+            <GraficoMisBoletas />
+            <GraficoMisFacturas />
           </div>
         </div>
       </div>
