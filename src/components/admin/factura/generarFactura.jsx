@@ -128,13 +128,13 @@ const GenerarFactura = () => {
   
       const invoiceNumber = generateInvoiceNumber();
       const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
-      const fecha = new Date().toLocaleDateString(); // Guarda la fecha actual como un string ISO
+      const fecha = new Date().toLocaleDateString(); 
   
       nuevaFactura = {
         invoiceNumber: invoiceNumber,
         tipo: "Factura",
         total: total.toString(),
-        fecha: fecha, // Guarda la fecha en el objeto de la factura
+        fecha: fecha, 
       };
   
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);

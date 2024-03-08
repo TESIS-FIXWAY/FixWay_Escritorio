@@ -60,7 +60,7 @@ const GraficoMisFacturas = () => {
   return (
     <div>
       <h2>Total de Facturas</h2>
-      <canvas ref={chartRef} width="400" height="200"></canvas>
+      <canvas ref={chartRef} width="500" height="600"></canvas>
     </div>
   );
 };
