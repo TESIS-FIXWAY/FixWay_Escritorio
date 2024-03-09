@@ -99,7 +99,7 @@ const AgregarFactura = () => {
             <div className='formulario_content'>
               <div className='formulario_wrapper'>
                 <div className='formulario_contact'>
-                  <h1 className="formulario_titulo">Agregar Factura</h1>
+                  <h1 className="formulario_titulo">Agregar Factura Proveedor</h1>
                   <form className="formulario_form" onSubmit={handleSubmit}>
                     <p>
                       <label className='label_formulario'>Fecha</label>
