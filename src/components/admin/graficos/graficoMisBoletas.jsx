@@ -79,7 +79,10 @@ const GraficoMisBoletasD3 = () => {
   }, []);
 
   return (
-    <svg ref={svgRef}></svg>
+    <>
+      <h2>Grafico Total Boletas</h2>
+      <svg ref={svgRef}></svg>
+    </>
   );
 };
 

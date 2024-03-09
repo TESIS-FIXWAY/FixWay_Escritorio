@@ -79,7 +79,10 @@ const GraficoMisFacturasD3 = () => {
   }, []);
 
   return (
-    <svg ref={svgRef}></svg>
+    <>
+      <h2>Grafico Total Facturas</h2>
+      <svg ref={svgRef}></svg>
+    </>
   );
 };
 
