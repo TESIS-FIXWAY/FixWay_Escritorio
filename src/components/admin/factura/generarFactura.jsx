@@ -874,6 +874,7 @@ const GenerarFactura = () => {
             <thead>
               <tr>
                 <th>Seleccionar</th>
+                <th>Código Producto</th>
                 <th>Nombre <br /> del Producto</th>
                 <th>Descripción</th>
                 <th>Costo</th>
@@ -891,6 +892,7 @@ const GenerarFactura = () => {
                       checked={productosSeleccionados.some((producto) => producto.id === item.id)}
                     />
                   </td>
+                  <td>{item.codigoProducto}</td>
                   <td>{item.nombreProducto}</td>
                   <td>{item.descripcion}</td>
                   <td>{item.costo}</td>
