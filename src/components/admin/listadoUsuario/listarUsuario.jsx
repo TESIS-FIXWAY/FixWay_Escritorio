@@ -181,7 +181,7 @@ const ListarUsuario = () => {
                           user={user}
                           onSave={(updatedData) => saveEdit(user.id, updatedData)}
                           onCancel={() => cancelEditing()}
-                          onInputChange={(name, value) => handleInputChange(user.id, name, value)}
+                          onInp utChange={(name, value) => handleInputChange(user.id, name, value)}
                         />
                       ) : (
                         <>

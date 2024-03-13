@@ -11,16 +11,51 @@
   z-index: 9999; /* Asegura que esté por encima de otros elementos */
 }
 
-.previsualizar-usuario .editar {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  max-width: 90%;
-  max-height: 90%;
-  overflow: auto;
+.editar {
+  position: absolute;
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  padding: 50px 50px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1; 
+  width: 500px; 
+  height: auto; 
+  left: 50%; 
+  top: 50%; 
+  transform: translate(-50%, -50%);
 }
 
-/* Estilos adicionales para botones, etiquetas, etc. */
-.previsualizar-usuario .editar button {
-  margin-top: 10px;
+.editar p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.etiqueta_editar {
+  display: flex;
+  margin-bottom: 5px;
+  margin: 0px 0px 0px 20px;
+  font-weight: bold;
+}
+
+.editar input {
+  border-radius: 0px;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: none; 
+  border-bottom: 1px solid #ccc; 
+  outline: none; 
+}  
+
+.editar button.guardar {
+  background-color: #3498db; 
+  color: white; 
+  padding: 10x 20px; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  width: 40%;
+  transition: background-color 0.3s ease; 
 }

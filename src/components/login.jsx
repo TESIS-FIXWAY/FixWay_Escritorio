@@ -2,6 +2,7 @@ import './styles/login.css'
 import Car from '../images/AutoSinFondo2.png'; 
 import React, { useState, useEffect } from "react";
 import { db, auth } from '../firebase'
+import { Link } from 'react-router-dom';
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
@@ -120,10 +121,11 @@ const Login = () => {
               </form>
               {error && <p style={{ marginTop: 10, fontSize: 15 }}>{error}</p>}
               <br />
-              <a href="#" className='resetPassword' onClick={handleForgotPassword}>Olvidé mi Contraseña</a>
+              <Link to="/loginRecuperar" className='resetPassword' onClick={handleForgotPassword}>Olvidé mi Contraseña</Link>
             </div>
           </div>
         </div>
+
         <footer className='footer_login'>
           <div className='waves'>
             <div className='wave' id='wave1'></div>
@@ -144,6 +146,7 @@ const Login = () => {
           </ul>         
           <p>©2024 Instituto Inacap | Programadores </p> 
         </footer>
+
       </div>
     </>
   );

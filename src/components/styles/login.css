@@ -20,6 +20,8 @@
   height: 500px;
   transition: all 1s ease;
   margin-bottom: 200px; 
+  position: relative;
+  z-index: 2;
 }
 
 .informacion {
@@ -212,6 +214,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 1;
 }
 
 .menu_footer {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 //componets (vistas)
 import Login from './components/login';
 import LoadingScreen from "./components/loadingScreen";
+
 //admin
 import Admin from './components/admin/admin';
 import IndexAdmin from "./components/admin/indexAdmin";
@@ -23,6 +24,7 @@ import GestionMantenciones from "./components/mecanico/gestionMantenciones";
 import ListarInventarioMecanico from "./components/mecanico/listarInventarioMecanico";
 import GenerarQR from "./components/mecanico/GenerarQR";
 import GenerarListadoMantencion from "./components/mecanico/generarListadoMantencion";
+
 
 import Error from './components/404';
 
