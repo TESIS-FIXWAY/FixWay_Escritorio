@@ -28,6 +28,7 @@ library.add(
   faCheck,
   faXmark
 );
+import PrevisualizarUsuario from './previsualizarUsuario';
 
 const ListarUsuario = () => {
   const [users, setUsers] = useState([]);
@@ -158,107 +159,47 @@ const ListarUsuario = () => {
             <table>
               <thead>
                 <tr>
-                  <th scope="col">Rut</th>
+                  <th scope="col">RUT</th>
                   <th scope="col">Nombre</th>
-                  <th scope="col">Apellido</th>
-                  <th scope="col">Dirección</th>
                   <th scope="col">Teléfono</th>
                   <th scope="col">Correo <br /> Electrónico</th> 
                   <th scope="col">Cargo <br /> de trabajo</th>
-                  <th scope="col">Sueldo</th>
-                  <th scope="col">Fecha <br /> de Ingreso</th>
-                  <th scope='col'>Actualizar</th>
+                  <th scope='col'>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
-                    <td>{user.rut }</td>
-                    <td>{user.nombre}</td>
-                    <td>{user.apellido}</td>
-                    <td>{user.direccion}</td>
+                    <td>{user.rut}</td>
+                    <td>{user.nombre} {user.apellido}</td>
                     <td>{user.telefono}</td>
                     <td>{user.email}</td> 
                     <td>{user.rol}</td>
-                    <td>{formatSalario(user.salario)}</td>
-                    <td>{user.fechaIngreso}</td>
                     <td>
                       {editingUserId === user.id ? (
+                        <PrevisualizarUsuario
+                          user={user}
+                          onSave={(updatedData) => saveEdit(user.id, updatedData)}
+                          onCancel={() => cancelEditing()}
+                          onInputChange={(name, value) => handleInputChange(user.id, name, value)}
+                        />
+                      ) : (
+                        <>
+                          <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon={faUserPen} /> Editar Usuario</button>
+                        </>
+                      )}
+                      {deleteUserId === user.id ? (
                         <>
                           <div className='fondo_no'>
                             <div className='editar'>
-                              <p className='p_editar'>Editar Usuarios</p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar'>Rol</label>
-                                <select className='select_rol'
-                                  value={user.rol}
-                                  onChange={(e) => handleInputChange(user.id, 'rol', e.target.value)}>
-                                  <option value="mecanico" className='p_editar'>Mecánico</option>
-                                  <option value="administrador" className='p_editar'>Administrador</option>
-                                </select>
-                              </p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar' >Nombre</label>
-                                <input
-                                type="text"
-                                value={user.nombre}
-                                onChange={(e) => handleInputChange(user.id, 'nombre', e.target.value)}/>
-                              </p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar' >Apellido</label>
-                                <input
-                                type="text"
-                                value={user.apellido}
-                                onChange={(e) => handleInputChange(user.id, 'apellido', e.target.value)}/>
-                              </p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar' >Teléfono</label>
-                                <input
-                                type="text"
-                                value={user.telefono}
-                                onChange={(e) => handleInputChange(user.id, 'telefono', e.target.value)}/>
-                              </p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar' >Dirección</label>
-                                <input
-                                type="text"
-                                value={user.direccion}
-                                onChange={(e) => handleInputChange(user.id, 'direccion', e.target.value)}/>
-                              </p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar' >Sueldo</label>
-                                <input
-                                type="text"
-                                value={user.salario}
-                                onChange={(e) => handleInputChange(user.id, 'salario', e.target.value)}/>
-                              </p>
-                              <p className='p_editar'>
-                                <label className='etiqueta_editar'>Fecha de Ingreso</label>
-                                <input 
-                                type="date"
-                                value={user.fechaIngreso}
-                                onChange={(e) => handleInputChange(user.id, 'fechaIngreso', e.target.value)} />
-                              </p>
-                              <button className='guardar' onClick={() => saveEdit(user.id, user)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
-                              <button className='cancelar' onClick={() => cancelEditing()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
+                              <p className='p_editar'>¿Estás seguro de que deseas <br /> eliminar este usuario?</p>
+                              <button className='guardar' onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon={faCheck} /></button>
+                              <button className='cancelar' onClick={() => cancelDelete()}><FontAwesomeIcon icon={faXmark} /></button>
                             </div>
                           </div>
                         </>
                       ) : (
-                        <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon="fa-solid fa-user-pen" /></button>
-                      )}
-                      {deleteUserId === user.id ? (
-                        <>
-                        <div className='fondo_no'>
-                          <div className='editar'>
-                          <p className='p_editar'>¿Estás seguro de que deseas <br /> eliminar este usuario?</p>
-                          <button className='guardar' onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
-                          <button className='cancelar' onClick={() => cancelDelete()}><FontAwesomeIcon icon="fa-solid fa-xmark" /></button>
-                          </div>
-                        </div>
-                        </>
-                      ): (
-                        <button onClick={() => startDelete(user.id)}><FontAwesomeIcon icon={faTrash}/></button>
+                        <button onClick={() => startDelete(user.id)}><FontAwesomeIcon icon={faTrash} /></button>
                       )}
                     </td>
                   </tr>

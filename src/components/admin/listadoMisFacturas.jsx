@@ -3,7 +3,7 @@ import Admin from "./admin";
 import { storage } from "../../firebase";
 import { getDownloadURL, getMetadata, ref, listAll } from "firebase/storage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import listadoMisFacturas from '../styles/listadoMisFacturas.css'
+import '../styles/listadoMisFacturas.css'
 
 const ListadoMisFacturas = () => {
   const [facturas, setFacturas] = useState([]);
