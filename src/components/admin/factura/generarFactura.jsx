@@ -129,12 +129,14 @@ const GenerarFactura = () => {
       const invoiceNumber = generateInvoiceNumber();
       const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const fecha = new Date().toLocaleDateString(); 
+      const time = new Date().toLocaleTimeString();
   
       nuevaFactura = {
         invoiceNumber: invoiceNumber,
         tipo: "Factura",
         total: total.toString(),
         fecha: fecha, 
+        time: time
       };
   
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
@@ -407,11 +409,13 @@ const GenerarFactura = () => {
       const totalBoleta = await generarBoletaPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const boletaNumber = generateInvoiceNumber();
       const fecha = new Date().toLocaleDateString(); 
+      const time = new Date().toLocaleTimeString(); // Obtener la hora actual
       nuevaBoleta = {
         boletaNumber: boletaNumber,
         tipo: "Boleta",
         total: totalBoleta,
         fecha: fecha, 
+        time: time // Guardar la hora en la variable time
       };
   
       const nuevaBoletaRef = await addDoc(boletasCollection, nuevaBoleta);
@@ -427,7 +431,7 @@ const GenerarFactura = () => {
     } catch (error) {
       console.error("Error al generar la boleta:", error);
     }
-  };  
+  };   
 
   const generarBoletaPDF = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     let neto = 0;
