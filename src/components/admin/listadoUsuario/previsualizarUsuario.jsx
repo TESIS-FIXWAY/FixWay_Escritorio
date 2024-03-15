@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { updateDoc, doc } from 'firebase/firestore';
 import '../../styles/previsualizarUsuario.css';
 import '../../styles/listarUsuario.css';
 
@@ -83,8 +84,22 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
               onChange={(e) => handleInputChange('fechaIngreso', e.target.value)} />
             </p>
 
-            <button className='guardar' onClick={onSave}><FontAwesomeIcon icon="fa-solid fa-check" /> Guardar</button>
-            <button className='cancelar' onClick={toggleEdit}><FontAwesomeIcon icon="fa-solid fa-xmark" /> Cancelar</button>
+            <button className='guardar' onClick={() => {
+              onSave(user.id, {
+                nombre: user.nombre,
+                apellido: user.apellido,
+                telefono: user.telefono,
+                direccion: user.direccion,
+                salario: user.salario,
+                fechaIngreso: user.fechaIngreso
+              });
+              toggleEdit();
+            }}>
+              <FontAwesomeIcon icon="fa-solid fa-check" /> Guardar
+            </button>
+            <button className='cancelar' onClick={toggleEdit}>
+              <FontAwesomeIcon icon="fa-solid fa-xmark" /> Cancelar
+            </button>
           </>
         ) : (
           <>
@@ -96,8 +111,12 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
             <p className='p_editar'><strong>Dirección:</strong> {user.direccion}</p>
             <p className='p_editar'><strong>Sueldo:</strong> {user.salario}</p>
             <p className='p_editar'><strong>Fecha de Ingreso:</strong> {user.fechaIngreso}</p>
-            <button className='' onClick={handleEdit}><FontAwesomeIcon icon="fa-solid fa-user-pen" /> Editar</button>
-            <button className='cancelar' onClick={onCancel}><FontAwesomeIcon icon="fa-solid fa-xmark" /> Cerrar</button>
+            <button className='' onClick={handleEdit}>
+              <FontAwesomeIcon icon="fa-solid fa-user-pen" /> Editar
+            </button>
+            <button className='cancelar' onClick={onCancel}>
+              <FontAwesomeIcon icon="fa-solid fa-xmark" /> Cerrar
+            </button>
           </>
         )}
       </div>

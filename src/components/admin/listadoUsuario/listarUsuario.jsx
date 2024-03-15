@@ -11,7 +11,7 @@ import {
   deleteDoc
 } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
-import EditarUsuarioModal from './editarUsuarioModal';
+// import EditarUsuarioModal from './editarUsuarioModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
@@ -95,9 +95,8 @@ const ListarUsuario = () => {
 
   const saveEdit = async (userId, updatedData) => {
     try {
-      await updateDoc(doc(db, 'users', userId), updatedData);
-      setEditingUserId(null);
-      setIsEditingModalOpen(false); 
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, updatedData);
       console.log('Usuario actualizado correctamente.');
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
@@ -176,13 +175,13 @@ const ListarUsuario = () => {
                     <td>{user.email}</td> 
                     <td>{user.rol}</td>
                     <td>
-                      {editingUserId === user.id ? (
+                      {editingUserId === user.id ? (     
                         <PrevisualizarUsuario
                           user={user}
-                          onSave={(updatedData) => saveEdit(user.id, updatedData)}
-                          onCancel={() => cancelEditing()}
-                          onInp utChange={(name, value) => handleInputChange(user.id, name, value)}
-                        />
+                          onSave={saveEdit}
+                          onCancel={cancelEditing}
+                          onInputChange={handleInputChange}
+                        />         
                       ) : (
                         <>
                           <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon={faUserPen} /> Editar Usuario</button>
