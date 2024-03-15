@@ -125,11 +125,11 @@ const GenerarFactura = () => {
           console.error("Invalid cantidad value:", producto.cantidad);
         }
       }
-  
+
       const invoiceNumber = generateInvoiceNumber();
       const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
-      const fecha = new Date().toLocaleDateString(); 
-      const time = new Date().toLocaleTimeString();
+      const fecha = new Date().toLocaleDateString().replace(/-/g, '/');
+      const time = new Date().toLocaleTimeString('es-CL', {hour12: false});
   
       nuevaFactura = {
         invoiceNumber: invoiceNumber,
@@ -409,7 +409,7 @@ const GenerarFactura = () => {
       const totalBoleta = await generarBoletaPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const boletaNumber = generateInvoiceNumber();
       const fecha = new Date().toLocaleDateString(); 
-      const time = new Date().toLocaleTimeString(); // Obtener la hora actual
+      const time = new Date().toLocaleTimeString('es-CL', {hour12: false});
       nuevaBoleta = {
         boletaNumber: boletaNumber,
         tipo: "Boleta",
