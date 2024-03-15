@@ -111,7 +111,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
             <p className='p_editar'><strong>Dirección:</strong> {user.direccion}</p>
             <p className='p_editar'><strong>Sueldo:</strong> {user.salario}</p>
             <p className='p_editar'><strong>Fecha de Ingreso:</strong> {user.fechaIngreso}</p>
-            <button className='' onClick={handleEdit}>
+            <button className='guardar' onClick={handleEdit}>
               <FontAwesomeIcon icon="fa-solid fa-user-pen" /> Editar
             </button>
             <button className='cancelar' onClick={onCancel}>

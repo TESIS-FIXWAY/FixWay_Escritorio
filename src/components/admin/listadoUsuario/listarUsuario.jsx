@@ -184,7 +184,7 @@ const ListarUsuario = () => {
                         />         
                       ) : (
                         <>
-                          <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon={faUserPen} /> Editar Usuario</button>
+                          <button onClick={() => startEditing(user.id)}><FontAwesomeIcon icon={faUserPen} /></button>
                         </>
                       )}
                       {deleteUserId === user.id ? (
