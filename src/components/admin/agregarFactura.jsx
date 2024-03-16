@@ -64,32 +64,69 @@ const AgregarFactura = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!state.fecha || !state.proveedor || !state.detalle) {
+  //     setMensaje('Datos incompletos');
+  //   } else {
+  //     try {
+  //       const timestampNow = serverTimestamp();
+  //       await handleUpload();
+  //       const storageRef = ref(storage, `facturas/${file.name}`);
+  //       const downloadURL = await getDownloadURL(storageRef);
+  //       const docRef = await addDoc(collection(db, "facturas"), {
+  //         fecha: state.fecha,
+  //         proveedor: state.proveedor,
+  //         detalle: state.detalle,
+  //         timestamp: timestampNow,
+  //         url: downloadURL,
+  //       });
+  //       console.log("Documento escrito con ID: ", docRef.id);
+  //       setMensaje('Se ha guardado correctamente');
+  //     } catch (e) {
+  //       console.error("Error al agregar el documento: ", e);
+  //     } finally {
+  //       setState({ ...state, fecha: '', proveedor: '', detalle: '' });
+  //     }
+  //   }
+  // }
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!state.fecha || !state.proveedor || !state.detalle) {
-      setMensaje('Datos incompletos');
-    } else {
-      try {
-        const timestampNow = serverTimestamp();
-        await handleUpload();
-        const storageRef = ref(storage, `facturas/${file.name}`);
-        const downloadURL = await getDownloadURL(storageRef);
-        const docRef = await addDoc(collection(db, "facturas"), {
-          fecha: state.fecha,
-          proveedor: state.proveedor,
-          detalle: state.detalle,
-          timestamp: timestampNow,
-          url: downloadURL,
-        });
-        console.log("Documento escrito con ID: ", docRef.id);
-        setMensaje('Se ha guardado correctamente');
-      } catch (e) {
-        console.error("Error al agregar el documento: ", e);
-      } finally {
-        setState({ ...state, fecha: '', proveedor: '', detalle: '' });
+    try {
+      e.preventDefault();
+      const { fecha, proveedor, detalle } = state;
+      if (!fecha || !proveedor || !detalle) {
+        setMensaje('Datos incompletos');
+        return;
       }
+
+      const timestampNow = serverTimestamp();
+      await handleUpload();
+      if (!file) {
+        setMensaje('Error al subir el archivo');
+        return;
+      }
+      
+      const storageRef = ref(storage, `facturas/${file.name}`);
+      const downloadURL = await getDownloadURL(storageRef);
+      const docRef = await addDoc(collection(db, "facturas"), {
+        fecha,
+        proveedor,
+        detalle,
+        timestamp: timestampNow,
+        url: downloadURL,
+      });
+  
+      console.log("Documento escrito con ID:", docRef.id);
+      setMensaje('Se ha guardado correctamente');
+    } catch (error) {
+      console.error("Error al agregar el documento:", error);
+      setMensaje('Ha ocurrido un error al guardar');
+    } finally {
+      setState({ fecha: '', proveedor: '', detalle: '' });
     }
   }
+  
 
   return (
     <>
