@@ -130,13 +130,14 @@ const GenerarFactura = () => {
       const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const fecha = new Date().toLocaleDateString().replace(/-/g, '/');
       const time = new Date().toLocaleTimeString('es-CL', {hour12: false});
-  
+      const timestamp = new Date().getTime();
       nuevaFactura = {
         invoiceNumber: invoiceNumber,
         tipo: "Factura",
         total: total.toString(),
         fecha: fecha, 
-        time: time
+        time: time,
+        timestamp: timestamp
       };
   
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
@@ -418,12 +419,14 @@ const GenerarFactura = () => {
       const boletaNumber = generateInvoiceNumber();
       const fecha = new Date().toLocaleDateString().replace(/-/g, '/');
       const time = new Date().toLocaleTimeString('es-CL', {hour12: false});
+      const timestamp = new Date().getTime();
       nuevaBoleta = {
         boletaNumber: boletaNumber,
         tipo: "Boleta",
         total: totalBoleta,
         fecha: fecha, 
-        time: time // Guardar la hora en la variable time
+        time: time, 
+        timestamp: timestamp
       };
   
       const nuevaBoletaRef = await addDoc(boletasCollection, nuevaBoleta);
