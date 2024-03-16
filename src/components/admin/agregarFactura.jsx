@@ -64,33 +64,6 @@ const AgregarFactura = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!state.fecha || !state.proveedor || !state.detalle) {
-  //     setMensaje('Datos incompletos');
-  //   } else {
-  //     try {
-  //       const timestampNow = serverTimestamp();
-  //       await handleUpload();
-  //       const storageRef = ref(storage, `facturas/${file.name}`);
-  //       const downloadURL = await getDownloadURL(storageRef);
-  //       const docRef = await addDoc(collection(db, "facturas"), {
-  //         fecha: state.fecha,
-  //         proveedor: state.proveedor,
-  //         detalle: state.detalle,
-  //         timestamp: timestampNow,
-  //         url: downloadURL,
-  //       });
-  //       console.log("Documento escrito con ID: ", docRef.id);
-  //       setMensaje('Se ha guardado correctamente');
-  //     } catch (e) {
-  //       console.error("Error al agregar el documento: ", e);
-  //     } finally {
-  //       setState({ ...state, fecha: '', proveedor: '', detalle: '' });
-  //     }
-  //   }
-  // }
-
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();

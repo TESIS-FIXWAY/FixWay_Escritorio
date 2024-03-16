@@ -173,7 +173,15 @@ const GenerarFactura = () => {
     const today = new Date();
     const dateString = today.toLocaleDateString();
     pdf.setFontSize(10);
-    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 40);
+    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 42);
+
+    const hour = String(today.getHours()).padStart(2, '0');
+    const minute = String(today.getMinutes()).padStart(2, '0');
+    const second = String(today.getSeconds()).padStart(2, '0');
+    const dateStringHora = `${hour}:${minute}:${second}`
+    const dateXH = pdf.internal.pageSize.getWidth() - 45;
+    const userYX = imgY + imgHeight + 8;
+    pdf.text(`Hora: ${dateStringHora}`, dateXH, userYX);
 
     pdf.setFontSize(10);
     const tipoPagoText = `Tipo de Pago: ${tipoPago}`;
@@ -408,7 +416,7 @@ const GenerarFactura = () => {
   
       const totalBoleta = await generarBoletaPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const boletaNumber = generateInvoiceNumber();
-      const fecha = new Date().toLocaleDateString(); 
+      const fecha = new Date().toLocaleDateString().replace(/-/g, '/');
       const time = new Date().toLocaleTimeString('es-CL', {hour12: false});
       nuevaBoleta = {
         boletaNumber: boletaNumber,

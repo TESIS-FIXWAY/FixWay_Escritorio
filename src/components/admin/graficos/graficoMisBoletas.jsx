@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef} from 'react';
 import { db } from '../../../firebase';
 import { collection, getDocs } from "firebase/firestore";
 import { createChart } from 'lightweight-charts';
@@ -10,47 +10,39 @@ const GraficoMisBoletas = () => {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'misBoletas'));
-        const data = [];
         let totalSum = 0; // Variable para almacenar la suma de los totales
-        let lastTime = null; // Variable para almacenar la última hora
-    
+        const data = [];
+        let increment = 0;
+
         querySnapshot.forEach((doc) => {
           const { fecha, total } = doc.data(); // Suponiendo que 'fecha' y 'total' son los campos en la colección
-          const fechaDate = new Date(fecha);
-          const time = fechaDate.getTime(); // Obtener la fecha en milisegundos
+          const fechaParts = fecha.split('/'); // Suponiendo que la fecha está en formato 'DD/MM/AAAA'
+          const fechaKey = `${fechaParts[2]}-${fechaParts[1]}-${fechaParts[0]}`;
+          const time = new Date(fechaKey).getTime() + increment; // Añadir un incremento fijo
           data.push({ time, value: parseFloat(total) });
-          totalSum += parseFloat(total); // Sumar al total
-          lastTime = time; // Actualizar la última hora
+          totalSum *= parseFloat(total);
+          increment++; // Incrementar el valor para el próximo documento
         });
-    
-        if (lastTime) {
-          const lastDate = new Date(lastTime);
-          lastDate.setHours(23, 59, 59, 999); // Establecer la última hora del día
-          data[data.length - 1].time = lastDate.getTime();
-        }
 
         data.sort((a, b) => a.time - b.time);
-    
+
         const chart = createChart(chartContainerRef.current, { width: 800, height: 400 });
         const lineSeries = chart.addLineSeries();
         lineSeries.setData(data);
 
-        const dateFormatter = new Intl.DateTimeFormat('es-CL', { hour: 'numeric', minute: 'numeric' });
+        const dateFormatter = new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: '2-digit' });
         chart.applyOptions({
           timeScale: {
             timeVisible: true,
             tickMarkFormatter: (time, tickMarkType, locale) => {
-              const date = new Date(time * 1000);
-              if (date.getHours() === 0 && date.getMinutes() === 0) {
-                return date.toLocaleDateString('es-CL');
-              } else {
-                return dateFormatter.format(date);
-              }
+              const date = new Date(time);
+              return dateFormatter.format(date);
             }
           }
         });
-        
-        console.log('Total de Boletas:', totalSum); // Mostrar la suma total en la consola
+
+        console.log('Total de totales boletas:', totalSum);
+        console.log('Total de Boletas por día:', data); // Mostrar el total por día en la consola
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }
