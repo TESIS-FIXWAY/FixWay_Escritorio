@@ -2,6 +2,7 @@ import React, { useEffect, useRef} from 'react';
 import { db } from '../../../firebase';
 import { collection, getDocs } from "firebase/firestore";
 import { createChart } from 'lightweight-charts';
+import '../../styles/graficos.css'
 
 const GraficoMisFacturas = () => {
   const chartContainerRef = useRef(null);
@@ -52,10 +53,10 @@ const GraficoMisFacturas = () => {
   }, []);
 
   return (
-    <>
-      <h1>Grafico Mis Facturas</h1>
-      <div ref={chartContainerRef}></div>
-    </>
+    <div className='grafico-container'>
+      <div className='grafico' ref={chartContainerRef}></div>
+      <h1 className='titulo-Grafico'>Grafico Mis Facturas</h1>
+    </div>
   );
 };
 

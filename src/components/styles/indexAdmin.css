@@ -223,11 +223,6 @@
   margin-bottom: 10px;
  }
 
-.grafico_barras {
-  width: 100%;
-  max-width: 800px;
-  margin: 20px auto;
-}
 
 @media only screen and (max-width: 600px) {
   .card_admin_encabezado {
@@ -268,7 +263,6 @@
 .graficos.mostrar {
   display: flex;
 }
-
 
 .grafico {
   margin-bottom: 20px;

@@ -1,0 +1,21 @@
+.grafico-container {
+  position: relative;
+}
+
+.titulo-Grafico {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  background-color: white; /* Asegura que el título sea legible sobre el gráfico */
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.grafico {
+  width: 100%;
+  height: 400px; /* Altura del gráfico */
+  margin-top: 40px; /* Espacio entre el título y el gráfico */
+}
