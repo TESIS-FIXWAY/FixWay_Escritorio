@@ -128,7 +128,7 @@ const GenerarFactura = () => {
 
       const invoiceNumber = generateInvoiceNumber();
       const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
-      const fecha = new Date().toLocaleDateString().replace(/-/g, '/');
+      const fecha = obtenerFechaActual();
       const time = new Date().toLocaleTimeString('es-CL', {hour12: false});
       const timestamp = new Date().getTime();
       nuevaFactura = {
@@ -154,7 +154,16 @@ const GenerarFactura = () => {
     } catch (error) {
       console.error("Error al generar la factura:", error);
     }
-  };  
+  };
+
+// Función para obtener la fecha actual en el formato DD/MM/AA
+  const obtenerFechaActual = () => {
+    const fechaActual = new Date();
+    const dia = fechaActual.getDate().toString().padStart(2, '0');
+    const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Sumar 1 porque los meses van de 0 a 11
+    const año = fechaActual.getFullYear().toString().slice(-2); // Obtener solo los últimos dos dígitos del año
+    return `${dia}/${mes}/${año}`;
+  }
 
   const generarPDF = async (productosSeleccionados, totalSinIVA, descuentoAplicado) => {
     const pdf = new jsPDF();
@@ -417,7 +426,7 @@ const GenerarFactura = () => {
   
       const totalBoleta = await generarBoletaPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const boletaNumber = generateInvoiceNumber();
-      const fecha = new Date().toLocaleDateString().replace(/-/g, '/');
+      const fecha = obtenerFechaActual();
       const time = new Date().toLocaleTimeString('es-CL', {hour12: false});
       const timestamp = new Date().getTime();
       nuevaBoleta = {
