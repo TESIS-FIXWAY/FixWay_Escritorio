@@ -11,7 +11,6 @@ import {
   deleteDoc
 } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
-// import EditarUsuarioModal from './editarUsuarioModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
