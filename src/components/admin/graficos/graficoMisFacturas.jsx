@@ -1,4 +1,4 @@
-import React, { useEffect, useRef} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { db } from '../../../firebase';
 import { collection, getDocs } from "firebase/firestore";
 import { createChart } from 'lightweight-charts';
@@ -6,44 +6,32 @@ import '../../styles/graficos.css'
 
 const GraficoMisFacturas = () => {
   const chartContainerRef = useRef(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'misFacturas'));
-        let totalSum = 0; // Variable para almacenar la suma de los totales
-        const data = [];
-        let increment = 0;
+        const facturasPorFecha = {};
 
         querySnapshot.forEach((doc) => {
-          const { fecha, total } = doc.data(); // Suponiendo que 'fecha' y 'total' son los campos en la colección
-          const fechaParts = fecha.split('/'); // Suponiendo que la fecha está en formato 'DD/MM/AAAA'
-          const fechaKey = `${fechaParts[2]}-${fechaParts[1]}-${fechaParts[0]}`;
-          const time = new Date(fechaKey).getTime() + increment; // Añadir un incremento fijo
-          data.push({ time, value: parseFloat(total) });
-          totalSum *= parseFloat(total);
-          increment++; // Incrementar el valor para el próximo documento
-        });
-
-        data.sort((a, b) => a.time - b.time);
-
-        const chart = createChart(chartContainerRef.current, { width: 800, height: 400 });
-        const lineSeries = chart.addLineSeries();
-        lineSeries.setData(data);
-
-        const dateFormatter = new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: '2-digit' });
-        chart.applyOptions({
-          timeScale: {
-            timeVisible: true,
-            tickMarkFormatter: (time, tickMarkType, locale) => {
-              const date = new Date(time);
-              return dateFormatter.format(date);
-            }
+          const { fecha } = doc.data();
+          if (facturasPorFecha[fecha]) {
+            facturasPorFecha[fecha]++;
+          } else {
+            facturasPorFecha[fecha] = 1;
           }
         });
 
-        console.log('Total de totales Facturas:', totalSum);
-        console.log('Total de Facturas por día:', data); // Mostrar el total por día en la consola
+        const sortedDates = Object.keys(facturasPorFecha).sort((a, b) => {
+          const dateA = convertirFecha(a);
+          const dateB = convertirFecha(b);
+          return dateA - dateB;
+        });
+
+        const chartData = sortedDates.map((fecha) => ({ time: convertirFecha(fecha), value: facturasPorFecha[fecha] }));
+
+        setData(chartData);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }
@@ -51,6 +39,31 @@ const GraficoMisFacturas = () => {
 
     fetchData();    
   }, []);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      const chart = createChart(chartContainerRef.current, { width: 800, height: 400 });
+      const lineSeries = chart.addLineSeries();
+      lineSeries.setData(data);
+
+      const dateFormatter = new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      chart.applyOptions({
+        timeScale: {
+          timeVisible: true,
+          tickMarkFormatter: (time, tickMarkType, locale) => {
+            const date = new Date(time);
+            return dateFormatter.format(date);
+          }
+        }
+      });
+    }
+  }, [data]);
+
+  const convertirFecha = (fecha) => {
+    const partes = fecha.split('/');
+    const anio = partes[2].length === 4 ? partes[2] : `20${partes[2]}`; 
+    return new Date(`${anio}-${partes[1]}-${partes[0]}`).getTime();
+  };
 
   return (
     <div className='grafico-container'>
@@ -61,4 +74,3 @@ const GraficoMisFacturas = () => {
 };
 
 export default GraficoMisFacturas;
-
