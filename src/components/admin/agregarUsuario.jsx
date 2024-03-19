@@ -8,7 +8,11 @@ import {
 import { 
   doc, 
   setDoc, 
-  onSnapshot 
+  onSnapshot,
+  collection,
+  getDocs,
+  query,
+  where
 } from 'firebase/firestore';
 import { db, auth } from '../../firebase'; 
 import Admin from './admin';
@@ -40,11 +44,23 @@ const AgregarUsuario = () => {
     }
   };
 
+  const checkDuplicateRut = async (rut) => {
+    const usersRef = collection(db, 'users');
+    const snapshot = await getDocs(query(usersRef, where('rut', '==', rut)));
+    return !snapshot.empty;
+  };  
+
   const submitHandler = async (e) => {
     e.preventDefault();
   
     if (validarCampos()) {
       const rut = e.target.elements.rut.value;
+      const isDuplicateRut = await checkDuplicateRut(rut);
+      if (isDuplicateRut) {
+        setMensajeValidacion('El Rut ya está registrado en otro usuario');
+        return;
+      }
+  
       const rol = e.target.elements.rol.value;
       const nombre = e.target.elements.nombre.value;
       const apellido = e.target.elements.apellido.value;
@@ -54,7 +70,7 @@ const AgregarUsuario = () => {
       const password = e.target.elements.password.value;
       const salario = e.target.elements.salario.value;
       const fechaIngreso = e.target.elements.fechaIngreso.value;
-
+  
       try {
         const currentUser = auth.currentUser;
         const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
@@ -73,9 +89,9 @@ const AgregarUsuario = () => {
         });
   
         setMensaje('Usuario añadido Correctamente');
-
+  
         await logoutAndReauthenticate();
-
+  
         clearFormFields();
         setMensajeValidacion(null);
         setMensajeRut(null);
@@ -88,7 +104,7 @@ const AgregarUsuario = () => {
       }
     }
   };
-
+  
   const validarRutOnChange = () => {
     const rut = document.getElementById('rut').value;
     const validador = new validadorRUT(rut);
