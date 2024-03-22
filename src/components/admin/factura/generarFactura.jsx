@@ -126,6 +126,8 @@ const GenerarFactura = () => {
         }
       }
 
+      await batch.commit();
+
       const invoiceNumber = generateInvoiceNumber();
       const total = await generarPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const fecha = obtenerFechaActual();
@@ -424,6 +426,8 @@ const GenerarFactura = () => {
         }
       }
   
+      await batch.commit();
+      
       const totalBoleta = await generarBoletaPDF(productosSeleccionados, totalSinIVA, descuentoAplicado);
       const boletaNumber = generateInvoiceNumber();
       const fecha = obtenerFechaActual();
