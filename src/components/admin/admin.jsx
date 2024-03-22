@@ -70,6 +70,13 @@ const Admin = () => {
     event.preventDefault(); // Prevent default link behavior
     setIsSubMenuOpen(!isSubMenuOpen);
   };
+
+  const toggleSubMenu1 = () => {
+    setIsSubMenuOpen1(!isSubMenuOpen1);
+  };
+  const toggleSubMenu2 = () => {
+    setIsSubMenuOpen2(!isSubMenuOpen2);
+  };
   
   return (
     <>
@@ -111,8 +118,8 @@ const Admin = () => {
 <hr />
             <div
                 className={isSubMenuOpen ? 'link active' : 'link'}
-                onMouseEnter={() => setIsSubMenuOpen(true)}
-                onMouseLeave={() => setIsSubMenuOpen(false)}
+                onMouseEnter={toggleSubMenu1}
+                onMouseLeave={toggleSubMenu1}
             >
                 <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
                 <span className='link_name'>Gestionar Usuarios</span>
@@ -126,13 +133,13 @@ const Admin = () => {
                         <FontAwesomeIcon className='i' icon="fa-solid fa-user-plus" />
                         <span className='link_name'>Crear Usuarios</span>
                     </Link>
+                    <hr />
                     <Link to="/listarUsuario" className={`link ${window.location.pathname === '/listarUsuario' ? 'active' : ''}`}>
                         <FontAwesomeIcon className='i' icon="fa-solid fa-users" />
                         <span className='link_name'>Listar Usuarios</span>
                     </Link>
                 </div>
             </div>
-
 <hr />
 
             <Link to="/gestionMantencionesAdmin" className={`link ${window.location.pathname === '/gestionMantencionesAdmin' ? 'active' : ''}`}>
@@ -142,8 +149,8 @@ const Admin = () => {
 <hr />
             <div
                 className={isSubMenuOpen ? 'link active' : 'link'}
-                onMouseEnter={() => setIsSubMenuOpen(true)}
-                onMouseLeave={() => setIsSubMenuOpen(false)}
+                onMouseEnter={toggleSubMenu2}
+                onMouseLeave={toggleSubMenu2}
             >
                 <FontAwesomeIcon className='i' icon="fa-solid fa-user" />
                 <span className='link_name'>Facturas</span>
@@ -153,34 +160,27 @@ const Admin = () => {
                     />
                 </div>
                 <div className="sub-menu">
+                  <Link to="/generarFactura" className={`link ${window.location.pathname === '/generarFactura' ? 'active' : ''}`}>
+                    <FontAwesomeIcon className='i' icon="fa-solid fa-receipt" />              
+                    <span className='link_name'>Generar Factura de Vendedor</span>
+                  </Link>
+                  <hr />
                   <Link to="/agregarFactura" className={`link ${window.location.pathname === '/agregarFactura' ? 'active' : ''}`}>
                     <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" />              
                     <span className='link_name'>Agregar Factura de Proveedor</span>
                   </Link>
+                  <hr />
                   <Link to="/listadoFacturas" className={`link ${window.location.pathname === '/listadoFacturas' ? 'active' : ''}`}>
                     <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
                     <span className='link_name'>Listar Facturas de Proveedores</span>
                   </Link>
+                  <hr />
                   <Link to="/listadoMisFacturas" className={`link ${window.location.pathname === '/listadoMisFacturas' ? 'active' : ''}`}>
                     <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
                     <span className='link_name'>Listar de Mis Facturas <br /> / Boletas</span>
                   </Link>
                 </div>
             </div>
-
-            <Link to="/agregarFactura" className={`link ${window.location.pathname === '/agregarFactura' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-file-circle-plus" />              
-              <span className='link_name'>Agregar Factura de Proveedor</span>
-            </Link>
-            <Link to="/listadoFacturas" className={`link ${window.location.pathname === '/listadoFacturas' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
-              <span className='link_name'>Listar Facturas de Proveedores</span>
-            </Link>
-            <Link to="/listadoMisFacturas" className={`link ${window.location.pathname === '/listadoMisFacturas' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-clipboard-list" />
-              <span className='link_name'>Listar de Mis Facturas <br /> / Boletas</span>
-            </Link>
-
 <hr />
             <Link to="/agregarInventario" className={`link ${window.location.pathname === '/agregarInventario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-cart-flatbed" />
@@ -189,11 +189,6 @@ const Admin = () => {
             <Link to="/listarInventario" className={`link ${window.location.pathname === '/listarInventario' ? 'active' : ''}`}>
               <FontAwesomeIcon className='i' icon="fa-solid fa-boxes-stacked" />
               <span className='link_name'>Listar Inventario</span>
-            </Link>
-            <hr />
-            <Link to="/generarFactura" className={`link ${window.location.pathname === '/generarFactura' ? 'active' : ''}`}>
-              <FontAwesomeIcon className='i' icon="fa-solid fa-receipt" />              
-              <span className='link_name'>Generar Factura de Vendedor</span>
             </Link>
           </nav>
           <label for="btn-menu"><FontAwesomeIcon icon="fa-solid fa-arrow-left" /></label>
