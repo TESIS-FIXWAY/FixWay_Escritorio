@@ -15,7 +15,7 @@ const GenerarListadoMantencion = () => {
   useEffect(() => {
     const fetchMantenciones = async () => {
       try {
-        const mantencionesCollection = collection(db, 'mantenciones');
+        const mantencionesCollection = collection(db, 'historialMantencion');
         const snapshot = await getDocs(mantencionesCollection);
         const mantencionesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setMantenciones(mantencionesData);
