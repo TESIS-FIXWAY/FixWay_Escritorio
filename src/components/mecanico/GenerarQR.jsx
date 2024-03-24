@@ -22,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataRef = collection(db, 'mantenciones');
+      const dataRef = collection(db, 'historialMantencion');
 
       try {
         const querySnapshot = await getDocs(dataRef);
