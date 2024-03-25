@@ -82,7 +82,7 @@ const IndexAdmin = () => {
     
         const inProcessMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'en proceso');
         const pendingMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'pendiente');
-        const deliveredMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'entregados');
+        const deliveredMaintenance = maintenanceSnapshot.docs.filter(doc => doc.data().estado === 'terminado');
     
         const inProcessCount = inProcessMaintenance.length;
         const inPendingCount = pendingMaintenance.length;
