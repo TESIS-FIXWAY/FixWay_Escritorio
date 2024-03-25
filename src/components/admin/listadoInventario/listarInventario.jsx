@@ -227,6 +227,7 @@ const ListarInventario = () => {
                                   <option value="Sistema de Encendido">Sistema de Encendido</option>
                                   <option value="Inspección de Carrocería y Pintura">Inspección de Carrocería y Pintura</option>
                                   <option value="Sistema de Transmisión">Sistema de Transmisión</option>
+                                  <option value="Sistema de Refrigeración">Sistema de Refrigeración</option>
                                 </select>
                               </p>
                               <p className="p_editar">
