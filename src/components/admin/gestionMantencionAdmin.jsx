@@ -36,7 +36,7 @@ const GestionMantencionesAdmin = () => {
         const sortedTasks = {
           'pendiente': [],
           'en proceso': [],
-          'entregados': [],
+          'terminado': [],
         };
 
         allTasksData.forEach((task) => {
@@ -45,7 +45,7 @@ const GestionMantencionesAdmin = () => {
 
         setBeginTask(sortedTasks['pendiente']);
         setInProgressTasks(sortedTasks['en proceso']);
-        setCompletedTasks(sortedTasks['entregados']);
+        setCompletedTasks(sortedTasks['terminado']);
       });
 
       return () => unsubscribe();
