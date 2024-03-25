@@ -8,6 +8,7 @@ import {
   query,
   doc,
   updateDoc,
+  setDoc
 } from 'firebase/firestore';
 
 const GestionMantenciones = () => {
@@ -67,26 +68,29 @@ const GestionMantenciones = () => {
   useEffect(() => {
     fetchData();
   }, [beginTask, inProgressTasks, completedTasks]);
-
+  
   const updateTaskStatus = async (task, newStatus) => {
     const taskRef = doc(db, 'mantenciones', task.id);
   
     try {
       await updateDoc(taskRef, { estado: newStatus });
   
+      const removeFrom = (tasks, id) => tasks.filter((t) => t.id !== id);
+      const addTo = (tasks, task) => [...tasks, task];
+  
       switch (newStatus) {
         case 'en proceso':
-          setBeginTask((prevTodoTasks) => prevTodoTasks.filter((t) => t.id !== task.id));
-          if (!inProgressTasks.some((t) => t.id === task.id)) {
-            setInProgressTasks((prevInProgressTasks) => [...prevInProgressTasks, task]);
-          }
+          setBeginTask((prevTodoTasks) => removeFrom(prevTodoTasks, task.id));
+          setInProgressTasks((prevInProgressTasks) => addTo(prevInProgressTasks, task));
           break;
         case 'terminado':
-          setInProgressTasks((prevInProgressTasks) =>
-            prevInProgressTasks.filter((t) => t.id !== task.id)
-          );
-          if (!completedTasks.some((t) => t.id === task.id)) {
-            setCompletedTasks((prevCompletedTasks) => [...prevCompletedTasks, task]);
+          // Actualizar el estado en el historialMantenimiento sin eliminarlo
+          const historialRef = doc(db, 'historialMantencion', task.patente);
+          await setDoc(historialRef, { ...task, estado: newStatus });
+  
+          // Mover la tarea a inProgressTasks solo si no está ya en ese estado
+          if (!inProgressTasks.some((t) => t.id === task.id)) {
+            setInProgressTasks((prevInProgressTasks) => addTo(prevInProgressTasks, task));
           }
           break;
         default:
@@ -96,7 +100,7 @@ const GestionMantenciones = () => {
       console.error('Error updating task status:', error);
     }
   };
-
+  
   const handleTaskExpand = (taskId) => {
     setExpandedTask((prevExpandedTask) =>
       prevExpandedTask === taskId ? null : taskId
@@ -111,7 +115,6 @@ const GestionMantenciones = () => {
           <div className="container_mantencion_titulo">
             <h1>Gestión de Mantenciones</h1>
           </div>
-
           <div className="container_mantencion">
             <div className="container_mantencion_tareas">
               <div className="container_mantencion_tareas_titulos">
