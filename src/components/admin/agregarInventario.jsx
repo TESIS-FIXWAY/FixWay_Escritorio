@@ -130,6 +130,8 @@ const AgregarInventario = () => {
                       <option value="Inspección de Carrocería y Pintura">Inspección de Carrocería y Pintura</option>
                       <option value="Sistema de Transmisión">Sistema de Transmisión</option>
                       <option value="Sistema de Refrigeración">Sistema de Refrigeración</option>
+                      <option value="Accesorios y Personalización">Accesorios y Personalización</option>
+                      <option value="Herramientas y Equipos">Herramientas y Equipos</option>
                     </select>
                   </p>
                   <p>
