@@ -1,4 +1,6 @@
 import '../styles/indexAdmin.css';
+import banana from '../styles/indexImages/banana1.png';
+
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -134,8 +136,13 @@ const IndexAdmin = () => {
 
   return (
     <>
-      <Admin />
+    <Admin/>
+
+<br />
       <div className="tabla_listar">
+
+        <img src={banana} alt="Descripción de la imagen" />
+
         <div className='card_admin_encabezado'>
           <div className='card_admin_calendario'>
             <div className='calendario'>
@@ -227,6 +234,7 @@ const IndexAdmin = () => {
           </div>
         </div>
       </div>
+
     </>
   );
 };
