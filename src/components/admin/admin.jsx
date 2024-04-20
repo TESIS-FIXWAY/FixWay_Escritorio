@@ -67,7 +67,7 @@ const Admin = () => {
   };
 
   const toggleSubMenu = (event) => {
-    event.preventDefault(); // Prevent default link behavior
+    event.preventDefault(); 
     setIsSubMenuOpen(!isSubMenuOpen);
   };
 
@@ -90,7 +90,7 @@ const Admin = () => {
                   </Link>
               </div>
               <div className='logo'>
-                  <h1>Hans Motors</h1>
+                  <h1>Setore</h1>
               </div>
               <div className="reloj">
                   <p>{formatTime(currentTime)}</p>
@@ -103,10 +103,8 @@ const Admin = () => {
               <FontAwesomeIcon className='i' icon={['fas', 'arrow-right-from-bracket']} rotation={180} />
           </button>
       </header>
-
       <div className='capa'></div>
         <input type='checkbox' id='btn-menu'></input>
-
       <div className='contenedor-menu'>
           <div className='cont_menu'>
             <nav>

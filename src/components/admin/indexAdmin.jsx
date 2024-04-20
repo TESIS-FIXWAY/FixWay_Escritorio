@@ -138,11 +138,8 @@ const IndexAdmin = () => {
     <>
     <Admin/>
 
-<br />
+      <br />
       <div className="tabla_listar">
-
-        <img src={banana} alt="Descripción de la imagen" />
-
         <div className='card_admin_encabezado'>
           <div className='card_admin_calendario'>
             <div className='calendario'>
@@ -234,7 +231,6 @@ const IndexAdmin = () => {
           </div>
         </div>
       </div>
-
     </>
   );
 };
