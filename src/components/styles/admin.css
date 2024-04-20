@@ -126,8 +126,10 @@ body{
     left: 0;
     width: 30%;
     height: calc(100% - 80px); /* Ajusta la altura para que ocupe el espacio restante */
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Agrega una transición para la opacidad */
     z-index: 0; /* Asegura que el menú esté por debajo del encabezado */
+    opacity: 1; /* Establece la opacidad inicial */
+
 }
 
 #btn-menu:checked ~ .contenedor-menu {
@@ -252,19 +254,23 @@ body{
 
 
 /*Fin de Menù lateral*/
-
+/* Oculta completamente el menú lateral cuando el menú está oculto */
+#btn-menu:not(:checked) ~ .contenedor-menu {
+    transform: translateX(-100%);
+    opacity: 0;
+}
 
 .capa {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: calc(100% - 250px); /* Ajusta el ancho de la capa para que no cubra el menú */
     height: 100%;
     background: rgba(0, 0, 0, 0.5); 
-    z-index: 99; 
+    z-index: 1; 
     display: none; 
   }
-  
+
 #btn-menu:checked ~ .capa {
 display: block;
 }
