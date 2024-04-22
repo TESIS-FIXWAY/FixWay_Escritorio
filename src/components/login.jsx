@@ -1,11 +1,15 @@
-import './styles/login.css'
-import Car from '../images/AutoSinFondo2.png'; 
+import "./styles/login.css";
+import Car from "../images/AutoSinFondo2.png";
 import React, { useState, useEffect } from "react";
-import { db, auth } from '../firebase'
-import { Link } from 'react-router-dom';
+import { db, auth } from "../firebase";
+import { Link } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState(null);
@@ -23,7 +27,7 @@ const Login = () => {
     });
 
     return () => {
-      unsubscribe(); 
+      unsubscribe();
     };
   }, []);
 
@@ -59,56 +63,61 @@ const Login = () => {
 
   async function handleForgotPassword() {
     const email = prompt("Ingresa tu correo electrónico:");
-  
+
     try {
       await sendPasswordResetEmail(auth, email);
       setResetPasswordSent(true);
     } catch (error) {
-      console.error("Error al enviar el correo electrónico de restablecimiento de contraseña:", error);
-      setError("Error al enviar el correo electrónico de restablecimiento de contraseña.");
+      console.error(
+        "Error al enviar el correo electrónico de restablecimiento de contraseña:",
+        error
+      );
+      setError(
+        "Error al enviar el correo electrónico de restablecimiento de contraseña."
+      );
     }
   }
   useEffect(() => {
     if (user) {
-      user.rol === 'administrador' ? navigate("/indexAdmin") : navigate("/indexMecanico");
+      user.rol === "administrador"
+        ? navigate("/indexAdmin")
+        : navigate("/indexMecanico");
     }
   }, [user, navigate]);
 
   return (
     <>
-      <div className='body'>
+      <div className="body">
         <div className="container_form">
           <div className="informacion">
             <div className="info">
               <h2>Bienvenido</h2>
               <br />
               <br />
-              <img src={Car} alt="logo" className='imagen' />
+              <img src={Car} alt="logo" className="imagen" />
               <br />
               <br />
-              <p>Taller Mecánico <br /> Hans Motors</p>
+              <p>
+                Taller Mecánico <br /> Setore
+              </p>
             </div>
           </div>
           <div className="form-informacion">
             <div className="form-info-childs">
               <h2>Login</h2>
               <form className="formulario" onSubmit={handleSumit}>
-                <label className='label-login'>
-                  <i className='bx bx-envelope'></i>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    id='email'
-                  />
+                <label className="label-login">
+                  <i className="bx bx-envelope"></i>
+                  <input type="email" placeholder="Email" id="email" />
                 </label>
                 <br />
                 <br />
-                <label className='label-login'>
-                  <i className='bx bx-lock-alt'></i>
+                <label className="label-login">
+                  <i className="bx bx-lock-alt"></i>
                   <input
                     type="password"
                     placeholder="Contraseña"
-                    id='password'
+                    id="password"
                   />
                 </label>
                 <br />
@@ -121,32 +130,55 @@ const Login = () => {
               </form>
               {error && <p style={{ marginTop: 10, fontSize: 15 }}>{error}</p>}
               <br />
-              <Link to="/loginRecuperar" className='resetPassword' onClick={handleForgotPassword}>Olvidé mi Contraseña</Link>
+              <Link
+                to="/loginRecuperar"
+                className="resetPassword"
+                onClick={handleForgotPassword}
+              >
+                Olvidé mi Contraseña
+              </Link>
             </div>
           </div>
         </div>
 
-        <footer className='footer_login'>
-          <div className='waves'>
-            <div className='wave' id='wave1'></div>
-            <div className='wave' id='wave2'></div>
-            <div className='wave' id='wave3'></div>
-            <div className='wave' id='wave4'></div>
+        <footer className="footer_login">
+          <div className="waves">
+            <div className="wave" id="wave1"></div>
+            <div className="wave" id="wave2"></div>
+            <div className="wave" id="wave3"></div>
+            <div className="wave" id="wave4"></div>
           </div>
           <h1>CONTACTOS</h1>
-          <ul className='menu_footer'>
-            <li> <a href="#" >Samuel Gajardo</a></li>
-            <li> <a href="#">Sebastián Quintana</a></li>
-            <li> <a href="#">Benjamín Garrido</a></li>
+          <ul className="menu_footer">
+            <li>
+              {" "}
+              <a href="#">Samuel Gajardo</a>
+            </li>
+            <li>
+              {" "}
+              <a href="#">Sebastián Quintana</a>
+            </li>
+            <li>
+              {" "}
+              <a href="#">Benjamín Garrido</a>
+            </li>
           </ul>
-          <ul className='menu_footer'>
-            <li> <a href="#" >+56 9 9773 1366</a></li>
-            <li> <a href="#">+56 9 5641 4395</a></li>
-            <li> <a href="#">+56 9 8470 9534</a></li>
-          </ul>         
-          <p>©2024 Instituto Inacap | Programadores </p> 
+          <ul className="menu_footer">
+            <li>
+              {" "}
+              <a href="#">+56 9 9773 1366</a>
+            </li>
+            <li>
+              {" "}
+              <a href="#">+56 9 5641 4395</a>
+            </li>
+            <li>
+              {" "}
+              <a href="#">+56 9 8470 9534</a>
+            </li>
+          </ul>
+          <p>©2024 Instituto Inacap | Programadores </p>
         </footer>
-
       </div>
     </>
   );
