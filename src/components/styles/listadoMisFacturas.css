@@ -17,8 +17,9 @@
   align-items: center;
   width: 100%;
   padding: 10px;
-  background-color: #333;
+  background-color: #323639;
   color: white;
+  z-index: 11;
 }
 
 .preview_pdf {
@@ -30,17 +31,24 @@
 
 .tituloPrevisualizacion {
   color: aliceblue;
+  z-index: 15;
 }
 
+
 .cerrar_btn {
-  background-color: red;
-  color: rgb(0, 0, 0);
+  background-color: #323639;
+  color: white;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 16px;
-  align-items: left;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex; /* Activamos flexbox */
+  justify-content: center; /* Centramos horizontalmente */
+  align-items: center; /* Centramos verticalmente */
 }
 
 .cerrar_btn:hover {
-  text-decoration: underline;
+  background-color: #636668;
 }

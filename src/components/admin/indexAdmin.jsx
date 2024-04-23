@@ -37,6 +37,7 @@ import {
 } 
 from '@fortawesome/free-solid-svg-icons';
 import { faAddressCard, faCircleCheck } from '@fortawesome/free-regular-svg-icons';
+
 library.add(
   faUsersGear,
   faReceipt,
@@ -136,9 +137,9 @@ const IndexAdmin = () => {
 
   return (
     <>
-    <Admin/>
 
-      <br />
+    <Admin/>
+      
       <div className="tabla_listar">
         <div className='card_admin_encabezado'>
           <div className='card_admin_calendario'>
@@ -179,56 +180,11 @@ const IndexAdmin = () => {
               <p className='card_admin_mantencion_p'>{deliveredCount}</p>
             </div>
           </div>
+          
           <div className='contenedor_cartas_iconos'>
-            <div className='cartas_iconos'  onClick={usuarios}>
-              <FontAwesomeIcon icon="fa-solid fa-user-plus" className='functionality_icon' />
-              <p>Agregar usuario</p>
-            </div>
-            <div className='cartas_iconos' onClick={listarUsuarios}>
-            <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-users" />
-              <p>Listar usuarios</p>
-            </div> 
-            <div className='cartas_iconos' onClick={gestionMantenciones}>
-              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-rectangle-list" />              
-              <p>Gestion de Mantenciones</p>
-            </div>
-            <div className='cartas_iconos' onClick={facturas}>
-            <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" className='functionality_icon' />
-              <p>Agregar factura de proveedores</p>
-            </div>  
-            <div className='cartas_iconos' onClick={listarFacturas}>
-              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-clipboard-list" />
-              <p>Listar facturas de proveedores</p>
-            </div> 
-            <div className='cartas_iconos' onClick={inventario}>
-              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-cart-flatbed" />              
-              <p>Agregar inventario</p>
-            </div> 
-            <div className='cartas_iconos' onClick={listarInventario}>
-              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-boxes-stacked" />
-              <p>Listar inventario</p>
-            </div> 
-            <div className='cartas_iconos' onClick={generarFacturas}>
-              <FontAwesomeIcon className='functionality_icon' icon="fa-solid fa-receipt" />              
-              <p>Generar factura de vendedor</p>
-            </div> 
-            <div className='cartas_iconos' onClick={toggleCharts}>
-              <FontAwesomeIcon
-                icon={showCharts ? farChartBar : faChartBar}
-                className="icono-grafico"
-              />
-              <p>Mostrar Gráficos</p>
-              {showCharts && (
-                <>
-                  <div className={`graficos ${showCharts ? 'mostrar' : ''}`}>
-                    <GraficoMisBoletas className='grafico' />
-                    <GraficoMisFacturas className='grafico' />
-                  </div>
-                  <button onClick={toggleCharts} className='btn-Ocultar'>Ocultar Gráficos</button>
-                </>
-              )}
-            </div>
+            <GraficoMisFacturas/>
           </div>
+
         </div>
       </div>
     </>

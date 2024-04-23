@@ -3,6 +3,8 @@ import Admin from "./admin";
 import { storage } from "../../firebase";
 import { getDownloadURL, getMetadata, ref, listAll } from "firebase/storage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
 import '../styles/listadoMisFacturas.css'
 
 const ListadoMisFacturas = () => {
@@ -101,8 +103,9 @@ const ListadoMisFacturas = () => {
         <div className="preview_pdf_container">
           <div className="preview_header">
             <h2 className="tituloPrevisualizacion">Previsualización</h2>
-            <button className="cerrar_btn" onClick={cerrarPrevisualizacion}>Cerrar</button>
-          </div>
+            <button className="cerrar_btn" onClick={cerrarPrevisualizacion}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>          </div>
           <embed src={selectedFactura.url} type="application/pdf" className="preview_pdf" />
         </div>
       )}
