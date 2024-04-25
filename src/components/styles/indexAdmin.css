@@ -2,7 +2,7 @@
 .layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
 }
 
 .header {
@@ -12,42 +12,54 @@
 .content {
   display: flex;
   flex: 1;
+  justify-content: space-between;
 }
 
 .sidebar {
-  background-color: lightgreen;
-  width: 30%; /* Ancho de la barra lateral */
+  background-color: #EDEDED;
+  width: 30%; 
   margin: 4px;
   margin-top: 84px;
   overflow-y: auto;
 }
 
 .main-container {
+  background-color: #EDEDED;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   margin-top: 84px;
   flex: 1;
+  overflow-y: auto;
 }
 
 .main {
-  background-color: lightcoral;
   flex: 1;
   margin: 4px;
+  overflow-y: auto;
+  justify-content: center; 
+  height: 470px; 
+
+}
+.graficos-wrapper {
+  display: flex;
+  flex-direction: row;
 }
 
+
 .widget-estadisticas-container {
-  display: flex;
+  display: flex; 
+  height: 400px;
+  padding: 10px;
 }
 
 .widget {
   background-color: orange;
   flex: 1;
-  height: 200px; 
   margin: 4px;
 }
 
 .estadisticas {
-  background-color: lightgrey;
+  background-color: #EDEDED;
   flex: 1;
   margin: 4px;
 }
@@ -58,27 +70,52 @@
 }
 
 
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 100%; /* Ancho completo en pantallas pequeñas */
-  }
-  
-  .main-container {
-    margin-top: 0; /* Elimina el margen superior en pantallas pequeñas */
-  }
-  
-  .widget,
-  .estadisticas {
-    flex-basis: 100%; /* Hace que los elementos ocupen todo el ancho en pantallas pequeñas */
-  }
+
+
+
+.container_mantenciones {
+  text-align: center; 
+}
+
+.container_mantenciones h1 {
+  margin-bottom: 10px; 
+  color: #AAAAAB;
+}
+
+.subtitulos {
+  display: flex;
+  justify-content: space-between; 
+  flex-wrap: wrap;
+}
+
+.subtitulos > div {
+  flex-basis: 30%;
+  margin-bottom: 10px;
+  color: #AAAAAB;
+  background-color: #FFFFFF;
+  padding: 20px;
+  height: 300px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Añade sombra */
 }
 
 
+.subtitulos p {
+  margin: 5px 0; 
+}
+
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 30%; /* Ancho completo en pantallas pequeñas */
+  }
+  
 
 
 
 
 
+  
 
 
 

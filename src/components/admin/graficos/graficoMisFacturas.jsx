@@ -13,7 +13,7 @@ const GraficoMisFacturas = () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'misFacturas'));
         const facturasPorFecha = {};
-  
+
         querySnapshot.forEach((doc) => {
           const { fecha } = doc.data();
           if (facturasPorFecha[fecha]) {
@@ -22,18 +22,18 @@ const GraficoMisFacturas = () => {
             facturasPorFecha[fecha] = 1;
           }
         });
-  
+
         const sortedData = Object.keys(facturasPorFecha)
           .map(fecha => ({ x: fecha, y: facturasPorFecha[fecha] }))
           .sort((a, b) => new Date(b.x) - new Date(a.x)); // Cambio en la comparación
-  
+
         setData(sortedData);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }
     };
-  
-    fetchData();    
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const GraficoMisFacturas = () => {
       new Chart(ctx, {
         type: 'line',
         data: {
-          labels: data.map(item => item.x),
+          labels: obtenerSemanActual(), 
           datasets: [{
             label: 'Número de facturas',
             data: data.map(item => item.y),
@@ -82,10 +82,24 @@ const GraficoMisFacturas = () => {
     }
   }, [data]);
 
+  const obtenerSemanActual = () => {
+    const today = new Date();
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    const weekDates = [];
+
+    for (let i = 0; i < 7; i++) {
+      const nextDay = new Date(firstDayOfWeek);
+      nextDay.setDate(firstDayOfWeek.getDate() + i);
+      weekDates.push(nextDay.toLocaleDateString('es-ES', { year: '2-digit', month: '2-digit', day: '2-digit' }));
+    }
+
+    return weekDates;
+  };
+
   return (
     <div className='grafico-container'>
-      <canvas ref={chartContainerRef} className='grafico'></canvas>
       <h1 className='titulo-Grafico'>Grafico Mis Facturas</h1>
+      <canvas ref={chartContainerRef} className='grafico'></canvas>
     </div>
   );
 };

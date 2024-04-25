@@ -142,37 +142,50 @@ const IndexAdmin = () => {
   <header class="header"><Admin/></header>
 
   <div class="content">
-    <nav class="sidebar"> <GraficoMisFacturas/>  </nav>
+    <nav class="sidebar"> </nav>
     
     <div class="main-container">
 
-      <main class="main">             
-        <div className='cartas_iconos' onClick={toggleCharts}>
-          <FontAwesomeIcon
-            icon={showCharts ? farChartBar : faChartBar}
-            className="icono-grafico"
-          />
-          <p>Mostrar Gráficos</p>
-          {showCharts && (
-            <>
-              <div className={`graficos ${showCharts ? 'mostrar' : ''}`}>
-                <GraficoMisBoletas className='grafico' />
-                <GraficoMisFacturas className='grafico' />
-              </div>
-              <button onClick={toggleCharts} className='btn-Ocultar'>Ocultar Gráficos</button>
-            </>
-          )}
-        </div> 
+      <main className="main">
+        <div className="graficos-wrapper"> 
+            <GraficoMisFacturas />
+            <GraficoMisBoletas />
+        </div>
       </main>
 
       <div class="widget-estadisticas-container">
         <article class="widget">Widget</article>
-        <article class="estadisticas">Estadisticas</article>
+
+        <article class="estadisticas"> 
+
+          <div class="container_mantenciones">
+            <h1>Mantenciones</h1>
+            <div class="subtitulos">
+              <div>
+                <FontAwesomeIcon icon="fa-solid fa-spinner" />
+                <p>Pendientes:</p>
+                <p>{pendingCount}</p>
+              </div>
+              <div>
+                <FontAwesomeIcon icon="fa-solid fa-spinner" />
+                <p> En Proceso:</p>
+                <p>{processCount}</p>
+              </div>
+              <div>
+                <FontAwesomeIcon icon="fa-regular fa-circle-check" />
+                <p>Entregadas:</p>
+                <p>{deliveredCount}</p>
+              </div>
+            </div>
+          </div>
+
+        </article>
       </div>
+
     </div>
+
   </div>
 
-  <footer class="footer">Footer</footer>
 </div>
 
 

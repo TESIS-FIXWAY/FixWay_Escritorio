@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { db } from '../../../firebase';
 import { collection, getDocs } from "firebase/firestore";
-import Chart from 'chart.js/auto'; // Importa Chart.js
+import Chart from 'chart.js/auto'; 
 import '../../styles/graficos.css';
 
 const GraficoMisBoletas = () => {
@@ -46,7 +46,7 @@ const GraficoMisBoletas = () => {
       new Chart(ctx, {
         type: 'line',
         data: {
-          labels: data.map(item => item.x),
+          labels: obtenerSemanActual(),
           datasets: [{
             label: 'Número de boletas',
             data: data.map(item => item.y),
@@ -71,9 +71,16 @@ const GraficoMisBoletas = () => {
               title: {
                 display: true,
                 text: 'Número de boletas'
+              },
+              ticks: {
+                beginAtZero: true,
+                stepSize: 5,
+                max: 50
               }
             }
-          }
+          },
+          width: 500,
+          height: 500
         }
       });
     }
@@ -81,14 +88,29 @@ const GraficoMisBoletas = () => {
 
   const convertirFecha = (fecha) => {
     const partes = fecha.split('/');
-    const anio = partes[2].length === 4 ? partes[2] : `20${partes[2]}`; // Asume que el año es 20YY si se proporcionan solo 2 dígitos
-    return new Date(`${anio}-${partes[1]}-${partes[0]}`);
+    const anio = partes[2].length === 4 ? partes[2] : `20${partes[2]}`; 
+    const fechaFormateada = new Date(`${anio}-${partes[1]}-${partes[0]}`);
+    return fechaFormateada.toLocaleDateString('es-ES', { year: '2-digit', month: '2-digit', day: '2-digit' });
+  };
+
+  const obtenerSemanActual = () => {
+    const today = new Date();
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    const weekDates = [];
+
+    for (let i = 0; i < 7; i++) {
+      const nextDay = new Date(firstDayOfWeek);
+      nextDay.setDate(firstDayOfWeek.getDate() + i);
+      weekDates.push(convertirFecha(nextDay.toLocaleDateString('es-ES', { year: '2-digit', month: '2-digit', day: '2-digit' })));
+    }
+
+    return weekDates;
   };
 
   return (
     <div className='grafico-container'>
-      <canvas ref={chartContainerRef} className='grafico' width={500} height={500}></canvas>
       <h1 className='titulo-Grafico'>Grafico Mis Boletas</h1>
+      <canvas ref={chartContainerRef} className='grafico'></canvas>
     </div>
   );
 };
