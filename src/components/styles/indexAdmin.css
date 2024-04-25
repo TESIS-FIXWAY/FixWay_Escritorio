@@ -49,7 +49,6 @@
 .widget-estadisticas-container {
   display: flex; 
   height: 400px;
-  padding: 10px;
 }
 
 .widget {
@@ -84,21 +83,17 @@
 
 .subtitulos {
   display: flex;
-  justify-content: space-between; 
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .subtitulos > div {
-  flex-basis: 30%;
-  margin-bottom: 10px;
+  flex-basis: 30%; 
+  margin-bottom: 20px; 
   color: #AAAAAB;
   background-color: #FFFFFF;
-  padding: 20px;
   height: 300px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Añade sombra */
 }
-
 
 .subtitulos p {
   margin: 5px 0; 
