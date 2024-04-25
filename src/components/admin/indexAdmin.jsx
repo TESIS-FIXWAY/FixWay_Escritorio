@@ -138,55 +138,47 @@ const IndexAdmin = () => {
   return (
     <>
 
-    <Admin/>
-      
-      <div className="tabla_listar">
-        <div className='card_admin_encabezado'>
-          <div className='card_admin_calendario'>
-            <div className='calendario'>
-              <Calendar onChange={handleDateChange} value={selectedDate} />
-            </div>
-          </div>
-          <div className='perfil_usuario'>
-            <h1 className='perfil_usuario_h1'>Perfil de Usuario</h1>
-            {user && (
-              <div className='perfil_usuario_lista'>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-user" /> Nombre de Usuario:</p>
-                <p className='perfil_usuario_lista_p'>{user.nombre} {user.apellido}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-id-card" /> RUT de Usuario: </p>
-                <p className='perfil_usuario_lista_p'>{user.rut}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-envelope" /> Correo Electrónico:</p>
-                <p className='perfil_usuario_lista_p'>{user.email}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-location-dot" /> Dirección de Usuario:</p>
-                <p className='perfil_usuario_lista_p'>{user.direccion}</p>
-                <p className='perfil_usuario_lista_p'> <FontAwesomeIcon icon="fa-solid fa-phone" /> Teléfono de Usuario:</p>
-                <p className='perfil_usuario_lista_p'>{user.telefono}</p>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className='card_admin_subencabezado'>
-          <div className='card_admin_mantencion'>
-            <div className='card_admin_mantencion_in'>
-              <h1>Mantenciones</h1>
-              <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-rectangle-list" /> Mantenciones Pendientes:</p>
-              <p className='card_admin_mantencion_p'>{pendingCount}</p>
-              <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-solid fa-spinner" /> Mantenciones En Proceso:</p>
-              <p className='card_admin_mantencion_p'>{processCount}</p>
-              <hr />
-              <p className='card_admin_mantencion_p'> <FontAwesomeIcon icon="fa-regular fa-circle-check" /> Mantenciones Entregadas:</p>
-              <p className='card_admin_mantencion_p'>{deliveredCount}</p>
-            </div>
-          </div>
-          
-          <div className='contenedor_cartas_iconos'>
-            <GraficoMisFacturas/>
-          </div>
+<div class="layout">
+  <header class="header"><Admin/></header>
 
-        </div>
+  <div class="content">
+    <nav class="sidebar"> <GraficoMisFacturas/>  </nav>
+    
+    <div class="main-container">
+
+      <main class="main">             
+        <div className='cartas_iconos' onClick={toggleCharts}>
+          <FontAwesomeIcon
+            icon={showCharts ? farChartBar : faChartBar}
+            className="icono-grafico"
+          />
+          <p>Mostrar Gráficos</p>
+          {showCharts && (
+            <>
+              <div className={`graficos ${showCharts ? 'mostrar' : ''}`}>
+                <GraficoMisBoletas className='grafico' />
+                <GraficoMisFacturas className='grafico' />
+              </div>
+              <button onClick={toggleCharts} className='btn-Ocultar'>Ocultar Gráficos</button>
+            </>
+          )}
+        </div> 
+      </main>
+
+      <div class="widget-estadisticas-container">
+        <article class="widget">Widget</article>
+        <article class="estadisticas">Estadisticas</article>
       </div>
+    </div>
+  </div>
+
+  <footer class="footer">Footer</footer>
+</div>
+
+
+
+
+
     </>
   );
 };
