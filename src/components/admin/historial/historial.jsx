@@ -3,6 +3,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../firebase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Doughnut } from "react-chartjs-2";
 
 const HistorialVentas = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -44,6 +45,18 @@ const HistorialVentas = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const data = {
+    labels: ["Boletas", "Facturas"],
+    datasets: [
+      {
+        label: "Ventas",
+        data: [cantidadBoletas, cantidadFacturas],
+        backgroundColor: ["#36A2EB", "#FF6384"],
+        hoverBackgroundColor: ["#36A2EB", "#FF6384"],
+      },
+    ],
+  };
+
   return (
     <div>
       <h1>Historial de Ventas</h1>
@@ -57,12 +70,15 @@ const HistorialVentas = () => {
         <p>{totalVentas}</p>
       </div>
       <div>
-        <h2>Boletas:</h2>
+        <h2>Cantidad de Boletas del Día:</h2>
         <p>{cantidadBoletas}</p>
       </div>
       <div>
-        <h2>Facturas:</h2>
+        <h2>Cantidad de Facturas del Día:</h2>
         <p>{cantidadFacturas}</p>
+      </div>
+      <div style={{ width: "50%", margin: "auto" }}>
+        <Doughnut data={data} />
       </div>
     </div>
   );
