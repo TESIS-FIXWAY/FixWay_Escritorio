@@ -20,20 +20,20 @@ class validadorRUT {
 
     let dv = 11 - (acumulador % 11);
 
-    if (dv == 11) 
-      dv = '0';
+    if (dv == 11) dv = "0";
 
-    if (dv == 10) 
-      dv = 'k';
+    if (dv == 10) dv = "k";
 
     return dv == this.dv.toLowerCase();
   }
-  
-  formateado() {
-    if (!this.esValido) return '';
 
-    return (this.rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")) + "-" + this.dv;
+  formateado() {
+    if (!this.esValido) return "";
+
+    return (
+      this.rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "-" + this.dv
+    );
   }
 }
 
-export default validadorRUT; 
+export default validadorRUT;
