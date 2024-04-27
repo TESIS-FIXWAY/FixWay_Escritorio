@@ -104,7 +104,10 @@ const IndexAdmin = () => {
           <Admin />
         </header>
         <div class="content">
-          <nav class="sidebar"> </nav>
+          <nav class="sidebar"> 
+            <HistorialVentas /> 
+          </nav>
+
           <div class="main-container">
             <main className="main">
               <div className="graficos-wrapper">
@@ -113,10 +116,12 @@ const IndexAdmin = () => {
                 <GraficoMantenciones />
               </div>
             </main>
+
             <div class="widget-estadisticas-container">
+
               <article class="widget">
-                <HistorialVentas />
               </article>
+
               <article class="estadisticas">
                 <div class="container_mantenciones">
                   <h1>Mantenciones</h1>

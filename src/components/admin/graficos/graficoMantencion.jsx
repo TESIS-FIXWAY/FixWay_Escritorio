@@ -80,7 +80,7 @@ const GraficoMantenciones = () => {
             },
           },
         },
-        width: 500,
+        width: 600,
         height: 500,
       });
     }
@@ -88,7 +88,7 @@ const GraficoMantenciones = () => {
 
   return (
     <div className="grafico-container">
-      <h1 className="titulo-Grafico">Gráfico de Mantenciones</h1>
+      <h1 className="titulo-Grafico">Mantenciones</h1>
       <canvas ref={chartContainerRef} className="grafico"></canvas>
     </div>
   );

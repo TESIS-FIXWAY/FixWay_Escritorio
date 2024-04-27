@@ -4,6 +4,7 @@ import { db } from "../../../firebase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Doughnut } from "react-chartjs-2";
+import "../../styles/historial.css";
 
 const HistorialVentas = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -101,31 +102,43 @@ const HistorialVentas = () => {
   };
 
   return (
-    <div>
-      <h2>Historial de Ventas</h2>
+
+    <div className="container">
+
+      <h2 className="title" >Historial de Ventas</h2>
       <select value={selectedOption} onChange={handleOptionChange}>
         <option value="dia">Día</option>
         <option value="mes">Mes</option>
         <option value="trimestre">Trimestre</option>
       </select>
+
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="dd/MM/yyyy"
+        className="fecha_historial"
       />
-      <div>
-        <h3>Total Ventas: {formatCurrency(totalVentas)}</h3>
+
+      <div className="container_widgets">
+        <h3>Ventas</h3>
+        <text>{formatCurrency(totalVentas)}</text>
       </div>
-      <div>
-        <h3>Cantidad de Boletas: {cantidadBoletas}</h3>
+
+      <div className="container_widgets">
+        <h3>Boletas</h3>
+        <text>{cantidadBoletas}</text>
       </div>
-      <div>
-        <h3>Cantidad de Facturas: {cantidadFacturas}</h3>
+
+      <div className="container_widgets">
+        <h3>Facturas</h3>
+        <text>{cantidadFacturas}</text>
       </div>
-      <div style={{ width: "50%", margin: "auto" }}>
+
+      <div className="chart-container ">
         <Doughnut data={data} />
       </div>
     </div>
+
   );
 };
 
