@@ -7,42 +7,77 @@ import { Doughnut } from "react-chartjs-2";
 
 const HistorialVentas = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedOption, setSelectedOption] = useState("dia");
   const [totalVentas, setTotalVentas] = useState(0);
   const [cantidadBoletas, setCantidadBoletas] = useState(0);
   const [cantidadFacturas, setCantidadFacturas] = useState(0);
 
   useEffect(() => {
-    const fetchTotalVentas = async () => {
-      const historialCollection = collection(db, "historialVentas");
-      const q = query(
-        historialCollection,
-        where("fecha", "==", formatDate(selectedDate))
-      );
-      const historialSnapshot = await getDocs(q);
-      const total = historialSnapshot.docs.reduce(
-        (acc, doc) => acc + doc.data().totalCompra,
-        0
-      );
-      setTotalVentas(total);
+    fetchData();
+  }, [selectedDate, selectedOption]);
 
-      const boletas = historialSnapshot.docs.filter(
-        (doc) => doc.data().tipo === "Boleta"
-      );
-      setCantidadBoletas(boletas.length);
+  const fetchData = async () => {
+    const historialCollection = collection(db, "historialVentas");
+    let startDate, endDate;
+    switch (selectedOption) {
+      case "dia":
+        startDate = selectedDate;
+        endDate = selectedDate;
+        break;
+      case "mes":
+        startDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+        endDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+        break;
+      case "trimestre":
+        const trimestre = getTrimestre(selectedDate.getMonth());
+        startDate = new Date(selectedDate.getFullYear(), trimestre * 3, 1);
+        endDate = new Date(selectedDate.getFullYear(), trimestre * 3 + 3, 0);
+        break;
+      default:
+        startDate = selectedDate;
+        endDate = selectedDate;
+        break;
+    }
+    const q = query(
+      historialCollection,
+      where("fecha", ">=", formatDate(startDate)),
+      where("fecha", "<=", formatDate(endDate))
+    );
+    const historialSnapshot = await getDocs(q);
+    const total = historialSnapshot.docs.reduce(
+      (acc, doc) => acc + doc.data().totalCompra,
+      0
+    );
+    setTotalVentas(total);
 
-      const facturas = historialSnapshot.docs.filter(
-        (doc) => doc.data().tipo === "Factura"
-      );
-      setCantidadFacturas(facturas.length);
-    };
-    fetchTotalVentas();
-  }, [selectedDate]);
+    const boletas = historialSnapshot.docs.filter(
+      (doc) => doc.data().tipo === "Boleta"
+    ).length;
+    setCantidadBoletas(boletas);
+
+    const facturas = historialSnapshot.docs.filter(
+      (doc) => doc.data().tipo === "Factura"
+    ).length;
+    setCantidadFacturas(facturas);
+  };
 
   const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear().toString().slice(-2);
     return `${day}/${month}/${year}`;
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const getTrimestre = (month) => {
+    return Math.floor(month / 3);
   };
 
   const data = {
@@ -68,19 +103,24 @@ const HistorialVentas = () => {
   return (
     <div>
       <h2>Historial de Ventas</h2>
+      <select value={selectedOption} onChange={handleOptionChange}>
+        <option value="dia">Día</option>
+        <option value="mes">Mes</option>
+        <option value="trimestre">Trimestre</option>
+      </select>
       <DatePicker
         selected={selectedDate}
-        onChange={(date) => setSelectedDate(date)}
+        onChange={handleDateChange}
         dateFormat="dd/MM/yyyy"
       />
       <div>
-        <h3>Total Ventas del Día: {formatCurrency(totalVentas)}</h3>
+        <h3>Total Ventas: {formatCurrency(totalVentas)}</h3>
       </div>
       <div>
-        <h3>Cantidad de Boletas del Día: {cantidadBoletas}</h3>
+        <h3>Cantidad de Boletas: {cantidadBoletas}</h3>
       </div>
       <div>
-        <h3>Cantidad de Facturas del Día: {cantidadFacturas}</h3>
+        <h3>Cantidad de Facturas: {cantidadFacturas}</h3>
       </div>
       <div style={{ width: "50%", margin: "auto" }}>
         <Doughnut data={data} />
