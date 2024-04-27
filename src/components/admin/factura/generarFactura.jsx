@@ -156,6 +156,14 @@ const GenerarFactura = () => {
 
       await updateDoc(doc(facturasCollection, invoiceId), nuevaFactura);
 
+      const historialVentasCollection = collection(db, "historialVentas");
+      await addDoc(historialVentasCollection, {
+        totalCompra: parseInt(total, 10),
+        tipo: "Factura",
+        fecha: fecha,
+        time: time,
+      });
+
       setProductosSeleccionados([]);
       setDescuentoMenuValue("");
       setShowProductList(false);
@@ -187,7 +195,7 @@ const GenerarFactura = () => {
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
 
     pdf.setFontSize(24);
-    pdf.text("Factura Setore", pdf.internal.pageSize.getWidth() / 2, 15, {
+    pdf.text("Factura Settore", pdf.internal.pageSize.getWidth() / 2, 15, {
       align: "center",
     });
 
@@ -571,6 +579,14 @@ const GenerarFactura = () => {
 
       await updateDoc(doc(boletasCollection, boletaId), nuevaBoleta);
 
+      const historialVentasCollection = collection(db, "historialVentas");
+      await addDoc(historialVentasCollection, {
+        totalCompra: parseInt(totalBoleta, 10),
+        tipo: "Boleta",
+        fecha: fecha,
+        time: time,
+      });
+
       generarBoletaPDF(productosSeleccionados);
       setProductosSeleccionados([]);
       setActualizacion((prevActualizacion) => prevActualizacion + 1);
@@ -599,7 +615,7 @@ const GenerarFactura = () => {
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
 
     pdf.setFontSize(14);
-    pdf.text("Boleta Setore", pdf.internal.pageSize.getWidth() / 2, 15, {
+    pdf.text("Boleta Settore", pdf.internal.pageSize.getWidth() / 2, 15, {
       align: "center",
     });
 

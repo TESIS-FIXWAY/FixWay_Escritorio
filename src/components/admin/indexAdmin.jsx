@@ -52,7 +52,7 @@ library.add(
 );
 import GraficoMisBoletas from "./graficos/graficoMisBoletas";
 import GraficoMisFacturas from "./graficos/graficoMisFacturas";
-import TotalFacturas from "./totales/totalFacturas";
+import HistorialVentas from "./historial/historial";
 
 const IndexAdmin = () => {
   const navigate = useNavigate();
@@ -121,7 +121,7 @@ const IndexAdmin = () => {
 
             <div class="widget-estadisticas-container">
               <article class="widget">Widget</article>
-              <TotalFacturas />
+              <HistorialVentas />
 
               <article class="estadisticas">
                 <div class="container_mantenciones">
