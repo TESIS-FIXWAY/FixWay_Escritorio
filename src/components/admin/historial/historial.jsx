@@ -57,6 +57,14 @@ const HistorialVentas = () => {
     ],
   };
 
+  const formatCurrency = (amount) => {
+    const formatter = new Intl.NumberFormat("es-CL", {
+      style: "currency",
+      currency: "CLP",
+    });
+    return formatter.format(amount);
+  };
+
   return (
     <div>
       <h1>Historial de Ventas</h1>
@@ -67,7 +75,7 @@ const HistorialVentas = () => {
       />
       <div>
         <h2>Total Ventas del Día:</h2>
-        <p>{totalVentas}</p>
+        <p>{formatCurrency(totalVentas)}</p>
       </div>
       <div>
         <h2>Cantidad de Boletas del Día:</h2>

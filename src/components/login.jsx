@@ -98,7 +98,7 @@ const Login = () => {
               <br />
               <br />
               <p>
-                Taller Mecánico <br /> Setore
+                Taller Mecánico <br /> Settore
               </p>
             </div>
           </div>
