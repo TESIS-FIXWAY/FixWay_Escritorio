@@ -87,7 +87,7 @@ const Admin = () => {
               </Link>
             </div>
             <div className="logo">
-              <h1>Setore</h1>
+              <h1>Settore</h1>
             </div>
             <div className="reloj">
               <p>{formatTime(currentTime)}</p>
