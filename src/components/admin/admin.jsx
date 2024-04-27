@@ -33,7 +33,6 @@ const Admin = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -48,7 +47,7 @@ const Admin = () => {
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
-      hour12: true,
+      hour12: false,
       timeZone: "America/Santiago",
     };
     return time.toLocaleTimeString("en-US", options);
