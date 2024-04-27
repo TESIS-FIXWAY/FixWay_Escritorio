@@ -1,7 +1,6 @@
 import "../styles/indexAdmin.css";
 import React, { useState, useEffect } from "react";
 import "react-calendar/dist/Calendar.css";
-import { useNavigate } from "react-router-dom";
 import Admin from "./admin";
 import { db, auth } from "../../firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
@@ -55,13 +54,10 @@ import GraficoMisFacturas from "./graficos/graficoMisFacturas";
 import HistorialVentas from "./historial/historial";
 
 const IndexAdmin = () => {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [processCount, setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showCharts, setShowCharts] = useState(false);
 
   useEffect(() => {
     const identifyUser = auth.currentUser;
