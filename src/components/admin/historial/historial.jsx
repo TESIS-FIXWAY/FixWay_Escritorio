@@ -67,23 +67,20 @@ const HistorialVentas = () => {
 
   return (
     <div>
-      <h1>Historial de Ventas</h1>
+      <h2>Historial de Ventas</h2>
       <DatePicker
         selected={selectedDate}
         onChange={(date) => setSelectedDate(date)}
         dateFormat="dd/MM/yyyy"
       />
       <div>
-        <h2>Total Ventas del Día:</h2>
-        <p>{formatCurrency(totalVentas)}</p>
+        <h3>Total Ventas del Día: {formatCurrency(totalVentas)}</h3>
       </div>
       <div>
-        <h2>Cantidad de Boletas del Día:</h2>
-        <p>{cantidadBoletas}</p>
+        <h3>Cantidad de Boletas del Día: {cantidadBoletas}</h3>
       </div>
       <div>
-        <h2>Cantidad de Facturas del Día:</h2>
-        <p>{cantidadFacturas}</p>
+        <h3>Cantidad de Facturas del Día: {cantidadFacturas}</h3>
       </div>
       <div style={{ width: "50%", margin: "auto" }}>
         <Doughnut data={data} />

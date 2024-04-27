@@ -28,7 +28,6 @@ import {
   faAddressCard,
   faCircleCheck,
 } from "@fortawesome/free-regular-svg-icons";
-
 library.add(
   faUsersGear,
   faReceipt,
@@ -52,6 +51,7 @@ library.add(
 import GraficoMisBoletas from "./graficos/graficoMisBoletas";
 import GraficoMisFacturas from "./graficos/graficoMisFacturas";
 import HistorialVentas from "./historial/historial";
+import GraficoMantenciones from "./graficos/graficoMantencion";
 
 const IndexAdmin = () => {
   const [user, setUser] = useState(null);
@@ -103,22 +103,20 @@ const IndexAdmin = () => {
         <header class="header">
           <Admin />
         </header>
-
         <div class="content">
           <nav class="sidebar"> </nav>
-
           <div class="main-container">
             <main className="main">
               <div className="graficos-wrapper">
                 <GraficoMisFacturas />
                 <GraficoMisBoletas />
+                <GraficoMantenciones />
               </div>
             </main>
-
             <div class="widget-estadisticas-container">
-              <article class="widget">Widget</article>
-              <HistorialVentas />
-
+              <article class="widget">
+                <HistorialVentas />
+              </article>
               <article class="estadisticas">
                 <div class="container_mantenciones">
                   <h1>Mantenciones</h1>
