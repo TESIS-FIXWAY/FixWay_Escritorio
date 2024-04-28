@@ -48,7 +48,7 @@
 
 .widget-estadisticas-container {
   display: flex; 
-  height: 400px;
+  height: 450px;
 }
 
 .widget {
@@ -57,33 +57,32 @@
   margin: 4px;
 }
 
+
 .estadisticas {
   background-color: #EDEDED;
   flex: 1;
   margin: 4px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 }
-
-.footer {
-  background-color: lightpink;
-  height: 40px;
-}
-
-
-
-
 
 .container_mantenciones {
   text-align: center; 
 }
 
 .container_mantenciones h1 {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+
   margin-bottom: 10px; 
   color: #AAAAAB;
 }
 
 .subtitulos {
-  display: flex;
   flex-wrap: wrap;
+  align-items: center;  
   justify-content: center;
 }
 
@@ -92,7 +91,8 @@
   margin-bottom: 20px; 
   color: #AAAAAB;
   background-color: #FFFFFF;
-  height: 300px;
+  height: 100px;
+  width: 300px;
 }
 
 .subtitulos p {
@@ -100,307 +100,19 @@
 }
 
 
+.footer {
+  background-color: lightpink;
+  height: 40px;
+}
+
+
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 30%; /* Ancho completo en pantallas pequeñas */
   }
-  
 
 
 
 
 
-  
 
-
-
-
-
-.body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.tabla_listar {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.card_admin_encabezado {
-  display: flex;
-  flex-wrap: wrap;
-  height: 50%;
-  padding: 100px 20px 20px 20px;
-  background-color: #fff;
-}
-
-.card_admin_calendario {
-  width: 100%;
-  max-width: 400px;
-  background-color: #E5DBFF;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; 
-  padding: 20px; 
-}
-
-.perfil_usuario {
-  flex: 1; 
-  margin-left: 20px;
-  height: 250px;
-  background-color: #E5DBFF;
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  padding: 0px 20px;
-}
-
-.perfil_usuario_h1{
-  margin-bottom: 10px; 
-}
-
-.perfil_usuario_lista {
-  max-width: 390px;
-  display: flex;
-  background-color: #E5DBFF;
-  flex-direction: row; 
-  align-items: flex-start;
-  flex-wrap: wrap; 
-}
-
-.perfil_usuario_lista_p {
-  width: 50%; 
-  box-sizing: border-box; 
-  padding: 5px; 
-}
-
-
-.card_admin_subencabezado{
-  display: flex;
-  flex-wrap: wrap;
-  height: 50%;
-  padding: 20px 20px 20px 20px;
-  background-color: #fff;
-}
-
-.card_admin_mantencion {
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 20px;
-  background-color: #E5DBFF;
-  padding: 20px;
-}
-.card_admin_mantencion_in{
-  background-color: #51d1f6;
-  width: 100%;
-  max-width: 350px;
-  height: 100%;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.card_admin_mantencion_p {
-  margin: 10px 0;
-}
-
-/* Estilos personalizados para el calendario */
-
-.react-calendar {
-  font-family: 'Poppins', sans-serif;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.react-calendar__navigation {
-  background-color: #5B5FC7;
-  color: #fff;
-}
-.react-calendar__navigation__arrow {
-  color: #fff;
-}
-.react-calendar__tile--now {
-  color: #000;
-}
-.react-calendar__tile {
-  color: #000;
-}
-
-/* cartas de presentacion */
-
-.card_section {
-  width: 100%;
-  margin: 20px 20px 20px 20px;
-  border-radius: 5px;
-  overflow: hidden;
-  background: #E5DBFF;
-  cursor: default;
-  transition: all 400ms ease;
-  gap: 20px;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.section_title {
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-
-.section_hr {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  color: #1f1f1f;
-}
-
-.card_section hr {
-  margin: 0px 5% 0px 5%;
-  border: 1px solid #1f1f1f;
-}
-
-.section_title,
-.section_icon {
-  margin: 1px 0;
-}
-
-.section_subtitle {
-  margin: 0px 0px 2px 50px;
-}
-
-.section_icon {
-  font-size: 100px;
-}
-
-.card_functionality {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px;
-  padding: 10px;
-  background-color: #389CFC;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.card_functionality:hover {
-  background-color: #266bb5;
-}
-
-.functionality_icon {
-  font-size: 25px;
-}
-
-.contenedor_cartas_iconos {
-  flex: 1; 
-  margin: -100px 0px 20px 20px;
-  width: 100%;
-  display: flex;
-  background-color: #E5DBFF;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px; 
-  overflow-y: auto; 
-  direction: rtl; 
-  padding: 20px;
-}
-
-.cartas_iconos {
-  text-align: center;
-  padding: 10px;
-  background-color: #51d1f6;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  flex: 0 0 calc(33.33% - 20px);
-  max-width: 200px;
-  max-height: 200px; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
-  align-items: center; 
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
- }
-
- .cartas_iconos:hover {
-  background-color: #46b7d6;
- }
-
- .functionality_icon {
-  font-size: 25px;
-  margin-bottom: 10px;
- }
-
-
-@media only screen and (max-width: 600px) {
-  .card_admin_encabezado {
-    flex-direction: column;
-  }
-
-  .cartas_iconos {
-    flex: 0 0 calc(50% - 20px);
-  }
-}
-
-.btn-Grafico {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.graficos {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 99;
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.graficos.mostrar {
-  display: flex;
-}
-
-.grafico {
-  margin-bottom: 20px;
-}
-
-.btn-Ocultar {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  background-color: #dc3545; 
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 100;
-}
-
-.icono-grafico {
-  margin-right: 5px; 
-  font-size: 25px;
-  margin-top: -10px;
-}

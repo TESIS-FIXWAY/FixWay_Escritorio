@@ -99,6 +99,12 @@ const IndexAdmin = () => {
 
   return (
     <>
+
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+      </style>
+
+
       <div class="layout">
         <header class="header">
           <Admin />
@@ -125,6 +131,7 @@ const IndexAdmin = () => {
               <article class="estadisticas">
                 <div class="container_mantenciones">
                   <h1>Mantenciones</h1>
+
                   <div class="subtitulos">
                     <div>
                       <FontAwesomeIcon icon="fa-solid fa-spinner" />
@@ -142,8 +149,10 @@ const IndexAdmin = () => {
                       <p>{deliveredCount}</p>
                     </div>
                   </div>
+
                 </div>
               </article>
+
             </div>
           </div>
         </div>

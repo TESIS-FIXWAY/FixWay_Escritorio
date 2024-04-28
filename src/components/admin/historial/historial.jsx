@@ -109,7 +109,11 @@ const HistorialVentas = () => {
 
   return (
     <div className="container">
-      <h2 className="title">Historial de Ventas</h2>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+      </style>
+
+      <h1 className="title">Historial de Ventas</h1>
       <select value={selectedOption} onChange={handleOptionChange}>
         <option value="dia">Día</option>
         <option value="semana">Semana</option>
@@ -129,19 +133,19 @@ const HistorialVentas = () => {
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Ventas</h3>
         <hr style={{ margin: 5 }} />
-        {formatCurrency(totalVentas)}
+        <text>{formatCurrency(totalVentas)}</text>
       </div>
 
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Boletas</h3>
         <hr style={{ margin: 5 }} />
-        {cantidadBoletas}
+        <text> {cantidadBoletas} </text>
       </div>
 
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Facturas</h3>
         <hr style={{ margin: 5 }} />
-        {cantidadFacturas}
+        <text> {cantidadFacturas} </text>
       </div>
 
 

@@ -46,6 +46,7 @@ text{
     border-bottom: 1px solid #ccc;
     width: 70%;
     max-width: 400px;
+    z-index: -1 !important;
   }
 
 
@@ -57,9 +58,9 @@ text{
 }
 
   .chart-container {
-    width: 50%;
-    height: 50%;
-    margin-top: 10;
+    width: 60%;
+    height: 60%;
+    margin-top: 20px;
   }
 
 
