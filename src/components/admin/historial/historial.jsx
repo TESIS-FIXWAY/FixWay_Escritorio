@@ -25,6 +25,12 @@ const HistorialVentas = () => {
         startDate = selectedDate;
         endDate = selectedDate;
         break;
+      case "semana":
+        startDate = new Date(selectedDate);
+        startDate.setDate(selectedDate.getDate() - selectedDate.getDay());
+        endDate = new Date(selectedDate);
+        endDate.setDate(selectedDate.getDate() + (6 - selectedDate.getDay()));
+        break;
       case "mes":
         startDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
         endDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
@@ -102,14 +108,11 @@ const HistorialVentas = () => {
   };
 
   return (
-
     <div className="container">
-
- 
-
-      <h2 className="title" >Historial de Ventas</h2>
+      <h2 className="title">Historial de Ventas</h2>
       <select value={selectedOption} onChange={handleOptionChange}>
         <option value="dia">Día</option>
+        <option value="semana">Semana</option>
         <option value="mes">Mes</option>
         <option value="trimestre">Trimestre</option>
       </select>
@@ -120,32 +123,32 @@ const HistorialVentas = () => {
         dateFormat="dd/MM/yyyy"
         className="fecha_historial"
         calendarClassName="datepicker-open"
-        withPortal 
+        withPortal
       />
 
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Ventas</h3>
-        <hr style={{ margin:5 }} />
-        <text>{formatCurrency(totalVentas)}</text>
+        <hr style={{ margin: 5 }} />
+        {formatCurrency(totalVentas)}
       </div>
 
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Boletas</h3>
-        <hr style={{ margin:5 }} />
-        <text>{cantidadBoletas}</text>
+        <hr style={{ margin: 5 }} />
+        {cantidadBoletas}
       </div>
 
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Facturas</h3>
-        <hr style={{ margin:5 }} />
-        <text>{cantidadFacturas}</text>
+        <hr style={{ margin: 5 }} />
+        {cantidadFacturas}
       </div>
+
 
       <div className="chart-container ">
         <Doughnut data={data} />
       </div>
     </div>
-
   );
 };
 
