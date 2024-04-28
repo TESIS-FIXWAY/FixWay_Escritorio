@@ -7,6 +7,7 @@
 
 .header {
   height: 80px;
+  z-index: 99;
 }
 
 .content {
@@ -19,7 +20,7 @@
   background-color: #EDEDED;
   width: 30%; 
   margin: 4px;
-  margin-top: 84px;
+  margin-top: 85px;
   overflow-y: auto;
 }
 
@@ -35,7 +36,6 @@
 .main {
   flex: 1;
   margin: 4px;
-  overflow-y: auto;
   justify-content: center; 
   height: 470px; 
 
@@ -52,7 +52,7 @@
 }
 
 .widget {
-  background-color: orange;
+  background-color: #EDEDED;
   flex: 1;
   margin: 4px;
 }

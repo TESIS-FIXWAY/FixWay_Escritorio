@@ -82,7 +82,7 @@ const GraficoMisBoletas = () => {
             },
           },
         },
-        width: 600,
+        width: 500,
         height: 500,
       });
     }

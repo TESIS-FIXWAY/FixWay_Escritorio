@@ -119,13 +119,13 @@ const IndexAdmin = () => {
               <div className="graficos-wrapper">
                 <GraficoMisFacturas />
                 <GraficoMisBoletas />
-                <GraficoMantenciones />
               </div>
             </main>
 
             <div class="widget-estadisticas-container">
 
               <article class="widget">
+                <GraficoMantenciones />
               </article>
 
               <article class="estadisticas">
