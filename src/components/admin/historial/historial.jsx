@@ -105,6 +105,8 @@ const HistorialVentas = () => {
 
     <div className="container">
 
+ 
+
       <h2 className="title" >Historial de Ventas</h2>
       <select value={selectedOption} onChange={handleOptionChange}>
         <option value="dia">Día</option>
@@ -117,20 +119,25 @@ const HistorialVentas = () => {
         onChange={handleDateChange}
         dateFormat="dd/MM/yyyy"
         className="fecha_historial"
+        calendarClassName="datepicker-open"
+        withPortal 
       />
 
       <div className="container_widgets">
-        <h3>Ventas</h3>
+        <h3 className="subtitulos_historial"> Ventas</h3>
+        <hr style={{ margin:5 }} />
         <text>{formatCurrency(totalVentas)}</text>
       </div>
 
       <div className="container_widgets">
-        <h3>Boletas</h3>
+        <h3 className="subtitulos_historial"> Boletas</h3>
+        <hr style={{ margin:5 }} />
         <text>{cantidadBoletas}</text>
       </div>
 
       <div className="container_widgets">
-        <h3>Facturas</h3>
+        <h3 className="subtitulos_historial"> Facturas</h3>
+        <hr style={{ margin:5 }} />
         <text>{cantidadFacturas}</text>
       </div>
 

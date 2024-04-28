@@ -1,12 +1,10 @@
 
-.gloria-hallelujah-regular {
-    font-family: "Gloria Hallelujah", cursive;
-    font-weight: 400;
-    font-style: normal;
-  }
+
 
 text{
-    font-family: "Gloria Hallelujah", cursive;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     color: #ffff;
 }
 
@@ -21,12 +19,22 @@ text{
   }
   
   .title {
-    font-family: 'Gloria Hallelujah', cursive;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+
     padding-bottom: 5%;
     padding-top: 5%;
     font-size: 40px;
     color: #AAAAAB;
     font-size: 2em; 
+  }
+
+  .subtitulos_historial{
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    color: #ffff;
   }
 
   .fecha_historial {
@@ -39,17 +47,35 @@ text{
     width: 70%;
     max-width: 400px;
   }
-  
-  
+
+
 .container_widgets{
     background-color: #1AA9E3;
     padding: 10px;
     margin: 10px;
-    width: 300px;
+    width: 280px;
 }
 
   .chart-container {
     width: 50%;
     height: 50%;
     margin-top: 10;
+  }
+
+
+
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .datepicker-open .react-datepicker {
+    animation: slideIn 1.5s ease;
   }
