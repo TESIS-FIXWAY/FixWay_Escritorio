@@ -29,7 +29,7 @@ const GraficoMisFacturas = () => {
 
         const sortedData = Object.keys(facturasPorFecha)
           .map((fecha) => ({ x: fecha, y: facturasPorFecha[fecha] }))
-          .sort((a, b) => new Date(b.x) - new Date(a.x));
+          .sort((a, b) => b.y - a.y);
 
         setData(sortedData);
       } catch (error) {
@@ -54,6 +54,7 @@ const GraficoMisFacturas = () => {
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
+              fill: false,
             },
           ],
         },
@@ -63,6 +64,11 @@ const GraficoMisFacturas = () => {
           plugins: {
             legend: {
               display: false,
+            },
+          },
+          elements: {
+            line: {
+              tension: 0,
             },
           },
           scales: {
