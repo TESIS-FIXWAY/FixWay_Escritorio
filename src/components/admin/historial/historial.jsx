@@ -114,21 +114,23 @@ const HistorialVentas = () => {
       </style>
 
       <h1 className="title">Historial de Ventas</h1>
-      <select value={selectedOption} onChange={handleOptionChange}>
-        <option value="dia">Día</option>
-        <option value="semana">Semana</option>
-        <option value="mes">Mes</option>
-        <option value="trimestre">Trimestre</option>
-      </select>
 
-      <DatePicker
-        selected={selectedDate}
-        onChange={handleDateChange}
-        dateFormat="dd/MM/yyyy"
-        className="fecha_historial"
-        calendarClassName="datepicker-open"
-        withPortal
-      />
+      <div className="fechas_selec">
+        <select value={selectedOption} onChange={handleOptionChange} className="seleccionar">
+          <option value="dia">Día</option>
+          <option value="semana">Semana</option>
+          <option value="mes">Mes</option>
+          <option value="trimestre">Trimestre</option>
+        </select>
+
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="dd/MM/yyyy"
+          className="fecha_historial"
+          calendarClassName="datepicker-open"
+        />
+      </div>
 
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Ventas</h3>
