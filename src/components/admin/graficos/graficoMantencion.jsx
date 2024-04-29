@@ -16,8 +16,8 @@ const GraficoMantenciones = () => {
         const mantencionesPorFecha = {};
 
         querySnapshot.forEach((doc) => {
-          const { fecha } = doc.data();
-          const dateKey = new Date(fecha).toISOString().split("T")[0]; // Format date as 'YYYY-MM-DD'
+          const { fechaTerminado } = doc.data();
+          const dateKey = new Date(fechaTerminado).toISOString().split("T")[0]; // Format date as 'YYYY-MM-DD'
           if (mantencionesPorFecha[dateKey]) {
             mantencionesPorFecha[dateKey]++;
           } else {

@@ -29,7 +29,7 @@ const GraficoMisFacturas = () => {
 
         const sortedData = Object.keys(facturasPorFecha)
           .map((fecha) => ({ x: fecha, y: facturasPorFecha[fecha] }))
-          .sort((a, b) => b.y - a.y);
+          .sort((a, b) => new Date(b.x) - new Date(a.x));
 
         setData(sortedData);
       } catch (error) {
