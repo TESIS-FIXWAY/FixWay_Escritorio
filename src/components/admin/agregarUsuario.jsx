@@ -1,3 +1,9 @@
+import * as React from 'react';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+
+
+
 import "../styles/agregarUsuario.css";
 import { useState, useEffect } from "react";
 import {
@@ -182,6 +188,9 @@ const AgregarUsuario = () => {
     }
   };
 
+
+
+
   return (
     <>
       <Admin />
@@ -191,20 +200,20 @@ const AgregarUsuario = () => {
             <div className="formulario_contact">
               <h1 className="formulario_titulo">Agregar Usuario</h1>
               <form className="formulario_form" onSubmit={submitHandler}>
+
                 <p>
-                  <label className="label_formulario">RUT</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="Rut" variant="outlined" className="input_formulario"
                     id="rut"
+                    required
                     type="text"
                     name="rut"
                     placeholder="Rut (11.111.111-1)"
-                    required
                     onChange={validarRutOnChange}
                   />
                   <p className="mensaje_rut">{mensajeRut}</p>
                 </p>
+
                 <p>
                   <label className="label_formulario">ROL</label>
                   <br />
@@ -218,11 +227,11 @@ const AgregarUsuario = () => {
                     <option value="administrador">Administrador</option>
                   </select>
                 </p>
+                
+
                 <p>
-                  <label className="label_formulario">Nombre</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="Nombre" variant="outlined" className="input_formulario"
                     id="nombre"
                     required
                     type="text"
@@ -230,11 +239,10 @@ const AgregarUsuario = () => {
                     placeholder="Nombre"
                   />
                 </p>
+
                 <p>
-                  <label className="label_formulario">Apellido</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="apellido" variant="outlined" className="input_formulario"
                     id="apellido"
                     required
                     type="text"
@@ -242,11 +250,10 @@ const AgregarUsuario = () => {
                     placeholder="Apellido"
                   />
                 </p>
+
                 <p>
-                  <label className="label_formulario">Teléfono</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="Telefono" variant="outlined" className="input_formulario"
                     id="telefono"
                     required
                     type="tel"
@@ -255,11 +262,11 @@ const AgregarUsuario = () => {
                     placeholder="Ejemplo: +56 9 12345678"
                   />
                 </p>
+
+
                 <p>
-                  <label className="label_formulario">Dirección</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="Direccion" variant="outlined" className="input_formulario"
                     id="direccion"
                     required
                     type="text"
@@ -267,11 +274,10 @@ const AgregarUsuario = () => {
                     placeholder="Direccion"
                   />
                 </p>
+
                 <p>
-                  <label className="label_formulario">Sueldo</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="Salario" variant="outlined" className="input_formulario"
                     id="salario"
                     required
                     type="text"
@@ -281,11 +287,10 @@ const AgregarUsuario = () => {
                     onChange={(e) => formatSalaryInput(e.target)}
                   />
                 </p>
+
                 <p>
-                  <label className="label_formulario">Fecha de Ingreso</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField variant="outlined" className="input_formulario"
                     id="fechaIngreso"
                     required
                     type="date"
@@ -293,30 +298,31 @@ const AgregarUsuario = () => {
                     onChange={(e) => setFechaIngreso(e.target)}
                   />
                 </p>
+
                 <p>
-                  <label className="label_formulario">Email</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="Correo" variant="outlined" className="input_formulario"
                     id="email"
                     required
                     type="text"
                     name="email"
-                    placeholder="Correo"
+                    placeholder="Ingrese su Correo"
                   />
                 </p>
+
                 <p>
-                  <label className="label_formulario">Contraseña</label>
                   <br />
-                  <input
-                    className="input_formulario"
+                  <TextField label="Contraseña" variant="outlined" className="input_formulario"
                     id="password"
                     required
                     type="text"
                     name="password"
-                    placeholder="Contraseña"
+                    placeholder="Cree su Contraseña"
                   />
                 </p>
+
+
+
                 <p className="block_boton">
                   <p className="mensaje">{mensaje}</p>
                   <p className="mensaje_validacion">{mensajeValidacion}</p>
