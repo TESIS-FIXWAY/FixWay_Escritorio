@@ -32,8 +32,16 @@ const HistorialVentas = () => {
         endDate.setDate(selectedDate.getDate() + (6 - selectedDate.getDay()));
         break;
       case "mes":
-        startDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
-        endDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+        startDate = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          1
+        );
+        endDate = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth() + 1,
+          0
+        );
         break;
       case "trimestre":
         const trimestre = getTrimestre(selectedDate.getMonth());
@@ -45,11 +53,13 @@ const HistorialVentas = () => {
         endDate = selectedDate;
         break;
     }
+
     const q = query(
       historialCollection,
       where("fecha", ">=", formatDate(startDate)),
       where("fecha", "<=", formatDate(endDate))
     );
+
     const historialSnapshot = await getDocs(q);
     const total = historialSnapshot.docs.reduce(
       (acc, doc) => acc + doc.data().totalCompra,
@@ -99,6 +109,30 @@ const HistorialVentas = () => {
     ],
   };
 
+  const options = {
+    legend: {
+      display: false,
+    },
+    plugins: {
+      doughnutlabel: {
+        labels: [
+          {
+            text: "Boletas",
+            font: {
+              size: "20",
+            },
+          },
+          {
+            text: "Facturas",
+            font: {
+              size: "20",
+            },
+          },
+        ],
+      },
+    },
+  };
+
   const formatCurrency = (amount) => {
     const formatter = new Intl.NumberFormat("es-CL", {
       style: "currency",
@@ -110,13 +144,16 @@ const HistorialVentas = () => {
   return (
     <div className="container">
       <style>
-      @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+        @import
+        url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
       </style>
-
       <h1 className="title">Historial de Ventas</h1>
-
       <div className="fechas_selec">
-        <select value={selectedOption} onChange={handleOptionChange} className="seleccionar">
+        <select
+          value={selectedOption}
+          onChange={handleOptionChange}
+          className="seleccionar"
+        >
           <option value="dia">Día</option>
           <option value="semana">Semana</option>
           <option value="mes">Mes</option>
@@ -131,28 +168,23 @@ const HistorialVentas = () => {
           calendarClassName="datepicker-open"
         />
       </div>
-
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Ventas</h3>
         <hr style={{ margin: 5 }} />
         <text>{formatCurrency(totalVentas)}</text>
       </div>
-
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Boletas</h3>
         <hr style={{ margin: 5 }} />
         <text> {cantidadBoletas} </text>
       </div>
-
       <div className="container_widgets">
         <h3 className="subtitulos_historial"> Facturas</h3>
         <hr style={{ margin: 5 }} />
         <text> {cantidadFacturas} </text>
       </div>
-
-
       <div className="chart-container ">
-        <Doughnut data={data} />
+        <Doughnut data={data} options={options} />
       </div>
     </div>
   );
