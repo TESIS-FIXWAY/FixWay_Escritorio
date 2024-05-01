@@ -30,21 +30,17 @@ const HistorialVentas = () => {
         startDate.setDate(selectedDate.getDate() - selectedDate.getDay());
         endDate = new Date(selectedDate);
         endDate.setDate(selectedDate.getDate() + (6 - selectedDate.getDay()));
+        console.log(startDate, endDate);
         break;
       case "mes":
-        startDate = new Date(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth(),
-          1
-        );
-        endDate = new Date(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth() + 1,
-          0
-        );
+        startDate = new Date(selectedDate);
+        startDate.setDate(selectedDate.getDate() - (selectedDate.getDate() - 1), 0);
+        endDate = new Date(selectedDate);
+        endDate.setDate(selectedDate.getDate() + (28 + selectedDate.getDay()));
+        console.log(startDate, endDate);
         break;
       case "trimestre":
-        const trimestre = getTrimestre(selectedDate.getMonth());
+        const trimestre = getTrimestre(selectedDate.getMonth() / 3);
         startDate = new Date(selectedDate.getFullYear(), trimestre * 3, 1);
         endDate = new Date(selectedDate.getFullYear(), trimestre * 3 + 3, 0);
         break;
