@@ -29,6 +29,8 @@
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@mui/x-data-grid": "^7.3.1",
+    "@mui/x-tree-view": "^7.3.1",
     "@tauri-apps/api": "^1.5.0",
     "chart.js": "^4.4.2",
     "chartjs-adapter-date-fns": "^3.0.0",
@@ -45,7 +47,7 @@
     "react-datepicker": "^6.9.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^6.16.0",
-    "styled-components": "^6.1.8",
+    "styled-components": "^6.1.9",
     "vidom": "^0.12.1"
   },
   "devDependencies": {

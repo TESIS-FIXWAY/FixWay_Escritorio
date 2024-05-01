@@ -1,4 +1,3 @@
-import "../styles/admin.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
@@ -16,6 +15,10 @@ import {
   faChevronDown,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import "../styles/admin.css";
+
 library.add(
   faBars,
   faArrowLeft,
@@ -105,6 +108,7 @@ const Admin = () => {
         </header>
         <div className="capa"></div>
         <input type="checkbox" id="btn-menu"></input>
+
         <div className="contenedor-menu">
           <div className="cont_menu">
             <nav>
@@ -118,25 +122,42 @@ const Admin = () => {
                 <span className="link_name">Volver al Menú</span>
               </Link>
               <hr />
-              <Link
-                to="/agregarUsuario"
-                className={`link ${
-                  window.location.pathname === "/agregarUsuario" ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-user-plus" />
-                <span className="link_name">Crear Usuarios</span>
-              </Link>
 
-              <Link
-                to="/listarUsuario"
+
+
+              <SimpleTreeView 
                 className={`link ${
-                  window.location.pathname === "/listarUsuario" ? "active" : ""
+                  window.location.pathname === "/agregarUsuario" || window.location.pathname === "/listarUsuario" ? "active" : ""
                 }`}
-              >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-users" />
-                <span className="link_name">Listar Usuarios</span>
-              </Link>
+                id="arbol"
+                icon={<FontAwesomeIcon className="i" icon={["fas", "house"]} />} // Corregido aquí
+                >
+
+                <TreeItem itemId="pickers" label="Usuarios"
+                >
+                  <Link itemId="pickers-community"
+                      to="/agregarUsuario"
+                      className={`link ${
+                        window.location.pathname === "/agregarUsuario" ? "active" : ""
+                      }`}>
+                      <FontAwesomeIcon className="i" icon="fa-solid fa-user-plus" />
+                      <span className="link_name">Crear Usuarios</span>
+                    </Link>
+
+                    <Link
+                      to="/listarUsuario"
+                      className={`link ${
+                        window.location.pathname === "/listarUsuario" ? "active" : ""
+                      }`}
+                    >
+                      <FontAwesomeIcon className="i" icon="fa-solid fa-users" />
+                      <span className="link_name">Listar Usuarios</span>
+                    </Link>
+                </TreeItem>
+
+              </SimpleTreeView>
+
+
               <hr />
 
               <Link
@@ -238,7 +259,7 @@ const Admin = () => {
                 <span className="link_name">Listar Inventario</span>
               </Link>
             </nav>
-            <label for="btn-menu">
+            <label htmlFor="btn-menu">
               <FontAwesomeIcon icon="fa-solid fa-arrow-left" />
             </label>
           </div>

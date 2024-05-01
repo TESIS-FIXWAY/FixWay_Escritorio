@@ -1,7 +1,11 @@
 import React from "react";
 
+
+
+
 export default function ListadoProductos ({ showProductList, productosSeleccionados, actualizarCantidadManual, quitarProducto, setProductosSeleccionados, toggleProductList }) {
     if (showProductList) {
+        
         return (
             <div className="fondo_no">
                 <div className="editar" style={{ width: '1100px' }}>
