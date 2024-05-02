@@ -27,6 +27,7 @@ import AgregarCliente from "./agregarCliente";
 import ListadoProductos from "./listadoProductos";
 import AplicarDescuento from "./aplicarDescuento";
 import ClienteVista from "./clienteVista";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
@@ -988,6 +989,8 @@ const GenerarFactura = () => {
               seleccionarCliente={seleccionarCliente}
               eliminarCliente={eliminarCliente}
               filtrarCliente={filtrarCliente}
+              toggleAgregarCliente={toggleAgregarCliente}
+              mostrarAgregarCliente={mostrarAgregarCliente}
             />
           )}
         </>
@@ -1051,9 +1054,9 @@ const GenerarFactura = () => {
 
   return (
     <>
-    <header className="header">
-      <Admin />
-    </header>
+      <header className="header">
+        <Admin />
+      </header>
 
       <div className="tabla_listar">
         <div className="table_header">
@@ -1106,9 +1109,8 @@ const GenerarFactura = () => {
             style={{ background: "#1DC258", height: "45px", marginTop: "10px" }}
             onClick={toggleProductList}
           >
-            <FontAwesomeIcon icon="fa-solid fa-list" />
-            {showProductList ? "Ocultar Lista" : " Mostrar Lista"} (
-            {productosSeleccionados.length})
+            <ShoppingCartIcon color="secondary" />
+            {showProductList ? "" : ""} ({productosSeleccionados.length})
           </button>
 
           {showProductList && mostrarListadoProductos()}

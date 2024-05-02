@@ -1,5 +1,6 @@
 import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AgregarCliente from "./agregarCliente";
 
 const ClienteVista = ({
   clientes,
@@ -12,7 +13,9 @@ const ClienteVista = ({
   toggleClienteVista,
   seleccionarCliente,
   eliminarCliente,
-  filtrarCliente
+  filtrarCliente,
+  toggleAgregarCliente,
+  mostrarAgregarCliente,
 }) => {
   const agregarCliente = () => {
     const nuevoCliente = {
@@ -20,7 +23,7 @@ const ClienteVista = ({
       apellido: setClienteApellido,
       rut: setClienteRut,
       email: setClienteEmail,
-      telefono: setClienteTelefono
+      telefono: setClienteTelefono,
     };
 
     if (nuevoCliente.nombre && nuevoCliente.apellido && nuevoCliente.rut) {
@@ -36,22 +39,22 @@ const ClienteVista = ({
     } else {
       alert("Por favor, complete al menos nombre, apellido y rut del cliente.");
     }
-  }; 
+  };
 
   const handleEliminarCliente = (clienteId) => {
-    eliminarCliente(clienteId); 
+    eliminarCliente(clienteId);
   };
 
   return (
     <div className="fondo_no">
-      <div className="editar" style={{ width: '1100px' }}>
+      <div className="editar" style={{ width: "1100px" }}>
         <p className="p_editar">Lista Clientes</p>
         <input
           type="text"
           placeholder="Buscar cliente..."
           onChange={filtrarCliente}
         />
-        <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -72,8 +75,12 @@ const ClienteVista = ({
                   <td>{item.email}</td>
                   <td>{item.telefono}</td>
                   <td>
-                    <button onClick={() => seleccionarCliente(item)}><FontAwesomeIcon icon="fa-solid fa-check" /></button>
-                    <button onClick={() => handleEliminarCliente(item.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></button> 
+                    <button onClick={() => seleccionarCliente(item)}>
+                      <FontAwesomeIcon icon="fa-solid fa-check" />
+                    </button>
+                    <button onClick={() => handleEliminarCliente(item.id)}>
+                      <FontAwesomeIcon icon="fa-solid fa-trash" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -83,7 +90,16 @@ const ClienteVista = ({
         <tfoot>
           <tr>
             <td colSpan="6">
-              <button style={{ background: '#1DC258' }} onClick={toggleClienteVista}>
+              <button
+                style={{ background: "#1DC258" }}
+                onClick={AgregarCliente}
+              >
+                Agregar Cliente
+              </button>
+              <button
+                style={{ background: "#1DC258" }}
+                onClick={toggleClienteVista}
+              >
                 Ocultar listado de clientes
               </button>
             </td>
