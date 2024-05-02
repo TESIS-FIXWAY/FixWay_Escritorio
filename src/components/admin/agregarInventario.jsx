@@ -3,6 +3,10 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
 
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
 const AgregarInventario = () => {
   const [cantidadFormateada, setCantidadFormateada] = useState(""); 
 
@@ -41,50 +45,52 @@ const AgregarInventario = () => {
     <>
       <Admin />
         <div className='body_formulario'>
+
           <div className='formulario_content'>
+
             <div className='formulario_wrapper'>
+
               <div className='formulario_contact'>
+
                 <h1 className='formulario_titulo'>Agregar Inventario</h1>
+
                 <form className="formulario_form"onSubmit={submitHandler}>
                   <p>
-                    <label className='label_formulario'>Código Producto</label>
                     <br />
-                    <input
-                      className='input_formulario'
-                      id="codigoProducto"
-                      type="text"
-                      name="codigoProducto"
-                      placeholder="Codigo Producto"
-                      required
-                    />
+                      <TextField label="Código Producto" variant="outlined" className="input_formulario"
+                        id="codigoProducto"
+                        required
+                        type="text"
+                        name="codigoProducto"
+                        placeholder="Codigo Producto"
+                      />
                   </p>
+
                   <p>
-                    <label className='label_formulario'>Nombre Producto</label>
                     <br />
-                    <input
-                      className='input_formulario'
+                    <TextField label="Nombre Producto" variant="outlined" className="input_formulario"
                       id="nombreProducto"
+                      required
                       type="text"
                       name="nombreProducto"
                       placeholder="Nombre Producto"
-                      required/>
+                    />
                   </p>
+   
                   <p>
-                    <label className='label_formulario'>Descripción</label>                  
                     <br />
-                    <input
-                      className='input_formulario'
+                    <TextField label="Descripcion" variant="outlined" className="input_formulario"
                       id="descripcion"
                       required
                       type="text"
                       name="descripcion"
-                      placeholder="Descripcion"/>
+                      placeholder="Descripcion"
+                    />
                   </p>
+
                   <p>
-                    <label className="label_formulario">Cantidad</label>
                     <br />
-                    <input
-                      className="input_formulario"
+                    <TextField label="Cantidad" variant="outlined" className="input_formulario"
                       id="cantidad"
                       required
                       type="text"
@@ -94,18 +100,18 @@ const AgregarInventario = () => {
                       onChange={handleCantidadChange} 
                     />
                   </p>
+
                   <p>
-                    <label className="label_formulario">Costo</label>
                     <br />
-                    <input
-                      className="input_formulario"
+                    <TextField label="costo" variant="outlined" className="input_formulario"
                       id="costo"
                       required
-                      type="text" 
+                      type="text"
                       name="costo"
                       placeholder="ejemplo: 10000"
                     />
                   </p>
+
                   <p>
                     <label className='label_formulario'>Categoría</label>
                     <br />
@@ -134,22 +140,25 @@ const AgregarInventario = () => {
                       <option value="Herramientas y Equipos">Herramientas y Equipos</option>
                     </select>
                   </p>
+
                   <p>
-                    <label className='label_formulario'>Marca</label>
                     <br />
-                    <input
-                      className='input_formulario'
+                    <TextField label="Marca" variant="outlined" className="input_formulario"
                       id="marca"
                       required
                       type="text"
                       name="marca"
-                      placeholder="Marca"/>
+                      placeholder="Marca"
+                    />
                   </p>
+
                   <p className='block_boton'>
-                    <button type="submit" className="boton_formulario">
+                    <Button variant="contained" className="boton_formulario" type="submit">
                       Agregar
-                    </button>
+                    </Button> 
                   </p>
+
+
                 </form>
               </div>
             </div>
