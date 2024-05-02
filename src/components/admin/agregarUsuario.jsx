@@ -195,8 +195,11 @@ const AgregarUsuario = () => {
     <>
       <Admin />
       <div className="body_formulario">
+       
         <div className="formulario_content">
+          
           <div className="formulario_wrapper">
+            
             <div className="formulario_contact">
               <h1 className="formulario_titulo">Agregar Usuario</h1>
               <form className="formulario_form" onSubmit={submitHandler}>

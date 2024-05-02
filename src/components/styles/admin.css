@@ -18,14 +18,14 @@ body{
     position: fixed;
     right: 230px;
     top: 35px;
-    color: #fff;
+    color: #67748E;
     font-size: 18px;
   }
   
 
 /*Estilos para el encabezado*/
 .header {
-    background-color: #1AA9E3;
+    background-color: #F7F9FB;
     height: 80px;
     position: fixed;
     top: 0;
@@ -46,7 +46,7 @@ body{
 .contenedor-header .btn-menu, .logo{
     float: left;
     line-height:100px;
-    color: #fff;
+    color: #67748E;
 }
 .contenedor-header .btn-menu label{
     font-size: 25px;
@@ -65,7 +65,7 @@ body{
 .contenedor-header .menu a{
     display: inline-block;
     padding: 15px;
-    color: #fff;
+    color: #67748E;
     line-height: normal;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -79,8 +79,16 @@ body{
 }
 
 .menu_home{
-    color: #fff;
+    color: #67748E;
+    font-size: 30px !important;
+    transition: all 0.3s ease; 
 }
+.menu_home:hover{
+    color: #17C1E8;
+    transform: scale(1.1); /* Hace que el icono se agrande al hacer hover */
+}
+
+
 .icon-menu:hover{
     color: #000;
     font-size: 30px;
@@ -92,8 +100,8 @@ body{
     border-radius: 10px;
     font-size: 18px;
     cursor: pointer;
-    color: #fff;
-    background-color: #1AA9E3;
+    color: #67748E;
+    background-color: #F7F9FB;
     margin-bottom: -2px; 
 }
 .boton_salir:hover {
@@ -110,26 +118,15 @@ body{
 
 
 
-
-
-
-
-
-
-#btn-menu {
-    display: none;
-}
-
 .contenedor-menu {
     position: fixed;
     top: 80px; /* Ajusta la posición para que aparezca debajo del encabezado */
     left: 0;
-    width: 30%;
+    width: 100%;
     height: calc(100% - 80px); /* Ajusta la altura para que ocupe el espacio restante */
     transition: transform 0.3s ease, opacity 0.3s ease; /* Agrega una transición para la opacidad */
     z-index: 0; /* Asegura que el menú esté por debajo del encabezado */
     opacity: 1; /* Establece la opacidad inicial */
-
 }
 
 #btn-menu:checked ~ .contenedor-menu {
@@ -138,8 +135,8 @@ body{
 
 .cont_menu {
     width: 100%; /* Cambia esto según tus necesidades */
-    max-width: 300px;
-    background: #1667A4;
+    max-width: 250px;
+    background: #F7F9FB;
     height: 100%;
     position: relative;
     transition: transform 500ms ease;
@@ -151,22 +148,23 @@ body{
     transform: translateX(0%);
 }
 
-.cont_menu nav {
-    transform: translateY(15%);
-}
+
 
 .cont_menu nav .link {
     display: flex;
     align-items: center;
     text-decoration: none;
     padding: 15px;
-    color: #fff;
+    color: #67748E;
     transition: border-left 400ms ease, color 400ms ease;
 }
-.cont_menu nav .link .i {
-    margin-right: 10px; 
-    font-size: 25px;
+
+.cont_menu nav .link .MuiSvgIcon-root {
+    margin-right: 10px; /* Agrega un poco de espacio entre el icono y el borde */
 }
+
+
+
 .cont_menu nav .link:hover,
 .cont_menu nav .link.active { /* Agrega la clase "active" para el enlace activo */
     border-left: 5px solid #000;
@@ -174,55 +172,6 @@ body{
     border-radius: 0; 
 }
 
-
-
-.cont_menu nav .sub-menu {
-    display: none;
-    position: absolute;
-    left: 100%; /* Posición a la derecha del contenedor principal */
-    top: 10;
-    background: #0077B6;
-    padding: 5px;
-    z-index: 0;
-    
-    width: 250px; /* Ancho del submenú */
-    transition: opacity 400ms ease, visibility 400ms ease;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.cont_menu nav .link:hover .sub-menu {
-    opacity: 1;
-    visibility: visible;
-    display: block;
-    transition: border-left 400ms ease, color 400ms ease;
-
-}
-
-.cont_menu nav .sub-menu a {
-    display: block;
-    color: #fff;
-    text-decoration: none;
-    padding: 5px 10px;
-    transition: border-left 400ms ease, color 400ms ease;
-
-}
-
-.cont_menu nav .sub-menu a:hover {
-    background: #ADE3FF;
-    border-left: 5px solid #000;
-    transition: border-left 400ms ease, color 400ms ease;
-
-}
-
-.cont_menu nav .link .icon-container {
-    margin-left: auto;
-}
-
-.cont_menu nav .link .icon-container .fa-chevron-down,
-.cont_menu nav .link .icon-container .fa-chevron-right {
-    font-size: 20px;
-}
 
 
 
@@ -246,60 +195,3 @@ body{
 }
 
 
-.contenido-principal {
-    transition: margin-left 500ms ease;
-    margin-left: 250px; 
-}
-
-
-
-/*Fin de Menù lateral*/
-/* Oculta completamente el menú lateral cuando el menú está oculto */
-#btn-menu:not(:checked) ~ .contenedor-menu {
-    transform: translateX(-100%);
-    opacity: 0;
-}
-
-.capa {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: calc(100% - 250px); /* Ajusta el ancho de la capa para que no cubra el menú */
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
-    z-index: 1; 
-    display: none; 
-  }
-
-#btn-menu:checked ~ .capa {
-display: block;
-}
-
-
-/* Modificaciones para el modo responsive */
-@media screen and (max-width: 800px) {
-
-    .cont_menu {
-        width: 250px; /* Ajusta el ancho del menú lateral */
-    }
-
-    .header {
-        height: 100px; /* Ajusta la altura del encabezado */
-    }
-
-    .contenedor-header .btn-menu label {
-        font-size: 30px;
-    }
-
-    .contenedor-header .btn-menu label {
-        font-size: 30px;
-    }
-
-    #btn-menu:not(:checked) ~ .contenedor-header .menu a {
-        display: inline-block;
-    }
-
-    #btn-menu:checked ~ .contenedor-header .menu a {
-        display: none;
-    }
-}

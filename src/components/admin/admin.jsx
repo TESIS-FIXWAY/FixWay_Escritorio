@@ -1,36 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBars,
-  faArrowLeft,
-  faArrowRightFromBracket,
-  faUser,
-  faUserPlus,
-  faUsers,
-  faHouse,
-  faReceipt,
-  faChevronDown,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import "../styles/admin.css";
 
-library.add(
-  faBars,
-  faArrowLeft,
-  faArrowRightFromBracket,
-  faUser,
-  faUserPlus,
-  faUsers,
-  faHouse,
-  faReceipt,
-  faChevronDown,
-  faChevronRight
-);
+import { Home,
+  Person, 
+  PersonAdd, 
+  People, 
+  Menu, 
+  Logout, 
+  ShoppingCart, 
+  ListAlt, 
+  Description, 
+  Receipt, 
+  ReceiptLong, 
+  PostAdd, 
+  Inventory } 
+from '@mui/icons-material'; 
+
+
 
 const Admin = () => {
   const { user, logout } = UserAuth();
@@ -70,23 +61,21 @@ const Admin = () => {
   return (
     <>
       <div>
+
         <header className="header">
           <div className="contenedor-header">
+            
             <div className="btn-menu">
               <label htmlFor="btn-menu">
-                <FontAwesomeIcon
-                  icon="fa-solid fa-bars"
-                  className="icon-menu"
-                />
+                <Menu />
               </label>
-              <Link to="/indexAdmin" className="menu_home">
-                <label>
-                  <FontAwesomeIcon
-                    icon="fa-solid fa-house"
-                    className="icon-menu"
-                  />
+
+              <Link to="/indexAdmin" >
+                <label >
+                  <Home className="menu_home"/>
                 </label>
               </Link>
+
             </div>
             <div className="logo">
               <h1>Settore</h1>
@@ -98,49 +87,36 @@ const Admin = () => {
               <a>Administrador</a>
             </nav>
           </div>
+
           <button type="submit" onClick={handleLogout} className="boton_salir">
-            <FontAwesomeIcon
-              className="i"
-              icon={["fas", "arrow-right-from-bracket"]}
-              rotation={180}
-            />
+            <Logout />
           </button>
+          
         </header>
-        <div className="capa"></div>
-        <input type="checkbox" id="btn-menu"></input>
+
+        <input type="checkbox" id="btn-menu" checked></input> {/* Modificado aquí */}
 
         <div className="contenedor-menu">
           <div className="cont_menu">
             <nav>
-              <Link
-                to="/indexAdmin"
-                className={`link ${
-                  window.location.pathname === "/indexAdmin" ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-house" />
-                <span className="link_name">Volver al Menú</span>
-              </Link>
+
               <hr />
-
-
-
+              
               <SimpleTreeView 
                 className={`link ${
                   window.location.pathname === "/agregarUsuario" || window.location.pathname === "/listarUsuario" ? "active" : ""
                 }`}
                 id="arbol"
-                icon={<FontAwesomeIcon className="i" icon={["fas", "house"]} />} // Corregido aquí
-                >
+                icon={<Person />} 
+              >
 
-                <TreeItem itemId="pickers" label="Usuarios"
-                >
+                <TreeItem itemId="pickers" label="Usuarios">
                   <Link itemId="pickers-community"
                       to="/agregarUsuario"
                       className={`link ${
                         window.location.pathname === "/agregarUsuario" ? "active" : ""
                       }`}>
-                      <FontAwesomeIcon className="i" icon="fa-solid fa-user-plus" />
+                      <PersonAdd />
                       <span className="link_name">Crear Usuarios</span>
                     </Link>
 
@@ -150,11 +126,10 @@ const Admin = () => {
                         window.location.pathname === "/listarUsuario" ? "active" : ""
                       }`}
                     >
-                      <FontAwesomeIcon className="i" icon="fa-solid fa-users" />
+                      <People />
                       <span className="link_name">Listar Usuarios</span>
                     </Link>
                 </TreeItem>
-
               </SimpleTreeView>
 
 
@@ -168,12 +143,10 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <FontAwesomeIcon
-                  className="i"
-                  icon="fa-solid fa-rectangle-list"
-                />
-                <span className="link_name">Gestión de Mantenciones</span>
+                <ListAlt />
+                <span className="link_name">Mantenciones</span>
               </Link>
+
               <hr />
 
               <Link
@@ -182,21 +155,22 @@ const Admin = () => {
                   window.location.pathname === "/generarFactura" ? "active" : ""
                 }`}
               >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-receipt" />
-                <span className="link_name">Generar Factura de Vendedor</span>
+                <ReceiptLong />
+                <span className="link_name">Generar Factura</span>
               </Link>
+
+
               <Link
                 to="/agregarFactura"
                 className={`link ${
                   window.location.pathname === "/agregarFactura" ? "active" : ""
                 }`}
               >
-                <FontAwesomeIcon
-                  className="i"
-                  icon="fa-solid fa-file-circle-plus"
-                />
-                <span className="link_name">Agregar Factura de Proveedor</span>
+                <PostAdd />
+                <span className="link_name">Factura de Proveedor</span>
               </Link>
+
+
               <Link
                 to="/listadoFacturas"
                 className={`link ${
@@ -205,14 +179,12 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <FontAwesomeIcon
-                  className="i"
-                  icon="fa-solid fa-clipboard-list"
-                />
+                <People />
                 <span className="link_name">
                   Listar Facturas de Proveedores
                 </span>
               </Link>
+
               <Link
                 to="/listadoMisFacturas"
                 className={`link ${
@@ -221,15 +193,14 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <FontAwesomeIcon
-                  className="i"
-                  icon="fa-solid fa-clipboard-list"
-                />
+                <People />
                 <span className="link_name">
                   Listar Mis Facturas <br /> / Boletas
                 </span>
               </Link>
+
               <hr />
+
               <Link
                 to="/agregarInventario"
                 className={`link ${
@@ -238,12 +209,10 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <FontAwesomeIcon
-                  className="i"
-                  icon="fa-solid fa-cart-flatbed"
-                />
+                <People />
                 <span className="link_name">Agregar Inventario</span>
               </Link>
+
               <Link
                 to="/listarInventario"
                 className={`link ${
@@ -252,16 +221,11 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <FontAwesomeIcon
-                  className="i"
-                  icon="fa-solid fa-boxes-stacked"
-                />
+                <Inventory />
                 <span className="link_name">Listar Inventario</span>
               </Link>
             </nav>
-            <label htmlFor="btn-menu">
-              <FontAwesomeIcon icon="fa-solid fa-arrow-left" />
-            </label>
+
           </div>
         </div>
       </div>
