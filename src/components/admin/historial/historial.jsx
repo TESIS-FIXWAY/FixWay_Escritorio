@@ -143,13 +143,12 @@ const HistorialVentas = () => {
         @import
         url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
       </style>
-      <h1 className="title">Historial de Ventas</h1>
+
       <div className="fechas_selec">
         <select
           value={selectedOption}
           onChange={handleOptionChange}
-          className="seleccionar"
-        >
+          className="seleccionar">
           <option value="dia">Día</option>
           <option value="semana">Semana</option>
           <option value="mes">Mes</option>
@@ -164,24 +163,32 @@ const HistorialVentas = () => {
           calendarClassName="datepicker-open"
         />
       </div>
-      <div className="container_widgets">
-        <h3 className="subtitulos_historial"> Ventas</h3>
-        <hr style={{ margin: 5 }} />
-        <text>{formatCurrency(totalVentas)}</text>
+      
+
+    <div className="informacion_widgets">
+
+      <div className="widgets_historial"> 
+        <div className="container_widgets">
+          <h3 className="subtitulos_historial"> Ventas</h3>
+          <text className="texto_total">{formatCurrency(totalVentas)}</text>
+        </div>
+        <div className="container_widgets">
+          <h3 className="subtitulos_historial"> Boletas</h3>
+          <text className="texto_total"> {cantidadBoletas} </text>
+        </div>
+        <div className="container_widgets">
+          <h3 className="subtitulos_historial"> Facturas</h3>
+          <text className="texto_total"> {cantidadFacturas} </text>
+        </div>
       </div>
-      <div className="container_widgets">
-        <h3 className="subtitulos_historial"> Boletas</h3>
-        <hr style={{ margin: 5 }} />
-        <text> {cantidadBoletas} </text>
-      </div>
-      <div className="container_widgets">
-        <h3 className="subtitulos_historial"> Facturas</h3>
-        <hr style={{ margin: 5 }} />
-        <text> {cantidadFacturas} </text>
-      </div>
-      <div className="chart-container ">
-        <Doughnut data={data} options={options} />
-      </div>
+
+        <div className="chart_container ">
+          <Doughnut data={data} options={options} />
+        </div>
+
+    </div>
+
+
     </div>
   );
 };
