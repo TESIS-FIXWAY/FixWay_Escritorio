@@ -125,7 +125,7 @@ body{
     width: 250px;
     height: calc(100% - 80px); /* Ajusta la altura para que ocupe el espacio restante */
     transition: transform 0.3s ease, opacity 0.3s ease; /* Agrega una transición para la opacidad */
-    z-index: 0; /* Asegura que el menú esté por debajo del encabezado */
+    z-index: 99; /* Asegura que el menú esté por debajo del encabezado */
     opacity: 1; /* Establece la opacidad inicial */
 }
 

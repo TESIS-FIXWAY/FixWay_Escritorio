@@ -17,6 +17,8 @@ import ClienteVista from "./components/admin/factura/clienteVista";
 import ListadoMisFacturas from "./components/admin/listadoMisFacturas";
 import ListadoFacturas from "./components/admin/listadoFacturas/listadoFacturas";
 
+import Reloj from './components/admin/funcionUsuario/reLogeo' 
+
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
 import IndexMecanico from "./components/mecanico/indexMecanico";
@@ -69,6 +71,9 @@ function App() {
             <Route path='/gestionMantencionesAdmin' element={<GestionMantencionesAdmin />} />
             <Route path='/clienteVista' element={<ClienteVista />} />
             <Route path='/listadoMisFacturas' element={<ListadoMisFacturas />} />
+            
+            <Route path='/reLogeo' element={<Reloj />} />
+
             <Route
               path='/mecanico'
               element={

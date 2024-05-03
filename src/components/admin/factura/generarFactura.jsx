@@ -1066,6 +1066,7 @@ const GenerarFactura = () => {
       <header className="header">
         <Admin />
       </header>
+      
       <div className="tabla_listar">
         <div className="table_header">
           <h2>
@@ -1152,15 +1153,13 @@ const GenerarFactura = () => {
             onChange={buscadorProducto}
           />
         </div>
+
+
+
+
         <div className="table_section">
           <TableContainer
             component={Paper}
-            sx={{
-              width: "70%",
-              borderRadius: "20px",
-              padding: "15px",
-              marginTop: "10px",
-            }}
             aria-label="simple table"
           >
             <Table aria-label="simple table">

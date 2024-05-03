@@ -12,6 +12,8 @@
     justify-content: space-between;
     padding: 110px 20px 10px 20px;
     background-color: #f6f9fc;
+    margin-left: 250px;
+    overflow: auto;
 }
 .table_header p{
     font-size: 20px;
@@ -51,6 +53,8 @@ input{
 .table_section{
     height: 700px;
     overflow: auto;
+    margin-left: 250px;
+
 }
 table{
     width: 100%;

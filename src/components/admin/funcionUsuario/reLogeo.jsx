@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth } from "../../../firebase";
 
 const ReLogeo = () => {
   const [email, setEmail] = useState("");

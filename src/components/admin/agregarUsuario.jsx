@@ -19,6 +19,9 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import Admin from "./admin";
+
+import Reloj from "./funcionUsuario/reLogeo";
+
 import validadorRUT from "./validadorRUT";
 import { Button } from "@mui/material";
 
@@ -149,29 +152,8 @@ const AgregarUsuario = () => {
     });
   };
 
-  const logoutAndReauthenticate = async () => {
-    try {
-      const userEmail = prompt(
-        "Ingrese su correo electrónico para agregar el nuevo usuario:"
-      );
-      const userPassword = prompt("Ingrese su contraseña para confirmar:");
-
-      await signInWithEmailAndPassword(auth, userEmail, userPassword);
-
-      clearFormFields();
-
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        const userRef = doc(db, "users", currentUser.uid);
-        onSnapshot(userRef, (snapshot) => {
-          setUser(snapshot.data());
-        });
-      }
-
-      console.log("Sesión cerrada y reiniciada correctamente");
-    } catch (error) {
-      console.error("Error durante el cierre de sesión y reinicio:", error);
-    }
+  const logoutAndReauthenticate = () => {
+    <Reloj />
   };
 
   const autocompleteAtSymbol = (e) => {
@@ -380,19 +362,21 @@ const AgregarUsuario = () => {
                     placeholder="Cree su Contraseña"
                   />
                 </p>
-
                 <p className="block_boton">
                   <p className="mensaje">{mensaje}</p>
                   <p className="mensaje_validacion">{mensajeValidacion}</p>
                   <Button
                     variant="outlined"
+                    Onchage = {() => (logoutAndReauthenticate)}
                     type="submit"
                     size="large"
                     style={{ with: "120px", fontSize: "20px" }}
                   >
-                    Agregar Usuario
-                  </Button>
+                    Agregar Usuario 
+                  </Button> 
+
                 </p>
+
               </form>
             </div>
           </div>
