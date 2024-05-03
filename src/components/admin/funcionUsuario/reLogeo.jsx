@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 
 const ReLogeo = () => {
@@ -12,12 +9,14 @@ const ReLogeo = () => {
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Evitar el envío del formulario por defecto
+
     try {
       // Cerrar sesión primero
-      await auth.signOut();
+      await signOut(auth);
 
-      // Luego, iniciar sesión con los nuevos datos
+      // Luego, iniciar sesión con los datos del formulario
       await signInWithEmailAndPassword(auth, email, password);
       setMensaje("Inicio de sesión exitoso");
     } catch (error) {
@@ -31,33 +30,6 @@ const ReLogeo = () => {
     setEmail("");
     setPassword("");
     setMensaje("");
-  };
-
-  const handleAddUser = async () => {
-    try {
-      const newUserEmail = prompt(
-        "Ingrese el correo electrónico del nuevo usuario:"
-      );
-      const newUserPassword = prompt(
-        "Ingrese la contraseña del nuevo usuario:"
-      );
-
-      if (newUserEmail && newUserPassword) {
-        await createUserWithEmailAndPassword(
-          auth,
-          newUserEmail,
-          newUserPassword
-        );
-        setMensaje("Usuario agregado exitosamente");
-      } else {
-        setMensaje(
-          "Por favor, ingrese un correo electrónico y una contraseña válidos"
-        );
-      }
-    } catch (error) {
-      console.error("Error al agregar usuario:", error);
-      setMensaje("Error al agregar usuario");
-    }
   };
 
   return (
@@ -89,9 +61,6 @@ const ReLogeo = () => {
           Cancelar
         </Button>
       </form>
-      <Button variant="contained" onClick={handleAddUser}>
-        Agregar Usuario
-      </Button>
       <p>{mensaje}</p>
     </div>
   );

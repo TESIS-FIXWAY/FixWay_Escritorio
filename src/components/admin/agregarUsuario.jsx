@@ -39,15 +39,6 @@ const AgregarUsuario = () => {
     }
   }, [identifyUser]);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setUser(null);
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
-
   const checkDuplicateRut = async (rut) => {
     const usersRef = collection(db, "users");
     const snapshot = await getDocs(query(usersRef, where("rut", "==", rut)));
@@ -160,8 +151,6 @@ const AgregarUsuario = () => {
 
   const logoutAndReauthenticate = async () => {
     try {
-      await signOut(auth);
-
       const userEmail = prompt(
         "Ingrese su correo electrónico para agregar el nuevo usuario:"
       );
