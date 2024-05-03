@@ -21,7 +21,6 @@ import { db, auth } from "../../firebase";
 import Admin from "./admin";
 import validadorRUT from "./validadorRUT";
 import { Button } from "@mui/material";
-import { select } from 'd3';
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
@@ -187,38 +186,56 @@ const AgregarUsuario = () => {
   };
 
   const autocompleteAtSymbol = (e) => {
-    const dominios = ["gmail.com", "outlook.com", "yahoo.com"];
-    const dominioSeleccionado = e.target.value.trim();
-
-    if (!dominioSeleccionado.includes("@")) {
-        e.target.value = dominioSeleccionado;
-    } else {
-        const userPart = dominioSeleccionado.substring(0, dominioSeleccionado.lastIndexOf("@") + 1);
-        const domainPart = dominioSeleccionado.substring(dominioSeleccionado.lastIndexOf("@") + 1);
-        
-        if (dominios.includes(domainPart)) {
-            e.target.value = userPart + domainPart;
-        } else {
-            const select = document.createElement("select");
-            select.addEventListener("change", (event) => {
-                const selectedDomain = event.target.value;
-                e.target.value = userPart + selectedDomain;
-            });
-            dominios.forEach(dominio => {
-                const option = document.createElement("option");
-                option.value = dominio;
-                option.textContent = dominio;
-                select.appendChild(option);
-            });
-
-            e.target.parentNode.appendChild(select);
-        }
+    const inputField = e.target;
+    let enteredText = inputField.value.trim(); // Eliminar espacios al principio y al final
+  
+    // Eliminar espacios en el medio del correo electrónico
+    enteredText = enteredText.replace(/\s/g, '');
+  
+    const atPosition = enteredText.lastIndexOf('@'); // Cambiar a lastIndexOf para manejar múltiples "@"
+  
+    // Eliminar el select existente si no hay "@" o si hay espacios después de "@"
+    const existingSelect = inputField.parentNode.querySelector(".email-domain-select");
+    if (atPosition === -1 || enteredText[atPosition + 1] === '' || enteredText.includes(' ')) {
+      if (existingSelect) existingSelect.remove();
+      return; // Deja de procesar si no hay "@" o si hay espacios
     }
-    
-    e.target.selectionStart = e.target.selectionEnd = e.target.value.length;
-};
-
-
+  
+    // Dividir la entrada en la parte de usuario y dominio
+    const userPart = enteredText.slice(0, atPosition + 1);
+    const domainPart = enteredText.slice(atPosition + 1);
+    const domains = ["gmail.com", "outlook.com", "yahoo.com"];
+  
+    const suggestions = domains.filter(d => d.startsWith(domainPart));
+  
+    if (suggestions.length > 0) {
+      if (!existingSelect) {
+        // Crear un nuevo select dropdown si no existe
+        const select = document.createElement("select");
+        select.className = "email-domain-select";
+        select.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map(s => `<option value="${s}">${s}</option>`).join('');
+  
+        select.onchange = () => {
+          if (select.value) {
+            inputField.value = userPart + select.value;
+            select.remove(); // Limpiar eliminando el select una vez se haga la selección
+          }
+        };
+  
+        inputField.parentNode.appendChild(select);
+        inputField.parentNode.insertBefore(select, inputField.nextSibling);
+      } else {
+        // Actualizar el select existente
+        existingSelect.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map(s => `<option value="${s}">${s}</option>`).join('');
+      }
+    } else {
+      // Eliminar el select si no hay sugerencias
+      if (existingSelect) existingSelect.remove();
+    }
+  };
+  
+  
+  
 
   return (
     <>
