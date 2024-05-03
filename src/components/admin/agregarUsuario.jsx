@@ -187,21 +187,18 @@ const AgregarUsuario = () => {
 
   const autocompleteAtSymbol = (e) => {
     const inputField = e.target;
-    let enteredText = inputField.value.trim(); // Eliminar espacios al principio y al final
+    let enteredText = inputField.value.trim();
   
-    // Eliminar espacios en el medio del correo electrónico
     enteredText = enteredText.replace(/\s/g, '');
   
-    const atPosition = enteredText.lastIndexOf('@'); // Cambiar a lastIndexOf para manejar múltiples "@"
+    const atPosition = enteredText.lastIndexOf('@'); 
   
-    // Eliminar el select existente si no hay "@" o si hay espacios después de "@"
     const existingSelect = inputField.parentNode.querySelector(".email-domain-select");
     if (atPosition === -1 || enteredText[atPosition + 1] === '' || enteredText.includes(' ')) {
       if (existingSelect) existingSelect.remove();
-      return; // Deja de procesar si no hay "@" o si hay espacios
+      return;
     }
   
-    // Dividir la entrada en la parte de usuario y dominio
     const userPart = enteredText.slice(0, atPosition + 1);
     const domainPart = enteredText.slice(atPosition + 1);
     const domains = ["gmail.com", "outlook.com", "yahoo.com"];
@@ -210,7 +207,6 @@ const AgregarUsuario = () => {
   
     if (suggestions.length > 0) {
       if (!existingSelect) {
-        // Crear un nuevo select dropdown si no existe
         const select = document.createElement("select");
         select.className = "email-domain-select";
         select.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map(s => `<option value="${s}">${s}</option>`).join('');
@@ -218,18 +214,16 @@ const AgregarUsuario = () => {
         select.onchange = () => {
           if (select.value) {
             inputField.value = userPart + select.value;
-            select.remove(); // Limpiar eliminando el select una vez se haga la selección
+            select.remove();
           }
         };
   
         inputField.parentNode.appendChild(select);
         inputField.parentNode.insertBefore(select, inputField.nextSibling);
       } else {
-        // Actualizar el select existente
         existingSelect.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map(s => `<option value="${s}">${s}</option>`).join('');
       }
     } else {
-      // Eliminar el select si no hay sugerencias
       if (existingSelect) existingSelect.remove();
     }
   };
