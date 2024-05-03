@@ -1,9 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-
-
-
 import "../styles/agregarUsuario.css";
 import { useState, useEffect } from "react";
 import {
@@ -24,6 +21,7 @@ import { db, auth } from "../../firebase";
 import Admin from "./admin";
 import validadorRUT from "./validadorRUT";
 import { Button } from "@mui/material";
+import { select } from 'd3';
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
@@ -188,6 +186,37 @@ const AgregarUsuario = () => {
     }
   };
 
+  const autocompleteAtSymbol = (e) => {
+    const dominios = ["gmail.com", "outlook.com", "yahoo.com"];
+    const dominioSeleccionado = e.target.value.trim();
+
+    if (!dominioSeleccionado.includes("@")) {
+        e.target.value = dominioSeleccionado;
+    } else {
+        const userPart = dominioSeleccionado.substring(0, dominioSeleccionado.lastIndexOf("@") + 1);
+        const domainPart = dominioSeleccionado.substring(dominioSeleccionado.lastIndexOf("@") + 1);
+        
+        if (dominios.includes(domainPart)) {
+            e.target.value = userPart + domainPart;
+        } else {
+            const select = document.createElement("select");
+            select.addEventListener("change", (event) => {
+                const selectedDomain = event.target.value;
+                e.target.value = userPart + selectedDomain;
+            });
+            dominios.forEach(dominio => {
+                const option = document.createElement("option");
+                option.value = dominio;
+                option.textContent = dominio;
+                select.appendChild(option);
+            });
+
+            e.target.parentNode.appendChild(select);
+        }
+    }
+    
+    e.target.selectionStart = e.target.selectionEnd = e.target.value.length;
+};
 
 
 
@@ -203,7 +232,6 @@ const AgregarUsuario = () => {
             <div className="formulario_contact">
               <h1 className="formulario_titulo">Agregar Usuario</h1>
               <form className="formulario_form" onSubmit={submitHandler}>
-
                 <p>
                   <br />
                   <TextField label="Rut" variant="outlined" className="input_formulario"
@@ -310,6 +338,7 @@ const AgregarUsuario = () => {
                     type="text"
                     name="email"
                     placeholder="Ingrese su Correo"
+                    onChange={autocompleteAtSymbol} // Llama a la función para autocompletar el símbolo "@"
                   />
                 </p>
 
