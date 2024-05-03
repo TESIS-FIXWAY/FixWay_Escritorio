@@ -29,6 +29,14 @@ import AplicarDescuento from "./aplicarDescuento";
 import ClienteVista from "./clienteVista";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
@@ -1052,17 +1060,168 @@ const GenerarFactura = () => {
     }
   };
 
+  //   return (
+  //     <>
+  //       <header className="header">
+  //         <Admin />
+  //       </header>
+
+  //       <div className="tabla_listar">
+  //         <div className="table_header">
+  //           <h1>
+  //             Generar <br /> Factura
+  //           </h1>
+  //           <button
+  //             onClick={() => generarFactura(productosSeleccionados)}
+  //             style={{
+  //               backgroundColor: "#6fa0e8",
+  //               height: "45px",
+  //               marginTop: "10px",
+  //             }}
+  //             onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
+  //             onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}
+  //           >
+  //             <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Factura
+  //           </button>
+  //           <button
+  //             onClick={() => generarBoleta(productosSeleccionados)}
+  //             style={{
+  //               backgroundColor: "#D4AFB9",
+  //               height: "45px",
+  //               marginTop: "10px",
+  //             }}
+  //             onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
+  //             onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}
+  //           >
+  //             <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Boleta
+  //           </button>
+  //           <button
+  //             onClick={toggleDiscountMenu}
+  //             style={{ background: "#E74C3C", height: "45px", marginTop: "10px" }}
+  //           >
+  //             Añadir Descuento %
+  //           </button>
+  //           <select
+  //             value={tipoPago}
+  //             onChange={(e) => setTipoPago(e.target.value)}
+  //             style={{ width: "100px", height: "45px", marginTop: "10px" }}
+  //           >
+  //             <option value="contado">Contado</option>
+  //             <option value="credito">Crédito</option>
+  //             <option value="debito">Débito</option>
+  //           </select>
+
+  //           {showDiscountMenu && mostrarDescuentoMenu()}
+
+  //           <button
+  //             style={{ background: "#1DC258", height: "45px", marginTop: "10px" }}
+  //             onClick={toggleProductList}
+  //           >
+  //             <ShoppingCartIcon color="secondary" />
+  //             {showProductList ? "" : ""} ({productosSeleccionados.length})
+  //           </button>
+
+  //           {showProductList && mostrarListadoProductos()}
+
+  //           <button
+  //             onClick={toggleAgregarCliente}
+  //             style={{ background: "#42a5f5", height: "45px", marginTop: "10px" }}
+  //           >
+  //             <FontAwesomeIcon icon="fa-solid fa-user-plus" />
+  //             Agregar Cliente
+  //           </button>
+
+  //           {mostrarAgregarCliente()}
+
+  //           <button
+  //             style={{ background: "#009688", height: "45px", marginTop: "10px" }}
+  //             onClick={toggleClienteVista}
+  //           >
+  //             <FontAwesomeIcon
+  //               icon="fa-solid fa-users"
+  //               style={{ left: "15px" }}
+  //             />
+  //             Seleccionar Cliente
+  //           </button>
+  //           {mostrarListadoClientes()}
+
+  //           <input
+  //             style={{ height: "45px", marginTop: "10px" }}
+  //             type="text"
+  //             placeholder="Buscar producto"
+  //             onChange={buscadorProducto}
+  //           />
+  //         </div>
+  //         <div className="table_section">
+  //           <table>
+  //             <thead>
+  //               <tr>
+  //                 <th>Seleccionar</th>
+  //                 <th>Código Producto</th>
+  //                 <th>
+  //                   Nombre <br /> del Producto
+  //                 </th>
+  //                 <th>Descripción</th>
+  //                 <th>Costo</th>
+  //                 <th>Cantidad</th>
+  //                 <th>
+  //                   Cantidad <br /> Seleccionada
+  //                 </th>
+  //               </tr>
+  //             </thead>
+  //             <tbody>
+  //               {inventario.map((item) => (
+  //                 <tr key={item.id}>
+  //                   <td>
+  //                     <input
+  //                       type="checkbox"
+  //                       onChange={() => toggleSeleccionProducto(item.id)}
+  //                       checked={productosSeleccionados.some(
+  //                         (producto) => producto.id === item.id
+  //                       )}
+  //                     />
+  //                   </td>
+  //                   <td>{item.codigoProducto}</td>
+  //                   <td>{item.nombreProducto}</td>
+  //                   <td>{item.descripcion}</td>
+  //                   <td>{item.costo}</td>
+  //                   <td>{item.cantidad}</td>
+  //                   <td>
+  //                     <input
+  //                       type="number"
+  //                       min="0"
+  //                       style={{ width: "80px" }}
+  //                       value={
+  //                         productosSeleccionados.find(
+  //                           (producto) => producto.id === item.id
+  //                         )?.cantidad || ""
+  //                       }
+  //                       onChange={(e) => {
+  //                         const nuevaCantidad = parseInt(e.target.value, 10) || 0;
+  //                         actualizarCantidadManual(item.id, nuevaCantidad);
+  //                       }}
+  //                     />
+  //                   </td>
+  //                 </tr>
+  //               ))}
+  //             </tbody>
+  //           </table>
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // };
+
   return (
     <>
       <header className="header">
         <Admin />
       </header>
-
       <div className="tabla_listar">
         <div className="table_header">
-          <h1>
+          <h2>
             Generar <br /> Factura
-          </h1>
+          </h2>
           <button
             onClick={() => generarFactura(productosSeleccionados)}
             style={{
@@ -1145,59 +1304,61 @@ const GenerarFactura = () => {
           />
         </div>
         <div className="table_section">
-          <table>
-            <thead>
-              <tr>
-                <th>Seleccionar</th>
-                <th>Código Producto</th>
-                <th>
-                  Nombre <br /> del Producto
-                </th>
-                <th>Descripción</th>
-                <th>Costo</th>
-                <th>Cantidad</th>
-                <th>
-                  Cantidad <br /> Seleccionada
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {inventario.map((item) => (
-                <tr key={item.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      onChange={() => toggleSeleccionProducto(item.id)}
-                      checked={productosSeleccionados.some(
-                        (producto) => producto.id === item.id
-                      )}
-                    />
-                  </td>
-                  <td>{item.codigoProducto}</td>
-                  <td>{item.nombreProducto}</td>
-                  <td>{item.descripcion}</td>
-                  <td>{item.costo}</td>
-                  <td>{item.cantidad}</td>
-                  <td>
-                    <input
-                      type="number"
-                      min="0"
-                      style={{ width: "80px" }}
-                      value={
-                        productosSeleccionados.find(
+          <TableContainer component={Paper}>
+            <Table
+              sx={{ with: "100vh", lef: "-100" }}
+              aria-label="simple table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>Seleccionar</TableCell>
+                  <TableCell>Código Producto</TableCell>
+                  <TableCell>Nombre del Producto</TableCell>
+                  <TableCell>Descripción</TableCell>
+                  <TableCell>Costo</TableCell>
+                  <TableCell>Cantidad</TableCell>
+                  <TableCell>Cantidad Seleccionada</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {inventario.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      <input
+                        type="checkbox"
+                        onChange={() => toggleSeleccionProducto(item.id)}
+                        checked={productosSeleccionados.some(
                           (producto) => producto.id === item.id
-                        )?.cantidad || ""
-                      }
-                      onChange={(e) => {
-                        const nuevaCantidad = parseInt(e.target.value, 10) || 0;
-                        actualizarCantidadManual(item.id, nuevaCantidad);
-                      }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                        )}
+                      />
+                    </TableCell>
+                    <TableCell>{item.codigoProducto}</TableCell>
+                    <TableCell>{item.nombreProducto}</TableCell>
+                    <TableCell>{item.descripcion}</TableCell>
+                    <TableCell>{item.costo}</TableCell>
+                    <TableCell>{item.cantidad}</TableCell>
+                    <TableCell>
+                      <input
+                        type="number"
+                        min="0"
+                        style={{ width: "80px" }}
+                        value={
+                          productosSeleccionados.find(
+                            (producto) => producto.id === item.id
+                          )?.cantidad || ""
+                        }
+                        onChange={(e) => {
+                          const nuevaCantidad =
+                            parseInt(e.target.value, 10) || 0;
+                          actualizarCantidadManual(item.id, nuevaCantidad);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </div>
     </>
