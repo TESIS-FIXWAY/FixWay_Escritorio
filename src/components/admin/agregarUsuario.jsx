@@ -1,6 +1,6 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import * as React from "react";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 import "../styles/agregarUsuario.css";
 import { useState, useEffect } from "react";
 import {
@@ -188,64 +188,71 @@ const AgregarUsuario = () => {
   const autocompleteAtSymbol = (e) => {
     const inputField = e.target;
     let enteredText = inputField.value.trim();
-  
-    enteredText = enteredText.replace(/\s/g, '');
-  
-    const atPosition = enteredText.lastIndexOf('@'); 
-  
-    const existingSelect = inputField.parentNode.querySelector(".email-domain-select");
-    if (atPosition === -1 || enteredText[atPosition + 1] === '' || enteredText.includes(' ')) {
+
+    enteredText = enteredText.replace(/\s/g, "");
+
+    const atPosition = enteredText.lastIndexOf("@");
+
+    const existingSelect = inputField.parentNode.querySelector(
+      ".email-domain-select"
+    );
+    if (
+      atPosition === -1 ||
+      enteredText[atPosition + 1] === "" ||
+      enteredText.includes(" ")
+    ) {
       if (existingSelect) existingSelect.remove();
       return;
     }
-  
+
     const userPart = enteredText.slice(0, atPosition + 1);
     const domainPart = enteredText.slice(atPosition + 1);
     const domains = ["gmail.com", "outlook.com", "yahoo.com"];
-  
-    const suggestions = domains.filter(d => d.startsWith(domainPart));
-  
+
+    const suggestions = domains.filter((d) => d.startsWith(domainPart));
+
     if (suggestions.length > 0) {
       if (!existingSelect) {
         const select = document.createElement("select");
         select.className = "email-domain-select";
-        select.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map(s => `<option value="${s}">${s}</option>`).join('');
-  
+        select.innerHTML =
+          `<option value="">Seleccione...</option>` +
+          suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
+
         select.onchange = () => {
           if (select.value) {
             inputField.value = userPart + select.value;
             select.remove();
           }
         };
-  
+
         inputField.parentNode.appendChild(select);
         inputField.parentNode.insertBefore(select, inputField.nextSibling);
       } else {
-        existingSelect.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map(s => `<option value="${s}">${s}</option>`).join('');
+        existingSelect.innerHTML =
+          `<option value="">Seleccione...</option>` +
+          suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
       }
     } else {
       if (existingSelect) existingSelect.remove();
     }
   };
-  
-  
-  
 
   return (
     <>
       <Admin />
       <div className="body_formulario">
-       
         <div className="formulario_content">
-          
           <div className="formulario_wrapper">
-            
             <div className="formulario_contact">
               <h1 className="formulario_titulo">Agregar Usuario</h1>
               <form className="formulario_form" onSubmit={submitHandler}>
                 <p>
                   <br />
-                  <TextField label="Rut" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="Rut"
+                    variant="outlined"
+                    className="input_formulario"
                     id="rut"
                     required
                     type="text"
@@ -269,11 +276,13 @@ const AgregarUsuario = () => {
                     <option value="administrador">Administrador</option>
                   </select>
                 </p>
-                
 
                 <p>
                   <br />
-                  <TextField label="Nombre" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="Nombre"
+                    variant="outlined"
+                    className="input_formulario"
                     id="nombre"
                     required
                     type="text"
@@ -284,7 +293,10 @@ const AgregarUsuario = () => {
 
                 <p>
                   <br />
-                  <TextField label="apellido" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="apellido"
+                    variant="outlined"
+                    className="input_formulario"
                     id="apellido"
                     required
                     type="text"
@@ -295,7 +307,10 @@ const AgregarUsuario = () => {
 
                 <p>
                   <br />
-                  <TextField label="Telefono" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="Telefono"
+                    variant="outlined"
+                    className="input_formulario"
                     id="telefono"
                     required
                     type="tel"
@@ -305,10 +320,12 @@ const AgregarUsuario = () => {
                   />
                 </p>
 
-
                 <p>
                   <br />
-                  <TextField label="Direccion" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="Direccion"
+                    variant="outlined"
+                    className="input_formulario"
                     id="direccion"
                     required
                     type="text"
@@ -319,7 +336,10 @@ const AgregarUsuario = () => {
 
                 <p>
                   <br />
-                  <TextField label="Salario" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="Salario"
+                    variant="outlined"
+                    className="input_formulario"
                     id="salario"
                     required
                     type="text"
@@ -332,7 +352,9 @@ const AgregarUsuario = () => {
 
                 <p>
                   <br />
-                  <TextField variant="outlined" className="input_formulario"
+                  <TextField
+                    variant="outlined"
+                    className="input_formulario"
                     id="fechaIngreso"
                     required
                     type="date"
@@ -343,7 +365,10 @@ const AgregarUsuario = () => {
 
                 <p>
                   <br />
-                  <TextField label="Correo" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="Correo"
+                    variant="outlined"
+                    className="input_formulario"
                     id="email"
                     required
                     type="text"
@@ -355,7 +380,10 @@ const AgregarUsuario = () => {
 
                 <p>
                   <br />
-                  <TextField label="Contraseña" variant="outlined" className="input_formulario"
+                  <TextField
+                    label="Contraseña"
+                    variant="outlined"
+                    className="input_formulario"
                     id="password"
                     required
                     type="text"
@@ -363,8 +391,6 @@ const AgregarUsuario = () => {
                     placeholder="Cree su Contraseña"
                   />
                 </p>
-
-
 
                 <p className="block_boton">
                   <p className="mensaje">{mensaje}</p>
