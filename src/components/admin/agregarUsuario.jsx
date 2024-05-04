@@ -20,8 +20,6 @@ import {
 import { db, auth } from "../../firebase";
 import Admin from "./admin";
 
-import Reloj from "./funcionUsuario/reLogeo";
-
 import validadorRUT from "./validadorRUT";
 import { Button } from "@mui/material";
 
@@ -32,6 +30,7 @@ const AgregarUsuario = () => {
   const identifyUser = auth.currentUser;
   const [user, setUser] = useState(null);
   const [fechaIngreso, setFechaIngreso] = useState(null);
+  const [showReauthForm, setShowReauthForm] = useState(false);
 
   useEffect(() => {
     if (identifyUser) {
@@ -70,6 +69,7 @@ const AgregarUsuario = () => {
       const fechaIngreso = e.target.elements.fechaIngreso.value;
 
       try {
+        await signOut(auth);
         const currentUser = auth.currentUser;
         const userCredentials = await createUserWithEmailAndPassword(
           auth,
@@ -102,7 +102,7 @@ const AgregarUsuario = () => {
       } finally {
         setTimeout(() => {
           setMensaje(null);
-        }, 5000);
+        }, 2000);
       }
     }
   };
@@ -152,8 +152,29 @@ const AgregarUsuario = () => {
     });
   };
 
-  const logoutAndReauthenticate = () => {
-    <Reloj />
+  const logoutAndReauthenticate = async () => {
+    try {
+      const userEmail = prompt(
+        "Ingrese su correo electrónico para agregar el nuevo usuario:"
+      );
+      const userPassword = prompt("Ingrese su contraseña para confirmar:");
+
+      await signInWithEmailAndPassword(auth, userEmail, userPassword);
+
+      clearFormFields();
+
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const userRef = doc(db, "users", currentUser.uid);
+        onSnapshot(userRef, (snapshot) => {
+          setUser(snapshot.data());
+        });
+      }
+
+      console.log("Sesión cerrada y reiniciada correctamente");
+    } catch (error) {
+      console.error("Error durante el cierre de sesión y reinicio:", error);
+    }
   };
 
   const autocompleteAtSymbol = (e) => {
@@ -233,7 +254,6 @@ const AgregarUsuario = () => {
                   />
                   <p className="mensaje_rut">{mensajeRut}</p>
                 </p>
-
                 <p>
                   <label className="label_formulario">ROL</label>
                   <br />
@@ -247,7 +267,6 @@ const AgregarUsuario = () => {
                     <option value="administrador">Administrador</option>
                   </select>
                 </p>
-
                 <p>
                   <br />
                   <TextField
@@ -275,7 +294,6 @@ const AgregarUsuario = () => {
                     placeholder="Apellido"
                   />
                 </p>
-
                 <p>
                   <br />
                   <TextField
@@ -290,7 +308,6 @@ const AgregarUsuario = () => {
                     placeholder="Ejemplo: +56 9 12345678"
                   />
                 </p>
-
                 <p>
                   <br />
                   <TextField
@@ -304,7 +321,6 @@ const AgregarUsuario = () => {
                     placeholder="Direccion"
                   />
                 </p>
-
                 <p>
                   <br />
                   <TextField
@@ -320,7 +336,6 @@ const AgregarUsuario = () => {
                     onChange={(e) => formatSalaryInput(e.target)}
                   />
                 </p>
-
                 <p>
                   <br />
                   <TextField
@@ -333,7 +348,6 @@ const AgregarUsuario = () => {
                     onChange={(e) => setFechaIngreso(e.target)}
                   />
                 </p>
-
                 <p>
                   <br />
                   <TextField
@@ -345,10 +359,9 @@ const AgregarUsuario = () => {
                     type="text"
                     name="email"
                     placeholder="Ingrese su Correo"
-                    onChange={autocompleteAtSymbol} // Llama a la función para autocompletar el símbolo "@"
+                    onChange={autocompleteAtSymbol}
                   />
                 </p>
-
                 <p>
                   <br />
                   <TextField
@@ -367,16 +380,50 @@ const AgregarUsuario = () => {
                   <p className="mensaje_validacion">{mensajeValidacion}</p>
                   <Button
                     variant="outlined"
-                    Onchage = {() => (logoutAndReauthenticate)}
+                    onClick={logoutAndReauthenticate}
                     type="submit"
                     size="large"
                     style={{ with: "120px", fontSize: "20px" }}
                   >
-                    Agregar Usuario 
-                  </Button> 
-
+                    Agregar Usuario
+                  </Button>
+                  {showReauthForm && (
+                    <>
+                      <TextField
+                        label="Correo electrónico"
+                        variant="outlined"
+                        className="input_formulario"
+                        id="email-reauth"
+                        required
+                        type="email"
+                      />
+                      <TextField
+                        label="Contraseña"
+                        variant="outlined"
+                        className="input_formulario"
+                        id="password-reauth"
+                        required
+                        type="password"
+                      />
+                      <Button
+                        variant="outlined"
+                        onClick={handleReauthenticate}
+                        size="large"
+                        style={{ with: "120px", fontSize: "20px" }}
+                      >
+                        Reautenticar
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={() => setShowReauthForm(false)}
+                        size="large"
+                        style={{ with: "120px", fontSize: "20px" }}
+                      >
+                        Cancelar
+                      </Button>
+                    </>
+                  )}
                 </p>
-
               </form>
             </div>
           </div>
