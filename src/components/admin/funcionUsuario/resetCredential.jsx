@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
 
-const ReLogeo = () => {
+const ResetCredential = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
@@ -66,4 +66,4 @@ const ReLogeo = () => {
   );
 };
 
-export default ReLogeo;
+export default ResetCredential;

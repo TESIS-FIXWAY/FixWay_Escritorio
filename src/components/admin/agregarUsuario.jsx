@@ -20,6 +20,8 @@ import {
 import { db, auth } from "../../firebase";
 import Admin from "./admin";
 
+import ResetCredential from "./funcionUsuario/resetCredential";
+
 import validadorRUT from "./validadorRUT";
 import { Button } from "@mui/material";
 
