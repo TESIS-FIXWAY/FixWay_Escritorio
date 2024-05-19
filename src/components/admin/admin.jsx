@@ -30,6 +30,10 @@ const Admin = () => {
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
+  const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
+  const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
+
 
 
   useEffect(() => {
@@ -66,6 +70,23 @@ const Admin = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const toggleSubMenu1 = () => {
+    setIsSubMenuOpen1(!isSubMenuOpen1);
+    setIsSubMenuOpen2(false); // Cierra el otro submenú
+    setIsSubMenuOpen3(false); // Cierra el otro submenú
+
+  };
+  
+  const toggleSubMenu2 = () => {
+    setIsSubMenuOpen2(!isSubMenuOpen2);
+    setIsSubMenuOpen1(false); // Cierra el otro submenú
+    setIsSubMenuOpen3(false); // Cierra el otro submenú
+  };
+  const toggleSubMenu3 = () => {
+    setIsSubMenuOpen3(!isSubMenuOpen3);
+    setIsSubMenuOpen1(false); // Cierra el otro submenú
+    setIsSubMenuOpen2(false); // Cierra el otro submenú
+  };
 
   return (
     <>
@@ -80,49 +101,135 @@ const Admin = () => {
         <nav className={`arbol ${isMenuOpen ? 'open' : ''}`}>
 
           <ul className="arbolitos">
-            <li>
-              <Link itemId="pickers-community"
-                to="/agregarUsuario"
-                className={`link ${
-                  window.location.pathname === "/agregarUsuario" ? "active" : ""
-                }`}>
-                <span className="link_name">Crear Usuarios</span>
-              </Link>
-            </li>
-            <li>
+
+            <li onClick={toggleSubMenu1}>
               <Link
-                to="/listarUsuario"
-                className={`link ${
-                  window.location.pathname === "/listarUsuario" ? "active" : ""
+                className={`links ${
+                  window.location.pathname === "/agregarUsuario" || window.location.pathname === "/listarUsuario" ? "active" : ""
                 }`}
               >
-                <span className="link_name">Listar Usuarios</span>
-              </Link>
+                <span className="link_name">Usuarios</span>
+              </Link>              
+              {isSubMenuOpen1  && (
+                <ul className="sub-menu">
+                  <li>
+                    <Link itemId="pickers-community"
+                      to="/agregarUsuario"
+                      className={`link ${
+                        window.location.pathname === "/agregarUsuario" ? "active" : ""
+                      }`}>
+                      <span className="link_name">Crear Usuarios</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/listarUsuario"
+                      className={`link ${
+                        window.location.pathname === "/listarUsuario" ? "active" : ""
+                      }`}
+                    >
+                      <span className="link_name">Listar Usuarios</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
+
+
+
             <li>
               <Link
                 to="/gestionMantencionesAdmin"
-                className={`link ${
+                className={`links ${
                   window.location.pathname === "/gestionMantencionesAdmin"
                     ? "active"
                     : ""
                 }`}
               >
-                <ListAlt />
                 <span className="link_name">Mantenciones</span>
               </Link>
             </li>
-            <li>
+
+            <li onClick={toggleSubMenu2}>
               <Link
-                to="/generarFactura"
-                className={`link ${
-                  window.location.pathname === "/generarFactura" ? "active" : ""
-                }`}
-              >
-                <ReceiptLong />
-                <span className="link_name">Generar Factura</span>
-              </Link>
+                className={`links ${
+                  window.location.pathname === "/generarFactura" || window.location.pathname === "/agregarFactura" ? "active" : ""
+                }`}>
+                <span className="link_name">Facturas</span>
+              </Link>              
+              {isSubMenuOpen2  && (
+                <ul className="sub-menu">
+                  <li>
+                  <Link
+                      to="/generarFactura"
+                      className={`link ${
+                        window.location.pathname === "/generarFactura" ? "active" : ""
+                      }`}
+                    >
+                      <ReceiptLong />
+                      <span className="link_name">Generar Factura</span>
+                    </Link>
+                  </li>
+                  <li>
+                  <Link
+                    to="/agregarFactura"
+                    className={`link ${
+                      window.location.pathname === "/agregarFactura" ? "active" : ""
+                    }`}
+                  >
+                    <PostAdd />
+                    <span className="link_name">Agregar Factura de Proveedor</span>
+                  </Link>
+                  </li>
+                </ul>
+              )}
             </li>
+
+            <li onClick={toggleSubMenu3}>
+              <Link
+                className={`links ${
+                  window.location.pathname === "/listadoFacturas" || window.location.pathname === "/listadoMisFacturas" ? "active" : ""
+                }`}>
+                <span className="link_name">Mis Facturas</span>
+              </Link>              
+              {isSubMenuOpen3  && (
+                <ul className="sub-menu">
+                  <li>
+                    <Link
+                      to="/listadoFacturas"
+                      className={`link ${
+                        window.location.pathname === "/listadoFacturas"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <People />
+                      <span className="link_name">
+                        Listar Facturas de Proveedores
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/listadoMisFacturas"
+                      className={`link ${
+                        window.location.pathname === "/listadoMisFacturas"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <People />
+                      <span className="link_name">
+                        Listar Mis Facturas/Boletas
+                      </span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
+
+
+
           </ul>
 
         </nav>
@@ -260,6 +367,11 @@ const Admin = () => {
                 <PostAdd />
                 <span className="link_name">Factura de Proveedor</span>
               </Link>
+
+
+
+
+
 
 
               <Link
