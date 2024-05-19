@@ -25,7 +25,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 100vw;
 }
 
 .encabezado .logo img {
@@ -39,7 +39,7 @@
 }
 
 .encabezado .arbol .links {
-    padding: 15px;
+    padding: 15px 1px;
     color: #67748E;
     text-decoration: none;
     transition: border-left 400ms ease, color 400ms ease;
@@ -87,6 +87,7 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     width: 200px;
+    height: auto;
     padding: 0;
     margin: 0;
 }
@@ -134,28 +135,124 @@
     font-size: 40px; /* Ajusta el tamaño del icono aquí */
 }
 
-@media (max-width: 842px) {
+
+
+
+
+
+.overlay{
+    display: none;
+}
+
+.burger {
+    position: relative;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  .burger input {
+    display: none;
+  }
+  
+  .burger span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: black;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+  }
+  
+  .burger span:nth-of-type(1) {
+    top: 0px;
+    transform-origin: left center;
+  }
+  
+  .burger span:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+  }
+  
+  .burger span:nth-of-type(3) {
+    top: 100%;
+    transform-origin: left center;
+    transform: translateY(-100%);
+  }
+  
+  .burger input:checked ~ span:nth-of-type(1) {
+    transform: rotate(45deg);
+    top: 0px;
+    left: 5px;
+  }
+  
+  .burger input:checked ~ span:nth-of-type(2) {
+    width: 0%;
+    opacity: 0;
+  }
+  
+  .burger input:checked ~ span:nth-of-type(3) {
+    transform: rotate(-45deg);
+    top: 21px;
+    left: 5px;
+  }
+
+
+  
+@media (max-width: 790px) {
+
     .encabezado .arbol {
         display: none;
         position: absolute;
         top: 100px;
         left: 0;
-        right: 0;
-        background-color: blue;
+        height: 100vh;
+        width: 250px;
+        background-color: #F7F9FB;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        transition: all 0.5s ease 0s;
     }
-
+    .encabezado .arbol .link {
+        padding: 15px 20px; /* Ajusta el padding según tu preferencia */
+        color: #67748E;
+        text-decoration: none;
+        transition: border-left 400ms ease, color 400ms ease;
+        position: relative;
+        cursor: pointer;
+        width: 100%; /* Ajusta el ancho de los elementos al 100% */
+        box-sizing: border-box; /* Incluye el padding en el ancho total */
+        display: flex; /* Permite que los elementos ocupen toda la anchura disponible */
+        align-items: center; /* Centra verticalmente el contenido */
+    }
+    
+    .encabezado .arbol .link .MuiSvgIcon-root {
+        margin-right: 10px;
+    }
+    
+    .encabezado .arbol .link:hover,
+    .encabezado .arbol .link.active {
+        border-left: 5px solid #000;
+        color: #000;
+        border-radius: 0;
+    }
     .encabezado .arbol.open {
         display: flex;
+        transition: all 0.5s ease 0s;
     }
-
-    .encabezado .arbol li {
-        padding: 10px 0;
+    hr {
+        margin: 5px 5px;
+        color: #fff;
+        width: 100%;
     }
-
-    .menu-toggle {
-        display: block;
+    .overlay {
+        display: flex;
     }
 }
 

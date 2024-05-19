@@ -33,6 +33,7 @@ const Admin = () => {
   const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
   const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
+  const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
 
 
 
@@ -72,20 +73,28 @@ const Admin = () => {
 
   const toggleSubMenu1 = () => {
     setIsSubMenuOpen1(!isSubMenuOpen1);
-    setIsSubMenuOpen2(false); // Cierra el otro submenú
-    setIsSubMenuOpen3(false); // Cierra el otro submenú
-
+    setIsSubMenuOpen2(false); 
+    setIsSubMenuOpen3(false); 
+    setIsSubMenuOpen4(false); 
   };
   
   const toggleSubMenu2 = () => {
     setIsSubMenuOpen2(!isSubMenuOpen2);
-    setIsSubMenuOpen1(false); // Cierra el otro submenú
-    setIsSubMenuOpen3(false); // Cierra el otro submenú
+    setIsSubMenuOpen1(false); 
+    setIsSubMenuOpen3(false); 
+    setIsSubMenuOpen4(false); 
   };
   const toggleSubMenu3 = () => {
     setIsSubMenuOpen3(!isSubMenuOpen3);
-    setIsSubMenuOpen1(false); // Cierra el otro submenú
-    setIsSubMenuOpen2(false); // Cierra el otro submenú
+    setIsSubMenuOpen1(false); 
+    setIsSubMenuOpen2(false); 
+    setIsSubMenuOpen4(false); 
+  };
+  const toggleSubMenu4 = () => {
+    setIsSubMenuOpen4(!isSubMenuOpen4);
+    setIsSubMenuOpen1(false); 
+    setIsSubMenuOpen2(false); 
+    setIsSubMenuOpen3(false); 
   };
 
   return (
@@ -98,7 +107,7 @@ const Admin = () => {
           </Link>
         </div>
 
-        <nav className={`arbol ${isMenuOpen ? 'open' : ''}`}>
+        <nav className="arbol">
 
           <ul className="arbolitos">
 
@@ -166,7 +175,6 @@ const Admin = () => {
                         window.location.pathname === "/generarFactura" ? "active" : ""
                       }`}
                     >
-                      <ReceiptLong />
                       <span className="link_name">Generar Factura</span>
                     </Link>
                   </li>
@@ -177,7 +185,6 @@ const Admin = () => {
                       window.location.pathname === "/agregarFactura" ? "active" : ""
                     }`}
                   >
-                    <PostAdd />
                     <span className="link_name">Agregar Factura de Proveedor</span>
                   </Link>
                   </li>
@@ -203,7 +210,6 @@ const Admin = () => {
                           : ""
                       }`}
                     >
-                      <People />
                       <span className="link_name">
                         Listar Facturas de Proveedores
                       </span>
@@ -218,7 +224,6 @@ const Admin = () => {
                           : ""
                       }`}
                     >
-                      <People />
                       <span className="link_name">
                         Listar Mis Facturas/Boletas
                       </span>
@@ -228,7 +233,42 @@ const Admin = () => {
               )}
             </li>
 
-
+            <li onClick={toggleSubMenu4}>
+              <Link
+                className={`links ${
+                  window.location.pathname === "/agregarInventario" || window.location.pathname === "/listadoMisFacturas" ? "active" : ""
+                }`}>
+                <span className="link_name">Inventario</span>
+              </Link>              
+              {isSubMenuOpen4  && (
+                <ul className="sub-menu">
+                  <li>
+                    <Link
+                      to="/agregarInventario"
+                      className={`link ${
+                        window.location.pathname === "/agregarInventario"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <span className="link_name">Agregar Inventario</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/listarInventario"
+                      className={`link ${
+                        window.location.pathname === "/listarInventario"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <span className="link_name">Listar Inventario</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
 
           </ul>
 
@@ -240,140 +280,49 @@ const Admin = () => {
           <Logout />
         </button>
 
-        <button className="menu-toggle" onClick={toggleMenu}>
-          <Menu  className="menu_ico"/>
-        </button>
 
-      </header>
+        <div className="overlay">
+          <label className="burger" htmlFor="burger">
+            <input type="checkbox" id="burger" checked={isMenuOpen} onChange={toggleMenu} />
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
 
-      {/* <div>
-
-        <header className="header">
-          <div className="contenedor-header">
-            
-            <div className="btn-menu">              
-              <Link to="/indexAdmin" >
-                <label >
-                  <Home className="menu_home"/>
-                </label>
-              </Link>
-            </div>
-            <div className="logo">
-              <h1>Settore</h1>
-            </div>
-
-
-            
-            <div className="arboles">
-            <Link to="/gestionMantencionesAdmin"
-                className={`link ${
-                  window.location.pathname === "/gestionMantencionesAdmin"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <span>Mantenciones</span>
-              </Link>
-            </div>
-
-            <div className="reloj">
-              <p>{formatTime(currentTime)}</p>
-            </div>
-            <nav className="menu">
-              <a>Administrador</a>
-            </nav>
-          </div>
-
-          <button type="submit" onClick={handleLogout} className="boton_salir">
-            <Logout />
-          </button>
-          
-        </header>
-
-
-
-        <input type="checkbox" id="btn-menu" checked></input>  
-
-        <div className="contenedor-menu">
-          <div className="cont_menu">
-            <nav>
-
-              <hr />
-              
-              <SimpleTreeView 
-                className={`link ${
-                  window.location.pathname === "/agregarUsuario" || window.location.pathname === "/listarUsuario" ? "active" : ""
-                }`}
-                id="arbol"
-                icon={<Person />} 
-              >
-
-                <TreeItem itemId="pickers" label="Usuarios">
-                  <Link itemId="pickers-community"
-                      to="/agregarUsuario"
-                      className={`link ${
-                        window.location.pathname === "/agregarUsuario" ? "active" : ""
-                      }`}>
-                      <PersonAdd />
-                      <span className="link_name">Crear Usuarios</span>
-                    </Link>
-
-                    <Link
-                      to="/listarUsuario"
-                      className={`link ${
-                        window.location.pathname === "/listarUsuario" ? "active" : ""
-                      }`}
-                    >
-                      <People />
-                      <span className="link_name">Listar Usuarios</span>
-                    </Link>
-                </TreeItem>
-              </SimpleTreeView>
-
-
-              <hr />
-
+          <div className={`arbol ${isMenuOpen ? 'open' : ''}`}>
+            <Link itemId="pickers-community"
+              to="/agregarUsuario"
+              className={`link ${
+                window.location.pathname === "/agregarUsuario" ? "active" : ""
+              }`}>
+              <span className="link_name">Crear Usuarios</span>
+            </Link>
+            <Link
+              to="/listarUsuario"
+              className={`link ${
+                window.location.pathname === "/listarUsuario" ? "active" : ""
+              }`}
+            >
+              <span className="link_name">Listar Usuarios</span>
+            </Link>
+            <hr />
               <Link
-                to="/gestionMantencionesAdmin"
-                className={`link ${
-                  window.location.pathname === "/gestionMantencionesAdmin"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <ListAlt />
-                <span className="link_name">Mantenciones</span>
-              </Link>
-
-              <hr />
-
-              <Link
-                to="/generarFactura"
-                className={`link ${
-                  window.location.pathname === "/generarFactura" ? "active" : ""
-                }`}
-              >
-                <ReceiptLong />
-                <span className="link_name">Generar Factura</span>
-              </Link>
-
-
+                  to="/generarFactura"
+                  className={`link ${
+                    window.location.pathname === "/generarFactura" ? "active" : ""
+                  }`}
+                >
+                  <span className="link_name">Generar Factura</span>
+                </Link>
               <Link
                 to="/agregarFactura"
                 className={`link ${
                   window.location.pathname === "/agregarFactura" ? "active" : ""
                 }`}
               >
-                <PostAdd />
-                <span className="link_name">Factura de Proveedor</span>
+                <span className="link_name">Agregar Factura de Proveedor</span>
               </Link>
-
-
-
-
-
-
-
+            <hr />
               <Link
                 to="/listadoFacturas"
                 className={`link ${
@@ -382,12 +331,10 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <People />
                 <span className="link_name">
                   Listar Facturas de Proveedores
                 </span>
               </Link>
-
               <Link
                 to="/listadoMisFacturas"
                 className={`link ${
@@ -396,42 +343,38 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <People />
                 <span className="link_name">
-                  Listar Mis Facturas <br /> / Boletas
+                  Listar Mis Facturas/Boletas
                 </span>
               </Link>
-
               <hr />
+                <Link
+                  to="/agregarInventario"
+                  className={`link ${
+                    window.location.pathname === "/agregarInventario"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  <span className="link_name">Agregar Inventario</span>
+                </Link>
 
-              <Link
-                to="/agregarInventario"
-                className={`link ${
-                  window.location.pathname === "/agregarInventario"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <People />
-                <span className="link_name">Agregar Inventario</span>
-              </Link>
-
-              <Link
-                to="/listarInventario"
-                className={`link ${
-                  window.location.pathname === "/listarInventario"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <Inventory />
-                <span className="link_name">Listar Inventario</span>
-              </Link>
-            </nav>
-
+                <Link
+                  to="/listarInventario"
+                  className={`link ${
+                    window.location.pathname === "/listarInventario"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  <span className="link_name">Listar Inventario</span>
+                </Link>
           </div>
         </div>
-      </div>  */}
+
+      </header>
+
+
     </>
   );
 };
