@@ -5,13 +5,8 @@
 }
 
 .layaout {
-  height: calc(100vh - 80px); /* Resta los 80px del header */
-  margin-top: 80px; /* Espacio de 80px en la parte superior */
-  margin-left: 250px; /* Margen izquierdo igual al ancho del header */
+  margin-top: 80px; 
   padding: 10px;
-  background-color: #F7F9FB;
+  background-color: #fff;
 }
 
-.Container1 {
-  width: 100%;
-}

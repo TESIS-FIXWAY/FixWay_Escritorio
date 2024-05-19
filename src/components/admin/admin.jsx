@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
+import Logo from "../../images/LogoSinFoindo.png";
 
-import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
-import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import "../styles/admin.css";
+// import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+// import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 import { Home,
   Person, 
@@ -21,12 +21,16 @@ import { Home,
   Inventory } 
 from '@mui/icons-material'; 
 
+import "../styles/admin.css";
+
 
 
 const Admin = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -58,28 +62,113 @@ const Admin = () => {
     }
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+
   return (
     <>
-      <div>
+
+      <header className="encabezado">
+        <div className="logo">
+          <Link to="/indexAdmin" >
+            <img src={Logo} alt="logo" />
+          </Link>
+        </div>
+
+        <nav className={`arbol ${isMenuOpen ? 'open' : ''}`}>
+
+          <ul className="arbolitos">
+            <li>
+              <Link itemId="pickers-community"
+                to="/agregarUsuario"
+                className={`link ${
+                  window.location.pathname === "/agregarUsuario" ? "active" : ""
+                }`}>
+                <span className="link_name">Crear Usuarios</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/listarUsuario"
+                className={`link ${
+                  window.location.pathname === "/listarUsuario" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Listar Usuarios</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/gestionMantencionesAdmin"
+                className={`link ${
+                  window.location.pathname === "/gestionMantencionesAdmin"
+                    ? "active"
+                    : ""
+                }`}
+              >
+                <ListAlt />
+                <span className="link_name">Mantenciones</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/generarFactura"
+                className={`link ${
+                  window.location.pathname === "/generarFactura" ? "active" : ""
+                }`}
+              >
+                <ReceiptLong />
+                <span className="link_name">Generar Factura</span>
+              </Link>
+            </li>
+          </ul>
+
+        </nav>
+
+
+
+        <button type="submit" onClick={handleLogout} className="boton_salir">
+          <Logout />
+        </button>
+
+        <button className="menu-toggle" onClick={toggleMenu}>
+          <Menu  className="menu_ico"/>
+        </button>
+
+      </header>
+
+      {/* <div>
 
         <header className="header">
           <div className="contenedor-header">
             
-            <div className="btn-menu">
-              <label htmlFor="btn-menu">
-                <Menu />
-              </label>
-
+            <div className="btn-menu">              
               <Link to="/indexAdmin" >
                 <label >
                   <Home className="menu_home"/>
                 </label>
               </Link>
-
             </div>
             <div className="logo">
               <h1>Settore</h1>
             </div>
+
+
+            
+            <div className="arboles">
+            <Link to="/gestionMantencionesAdmin"
+                className={`link ${
+                  window.location.pathname === "/gestionMantencionesAdmin"
+                    ? "active"
+                    : ""
+                }`}
+              >
+                <span>Mantenciones</span>
+              </Link>
+            </div>
+
             <div className="reloj">
               <p>{formatTime(currentTime)}</p>
             </div>
@@ -94,7 +183,9 @@ const Admin = () => {
           
         </header>
 
-        <input type="checkbox" id="btn-menu" checked></input> {/* Modificado aquí */}
+
+
+        <input type="checkbox" id="btn-menu" checked></input>  
 
         <div className="contenedor-menu">
           <div className="cont_menu">
@@ -228,7 +319,7 @@ const Admin = () => {
 
           </div>
         </div>
-      </div>
+      </div>  */}
     </>
   );
 };

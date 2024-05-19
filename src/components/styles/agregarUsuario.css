@@ -5,19 +5,16 @@
 
 .body_formulario{
     padding: 0 1.5em;
-    background-color: #F7F9FB;
-    height: 91.8vh;
+    background-color: red;
+    height: 100vh;
+    align-items: center;
 }
 
 .formulario_content {
     max-width: 800px;
-    margin-top: 50px;
-    padding: 1.5em;
-    margin-left:140px; /* Establece el margen izquierdo */
     position: relative; /* Añade posicionamiento relativo */
-    left: 50%; /* Mueve el elemento hacia la derecha en un 50% */
-    transform: translateX(-50%); /* Centra el elemento */
-
+    text-align: center;
+    padding: 1em;
 }
 
 
@@ -25,14 +22,14 @@
 .formulario_titulo{
     text-align: center;
     font-size: 3em;
+    margin-top: 100px;
+
 }
 
-.formulario_wrapper{
-    text-align: center;
-}
-.formulario_wrapper > * {
+
+/* .formulario_wrapper > * {
     padding: 1em;
-}
+} */
 
 .formulario_form{
     margin: 50px 0px 0px 0px;
