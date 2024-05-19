@@ -45,23 +45,64 @@ const GraficoMisFacturas = () => {
   return (
     <div className="grafico-container">
       <h1 className="titulo-Grafico">Facturas</h1>
-      <Chart
-        width={"600px"}
-        height={"400px"}
-        chartType="LineChart"
-        loader={<div>Cargando gráfico</div>}
-        data={data}
-        options={{
-          hAxis: {
-            title: "Fechas",
-          },
-          vAxis: {
-            title: "Número de facturas",
-          },
-        }}
-      />
+      <div className="grafico">
+        <Chart
+          width={"100%"}
+          height={"330px"}
+          chartType="LineChart"
+          loader={<div>Cargando gráfico</div>}
+          data={data}
+          options={{
+            hAxis: {
+              title: "Fechas",
+              textStyle: {
+                color: "#333",
+                fontSize: 12,
+                fontName: "Arial",
+              },
+              titleTextStyle: {
+                color: "#333",
+                fontSize: 14,
+                bold: true,
+                italic: false,
+              },
+            },
+            vAxis: {
+              title: "Número de Facturas",
+              textStyle: {
+                color: "#333",
+                fontSize: 12,
+                fontName: "Arial",
+              },
+              titleTextStyle: {
+                color: "#333",
+                fontSize: 14,
+                bold: true,
+                italic: false,
+              },
+            },
+            lineWidth: 3,
+            backgroundColor: "fff", // Asegúrate de que el fondo sea transparente
+            chartArea: {
+              width: '85%', // Ajusta según tus necesidades
+              height: '70%', // Ajusta según tus necesidades
+              backgroundColor: "fff",
+            },
+            legend: {
+              textStyle: {
+                color: "#333",
+                fontSize: 12,
+                fontName: "Arial",
+              },
+            },
+            pointSize: 10,
+            lineDashStyle: [false],
+          }}
+        />
+      </div>
     </div>
   );
 };
 
 export default GraficoMisFacturas;
+ 

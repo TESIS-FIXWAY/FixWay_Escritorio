@@ -1,12 +1,42 @@
 
-.header {
-  height: 80px;
-  z-index: 99;
-}
-
 .layaout {
-  margin-top: 80px; 
-  padding: 10px;
-  background-color: #fff;
+  display: grid;
+  grid-template-rows: 100px 500px auto 60px;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'header' 'sidebar' 'main' 'footer';
+  height: 100vh;
 }
 
+
+header {
+  grid-area: header;
+  background-color: blueviolet;
+}
+aside {
+  grid-area: sidebar;
+  background-color: #F7F9FB;
+  text-align: center;
+}
+main {
+  grid-area: main;
+  background-color: #F7F9FB;
+  display: grid;
+}
+footer {
+  grid-area: footer;
+  background-color: grey;
+}
+
+@media (min-width: 900px) {
+  .layaout {
+    display: grid;
+    grid-template-rows: 100px auto ;
+    grid-template-columns: 160px auto auto;
+    grid-template-areas: 
+    'header header header'
+    'sidebar sidebar main'
+  }
+  .main{
+    display: flex;
+  }
+}

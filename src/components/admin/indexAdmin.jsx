@@ -63,16 +63,27 @@ const IndexAdmin = () => {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
       </style>
-
-      <header className="header">
-        <Admin />
-      </header>
-
-      <div className="layaout">
-        <div className="Container1">
+      {/* <div className="Container1">
           <h1>Estadisticas Generales</h1>
           <div><HistorialVentas/></div>
-        </div>
+        </div> */}
+
+
+      <div className="layaout">
+        <header>
+          <Admin /> 
+        </header>
+
+        <aside>
+          <h1>Estadisticas Generales</h1>
+          <div><HistorialVentas/></div>
+        </aside>
+
+        <main className="main">
+          <div><GraficoMisFacturas/></div>
+          <div><GraficoMisBoletas/></div>
+        </main>
+        
       </div>
     </>
   );
