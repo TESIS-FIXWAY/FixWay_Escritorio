@@ -6,6 +6,8 @@ import { db, auth } from "../../firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 
 import Tierra from "./tierra";
+import CarModel from "./auto";
+
 
 import GraficoMisBoletas from "./graficos/graficoMisBoletas";
 import GraficoMisFacturas from "./graficos/graficoMisFacturas";
@@ -61,7 +63,6 @@ const IndexAdmin = () => {
   return (
     <>
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
       </style>
 
       <div className="layaout">
@@ -87,13 +88,15 @@ const IndexAdmin = () => {
               <p>{deliveredCount}</p>
             </div>
 
-          </div>
+            <div><Tierra/></div>
 
+          </div>
+        
         </aside>
 
         <main className="main">
           <div><GraficoMisFacturas/></div>
-          <div><Tierra/></div>
+          <div><CarModel/></div>
           <div><GraficoMisBoletas/></div>
           <div><GraficoMantenciones/></div>
         </main>

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import * as THREE from 'three';
-import Tierra from "../styles/indexImages/sol.jpg";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import Tierra from "../styles/indexImages/tierra.png";
+
 
 const EarthScene = () => {
   useEffect(() => {
@@ -19,7 +21,6 @@ const EarthScene = () => {
     // Crea un renderizador con fondo transparente
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 0); // El segundo parámetro es la opacidad (0 para transparente)
     container.appendChild(renderer.domElement);
 
     // Crea una geometría esférica con ancho y alto especificados
@@ -28,7 +29,11 @@ const EarthScene = () => {
     // Crea un material con una textura
     const textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load(Tierra);
-    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const material = new THREE.MeshBasicMaterial({ 
+      map: texture, 
+      transparent: true, 
+      side: THREE.DoubleSide // Renderiza ambos lados de la esfera
+    });
 
     // Crea una malla con la geometría y el material
     const earthMesh = new THREE.Mesh(geometry, material);
@@ -36,12 +41,33 @@ const EarthScene = () => {
     // Agrega la malla a la escena
     scene.add(earthMesh);
 
+    // Añadir controles de órbita
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // Añade suavidad a la interacción
+    controls.dampingFactor = 0.05;
+    controls.enableZoom = false; // Opcional: desactiva el zoom
+    controls.rotateSpeed = 0.5; // Ajusta la velocidad de rotación
+
+    let isDragging = false;
+
+    // Escuchar eventos de control para detener y reanudar la rotación
+    controls.addEventListener('start', () => {
+      isDragging = true;
+    });
+
+    controls.addEventListener('end', () => {
+      isDragging = false;
+    });
+
     function animate() {
       requestAnimationFrame(animate);
 
-      // Rota el planeta Tierra en el eje y
-      earthMesh.rotation.y += 0.01;
+      // Rota el planeta Tierra en el eje y si no está siendo arrastrado
+      if (!isDragging) {
+        earthMesh.rotation.y += 0.01;
+      }
 
+      controls.update(); // Actualiza los controles
       renderer.render(scene, camera);
     }
 
