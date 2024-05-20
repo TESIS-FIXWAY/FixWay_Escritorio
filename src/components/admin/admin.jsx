@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
-import Logo from "../../images/LogoSinFoindo.png";
+import Logo from "../../images/LogoSinFondo.png";
 
 // import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 // import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-import { Home,
-  Person, 
-  PersonAdd, 
-  People, 
-  Menu, 
-  Logout, 
-  ShoppingCart, 
-  ListAlt, 
-  Description, 
-  Receipt, 
-  ReceiptLong, 
-  PostAdd, 
-  Inventory } 
-from '@mui/icons-material'; 
+import {
+  Home,
+  Person,
+  PersonAdd,
+  People,
+  Menu,
+  Logout,
+  ShoppingCart,
+  ListAlt,
+  Description,
+  Receipt,
+  ReceiptLong,
+  PostAdd,
+  Inventory,
+} from "@mui/icons-material";
 
 import "../styles/admin.css";
-
-
 
 const Admin = () => {
   const { user, logout } = UserAuth();
@@ -34,8 +33,6 @@ const Admin = () => {
   const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
   const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
-
-
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -73,60 +70,64 @@ const Admin = () => {
 
   const toggleSubMenu1 = () => {
     setIsSubMenuOpen1(!isSubMenuOpen1);
-    setIsSubMenuOpen2(false); 
-    setIsSubMenuOpen3(false); 
-    setIsSubMenuOpen4(false); 
+    setIsSubMenuOpen2(false);
+    setIsSubMenuOpen3(false);
+    setIsSubMenuOpen4(false);
   };
-  
+
   const toggleSubMenu2 = () => {
     setIsSubMenuOpen2(!isSubMenuOpen2);
-    setIsSubMenuOpen1(false); 
-    setIsSubMenuOpen3(false); 
-    setIsSubMenuOpen4(false); 
+    setIsSubMenuOpen1(false);
+    setIsSubMenuOpen3(false);
+    setIsSubMenuOpen4(false);
   };
   const toggleSubMenu3 = () => {
     setIsSubMenuOpen3(!isSubMenuOpen3);
-    setIsSubMenuOpen1(false); 
-    setIsSubMenuOpen2(false); 
-    setIsSubMenuOpen4(false); 
+    setIsSubMenuOpen1(false);
+    setIsSubMenuOpen2(false);
+    setIsSubMenuOpen4(false);
   };
   const toggleSubMenu4 = () => {
     setIsSubMenuOpen4(!isSubMenuOpen4);
-    setIsSubMenuOpen1(false); 
-    setIsSubMenuOpen2(false); 
-    setIsSubMenuOpen3(false); 
+    setIsSubMenuOpen1(false);
+    setIsSubMenuOpen2(false);
+    setIsSubMenuOpen3(false);
   };
 
   return (
     <>
-
       <header className="encabezado">
         <div className="logo">
-          <Link to="/indexAdmin" >
+          <Link to="/indexAdmin">
             <img src={Logo} alt="logo" />
           </Link>
         </div>
 
         <nav className="arbol">
-
           <ul className="arbolitos">
-
             <li onClick={toggleSubMenu1}>
               <Link
                 className={`links ${
-                  window.location.pathname === "/agregarUsuario" || window.location.pathname === "/listarUsuario" ? "active" : ""
+                  window.location.pathname === "/agregarUsuario" ||
+                  window.location.pathname === "/listarUsuario"
+                    ? "active"
+                    : ""
                 }`}
               >
                 <span className="link_name">Usuarios</span>
-              </Link>              
-              {isSubMenuOpen1  && (
+              </Link>
+              {isSubMenuOpen1 && (
                 <ul className="sub-menu">
                   <li>
-                    <Link itemId="pickers-community"
+                    <Link
+                      itemId="pickers-community"
                       to="/agregarUsuario"
                       className={`link ${
-                        window.location.pathname === "/agregarUsuario" ? "active" : ""
-                      }`}>
+                        window.location.pathname === "/agregarUsuario"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
                       <span className="link_name">Crear Usuarios</span>
                     </Link>
                   </li>
@@ -134,7 +135,9 @@ const Admin = () => {
                     <Link
                       to="/listarUsuario"
                       className={`link ${
-                        window.location.pathname === "/listarUsuario" ? "active" : ""
+                        window.location.pathname === "/listarUsuario"
+                          ? "active"
+                          : ""
                       }`}
                     >
                       <span className="link_name">Listar Usuarios</span>
@@ -143,8 +146,6 @@ const Admin = () => {
                 </ul>
               )}
             </li>
-
-
 
             <li>
               <Link
@@ -162,31 +163,41 @@ const Admin = () => {
             <li onClick={toggleSubMenu2}>
               <Link
                 className={`links ${
-                  window.location.pathname === "/generarFactura" || window.location.pathname === "/agregarFactura" ? "active" : ""
-                }`}>
+                  window.location.pathname === "/generarFactura" ||
+                  window.location.pathname === "/agregarFactura"
+                    ? "active"
+                    : ""
+                }`}
+              >
                 <span className="link_name">Facturas</span>
-              </Link>              
-              {isSubMenuOpen2  && (
+              </Link>
+              {isSubMenuOpen2 && (
                 <ul className="sub-menu">
                   <li>
-                  <Link
+                    <Link
                       to="/generarFactura"
                       className={`link ${
-                        window.location.pathname === "/generarFactura" ? "active" : ""
+                        window.location.pathname === "/generarFactura"
+                          ? "active"
+                          : ""
                       }`}
                     >
                       <span className="link_name">Generar Factura</span>
                     </Link>
                   </li>
                   <li>
-                  <Link
-                    to="/agregarFactura"
-                    className={`link ${
-                      window.location.pathname === "/agregarFactura" ? "active" : ""
-                    }`}
-                  >
-                    <span className="link_name">Agregar Factura de Proveedor</span>
-                  </Link>
+                    <Link
+                      to="/agregarFactura"
+                      className={`link ${
+                        window.location.pathname === "/agregarFactura"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <span className="link_name">
+                        Agregar Factura de Proveedor
+                      </span>
+                    </Link>
                   </li>
                 </ul>
               )}
@@ -195,11 +206,15 @@ const Admin = () => {
             <li onClick={toggleSubMenu3}>
               <Link
                 className={`links ${
-                  window.location.pathname === "/listadoFacturas" || window.location.pathname === "/listadoMisFacturas" ? "active" : ""
-                }`}>
+                  window.location.pathname === "/listadoFacturas" ||
+                  window.location.pathname === "/listadoMisFacturas"
+                    ? "active"
+                    : ""
+                }`}
+              >
                 <span className="link_name">Mis Facturas</span>
-              </Link>              
-              {isSubMenuOpen3  && (
+              </Link>
+              {isSubMenuOpen3 && (
                 <ul className="sub-menu">
                   <li>
                     <Link
@@ -236,11 +251,15 @@ const Admin = () => {
             <li onClick={toggleSubMenu4}>
               <Link
                 className={`links ${
-                  window.location.pathname === "/agregarInventario" || window.location.pathname === "/listadoMisFacturas" ? "active" : ""
-                }`}>
+                  window.location.pathname === "/agregarInventario" ||
+                  window.location.pathname === "/listadoMisFacturas"
+                    ? "active"
+                    : ""
+                }`}
+              >
                 <span className="link_name">Inventario</span>
-              </Link>              
-              {isSubMenuOpen4  && (
+              </Link>
+              {isSubMenuOpen4 && (
                 <ul className="sub-menu">
                   <li>
                     <Link
@@ -269,32 +288,34 @@ const Admin = () => {
                 </ul>
               )}
             </li>
-
           </ul>
-
         </nav>
-
-
 
         <button type="submit" onClick={handleLogout} className="boton_salir">
           <Logout />
         </button>
 
-
         <div className="overlay">
           <label className="burger" htmlFor="burger">
-            <input type="checkbox" id="burger" checked={isMenuOpen} onChange={toggleMenu} />
+            <input
+              type="checkbox"
+              id="burger"
+              checked={isMenuOpen}
+              onChange={toggleMenu}
+            />
             <span></span>
             <span></span>
             <span></span>
           </label>
 
-          <div className={`arbol ${isMenuOpen ? 'open' : ''}`}>
-            <Link itemId="pickers-community"
+          <div className={`arbol ${isMenuOpen ? "open" : ""}`}>
+            <Link
+              itemId="pickers-community"
               to="/agregarUsuario"
               className={`link ${
                 window.location.pathname === "/agregarUsuario" ? "active" : ""
-              }`}>
+              }`}
+            >
               <span className="link_name">Crear Usuarios</span>
             </Link>
             <Link
@@ -306,75 +327,64 @@ const Admin = () => {
               <span className="link_name">Listar Usuarios</span>
             </Link>
             <hr />
-              <Link
-                  to="/generarFactura"
-                  className={`link ${
-                    window.location.pathname === "/generarFactura" ? "active" : ""
-                  }`}
-                >
-                  <span className="link_name">Generar Factura</span>
-                </Link>
-              <Link
-                to="/agregarFactura"
-                className={`link ${
-                  window.location.pathname === "/agregarFactura" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">Agregar Factura de Proveedor</span>
-              </Link>
+            <Link
+              to="/generarFactura"
+              className={`link ${
+                window.location.pathname === "/generarFactura" ? "active" : ""
+              }`}
+            >
+              <span className="link_name">Generar Factura</span>
+            </Link>
+            <Link
+              to="/agregarFactura"
+              className={`link ${
+                window.location.pathname === "/agregarFactura" ? "active" : ""
+              }`}
+            >
+              <span className="link_name">Agregar Factura de Proveedor</span>
+            </Link>
             <hr />
-              <Link
-                to="/listadoFacturas"
-                className={`link ${
-                  window.location.pathname === "/listadoFacturas"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <span className="link_name">
-                  Listar Facturas de Proveedores
-                </span>
-              </Link>
-              <Link
-                to="/listadoMisFacturas"
-                className={`link ${
-                  window.location.pathname === "/listadoMisFacturas"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <span className="link_name">
-                  Listar Mis Facturas/Boletas
-                </span>
-              </Link>
-              <hr />
-                <Link
-                  to="/agregarInventario"
-                  className={`link ${
-                    window.location.pathname === "/agregarInventario"
-                      ? "active"
-                      : ""
-                  }`}
-                >
-                  <span className="link_name">Agregar Inventario</span>
-                </Link>
+            <Link
+              to="/listadoFacturas"
+              className={`link ${
+                window.location.pathname === "/listadoFacturas" ? "active" : ""
+              }`}
+            >
+              <span className="link_name">Listar Facturas de Proveedores</span>
+            </Link>
+            <Link
+              to="/listadoMisFacturas"
+              className={`link ${
+                window.location.pathname === "/listadoMisFacturas"
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <span className="link_name">Listar Mis Facturas/Boletas</span>
+            </Link>
+            <hr />
+            <Link
+              to="/agregarInventario"
+              className={`link ${
+                window.location.pathname === "/agregarInventario"
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <span className="link_name">Agregar Inventario</span>
+            </Link>
 
-                <Link
-                  to="/listarInventario"
-                  className={`link ${
-                    window.location.pathname === "/listarInventario"
-                      ? "active"
-                      : ""
-                  }`}
-                >
-                  <span className="link_name">Listar Inventario</span>
-                </Link>
+            <Link
+              to="/listarInventario"
+              className={`link ${
+                window.location.pathname === "/listarInventario" ? "active" : ""
+              }`}
+            >
+              <span className="link_name">Listar Inventario</span>
+            </Link>
           </div>
         </div>
-
       </header>
-
-
     </>
   );
 };
