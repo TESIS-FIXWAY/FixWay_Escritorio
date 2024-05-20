@@ -4,7 +4,7 @@
   border-radius: 10px; 
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra suave */
   width: 550px;
-  margin: 70px 20px 20px 20px;
+  margin: 10px 20px 10px 10px;
   background: linear-gradient(135deg, #e0f7fa 25%, #e0f4ff 75%); /* Fondo degradado */
 
 }
@@ -16,3 +16,14 @@
   margin-top: 10px;
 }
 
+.titulo-GraficoM{
+  text-align: center; /* Centrar el título */
+  font-size: 24px; /* Tamaño de fuente */
+  color: #AAAAAB;
+}
+.graficoM {
+  border-radius: 10px; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); 
+  width: 550px;
+  margin: 10px 20px 10px 20px;
+}

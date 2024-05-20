@@ -63,11 +63,6 @@ const IndexAdmin = () => {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
       </style>
-      {/* <div className="Container1">
-          <h1>Estadisticas Generales</h1>
-          <div><HistorialVentas/></div>
-        </div> */}
-
 
       <div className="layaout">
         <header>
@@ -75,13 +70,32 @@ const IndexAdmin = () => {
         </header>
 
         <aside>
-          <h1>Estadisticas Generales</h1>
+          <h1 className="titulo-Grafico ">Estadisticas Generales</h1>
           <div><HistorialVentas/></div>
+
+          <div className="widgets_historial">
+            <div className="container_widgets">
+              <p>Mantenciones Pendientes:</p>
+              <p>{pendingCount}</p>
+            </div>
+            <div className="container_widgets">
+              <p>Mantenciones En Proceso:</p>
+              <p>{processCount}</p>
+            </div>
+            <div className="container_widgets">
+              <p>Mantenciones Entregadas:</p>
+              <p>{deliveredCount}</p>
+            </div>
+
+          </div>
+
         </aside>
 
         <main className="main">
           <div><GraficoMisFacturas/></div>
+          <div><Tierra/></div>
           <div><GraficoMisBoletas/></div>
+          <div><GraficoMantenciones/></div>
         </main>
         
       </div>

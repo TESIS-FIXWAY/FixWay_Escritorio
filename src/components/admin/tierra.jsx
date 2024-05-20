@@ -1,20 +1,26 @@
 import React, { useEffect } from "react";
 import * as THREE from 'three';
-import Tierra from "../styles/indexImages/tierra.png";
+import Tierra from "../styles/indexImages/sol.jpg";
 
 const EarthScene = () => {
   useEffect(() => {
+    // Selecciona el contenedor donde se renderizará la escena
+    const container = document.getElementById('earth-container');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
     // Crea una escena
     const scene = new THREE.Scene();
 
     // Crea una cámara
-    const camera = new THREE.PerspectiveCamera(85, window.innerWidth / window.innerHeight, 0.1, 10);
+    const camera = new THREE.PerspectiveCamera(85, width / height, 0.1, 10);
     camera.position.z = 10;
 
-    // Crea un renderizador
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    // Crea un renderizador con fondo transparente
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0); // El segundo parámetro es la opacidad (0 para transparente)
+    container.appendChild(renderer.domElement);
 
     // Crea una geometría esférica con ancho y alto especificados
     const geometry = new THREE.SphereGeometry(5, 32, 32);
@@ -43,9 +49,11 @@ const EarthScene = () => {
 
     // Manejar eventos de redimensionamiento
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+      camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(newWidth, newHeight);
     };
 
     window.addEventListener('resize', handleResize);
@@ -53,11 +61,11 @@ const EarthScene = () => {
     // Limpiar al desmontar el componente
     return () => {
       window.removeEventListener('resize', handleResize);
-      renderer.domElement.remove();
+      container.removeChild(renderer.domElement);
     };
   }, []);
 
-  return null;
+  return <div id="earth-container" style={{ width: '550px', height: '350px' }} />;
 };
 
 export default EarthScene;
