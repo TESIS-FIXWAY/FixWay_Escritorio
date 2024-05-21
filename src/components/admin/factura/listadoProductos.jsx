@@ -10,7 +10,7 @@ export default function ListadoProductos({
   if (showProductList) {
     return (
       <div className="fondo_no">
-        <div className="editar" style={{ width: "1100px" }}>
+        <div className="editar" style={{ width: "750px" }}>
           <p className="p_editar">Productos Seleccionados</p>
           <div style={{ maxHeight: "400px", overflowY: "auto" }}>
             <table className="table table-striped">

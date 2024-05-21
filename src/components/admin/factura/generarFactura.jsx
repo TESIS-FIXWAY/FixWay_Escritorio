@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Admin from "../admin";
 import jsPDF from "jspdf";
-import validadorRUT from "../validadorRUT";
 import { db, auth, storage } from "../../../firebase";
 import {
   collection,
@@ -23,7 +22,6 @@ import {
   faList,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(faFilePdf, faList, faEyeSlash);
-import AgregarCliente from "./agregarCliente";
 import ListadoProductos from "./listadoProductos";
 import AplicarDescuento from "./aplicarDescuento";
 import ClienteVista from "./clienteVista";
@@ -48,20 +46,13 @@ const GenerarFactura = () => {
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
   const [clientes, setClientes] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
-  const [clienteNombre, setClienteNombre] = useState("");
-  const [clienteApellido, setClienteApellido] = useState("");
-  const [clienteRut, setClienteRut] = useState("");
-  const [clienteEmail, setClienteEmail] = useState("");
-  const [clienteTelefono, setClienteTelefono] = useState("");
   const [showClienteVista, setShowClienteVista] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [showAgregarCliente, setShowAgregarCliente] = useState(false);
   const [newName, setNewName] = useState("");
   const [newApellido, setNewApellido] = useState("");
   const [rut, setRut] = useState("");
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
-  const [mensajeRut, setMensajeRut] = useState("");
   const [actualizacion, setActualizacion] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
@@ -80,31 +71,6 @@ const GenerarFactura = () => {
       });
     }
   }, []);
-
-  const agregarCliente = async () => {
-    try {
-      const nuevoCliente = {
-        nombre: clienteNombre,
-        apellido: clienteApellido,
-        rut: clienteRut,
-        email: clienteEmail,
-        telefono: clienteTelefono,
-      };
-
-      const clientesCollection = collection(db, "clientes");
-      const nuevoClienteRef = await addDoc(clientesCollection, nuevoCliente);
-
-      setClientes([...clientes, { id: nuevoClienteRef.id, ...nuevoCliente }]);
-      setClienteNombre("");
-      setClienteApellido("");
-      setClienteRut("");
-      setClienteEmail("");
-      setClienteTelefono("");
-      toggleClienteVista();
-    } catch (error) {
-      console.error("Error al agregar el nuevo cliente:", error);
-    }
-  };
 
   const generarFactura = async () => {
     if (productosSeleccionados.length === 0) {
@@ -989,11 +955,6 @@ const GenerarFactura = () => {
             <ClienteVista
               clientes={clientes}
               setClientes={setClientes}
-              setClienteNombre={setClienteNombre}
-              setClienteApellido={setClienteApellido}
-              setClienteRut={setClienteRut}
-              setClienteEmail={setClienteEmail}
-              setClienteTelefono={setClienteTelefono}
               toggleClienteVista={toggleClienteVista}
               seleccionarCliente={seleccionarCliente}
               eliminarCliente={eliminarCliente}
@@ -1001,45 +962,6 @@ const GenerarFactura = () => {
             />
           )}
         </>
-      );
-    }
-  };
-
-  const toggleAgregarCliente = () => {
-    setShowAgregarCliente(!showAgregarCliente);
-  };
-
-  function validarRutOnChange() {
-    const rut = document.getElementById("rut").value;
-    const validador = new validadorRUT(rut);
-    if (validador.esValido) {
-      document.getElementById("rut").value = validador.formateado();
-      setMensajeRut("Rut válido");
-    } else {
-      setMensajeRut("Rut inválido");
-    }
-  }
-
-  const mostrarAgregarCliente = () => {
-    if (showAgregarCliente) {
-      return (
-        <AgregarCliente
-          showAgregarCliente={showAgregarCliente}
-          clienteNombre={clienteNombre}
-          clienteApellido={clienteApellido}
-          clienteRut={clienteRut}
-          clienteEmail={clienteEmail}
-          clienteTelefono={clienteTelefono}
-          setClienteNombre={setClienteNombre}
-          setClienteApellido={setClienteApellido}
-          setClienteRut={setClienteRut}
-          setClienteEmail={setClienteEmail}
-          setClienteTelefono={setClienteTelefono}
-          agregarCliente={agregarCliente}
-          toggleAgregarCliente={toggleAgregarCliente}
-          mensajeRut={mensajeRut}
-          validarRutOnChange={validarRutOnChange}
-        />
       );
     }
   };
@@ -1066,7 +988,7 @@ const GenerarFactura = () => {
       </header>
       <div className="tabla_listar">
         <div className="table_header">
-          <h2 style={{}}>
+          <h2>
             Generar <br /> Factura
           </h2>
           <button
@@ -1122,16 +1044,6 @@ const GenerarFactura = () => {
           {showProductList && mostrarListadoProductos()}
 
           <button
-            onClick={toggleAgregarCliente}
-            style={{ background: "#42a5f5", height: "45px", marginTop: "9px" }}
-          >
-            <FontAwesomeIcon icon="fa-solid fa-user-plus" />
-            Agregar Cliente
-          </button>
-
-          {mostrarAgregarCliente()}
-
-          <button
             style={{ background: "#009688", height: "45px", marginTop: "10px" }}
             onClick={toggleClienteVista}
           >
@@ -1150,7 +1062,6 @@ const GenerarFactura = () => {
             onChange={buscadorProducto}
           />
         </div>
-
         <div className="table_section">
           <TableContainer component={Paper} aria-label="simple table">
             <Table aria-label="simple table">

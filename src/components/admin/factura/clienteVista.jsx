@@ -1,5 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
 const ClienteVista = ({
   clientes,
@@ -14,6 +15,7 @@ const ClienteVista = ({
   eliminarCliente,
   filtrarCliente,
 }) => {
+  const navigate = useNavigate();
   const agregarCliente = () => {
     const nuevoCliente = {
       nombre: setClienteNombre,
@@ -42,9 +44,13 @@ const ClienteVista = ({
     eliminarCliente(clienteId);
   };
 
+  const crearCliente = () => {
+    navigate("/crearClienteFactura");
+  };
+
   return (
     <div className="fondo_no">
-      <div className="editar" style={{ width: "1100px" }}>
+      <div className="editar" style={{ width: "850px" }}>
         <p className="p_editar">Lista Clientes</p>
         <input
           type="text"
@@ -87,6 +93,12 @@ const ClienteVista = ({
         <tfoot>
           <tr>
             <td colSpan="6">
+              <button
+                style={{ background: "#437FF3", marginTop: "10px" }}
+                onClick={crearCliente}
+              >
+                Crear Cliente
+              </button>
               <button
                 style={{ background: "#1DC258" }}
                 onClick={toggleClienteVista}

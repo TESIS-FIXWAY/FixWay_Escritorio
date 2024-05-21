@@ -11,7 +11,7 @@ export default function AplicarDescuento({
   if (showDiscountMenu) {
     return (
       <div className="fondo_no">
-        <div className="editar" style={{ width: "500px" }}>
+        <div className="editar" style={{ width: "300px" }}>
           <div className="descuento-menu">
             <input
               type="text"
