@@ -998,8 +998,6 @@ const GenerarFactura = () => {
               seleccionarCliente={seleccionarCliente}
               eliminarCliente={eliminarCliente}
               filtrarCliente={filtrarCliente}
-              toggleAgregarCliente={toggleAgregarCliente}
-              mostrarAgregarCliente={mostrarAgregarCliente}
             />
           )}
         </>
@@ -1066,10 +1064,9 @@ const GenerarFactura = () => {
       <header className="header">
         <Admin />
       </header>
-      
       <div className="tabla_listar">
         <div className="table_header">
-          <h2>
+          <h2 style={{}}>
             Generar <br /> Factura
           </h2>
           <button
@@ -1118,7 +1115,7 @@ const GenerarFactura = () => {
             style={{ background: "#1DC258", height: "45px", marginTop: "9px" }}
             onClick={toggleProductList}
           >
-            <ShoppingCartIcon color="secondary" />
+            <ShoppingCartIcon />
             {showProductList ? "" : ""} ({productosSeleccionados.length})
           </button>
 
@@ -1154,14 +1151,8 @@ const GenerarFactura = () => {
           />
         </div>
 
-
-
-
         <div className="table_section">
-          <TableContainer
-            component={Paper}
-            aria-label="simple table"
-          >
+          <TableContainer component={Paper} aria-label="simple table">
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>

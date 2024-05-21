@@ -1,6 +1,5 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AgregarCliente from "./agregarCliente";
 
 const ClienteVista = ({
   clientes,
@@ -14,8 +13,6 @@ const ClienteVista = ({
   seleccionarCliente,
   eliminarCliente,
   filtrarCliente,
-  toggleAgregarCliente,
-  mostrarAgregarCliente,
 }) => {
   const agregarCliente = () => {
     const nuevoCliente = {
@@ -54,7 +51,7 @@ const ClienteVista = ({
           placeholder="Buscar cliente..."
           onChange={filtrarCliente}
         />
-        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+        <div style={{ maxHeight: "300px", overflowY: "auto" }}>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -90,12 +87,6 @@ const ClienteVista = ({
         <tfoot>
           <tr>
             <td colSpan="6">
-              <button
-                style={{ background: "#1DC258" }}
-                onClick={AgregarCliente}
-              >
-                Agregar Cliente
-              </button>
               <button
                 style={{ background: "#1DC258" }}
                 onClick={toggleClienteVista}
