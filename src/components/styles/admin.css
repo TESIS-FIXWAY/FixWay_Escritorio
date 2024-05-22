@@ -32,6 +32,10 @@
     border-bottom: 1px solid #000;
     z-index: 99;
 }
+.encabezado.dark-mode {
+    background-color: #171717;
+    color: #f0f0f0;
+  }
 
 .contenedor_principal {
     display: flex;

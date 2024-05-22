@@ -68,6 +68,13 @@ text{
     max-width: 700px;
     margin-bottom:40px;
   }
+
+  .informacion_widgets_index{
+    display: flex;
+    max-width: 700px;
+    margin-bottom:40px;
+    margin-top: 40px;
+  }
   
   .widgets_historial{
     display: flex;

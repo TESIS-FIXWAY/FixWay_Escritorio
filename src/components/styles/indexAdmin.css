@@ -20,7 +20,11 @@ main {
   background-color: #F7F9FB;
   display: grid;
   grid-template-columns: 1fr;
+}
 
+main.dark-mode {
+  background-color: #212121;
+  color: #f0f0f0;
 }
 footer {
   grid-area: footer;

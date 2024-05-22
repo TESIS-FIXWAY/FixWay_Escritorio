@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
-
-// import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
-// import { TreeItem } from '@mui/x-tree-view/TreeItem';
-
 import {
   Home,
   Person,
@@ -21,7 +17,6 @@ import {
   PostAdd,
   Inventory,
 } from "@mui/icons-material";
-
 import "../styles/admin.css";
 
 const Admin = () => {
@@ -33,12 +28,14 @@ const Admin = () => {
   const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
   const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('darkMode') === 'true';
+  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
-
     return () => clearInterval(intervalId);
   }, []);
 
@@ -81,12 +78,14 @@ const Admin = () => {
     setIsSubMenuOpen3(false);
     setIsSubMenuOpen4(false);
   };
+
   const toggleSubMenu3 = () => {
     setIsSubMenuOpen3(!isSubMenuOpen3);
     setIsSubMenuOpen1(false);
     setIsSubMenuOpen2(false);
     setIsSubMenuOpen4(false);
   };
+
   const toggleSubMenu4 = () => {
     setIsSubMenuOpen4(!isSubMenuOpen4);
     setIsSubMenuOpen1(false);
@@ -94,9 +93,14 @@ const Admin = () => {
     setIsSubMenuOpen3(false);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem('darkMode', !isDarkMode);
+  };
+
   return (
     <>
-      <header className="encabezado">
+      <header className={`encabezado ${isDarkMode ? 'dark-mode' : ''}`}>
         <div className="logo">
           <Link to="/indexAdmin">
             <img src={Logo} alt="logo" />
@@ -291,9 +295,14 @@ const Admin = () => {
           </ul>
         </nav>
 
-        <button type="submit" onClick={handleLogout} className="boton_salir">
-          <Logout />
-        </button>
+        <div>
+          <button type="submit" onClick={handleLogout} className="boton_salir">
+            <Logout />
+          </button>
+          <button onClick={toggleDarkMode} className="dark-mode-button">
+            {isDarkMode ? "Light Mode" : "Dark Mode"}
+          </button>
+        </div>
 
         <div className="overlay">
           <label className="burger" htmlFor="burger">
