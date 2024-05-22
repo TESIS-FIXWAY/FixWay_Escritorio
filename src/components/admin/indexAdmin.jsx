@@ -8,11 +8,10 @@ import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 import Tierra from "./tierra";
 import CarModel from "./auto";
 
-
 import GraficoMisBoletas from "./graficos/graficoMisBoletas";
 import GraficoMisFacturas from "./graficos/graficoMisFacturas";
 import HistorialVentas from "./historial/historial";
-import GraficoMantenciones from "./graficos/graficoMantencion";
+import GraficoTipoPago from "./graficos/graficoTipoMantencion";
 
 const IndexAdmin = () => {
   const [user, setUser] = useState(null);
@@ -58,21 +57,20 @@ const IndexAdmin = () => {
     fetchMaintenanceCount();
   }, []);
 
-
-  
   return (
     <>
-      <style>
-      </style>
+      <style></style>
 
       <div className="layaout">
         <header>
-          <Admin /> 
+          <Admin />
         </header>
 
         <aside>
           <h1 className="titulo-Grafico ">Estadisticas Generales</h1>
-          <div><HistorialVentas/></div>
+          <div>
+            <HistorialVentas />
+          </div>
 
           <div className="widgets_historial">
             <div className="container_widgets">
@@ -88,19 +86,26 @@ const IndexAdmin = () => {
               <p>{deliveredCount}</p>
             </div>
 
-            <div><Tierra/></div>
-
+            <div>
+              <Tierra />
+            </div>
           </div>
-        
         </aside>
 
         <main className="main">
-          <div><GraficoMisFacturas/></div>
-          <div><CarModel/></div>
-          <div><GraficoMisBoletas/></div>
-          <div><GraficoMantenciones/></div>
+          <div>
+            <GraficoMisFacturas />
+          </div>
+          <div>
+            <CarModel />
+          </div>
+          <div>
+            <GraficoMisBoletas />
+          </div>
+          <div>
+            <GraficoTipoPago />
+          </div>
         </main>
-        
       </div>
     </>
   );
