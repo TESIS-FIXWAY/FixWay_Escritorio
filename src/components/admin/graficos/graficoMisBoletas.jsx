@@ -82,10 +82,10 @@ const GraficoMisBoletas = () => {
               },
             },
             lineWidth: 3,
-            backgroundColor: "fff", // Asegúrate de que el fondo sea transparente
+            backgroundColor: "fff",
             chartArea: {
-              width: "85%", // Ajusta según tus necesidades
-              height: "70%", // Ajusta según tus necesidades
+              width: "85%",
+              height: "70%",
               backgroundColor: "fff",
             },
             legend: {

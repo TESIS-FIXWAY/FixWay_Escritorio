@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { db } from "../../../firebase";
-import { collection, query, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import Chart from "chart.js/auto";
 import "../../styles/graficos.css";
 
@@ -12,7 +12,17 @@ const GraficoTipoPago = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const q = query(collection(db, "historialVentas"));
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, "0");
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const year = String(today.getFullYear()).slice(-2);
+        const todayString = `${day}/${month}/${year}`;
+
+        const q = query(
+          collection(db, "historialVentas"),
+          where("fecha", "==", todayString)
+        );
+
         const querySnapshot = await getDocs(q);
         const tipoPagoCount = { debito: 0, credito: 0, contado: 0 };
 
@@ -79,10 +89,18 @@ const GraficoTipoPago = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+      }
+    };
+  }, []);
+
   return (
-    <div className="grafico-container">
-      <h1 className="titulo-GraficoM">Tipo de Pago</h1>
-      <canvas ref={chartContainerRef} className="graficoM"></canvas>
+    <div className="grafico-containerTipoPago">
+      <h1 className="titulo-GraficoMTipoPago">Tipo de Pago</h1>
+      <canvas ref={chartContainerRef} className="graficoMTipoPago"></canvas>
     </div>
   );
 };

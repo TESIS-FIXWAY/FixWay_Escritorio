@@ -1,26 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
-
-import { DarkModeContext } from '../../context/darkMode';
-
-import {
-  Home,
-  Person,
-  PersonAdd,
-  People,
-  Menu,
-  Logout,
-  ShoppingCart,
-  ListAlt,
-  Description,
-  Receipt,
-  ReceiptLong,
-  PostAdd,
-  Inventory,
-} from "@mui/icons-material";
+import { DarkModeContext } from "../../context/darkMode";
+import { Logout } from "@mui/icons-material";
 import "../styles/admin.css";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import NightlightIcon from "@mui/icons-material/Nightlight";
 
 const Admin = () => {
   const { user, logout } = UserAuth();
@@ -32,7 +18,6 @@ const Admin = () => {
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
   const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
-
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -95,12 +80,9 @@ const Admin = () => {
     setIsSubMenuOpen3(false);
   };
 
-
-
-
   return (
     <>
-      <header className={`encabezado ${isDarkMode ? 'dark-mode' : ''}`}>
+      <header className={`encabezado ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="logo">
           <Link to="/indexAdmin">
             <img src={Logo} alt="logo" />
@@ -296,15 +278,16 @@ const Admin = () => {
         </nav>
 
         <div>
+          <button onClick={toggleDarkMode}>
+            {isDarkMode ? (
+              <WbSunnyIcon color="primary" />
+            ) : (
+              <NightlightIcon color="secondary" />
+            )}
+          </button>
           <button type="submit" onClick={handleLogout} className="boton_salir">
             <Logout />
           </button>
-          
-          <button onClick={toggleDarkMode}>
-            {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          </button>
-          
-
         </div>
 
         <div className="overlay">
@@ -316,9 +299,9 @@ const Admin = () => {
               onChange={toggleMenu}
             />
 
-            <span className={`span ${isDarkMode ? 'dark-mode' : ''}`}></span>
-            <span className={`span ${isDarkMode ? 'dark-mode' : ''}`}></span>
-            <span className={`span ${isDarkMode ? 'dark-mode' : ''}`}></span>
+            <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
+            <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
+            <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
           </label>
 
           <div className={`arbol ${isMenuOpen ? "open" : ""}`}>

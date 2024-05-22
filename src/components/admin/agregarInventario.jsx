@@ -1,171 +1,251 @@
-import React, { useState } from "react";  
+import React, { useState } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
-
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const AgregarInventario = () => {
-  const [cantidadFormateada, setCantidadFormateada] = useState(""); 
+  const [formData, setFormData] = useState({
+    codigoProducto: "",
+    nombreProducto: "",
+    descripcion: "",
+    cantidad: "",
+    costo: "",
+    categoria: "",
+    marca: "",
+  });
+
+  const [mensajeExito, setMensajeExito] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const codigoProducto = e.target.codigoProducto.value;
-    const nombreProducto = e.target.nombreProducto.value;
-    const descripcion = e.target.descripcion.value;
-    const cantidad = e.target.cantidad.value.replace(/[^0-9]/g, "");
-    const costo = Number(e.target.costo.value).toLocaleString("es-CL"); 
-    const categoria = e.target.categoria.value;
-    const marca = e.target.marca.value;
-    const id = codigoProducto;
+    const cantidad = formData.cantidad.replace(/[^0-9]/g, "");
+    const costo = Number(formData.costo).toLocaleString("es-CL");
+    const id = formData.codigoProducto;
 
     const data = {
-      codigoProducto,
-      nombreProducto,
-      descripcion,
+      ...formData,
       cantidad,
-      costo, 
-      categoria,
-      marca,
+      costo,
       id,
     };
-    await setDoc(doc(db, "inventario", id), data);
-    e.target.reset();
+
+    try {
+      await setDoc(doc(db, "inventario", id), data);
+      setFormData({
+        codigoProducto: "",
+        nombreProducto: "",
+        descripcion: "",
+        cantidad: "",
+        costo: "",
+        categoria: "",
+        marca: "",
+      });
+      setMensajeExito("Inventario agregado exitosamente");
+      setTimeout(() => {
+        setMensajeExito("");
+      }, 3000);
+    } catch (error) {
+      console.error("Error al agregar el inventario: ", error);
+    }
   };
 
-  const handleCantidadChange = (e) => {
-    const cantidad = e.target.value.replace(/[^0-9]/g, "");
-    const cantidadFormateada = cantidad.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    setCantidadFormateada(cantidadFormateada);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "cantidad") {
+      const cantidadFormateada = value
+        .replace(/[^0-9]/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      setFormData({ ...formData, [name]: cantidadFormateada });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   return (
     <>
       <Admin />
-        <div className='body_formulario'>
-
-          <div className='formulario_content'>
-
-            <div className='formulario_wrapper'>
-
-              <div className='formulario_contact'>
-
-                <h1 className='formulario_titulo'>Agregar Inventario</h1>
-
-                <form className="formulario_form"onSubmit={submitHandler}>
-                  <p>
-                    <br />
-                      <TextField label="Código Producto" variant="outlined" className="input_formulario"
-                        id="codigoProducto"
-                        required
-                        type="text"
-                        name="codigoProducto"
-                        placeholder="Codigo Producto"
-                      />
-                  </p>
-
-                  <p>
-                    <br />
-                    <TextField label="Nombre Producto" variant="outlined" className="input_formulario"
-                      id="nombreProducto"
-                      required
-                      type="text"
-                      name="nombreProducto"
-                      placeholder="Nombre Producto"
-                    />
-                  </p>
-   
-                  <p>
-                    <br />
-                    <TextField label="Descripcion" variant="outlined" className="input_formulario"
-                      id="descripcion"
-                      required
-                      type="text"
-                      name="descripcion"
-                      placeholder="Descripcion"
-                    />
-                  </p>
-
-                  <p>
-                    <br />
-                    <TextField label="Cantidad" variant="outlined" className="input_formulario"
-                      id="cantidad"
-                      required
-                      type="text"
-                      name="cantidad"
-                      placeholder="Cantidad"
-                      value={cantidadFormateada}
-                      onChange={handleCantidadChange} 
-                    />
-                  </p>
-
-                  <p>
-                    <br />
-                    <TextField label="costo" variant="outlined" className="input_formulario"
-                      id="costo"
-                      required
-                      type="text"
-                      name="costo"
-                      placeholder="ejemplo: 10000"
-                    />
-                  </p>
-
-                  <p>
-                    <label className='label_formulario'>Categoría</label>
-                    <br />
-                    <select
-                      className='input_formulario'
+      <div className="body_formulario">
+        <div className="formulario_content">
+          <div className="formulario_wrapper">
+            <div className="formulario_contact">
+              <h1 className="formulario_titulo">Agregar Inventario</h1>
+              {mensajeExito && (
+                <div className="mensaje_exito">{mensajeExito}</div>
+              )}
+              <form className="formulario_form" onSubmit={submitHandler}>
+                <p>
+                  <br />
+                  <TextField
+                    label="Código Producto"
+                    variant="outlined"
+                    className="input_formulario"
+                    id="codigoProducto"
+                    required
+                    type="text"
+                    name="codigoProducto"
+                    value={formData.codigoProducto}
+                    onChange={handleChange}
+                    placeholder="Código Producto"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Nombre Producto"
+                    variant="outlined"
+                    className="input_formulario"
+                    id="nombreProducto"
+                    required
+                    type="text"
+                    name="nombreProducto"
+                    value={formData.nombreProducto}
+                    onChange={handleChange}
+                    placeholder="Nombre Producto"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Descripción"
+                    variant="outlined"
+                    className="input_formulario"
+                    id="descripcion"
+                    required
+                    type="text"
+                    name="descripcion"
+                    value={formData.descripcion}
+                    onChange={handleChange}
+                    placeholder="Descripción"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Cantidad"
+                    variant="outlined"
+                    className="input_formulario"
+                    id="cantidad"
+                    required
+                    type="text"
+                    name="cantidad"
+                    value={formData.cantidad}
+                    onChange={handleChange}
+                    placeholder="Cantidad"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Costo"
+                    variant="outlined"
+                    className="input_formulario"
+                    id="costo"
+                    required
+                    type="text"
+                    name="costo"
+                    value={formData.costo}
+                    onChange={handleChange}
+                    placeholder="Ejemplo: 10000"
+                  />
+                </p>
+                <p>
+                  <FormControl
+                    sx={{ height: "30px", marginTop: "10px", width: "260px" }}
+                  >
+                    <InputLabel id="categoria-label">
+                      Seleccione Categoría
+                    </InputLabel>
+                    <Select
+                      labelId="categoria-label"
                       id="categoria"
-                      required
                       name="categoria"
-                    >
-                      <option value="" disabled selected>
-                        Seleccione una categoría
-                      </option>
-                      <option value="Sistema de Suspensión">Sistema de Suspensión</option>
-                      <option value="Afinación del Motor">Afinación del Motor</option>
-                      <option value="Sistema de Inyección Electrónica">Sistema de Inyección Electrónica</option>
-                      <option value="Sistema de Escape">Sistema de Escape</option>
-                      <option value="Sistema de Climatización">Sistema de Climatización</option>
-                      <option value="Sistema de Lubricación">Sistema de Lubricación</option>
-                      <option value="Sistema de Dirección">Sistema de Dirección</option>
-                      <option value="Sistema de Frenos">Sistema de Frenos</option>
-                      <option value="Sistema de Encendido">Sistema de Encendido</option>
-                      <option value="Inspección de Carrocería y Pintura">Inspección de Carrocería y Pintura</option>
-                      <option value="Sistema de Transmisión">Sistema de Transmisión</option>
-                      <option value="Sistema de Refrigeración">Sistema de Refrigeración</option>
-                      <option value="Accesorios y Personalización">Accesorios y Personalización</option>
-                      <option value="Herramientas y Equipos">Herramientas y Equipos</option>
-                    </select>
-                  </p>
-
-                  <p>
-                    <br />
-                    <TextField label="Marca" variant="outlined" className="input_formulario"
-                      id="marca"
+                      value={formData.categoria}
+                      label="Seleccione Categoría"
+                      onChange={handleChange}
                       required
-                      type="text"
-                      name="marca"
-                      placeholder="Marca"
-                    />
-                  </p>
-
-                  <p className='block_boton'>
-                    <Button variant="contained" className="boton_formulario" type="submit">
-                      Agregar
-                    </Button> 
-                  </p>
-
-
-                </form>
-              </div>
+                    >
+                      <MenuItem value={"Sistema de Suspensión"}>
+                        Sistema de Suspensión
+                      </MenuItem>
+                      <MenuItem value={"Afinación del Motor"}>
+                        Afinación del Motor
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Inyección Electrónica"}>
+                        Sistema de Inyección Electrónica
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Escape"}>
+                        Sistema de Escape
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Climatización"}>
+                        Sistema de Climatización
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Lubricación"}>
+                        Sistema de Lubricación
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Dirección"}>
+                        Sistema de Dirección
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Frenos"}>
+                        Sistema de Frenos
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Encendido"}>
+                        Sistema de Encendido
+                      </MenuItem>
+                      <MenuItem value={"Inspección de Carrocería y Pintura"}>
+                        Inspección de Carrocería y Pintura
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Transmisión"}>
+                        Sistema de Transmisión
+                      </MenuItem>
+                      <MenuItem value={"Sistema de Refrigeración"}>
+                        Sistema de Refrigeración
+                      </MenuItem>
+                      <MenuItem value={"Accesorios y Personalización"}>
+                        Accesorios y Personalización
+                      </MenuItem>
+                      <MenuItem value={"Herramientas y Equipos"}>
+                        Herramientas y Equipos
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Marca"
+                    variant="outlined"
+                    className="input_formulario"
+                    id="marca"
+                    required
+                    type="text"
+                    name="marca"
+                    value={formData.marca}
+                    onChange={handleChange}
+                    placeholder="Marca"
+                  />
+                </p>
+                <p className="block_boton">
+                  <Button
+                    variant="outlined"
+                    className="boton_formulario"
+                    type="submit"
+                  >
+                    Agregar Inventario
+                  </Button>
+                </p>
+              </form>
             </div>
           </div>
         </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default AgregarInventario
+export default AgregarInventario;

@@ -998,7 +998,7 @@ const GenerarFactura = () => {
       </header>
       <div className="tabla_listar">
         <div className="table_header">
-          <h1>Generar Factura</h1>
+          <h2>Generar Factura</h2>
           <Stack spacing={2} direction="row">
             <Button
               onClick={() => generarFactura(productosSeleccionados)}

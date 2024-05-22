@@ -1,6 +1,5 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import "../styles/agregarUsuario.css";
 import { useState, useEffect } from "react";
 import {
@@ -19,11 +18,13 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import Admin from "./admin";
-
 import ResetCredential from "./funcionUsuario/resetCredential";
-
 import validadorRUT from "./validadorRUT";
 import { Button } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
@@ -33,6 +34,7 @@ const AgregarUsuario = () => {
   const [user, setUser] = useState(null);
   const [fechaIngreso, setFechaIngreso] = useState(null);
   const [showReauthForm, setShowReauthForm] = useState(false);
+  const [rolValue, setRolValue] = useState("");
 
   useEffect(() => {
     if (identifyUser) {
@@ -60,7 +62,6 @@ const AgregarUsuario = () => {
         return;
       }
 
-      const rol = e.target.elements.rol.value;
       const nombre = e.target.elements.nombre.value;
       const apellido = e.target.elements.apellido.value;
       const telefono = e.target.elements.telefono.value;
@@ -82,7 +83,7 @@ const AgregarUsuario = () => {
 
         await setDoc(doc(db, "users", newUser.uid), {
           rut,
-          rol,
+          rol: rolValue,
           nombre,
           apellido,
           telefono,
@@ -236,197 +237,202 @@ const AgregarUsuario = () => {
     <>
       <Admin />
       <div className="body_formulario">
-
         <div className="formulario_content">
-          
-              <h1 className="formulario_titulo">Agregar Usuario</h1>
-              <form className="formulario_form" onSubmit={submitHandler}>
-                <p>
-                  <br />
-                  <TextField
-                    label="Rut"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="rut"
-                    required
-                    type="text"
-                    name="rut"
-                    placeholder="Rut (11.111.111-1)"
-                    onChange={validarRutOnChange}
-                  />
-                  <p className="mensaje_rut">{mensajeRut}</p>
-                </p>
-                <p>
-                  <label className="label_formulario">ROL</label>
-                  <br />
-                  <select
-                    className="input_formulario"
-                    id="rol"
-                    name="rol"
-                    required
-                  >
-                    <option value="mecanico">Mecánico</option>
-                    <option value="administrador">Administrador</option>
-                  </select>
-                </p>
-                <p>
-                  <br />
-                  <TextField
-                    label="Nombre"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="nombre"
-                    required
-                    type="text"
-                    name="nombre"
-                    placeholder="Nombre"
-                  />
-                </p>
+          <h1 className="formulario_titulo">Agregar Usuario</h1>
+          <form className="formulario_form" onSubmit={submitHandler}>
+            <p>
+              <br />
+              <TextField
+                label="Rut"
+                variant="outlined"
+                className="input_formulario"
+                id="rut"
+                required
+                type="text"
+                name="rut"
+                placeholder="Rut (11.111.111-1)"
+                onChange={validarRutOnChange}
+              />
+              <p className="mensaje_rut">{mensajeRut}</p>
+            </p>
+            <p>
+              <br />
+              <FormControl
+                sx={{ height: "30px", marginTop: "10px", width: "260px" }}
+              >
+                <InputLabel id="demo-simple-select-label">ROL</InputLabel>
+                <Select
+                  labelId="rol-label"
+                  id="rol"
+                  name="rol"
+                  label="rol"
+                  required
+                  value={rolValue}
+                  onChange={(e) => setRolValue(e.target.value)}
+                >
+                  <MenuItem value="administrador">Administrador</MenuItem>
+                  <MenuItem value="mecanico">Mecánico</MenuItem>
+                </Select>
+              </FormControl>
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Nombre"
+                variant="outlined"
+                className="input_formulario"
+                id="nombre"
+                required
+                type="text"
+                name="nombre"
+                placeholder="Nombre"
+              />
+            </p>
 
-                <p>
-                  <br />
+            <p>
+              <br />
+              <TextField
+                label="apellido"
+                variant="outlined"
+                className="input_formulario"
+                id="apellido"
+                required
+                type="text"
+                name="apellido"
+                placeholder="Apellido"
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Telefono"
+                variant="outlined"
+                className="input_formulario"
+                id="telefono"
+                required
+                type="tel"
+                name="telefono"
+                pattern="[+]56 [0-9]{1} [0-9]{8}"
+                placeholder="Ejemplo: +56 9 12345678"
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Direccion"
+                variant="outlined"
+                className="input_formulario"
+                id="direccion"
+                required
+                type="text"
+                name="direccion"
+                placeholder="Direccion"
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Salario"
+                variant="outlined"
+                className="input_formulario"
+                id="salario"
+                required
+                type="text"
+                name="salario"
+                placeholder="Salario"
+                pattern="[0-9.,]+"
+                onChange={(e) => formatSalaryInput(e.target)}
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                variant="outlined"
+                className="input_formulario"
+                id="fechaIngreso"
+                required
+                type="date"
+                name="fechaIngreso"
+                onChange={(e) => setFechaIngreso(e.target)}
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Correo"
+                variant="outlined"
+                className="input_formulario"
+                id="email"
+                required
+                type="text"
+                name="email"
+                placeholder="Ingrese su Correo"
+                onChange={autocompleteAtSymbol}
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Contraseña"
+                variant="outlined"
+                className="input_formulario"
+                id="password"
+                required
+                type="text"
+                name="password"
+                placeholder="Cree su Contraseña"
+              />
+            </p>
+            <p className="block_boton">
+              <p className="mensaje">{mensaje}</p>
+              <p className="mensaje_validacion">{mensajeValidacion}</p>
+              <Button
+                variant="outlined"
+                onClick={logoutAndReauthenticate}
+                type="submit"
+                size="large"
+                style={{ with: "120px", fontSize: "20px" }}
+              >
+                Agregar Usuario
+              </Button>
+              {showReauthForm && (
+                <>
                   <TextField
-                    label="apellido"
+                    label="Correo electrónico"
                     variant="outlined"
                     className="input_formulario"
-                    id="apellido"
+                    id="email-reauth"
                     required
-                    type="text"
-                    name="apellido"
-                    placeholder="Apellido"
+                    type="email"
                   />
-                </p>
-                <p>
-                  <br />
-                  <TextField
-                    label="Telefono"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="telefono"
-                    required
-                    type="tel"
-                    name="telefono"
-                    pattern="[+]56 [0-9]{1} [0-9]{8}"
-                    placeholder="Ejemplo: +56 9 12345678"
-                  />
-                </p>
-                <p>
-                  <br />
-                  <TextField
-                    label="Direccion"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="direccion"
-                    required
-                    type="text"
-                    name="direccion"
-                    placeholder="Direccion"
-                  />
-                </p>
-                <p>
-                  <br />
-                  <TextField
-                    label="Salario"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="salario"
-                    required
-                    type="text"
-                    name="salario"
-                    placeholder="Salario"
-                    pattern="[0-9.,]+"
-                    onChange={(e) => formatSalaryInput(e.target)}
-                  />
-                </p>
-                <p>
-                  <br />
-                  <TextField
-                    variant="outlined"
-                    className="input_formulario"
-                    id="fechaIngreso"
-                    required
-                    type="date"
-                    name="fechaIngreso"
-                    onChange={(e) => setFechaIngreso(e.target)}
-                  />
-                </p>
-                <p>
-                  <br />
-                  <TextField
-                    label="Correo"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="email"
-                    required
-                    type="text"
-                    name="email"
-                    placeholder="Ingrese su Correo"
-                    onChange={autocompleteAtSymbol}
-                  />
-                </p>
-                <p>
-                  <br />
                   <TextField
                     label="Contraseña"
                     variant="outlined"
                     className="input_formulario"
-                    id="password"
+                    id="password-reauth"
                     required
-                    type="text"
-                    name="password"
-                    placeholder="Cree su Contraseña"
+                    type="password"
                   />
-                </p>
-                <p className="block_boton">
-                  <p className="mensaje">{mensaje}</p>
-                  <p className="mensaje_validacion">{mensajeValidacion}</p>
                   <Button
                     variant="outlined"
-                    onClick={logoutAndReauthenticate}
-                    type="submit"
+                    onClick={handleReauthenticate}
                     size="large"
                     style={{ with: "120px", fontSize: "20px" }}
                   >
-                    Agregar Usuario
+                    Reautenticar
                   </Button>
-                  {showReauthForm && (
-                    <>
-                      <TextField
-                        label="Correo electrónico"
-                        variant="outlined"
-                        className="input_formulario"
-                        id="email-reauth"
-                        required
-                        type="email"
-                      />
-                      <TextField
-                        label="Contraseña"
-                        variant="outlined"
-                        className="input_formulario"
-                        id="password-reauth"
-                        required
-                        type="password"
-                      />
-                      <Button
-                        variant="outlined"
-                        onClick={handleReauthenticate}
-                        size="large"
-                        style={{ with: "120px", fontSize: "20px" }}
-                      >
-                        Reautenticar
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        onClick={() => setShowReauthForm(false)}
-                        size="large"
-                        style={{ with: "120px", fontSize: "20px" }}
-                      >
-                        Cancelar
-                      </Button>
-                    </>
-                  )}
-                </p>
-              </form>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setShowReauthForm(false)}
+                    size="large"
+                    style={{ with: "120px", fontSize: "20px" }}
+                  >
+                    Cancelar
+                  </Button>
+                </>
+              )}
+            </p>
+          </form>
         </div>
       </div>
     </>
