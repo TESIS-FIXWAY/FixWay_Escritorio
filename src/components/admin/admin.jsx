@@ -5,6 +5,8 @@ import Logo from "../../images/LogoSinFondo.png";
 import { DarkModeContext } from "../../context/darkMode";
 import { Logout } from "@mui/icons-material";
 import "../styles/admin.css";
+import "../styles/darkMode.css";
+
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
 
@@ -89,11 +91,11 @@ const Admin = () => {
           </Link>
         </div>
 
-        <nav className="arbol">
-          <ul className="arbolitos">
+        <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
+          <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
             <li onClick={toggleSubMenu1}>
               <Link
-                className={`links ${
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
                   window.location.pathname === "/agregarUsuario" ||
                   window.location.pathname === "/listarUsuario"
                     ? "active"
@@ -136,7 +138,7 @@ const Admin = () => {
             <li>
               <Link
                 to="/gestionMantencionesAdmin"
-                className={`links ${
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
                   window.location.pathname === "/gestionMantencionesAdmin"
                     ? "active"
                     : ""
@@ -148,7 +150,7 @@ const Admin = () => {
 
             <li onClick={toggleSubMenu2}>
               <Link
-                className={`links ${
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
                   window.location.pathname === "/generarFactura" ||
                   window.location.pathname === "/agregarFactura"
                     ? "active"
@@ -191,7 +193,7 @@ const Admin = () => {
 
             <li onClick={toggleSubMenu3}>
               <Link
-                className={`links ${
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
                   window.location.pathname === "/listadoFacturas" ||
                   window.location.pathname === "/listadoMisFacturas"
                     ? "active"
@@ -236,7 +238,7 @@ const Admin = () => {
 
             <li onClick={toggleSubMenu4}>
               <Link
-                className={`links ${
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
                   window.location.pathname === "/agregarInventario" ||
                   window.location.pathname === "/listadoMisFacturas"
                     ? "active"
@@ -278,14 +280,14 @@ const Admin = () => {
         </nav>
 
         <div>
-          <button onClick={toggleDarkMode}>
+          <button onClick={toggleDarkMode} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
             {isDarkMode ? (
-              <WbSunnyIcon color="primary" />
+              <WbSunnyIcon color="#B4B4B4" />
             ) : (
               <NightlightIcon color="secondary" />
             )}
           </button>
-          <button type="submit" onClick={handleLogout} className="boton_salir">
+          <button type="submit" onClick={handleLogout} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
             <Logout />
           </button>
         </div>

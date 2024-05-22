@@ -32,10 +32,7 @@
     border-bottom: 1px solid #000;
     z-index: 99;
 }
-.encabezado.dark-mode {
-    background-color: #171717;
-    color: red;
-  }
+
 
 
 .contenedor_principal {
@@ -59,7 +56,7 @@
     padding: 15px 1px;
     color: #67748E;
     text-decoration: none;
-    transition: border-left 400ms ease, color 400ms ease;
+    transition: border-bottom 400ms ease, color 400ms ease;
     position: relative;
     cursor: pointer;
 }
@@ -140,6 +137,7 @@
     background-color: #F7F9FB;
 }
 
+
 .menu-toggle {
     display: none;
     background: none;
@@ -186,9 +184,6 @@
     transform: rotate(0deg);
     transition: .25s ease-in-out;
   }
-.span.dark-mode {
-    background-color: yellow;
-}
 
   .burger span:nth-of-type(1) {
     top: 0px;
@@ -226,7 +221,7 @@
 
 
   
-@media (max-width: 790px) {
+@media (max-width: 878px) {
 
     .encabezado .arbol {
         display: none;
@@ -268,7 +263,7 @@
         transition: all 0.5s ease 0s;
     }
     hr {
-        margin: 5px 5px;
+        margin: 10px 10px 10px -10px;
         color: #fff;
         width: 100%;
     }

@@ -15,18 +15,14 @@ aside {
   grid-area: sidebar;
   background-color: #F7F9FB;
 }
-aside.dark-mode {
-  background-color: #212121;
-}
+
 main {
   grid-area: main;
   background-color: #F7F9FB;
   display: grid;
   grid-template-columns: 1fr;
 }
-main.dark-mode {
-  background-color: #212121;
-}
+
 
 footer {
   grid-area: footer;

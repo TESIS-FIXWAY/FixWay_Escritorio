@@ -1,4 +1,6 @@
 import "../styles/indexAdmin.css";
+import "../styles/darkMode.css";
+
 import React, { useState, useEffect, useContext } from "react";
 import "react-calendar/dist/Calendar.css";
 import Admin from "./admin";
@@ -93,9 +95,9 @@ const IndexAdmin = () => {
 
         <main className={`main ${isDarkMode ? 'dark-mode' : ''}`}>
           <div><GraficoMisFacturas /></div>
-          <div><CarModel /></div>
+          {/* <div><CarModel /></div> */}
           <div><GraficoMisBoletas /></div>
-          <div><GraficoTipoPago /></div>
+          {/* <div><GraficoTipoPago /></div> */}
         </main>
       </div>
   );

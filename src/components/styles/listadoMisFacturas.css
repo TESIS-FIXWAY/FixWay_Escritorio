@@ -9,6 +9,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 110;
 }
 
 .preview_header {
@@ -19,7 +20,7 @@
   padding: 10px;
   background-color: #323639;
   color: white;
-  z-index: 11;
+  z-index: 110;
 }
 
 .preview_pdf {

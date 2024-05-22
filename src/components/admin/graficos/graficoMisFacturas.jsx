@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { db } from "../../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Chart } from "react-google-charts";
 import "../../styles/graficos.css";
+import "../../styles/darkMode.css";
+import { DarkModeContext } from '../../../context/darkMode'; 
 
 const GraficoMisFacturas = () => {
   const [data, setData] = useState([]);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,62 +45,67 @@ const GraficoMisFacturas = () => {
     fetchData();
   }, []);
 
+  const chartOptions = {
+    hAxis: {
+      title: "Fechas",
+      textStyle: {
+        color: isDarkMode ? "#e0e0e0" : "#333",
+        fontSize: 12,
+        fontName: "Arial",
+      },
+      titleTextStyle: {
+        color: isDarkMode ? "#e0e0e0" : "#333",
+        fontSize: 14,
+        bold: true,
+        italic: false,
+      },
+    },
+    vAxis: {
+      title: "Número de Facturas",
+      textStyle: {
+        color: isDarkMode ? "#B4B4B4" : "#333",
+        fontSize: 12,
+        fontName: "Arial",
+      },
+      titleTextStyle: {
+        color: isDarkMode ? "#B4B4B4" : "#333",
+        fontSize: 14,
+        bold: true,
+        italic: false,
+      },
+    },
+    lineWidth: 3,
+    pointSize: 5,
+    colors: [isDarkMode ? "#818284" : "#92AEE4"],
+    backgroundColor: isDarkMode ? "#333" : "#fff",
+    chartArea: {
+      width: "85%",
+      height: "70%",
+      backgroundColor: isDarkMode ? "" : "#fff",
+    },
+    legend: {
+      textStyle: {
+        color: isDarkMode ? "#B4B4B4" : "#333",
+        fontSize: 12,
+        fontName: "Arial",
+      },
+    },
+    pointSize: 5,
+    color: isDarkMode ? "#B4B4B4" : "#333",
+    lineDashStyle: [false],
+  };
+
   return (
-    <div className="grafico-container">
-      <h1 className="titulo-Grafico">Facturas</h1>
-      <div className="grafico">
+    <div className={`grafico-container ${isDarkMode ? "dark-mode" : ""}`}>
+      <h1 className={`titulo-Grafico ${isDarkMode ? "dark-mode" : ""}`}>Facturas</h1>
+      <div className={`grafico ${isDarkMode ? "dark-mode" : ""}`}>
         <Chart
           width={"100%"}
           height={"330px"}
           chartType="LineChart"
           loader={<div>Cargando gráfico</div>}
           data={data}
-          options={{
-            hAxis: {
-              title: "Fechas",
-              textStyle: {
-                color: "#333",
-                fontSize: 12,
-                fontName: "Arial",
-              },
-              titleTextStyle: {
-                color: "#333",
-                fontSize: 14,
-                bold: true,
-                italic: false,
-              },
-            },
-            vAxis: {
-              title: "Número de Facturas",
-              textStyle: {
-                color: "#333",
-                fontSize: 12,
-                fontName: "Arial",
-              },
-              titleTextStyle: {
-                color: "#333",
-                fontSize: 14,
-                bold: true,
-                italic: false,
-              },
-            },
-            lineWidth: 3,
-            backgroundColor: "fff",
-            chartArea: {
-              width: "85%",
-              height: "70%",
-              backgroundColor: "fff",
-            },
-            legend: {
-              textStyle: {
-                color: "#333",
-                fontSize: 12,
-                fontName: "Arial",
-              },
-            },
-            pointSize: 10,
-            lineDashStyle: [false],
-          }}
+          options={chartOptions}
         />
       </div>
     </div>

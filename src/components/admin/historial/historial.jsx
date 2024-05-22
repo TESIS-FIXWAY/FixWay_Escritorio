@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../firebase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Doughnut } from "react-chartjs-2";
 import "../../styles/historial.css";
+import "../../styles/darkMode.css";
+import { DarkModeContext } from "../../../context/darkMode";
 
 const HistorialVentas = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -12,6 +14,7 @@ const HistorialVentas = () => {
   const [totalVentas, setTotalVentas] = useState(0);
   const [cantidadBoletas, setCantidadBoletas] = useState(0);
   const [cantidadFacturas, setCantidadFacturas] = useState(0);
+  const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     fetchData();
@@ -30,17 +33,12 @@ const HistorialVentas = () => {
         startDate.setDate(selectedDate.getDate() - selectedDate.getDay());
         endDate = new Date(selectedDate);
         endDate.setDate(selectedDate.getDate() + (6 - selectedDate.getDay()));
-        console.log(startDate, endDate);
         break;
       case "mes":
         startDate = new Date(selectedDate);
-        startDate.setDate(
-          selectedDate.getDate() - (selectedDate.getDate() - 1),
-          0
-        );
+        startDate.setDate(selectedDate.getDate() - (selectedDate.getDate() - 1));
         endDate = new Date(selectedDate);
         endDate.setDate(selectedDate.getDate() + (28 + selectedDate.getDay()));
-        console.log(startDate, endDate);
         break;
       case "trimestre":
         const trimestre = getTrimestre(selectedDate.getMonth() / 3);
@@ -102,8 +100,9 @@ const HistorialVentas = () => {
       {
         label: "Ventas",
         data: [cantidadBoletas, cantidadFacturas],
-        backgroundColor: ["#36A2EB", "#FF6384"],
-        hoverBackgroundColor: ["#36A2EB", "#FF6384"],
+        backgroundColor: isDarkMode ? ["#36A2EB", "#FF6384"] : ["#36A2EB", "#FF6384"],
+        hoverBackgroundColor: isDarkMode ? ["#36A2EB", "#FF6384"] : ["#36A2EB", "#FF6384"],
+        borderWidth: 0,
       },
     ],
   };
@@ -111,6 +110,9 @@ const HistorialVentas = () => {
   const options = {
     legend: {
       display: false,
+      labels: {
+        color: isDarkMode ? "#e0e0e0" : "#333",
+      },
     },
     plugins: {
       doughnutlabel: {
@@ -118,13 +120,15 @@ const HistorialVentas = () => {
           {
             text: "Boletas",
             font: {
-              size: "20",
+              size: "200",
+              color: isDarkMode ? "#e0e0e0" : "#333",
             },
           },
           {
             text: "Facturas",
             font: {
               size: "20",
+              color: isDarkMode ? "#e0e0e0" : "#333",
             },
           },
         ],
@@ -141,17 +145,16 @@ const HistorialVentas = () => {
   };
 
   return (
-    <div className="container">
+    <div className={`container ${isDarkMode ? "dark-mode" : ""}`}>
       <style>
-        @import
-        url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+        {`@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');`}
       </style>
 
       <div className="fechas_selec">
         <select
           value={selectedOption}
           onChange={handleOptionChange}
-          className="seleccionar"
+          className={`seleccionar ${isDarkMode ? "dark-mode" : ""}`}
         >
           <option value="dia">Día</option>
           <option value="semana">Semana</option>
@@ -163,28 +166,28 @@ const HistorialVentas = () => {
           selected={selectedDate}
           onChange={handleDateChange}
           dateFormat="dd/MM/yyyy"
-          className="fecha_historial"
-          calendarClassName="datepicker-open"
+          className={`fecha_historial ${isDarkMode ? "dark-mode" : ""}`}
+          calendarClassName={`datepicker-open ${isDarkMode ? "dark-mode" : ""}`}
         />
       </div>
 
       <div className="informacion_widgets">
         <div className="widgets_historial">
-          <div className="container_widgets">
-            <h3 className="subtitulos_historial"> Ventas</h3>
-            <text className="texto_total">{formatCurrency(totalVentas)}</text>
+          <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
+            <h3 className={`subtitulos_historial ${isDarkMode ? "dark-mode" : ""}`}>Ventas</h3>
+            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>{formatCurrency(totalVentas)}</text>
           </div>
-          <div className="container_widgets">
-            <h3 className="subtitulos_historial"> Boletas</h3>
-            <text className="texto_total"> {cantidadBoletas} </text>
+          <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
+            <h3 className={`subtitulos_historial ${isDarkMode ? "dark-mode" : ""}`}>Boletas</h3>
+            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>{cantidadBoletas}</text>
           </div>
-          <div className="container_widgets">
-            <h3 className="subtitulos_historial"> Facturas</h3>
-            <text className="texto_total"> {cantidadFacturas} </text>
+          <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
+            <h3 className={`subtitulos_historial ${isDarkMode ? "dark-mode" : ""}`}>Facturas</h3>
+            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>{cantidadFacturas}</text>
           </div>
         </div>
 
-        <div className="chart_container ">
+        <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
           <Doughnut data={data} options={options} />
         </div>
       </div>
