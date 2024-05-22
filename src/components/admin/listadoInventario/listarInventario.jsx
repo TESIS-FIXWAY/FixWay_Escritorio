@@ -155,6 +155,10 @@ const ListarInventario = () => {
     navigate("/agregarInventario");
   };
 
+  const getRowStyle = (cantidad) => {
+    return cantidad <= 10 ? { backgroundColor: "#ffcccc" } : {};
+  };
+
   return (
     <>
       <Admin />
@@ -201,7 +205,10 @@ const ListarInventario = () => {
               </TableHead>
               <TableBody>
                 {inventario.map((inventario) => (
-                  <TableRow key={inventario.id}>
+                  <TableRow
+                    key={inventario.id}
+                    style={getRowStyle(inventario.cantidad)}
+                  >
                     <TableCell>{inventario.codigoProducto}</TableCell>
                     <TableCell>{inventario.nombreProducto}</TableCell>
                     <TableCell>{inventario.categoria}</TableCell>
