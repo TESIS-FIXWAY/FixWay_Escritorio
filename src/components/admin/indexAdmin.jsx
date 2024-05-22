@@ -11,7 +11,7 @@ import CarModel from "./auto";
 import GraficoMisBoletas from "./graficos/graficoMisBoletas";
 import GraficoMisFacturas from "./graficos/graficoMisFacturas";
 import HistorialVentas from "./historial/historial";
-import GraficoTipoPago from "./graficos/graficoTipoMantencion";
+import GraficoTipoPago from "./graficos/graficoTipoPago";
 
 const IndexAdmin = () => {
   const [user, setUser] = useState(null);
