@@ -18,7 +18,8 @@ import ListadoProductos from "./listadoProductos";
 import AplicarDescuento from "./aplicarDescuento";
 import ClienteVista from "./clienteVista";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import PeopleIcon from "@mui/icons-material/People";
 import PercentIcon from "@mui/icons-material/Percent";
 import Table from "@mui/material/Table";
@@ -1004,7 +1005,7 @@ const GenerarFactura = () => {
               variant="outlined"
               sx={{ height: "55px", marginTop: "10px" }}
             >
-              <PictureAsPdfIcon />
+              <ReceiptLongIcon />
               Generar Factura
             </Button>
             <Button
@@ -1012,7 +1013,7 @@ const GenerarFactura = () => {
               variant="outlined"
               sx={{ height: "55px", marginTop: "10px" }}
             >
-              <PictureAsPdfIcon />
+              <ReceiptIcon />
               Generar Boleta
             </Button>
             <Button
