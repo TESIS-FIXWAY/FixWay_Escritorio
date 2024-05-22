@@ -1,5 +1,5 @@
 import "../../styles/listarUsuario.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Admin from "../admin";
 import { db } from "../../../firebase";
 import {
@@ -20,23 +20,33 @@ import {
   faCheck,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faUserPen, faTrash, faMagnifyingGlass, faCheck, faXmark);
 import PrevisualizarUsuario from "./previsualizarUsuario";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+library.add(faUserPen, faTrash, faMagnifyingGlass, faCheck, faXmark);
 
 const ListarUsuario = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
-  const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const formatSalario = (value) => {
     return parseInt(value, 10).toLocaleString("es-CL");
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "users")),
       (querySnapshot) => {
@@ -45,11 +55,12 @@ const ListarUsuario = () => {
           ...doc.data(),
         }));
         setUsers(usersData);
+        setFilteredUsers(usersData);
       }
     );
 
     return () => unsubscribe();
-  }, [refresh]);
+  }, []);
 
   const startDelete = (userId) => {
     setDeleteUserId(userId);
@@ -64,8 +75,11 @@ const ListarUsuario = () => {
   const deleteUser = async (userId) => {
     try {
       await deleteDoc(doc(db, "users", userId));
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      setFilteredUsers((prevUsers) =>
+        prevUsers.filter((user) => user.id !== userId)
+      );
       console.log("Usuario eliminado correctamente.");
+      setIsDeleteModalOpen(false);
     } catch (error) {
       console.error("Error al eliminar el usuario:", error);
     }
@@ -86,6 +100,7 @@ const ListarUsuario = () => {
       const userRef = doc(db, "users", userId);
       await updateDoc(userRef, updatedData);
       console.log("Usuario actualizado correctamente.");
+      setIsEditingModalOpen(false);
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
     }
@@ -98,10 +113,10 @@ const ListarUsuario = () => {
       updatedValue = value.replace(/[^\d]/g, "");
     }
 
-    const updatedUsers = users.map((user) =>
+    const updatedUsers = filteredUsers.map((user) =>
       user.id === userId ? { ...user, [name]: updatedValue } : user
     );
-    setUsers(updatedUsers);
+    setFilteredUsers(updatedUsers);
   };
 
   const filtrarUsuario = (e) => {
@@ -119,10 +134,10 @@ const ListarUsuario = () => {
         user.fechaIngreso.toLowerCase().includes(texto)
       );
     });
-    setUsers(filtro);
+    setFilteredUsers(filtro);
 
     if (texto === "") {
-      setRefresh((prevRefresh) => !prevRefresh);
+      setFilteredUsers(users);
     }
   };
 
@@ -137,46 +152,52 @@ const ListarUsuario = () => {
         <div className="table_header">
           <h1>Listar Usuarios</h1>
           <div>
-            <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
-            <input
-              type="text"
-              placeholder="buscar usuario"
-              onChange={filtrarUsuario}
-            />
-            <button className="boton-ingreso" onClick={agregarUsuario}>
-              {" "}
-              <FontAwesomeIcon icon="fa-solid fa-user-plus" /> ingresar nuevo
-              usuario
-            </button>
+            <Box>
+              <TextField
+                onChange={filtrarUsuario}
+                id="Buscar Usuario"
+                label="Buscar Usuario"
+                variant="outlined"
+                sx={{
+                  width: "220px",
+                  height: "55px",
+                  marginTop: "10px",
+                  right: "20px",
+                }}
+              />
+              <Button
+                variant="outlined"
+                onClick={agregarUsuario}
+                sx={{ width: "220px", height: "55px", marginTop: "10px" }}
+              >
+                Ingresar Nuevo Usuario
+              </Button>
+            </Box>
           </div>
         </div>
-        <div className="table_section">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">RUT</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Teléfono</th>
-                <th scope="col">
-                  Correo <br /> Electrónico
-                </th>
-                <th scope="col">
-                  Cargo <br /> de trabajo
-                </th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.rut}</td>
-                  <td>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>RUT</TableCell>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Teléfono</TableCell>
+                <TableCell>Correo Electrónico</TableCell>
+                <TableCell>Cargo de trabajo</TableCell>
+                <TableCell>Acciones</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.rut}</TableCell>
+                  <TableCell>
                     {user.nombre} {user.apellido}
-                  </td>
-                  <td>{user.telefono}</td>
-                  <td>{user.email}</td>
-                  <td>{user.rol}</td>
-                  <td>
+                  </TableCell>
+                  <TableCell>{user.telefono}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.rol}</TableCell>
+                  <TableCell>
                     {editingUserId === user.id ? (
                       <PrevisualizarUsuario
                         user={user}
@@ -205,10 +226,7 @@ const ListarUsuario = () => {
                             >
                               <FontAwesomeIcon icon={faCheck} />
                             </button>
-                            <button
-                              className="cancelar"
-                              onClick={() => cancelDelete()}
-                            >
+                            <button className="cancelar" onClick={cancelDelete}>
                               <FontAwesomeIcon icon={faXmark} />
                             </button>
                           </div>
@@ -219,12 +237,12 @@ const ListarUsuario = () => {
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
                     )}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </>
   );

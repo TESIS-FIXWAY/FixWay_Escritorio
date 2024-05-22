@@ -39,7 +39,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const ListadoFacturas = () => {
   const [facturas, setFacturas] = useState([]);
@@ -172,18 +174,27 @@ const ListadoFacturas = () => {
         <div className="table_header">
           <h1>Listado Facturas Proveedores</h1>
           <div>
-            <TextField
-              type="text"
-              placeholder="Buscar Factura"
-              label="buscar factura"
-              onChange={filtrarFactura}
-              size="medium"
-            />
-            <button className="boton-ingreso" onClick={agregarFactura}>
-              {" "}
-              <FontAwesomeIcon icon="fa-solid fa-file-circle-plus" />
-              Ingresar Nueva Factura
-            </button>
+            <Box>
+              <TextField
+                onChange={filtrarFactura}
+                id="Buscar Usuario"
+                label="Buscar Factura"
+                variant="outlined"
+                sx={{
+                  width: "220px",
+                  height: "55px",
+                  marginTop: "10px",
+                  right: "20px",
+                }}
+              />
+              <Button
+                variant="outlined"
+                onClick={agregarFactura}
+                sx={{ width: "220px", height: "55px", marginTop: "10px" }}
+              >
+                Ingresar Nueva Factura
+              </Button>
+            </Box>
           </div>
         </div>
         <div className="table_section">

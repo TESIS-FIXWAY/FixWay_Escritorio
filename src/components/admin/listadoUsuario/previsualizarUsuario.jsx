@@ -20,7 +20,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
 
   return (
     <div className="fondo_no">
-      <div className="editar">
+      <div className="editar" style={{ width: "560px" }}>
         {editing ? (
           <>
             <p className="p_editar">Editar Usuario</p>
@@ -119,7 +119,12 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
           </>
         ) : (
           <>
-            <p className="p_editar">Previsualización de Usuario</p>
+            <p className="p_editar">
+              {" "}
+              <strong style={{ fontSize: "27px" }}>
+                Previsualización de Usuario
+              </strong>
+            </p>
             <p className="p_editar">
               <strong>Rol:</strong> {user.rol}
             </p>
