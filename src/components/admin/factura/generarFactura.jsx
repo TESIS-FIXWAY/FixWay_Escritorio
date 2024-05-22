@@ -14,19 +14,13 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { ref, uploadString } from "firebase/storage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faEyeSlash,
-  faFilePdf,
-  faList,
-} from "@fortawesome/free-solid-svg-icons";
-library.add(faFilePdf, faList, faEyeSlash);
 import ListadoProductos from "./listadoProductos";
 import AplicarDescuento from "./aplicarDescuento";
 import ClienteVista from "./clienteVista";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import PeopleIcon from "@mui/icons-material/People";
+import PercentIcon from "@mui/icons-material/Percent";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -35,12 +29,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [showProductList, setShowProductList] = useState(false);
-  const [tipoPago, setTipoPago] = useState("contado");
+  const [tipoPago, setTipoPago] = useState("");
   const [showDiscountMenu, setShowDiscountMenu] = useState(false);
   const [descuentoMenuValue, setDescuentoMenuValue] = useState(0);
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
@@ -123,6 +124,7 @@ const GenerarFactura = () => {
         fecha: fecha,
         time: time,
         timestamp: timestamp,
+        tipoPago: tipoPago,
       };
 
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
@@ -138,6 +140,7 @@ const GenerarFactura = () => {
         tipo: "Factura",
         fecha: fecha,
         time: time,
+        tipoPago: tipoPago,
       });
 
       setProductosSeleccionados([]);
@@ -163,7 +166,7 @@ const GenerarFactura = () => {
     descuentoAplicado
   ) => {
     const pdf = new jsPDF();
-    const imgData = "../../src/images/LogoSinFoindo.png";
+    const imgData = "../../../images/AutoSinFondo.png";
     const imgWidth = 40;
     const imgHeight = 40;
     const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
@@ -546,6 +549,7 @@ const GenerarFactura = () => {
         fecha: fecha,
         time: time,
         timestamp: timestamp,
+        tipoPago: tipoPago,
       };
 
       const nuevaBoletaRef = await addDoc(boletasCollection, nuevaBoleta);
@@ -561,6 +565,7 @@ const GenerarFactura = () => {
         tipo: "Boleta",
         fecha: fecha,
         time: time,
+        tipoPago: tipoPago,
       });
 
       generarBoletaPDF(productosSeleccionados);
@@ -583,7 +588,7 @@ const GenerarFactura = () => {
       format: [80, 210],
     });
 
-    const imgData = "../../src/images/LogoSinFoindo.png";
+    const imgData = "../../../images/AutoSinFondo.png";
     const imgWidth = 20;
     const imgHeight = 20;
     const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
@@ -981,6 +986,10 @@ const GenerarFactura = () => {
     }
   };
 
+  const getRowStyle = (cantidad) => {
+    return cantidad <= 10 ? { backgroundColor: "#ffcccc" } : {};
+  };
+
   return (
     <>
       <header className="header">
@@ -988,79 +997,76 @@ const GenerarFactura = () => {
       </header>
       <div className="tabla_listar">
         <div className="table_header">
-          <h2>
-            Generar <br /> Factura
-          </h2>
-          <button
-            onClick={() => generarFactura(productosSeleccionados)}
-            style={{
-              backgroundColor: "#6fa0e8",
-              height: "45px",
-              marginTop: "10px",
-            }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}
-          >
-            <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Factura
-          </button>
-          <button
-            onClick={() => generarBoleta(productosSeleccionados)}
-            style={{
-              backgroundColor: "#D4AFB9",
-              height: "45px",
-              marginTop: "10px",
-            }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#87CEEB")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#6fa0e8")}
-          >
-            <FontAwesomeIcon icon="fa-solid fa-file-pdf" /> Generar Boleta
-          </button>
-          <button
-            onClick={toggleDiscountMenu}
-            style={{ background: "#E74C3C", height: "45px", marginTop: "10px" }}
-          >
-            Añadir Descuento %
-          </button>
-          <select
-            value={tipoPago}
-            onChange={(e) => setTipoPago(e.target.value)}
-            style={{ width: "100px", height: "45px", marginTop: "10px" }}
-          >
-            <option value="contado">Contado</option>
-            <option value="credito">Crédito</option>
-            <option value="debito">Débito</option>
-          </select>
+          <h1>Generar Factura</h1>
+          <Stack spacing={2} direction="row">
+            <Button
+              onClick={() => generarFactura(productosSeleccionados)}
+              variant="outlined"
+              sx={{ height: "55px", marginTop: "10px" }}
+            >
+              <PictureAsPdfIcon />
+              Generar Factura
+            </Button>
+            <Button
+              onClick={() => generarBoleta(productosSeleccionados)}
+              variant="outlined"
+              sx={{ height: "55px", marginTop: "10px" }}
+            >
+              <PictureAsPdfIcon />
+              Generar Boleta
+            </Button>
+            <Button
+              onClick={toggleDiscountMenu}
+              variant="outlined"
+              sx={{ height: "55px", marginTop: "10px" }}
+            >
+              <PercentIcon />
+              Añadir Descuento
+            </Button>
+            <Button
+              onClick={toggleProductList}
+              variant="outlined"
+              sx={{ height: "55px", marginTop: "10px" }}
+            >
+              <ShoppingCartIcon />
+              {showProductList ? "" : ""} ({productosSeleccionados.length})
+            </Button>
+            <Button
+              onClick={toggleClienteVista}
+              variant="outlined"
+              sx={{ height: "55px", marginTop: "10px" }}
+            >
+              <PeopleIcon />
+              Seleccionar Cliente
+            </Button>
+            <FormControl
+              sx={{ height: "30px", marginTop: "10px", width: "140px" }}
+            >
+              <InputLabel id="Tipo de Pago">Tipo de Pago</InputLabel>
+              <Select
+                labelId="Tipo de Pago"
+                id="Tipo de Pago"
+                value={tipoPago}
+                label="Tipo de Pago"
+                onChange={(e) => setTipoPago(e.target.value)}
+              >
+                <MenuItem value={"contado"}>Contado</MenuItem>
+                <MenuItem value={"credito"}>Crédito</MenuItem>
+                <MenuItem value={"debito"}>Débito</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              onChange={buscadorProducto}
+              sx={{ height: "45px", marginTop: "10px" }}
+              id="Buscar producto"
+              label="Buscar producto"
+              variant="outlined"
+            />
+          </Stack>
 
           {showDiscountMenu && mostrarDescuentoMenu()}
-
-          <button
-            style={{ background: "#1DC258", height: "45px", marginTop: "9px" }}
-            onClick={toggleProductList}
-          >
-            <ShoppingCartIcon />
-            {showProductList ? "" : ""} ({productosSeleccionados.length})
-          </button>
-
           {showProductList && mostrarListadoProductos()}
-
-          <button
-            style={{ background: "#009688", height: "45px", marginTop: "10px" }}
-            onClick={toggleClienteVista}
-          >
-            <FontAwesomeIcon
-              icon="fa-solid fa-users"
-              style={{ left: "15px" }}
-            />
-            Seleccionar Cliente
-          </button>
           {mostrarListadoClientes()}
-
-          <input
-            style={{ height: "45px", marginTop: "10px" }}
-            type="text"
-            placeholder="Buscar producto"
-            onChange={buscadorProducto}
-          />
         </div>
         <div className="table_section">
           <TableContainer component={Paper} aria-label="simple table">
@@ -1078,7 +1084,7 @@ const GenerarFactura = () => {
               </TableHead>
               <TableBody>
                 {inventario.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRow key={item.id} style={getRowStyle(item.cantidad)}>
                     <TableCell>
                       <Checkbox
                         onChange={() => toggleSeleccionProducto(item.id)}

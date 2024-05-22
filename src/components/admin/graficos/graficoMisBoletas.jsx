@@ -11,7 +11,7 @@ const GraficoMisBoletas = () => {
     const fetchData = async () => {
       try {
         const q = query(
-          collection(db, "historialVentas"),
+          collection(db, "misBoletas"),
           where("tipo", "==", "Boleta")
         );
         const querySnapshot = await getDocs(q);
@@ -84,8 +84,8 @@ const GraficoMisBoletas = () => {
             lineWidth: 3,
             backgroundColor: "fff", // Asegúrate de que el fondo sea transparente
             chartArea: {
-              width: '85%', // Ajusta según tus necesidades
-              height: '70%', // Ajusta según tus necesidades
+              width: "85%", // Ajusta según tus necesidades
+              height: "70%", // Ajusta según tus necesidades
               backgroundColor: "fff",
             },
             legend: {
@@ -100,7 +100,6 @@ const GraficoMisBoletas = () => {
           }}
         />
       </div>
-
     </div>
   );
 };

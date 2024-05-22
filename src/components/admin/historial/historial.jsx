@@ -34,7 +34,10 @@ const HistorialVentas = () => {
         break;
       case "mes":
         startDate = new Date(selectedDate);
-        startDate.setDate(selectedDate.getDate() - (selectedDate.getDate() - 1), 0);
+        startDate.setDate(
+          selectedDate.getDate() - (selectedDate.getDate() - 1),
+          0
+        );
         endDate = new Date(selectedDate);
         endDate.setDate(selectedDate.getDate() + (28 + selectedDate.getDay()));
         console.log(startDate, endDate);
@@ -148,7 +151,8 @@ const HistorialVentas = () => {
         <select
           value={selectedOption}
           onChange={handleOptionChange}
-          className="seleccionar">
+          className="seleccionar"
+        >
           <option value="dia">Día</option>
           <option value="semana">Semana</option>
           <option value="mes">Mes</option>
@@ -163,32 +167,27 @@ const HistorialVentas = () => {
           calendarClassName="datepicker-open"
         />
       </div>
-      
 
-    <div className="informacion_widgets">
-
-      <div className="widgets_historial"> 
-        <div className="container_widgets">
-          <h3 className="subtitulos_historial"> Ventas</h3>
-          <text className="texto_total">{formatCurrency(totalVentas)}</text>
+      <div className="informacion_widgets">
+        <div className="widgets_historial">
+          <div className="container_widgets">
+            <h3 className="subtitulos_historial"> Ventas</h3>
+            <text className="texto_total">{formatCurrency(totalVentas)}</text>
+          </div>
+          <div className="container_widgets">
+            <h3 className="subtitulos_historial"> Boletas</h3>
+            <text className="texto_total"> {cantidadBoletas} </text>
+          </div>
+          <div className="container_widgets">
+            <h3 className="subtitulos_historial"> Facturas</h3>
+            <text className="texto_total"> {cantidadFacturas} </text>
+          </div>
         </div>
-        <div className="container_widgets">
-          <h3 className="subtitulos_historial"> Boletas</h3>
-          <text className="texto_total"> {cantidadBoletas} </text>
-        </div>
-        <div className="container_widgets">
-          <h3 className="subtitulos_historial"> Facturas</h3>
-          <text className="texto_total"> {cantidadFacturas} </text>
-        </div>
-      </div>
 
         <div className="chart_container ">
           <Doughnut data={data} options={options} />
         </div>
-
-    </div>
-
-
+      </div>
     </div>
   );
 };

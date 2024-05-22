@@ -11,7 +11,7 @@ const GraficoMisFacturas = () => {
     const fetchData = async () => {
       try {
         const q = query(
-          collection(db, "historialVentas"),
+          collection(db, "misFacturas"),
           where("tipo", "==", "Factura")
         );
         const querySnapshot = await getDocs(q);
@@ -84,8 +84,8 @@ const GraficoMisFacturas = () => {
             lineWidth: 3,
             backgroundColor: "fff", // Asegúrate de que el fondo sea transparente
             chartArea: {
-              width: '85%', // Ajusta según tus necesidades
-              height: '70%', // Ajusta según tus necesidades
+              width: "85%", // Ajusta según tus necesidades
+              height: "70%", // Ajusta según tus necesidades
               backgroundColor: "fff",
             },
             legend: {
@@ -105,4 +105,3 @@ const GraficoMisFacturas = () => {
 };
 
 export default GraficoMisFacturas;
- 
