@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
+
+import { DarkModeContext } from '../../context/darkMode';
+
 import {
   Home,
   Person,
@@ -28,9 +31,8 @@ const Admin = () => {
   const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
   const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true';
-  });
+  const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -93,10 +95,8 @@ const Admin = () => {
     setIsSubMenuOpen3(false);
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem('darkMode', !isDarkMode);
-  };
+
+
 
   return (
     <>
@@ -299,9 +299,12 @@ const Admin = () => {
           <button type="submit" onClick={handleLogout} className="boton_salir">
             <Logout />
           </button>
-          <button onClick={toggleDarkMode} className="dark-mode-button">
-            {isDarkMode ? "Light Mode" : "Dark Mode"}
+          
+          <button onClick={toggleDarkMode}>
+            {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           </button>
+          
+
         </div>
 
         <div className="overlay">
@@ -312,9 +315,10 @@ const Admin = () => {
               checked={isMenuOpen}
               onChange={toggleMenu}
             />
-            <span></span>
-            <span></span>
-            <span></span>
+
+            <span className={`span ${isDarkMode ? 'dark-mode' : ''}`}></span>
+            <span className={`span ${isDarkMode ? 'dark-mode' : ''}`}></span>
+            <span className={`span ${isDarkMode ? 'dark-mode' : ''}`}></span>
           </label>
 
           <div className={`arbol ${isMenuOpen ? "open" : ""}`}>

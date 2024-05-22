@@ -1,9 +1,10 @@
 import "../styles/indexAdmin.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "react-calendar/dist/Calendar.css";
 import Admin from "./admin";
 import { db, auth } from "../../firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
+import { DarkModeContext } from '../../context/darkMode'; // Asegúrate de que la ruta es correcta
 
 import Tierra from "./tierra";
 import CarModel from "./auto";
@@ -18,6 +19,7 @@ const IndexAdmin = () => {
   const [processCount, setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const identifyUser = auth.currentUser;
@@ -58,56 +60,44 @@ const IndexAdmin = () => {
   }, []);
 
   return (
-    <>
-      <style></style>
-
       <div className="layaout">
         <header>
           <Admin />
         </header>
 
-        <aside>
+        <aside className={`aside ${isDarkMode ? 'dark-mode' : ''}`}>
+
           <h1 className="titulo-Grafico ">Estadisticas Generales</h1>
-          <div>
-            <HistorialVentas />
-          </div>
+          <div><HistorialVentas/></div>
 
-          <div className="widgets_historial">
-            <div className="container_widgets">
-              <p>Mantenciones Pendientes:</p>
-              <p>{pendingCount}</p>
+          <div className="informacion_widgets_index">
+            <div className="widgets_historial">
+              <div className="container_widgets">
+                <p>Mantenciones Pendientes:</p>
+                <p>{pendingCount}</p>
+              </div>
+              <div className="container_widgets">
+                <p>Mantenciones En Proceso:</p>
+                <p>{processCount}</p>
+              </div>
+              <div className="container_widgets">
+                <p>Mantenciones Entregadas:</p>
+                <p>{deliveredCount}</p>
+              </div>
             </div>
-            <div className="container_widgets">
-              <p>Mantenciones En Proceso:</p>
-              <p>{processCount}</p>
-            </div>
-            <div className="container_widgets">
-              <p>Mantenciones Entregadas:</p>
-              <p>{deliveredCount}</p>
-            </div>
-
-            <div>
-              <Tierra />
+            <div className="chart_container">
+              <div>hola</div>
             </div>
           </div>
         </aside>
 
-        <main className="main">
-          <div>
-            <GraficoMisFacturas />
-          </div>
-          <div>
-            <CarModel />
-          </div>
-          <div>
-            <GraficoMisBoletas />
-          </div>
-          <div>
-            <GraficoTipoPago />
-          </div>
+        <main className={`main ${isDarkMode ? 'dark-mode' : ''}`}>
+          <div><GraficoMisFacturas /></div>
+          <div><CarModel /></div>
+          <div><GraficoMisBoletas /></div>
+          <div><GraficoTipoPago /></div>
         </main>
       </div>
-    </>
   );
 };
 

@@ -34,8 +34,9 @@
 }
 .encabezado.dark-mode {
     background-color: #171717;
-    color: #f0f0f0;
+    color: red;
   }
+
 
 .contenedor_principal {
     display: flex;
@@ -185,7 +186,10 @@
     transform: rotate(0deg);
     transition: .25s ease-in-out;
   }
-  
+.span.dark-mode {
+    background-color: yellow;
+}
+
   .burger span:nth-of-type(1) {
     top: 0px;
     transform-origin: left center;
@@ -452,3 +456,12 @@
     color: #fff;
 }
  */
+
+
+
+
+
+
+
+
+
