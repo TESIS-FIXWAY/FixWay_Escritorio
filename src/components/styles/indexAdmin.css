@@ -23,10 +23,16 @@ main {
   grid-template-columns: 1fr;
 }
 
-
 footer {
   grid-area: footer;
   background-color: grey;
+}
+
+.informacion_widgets_index{
+  display: flex;
+  max-width: 700px;
+  margin-bottom:40px;
+  margin-top: 40px;
 }
 
 @media (min-width: 1000px) {

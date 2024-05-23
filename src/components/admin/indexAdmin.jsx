@@ -74,23 +74,25 @@ const IndexAdmin = () => {
 
           <div className="informacion_widgets_index">
             <div className="widgets_historial">
-              <div className="container_widgets">
+              <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
                 <p>Mantenciones Pendientes:</p>
                 <p>{pendingCount}</p>
               </div>
-              <div className="container_widgets">
+              <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
                 <p>Mantenciones En Proceso:</p>
                 <p>{processCount}</p>
               </div>
-              <div className="container_widgets">
+              <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
                 <p>Mantenciones Entregadas:</p>
                 <p>{deliveredCount}</p>
               </div>
             </div>
-            <div className="chart_container">
+
+            <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
               <div>hola</div>
             </div>
           </div>
+          
         </aside>
 
         <main className={`main ${isDarkMode ? 'dark-mode' : ''}`}>

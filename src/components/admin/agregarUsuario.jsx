@@ -1,40 +1,32 @@
-import * as React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TextField from "@mui/material/TextField";
-import "../styles/agregarUsuario.css";
-import { useState, useEffect } from "react";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import {
-  doc,
-  setDoc,
-  onSnapshot,
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { doc, setDoc, onSnapshot, collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../../firebase";
+
 import Admin from "./admin";
 import ResetCredential from "./funcionUsuario/resetCredential";
 import validadorRUT from "./validadorRUT";
-import { Button } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+
+import "../styles/agregarUsuario.css";
+import "../styles/darkMode.css";
+import { DarkModeContext } from "../../context/darkMode";
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
   const [mensajeRut, setMensajeRut] = useState(null);
   const [mensajeValidacion, setMensajeValidacion] = useState(null);
+  const [rolValue, setRolValue] = useState("");
+  const { isDarkMode } = useContext(DarkModeContext);
+
   const identifyUser = auth.currentUser;
   const [user, setUser] = useState(null);
-  const [fechaIngreso, setFechaIngreso] = useState(null);
-  const [showReauthForm, setShowReauthForm] = useState(false);
-  const [rolValue, setRolValue] = useState("");
 
   useEffect(() => {
     if (identifyUser) {
@@ -73,12 +65,7 @@ const AgregarUsuario = () => {
 
       try {
         await signOut(auth);
-        const currentUser = auth.currentUser;
-        const userCredentials = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
         const newUser = userCredentials.user;
 
         await setDoc(doc(db, "users", newUser.uid), {
@@ -96,12 +83,11 @@ const AgregarUsuario = () => {
         setMensaje("Usuario añadido Correctamente");
 
         await logoutAndReauthenticate();
-
         clearFormFields();
         setMensajeValidacion(null);
         setMensajeRut(null);
       } catch (error) {
-        console.error("Error during user registration:", error);
+        console.error("Error durante el registro del usuario:", error);
       } finally {
         setTimeout(() => {
           setMensaje(null);
@@ -157,13 +143,10 @@ const AgregarUsuario = () => {
 
   const logoutAndReauthenticate = async () => {
     try {
-      const userEmail = prompt(
-        "Ingrese su correo electrónico para agregar el nuevo usuario:"
-      );
+      const userEmail = prompt("Ingrese su correo electrónico para agregar el nuevo usuario:");
       const userPassword = prompt("Ingrese su contraseña para confirmar:");
 
       await signInWithEmailAndPassword(auth, userEmail, userPassword);
-
       clearFormFields();
 
       const currentUser = auth.currentUser;
@@ -183,19 +166,11 @@ const AgregarUsuario = () => {
   const autocompleteAtSymbol = (e) => {
     const inputField = e.target;
     let enteredText = inputField.value.trim();
-
     enteredText = enteredText.replace(/\s/g, "");
-
     const atPosition = enteredText.lastIndexOf("@");
 
-    const existingSelect = inputField.parentNode.querySelector(
-      ".email-domain-select"
-    );
-    if (
-      atPosition === -1 ||
-      enteredText[atPosition + 1] === "" ||
-      enteredText.includes(" ")
-    ) {
+    const existingSelect = inputField.parentNode.querySelector(".email-domain-select");
+    if (atPosition === -1 || enteredText[atPosition + 1] === "" || enteredText.includes(" ")) {
       if (existingSelect) existingSelect.remove();
       return;
     }
@@ -210,9 +185,7 @@ const AgregarUsuario = () => {
       if (!existingSelect) {
         const select = document.createElement("select");
         select.className = "email-domain-select";
-        select.innerHTML =
-          `<option value="">Seleccione...</option>` +
-          suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
+        select.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
 
         select.onchange = () => {
           if (select.value) {
@@ -224,9 +197,7 @@ const AgregarUsuario = () => {
         inputField.parentNode.appendChild(select);
         inputField.parentNode.insertBefore(select, inputField.nextSibling);
       } else {
-        existingSelect.innerHTML =
-          `<option value="">Seleccione...</option>` +
-          suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
+        existingSelect.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
       }
     } else {
       if (existingSelect) existingSelect.remove();
@@ -236,16 +207,16 @@ const AgregarUsuario = () => {
   return (
     <>
       <Admin />
-      <div className="body_formulario">
+      <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="formulario_content">
-          <h1 className="formulario_titulo">Agregar Usuario</h1>
-          <form className="formulario_form" onSubmit={submitHandler}>
+          <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>Agregar Usuario</h1>
+          <form className={`formulario_form ${isDarkMode ? "dark-mode" : ""}`} onSubmit={submitHandler}>
             <p>
               <br />
               <TextField
                 label="Rut"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="rut"
                 required
                 type="text"
@@ -257,10 +228,8 @@ const AgregarUsuario = () => {
             </p>
             <p>
               <br />
-              <FormControl
-                sx={{ height: "30px", marginTop: "10px", width: "260px" }}
-              >
-                <InputLabel id="demo-simple-select-label">ROL</InputLabel>
+              <FormControl className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}>
+                <InputLabel id="rol-label">ROL</InputLabel>
                 <Select
                   labelId="rol-label"
                   id="rol"
@@ -280,7 +249,7 @@ const AgregarUsuario = () => {
               <TextField
                 label="Nombre"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="nombre"
                 required
                 type="text"
@@ -288,13 +257,12 @@ const AgregarUsuario = () => {
                 placeholder="Nombre"
               />
             </p>
-
             <p>
               <br />
               <TextField
-                label="apellido"
+                label="Apellido"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="apellido"
                 required
                 type="text"
@@ -305,9 +273,9 @@ const AgregarUsuario = () => {
             <p>
               <br />
               <TextField
-                label="Telefono"
+                label="Teléfono"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="telefono"
                 required
                 type="tel"
@@ -319,14 +287,14 @@ const AgregarUsuario = () => {
             <p>
               <br />
               <TextField
-                label="Direccion"
+                label="Dirección"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="direccion"
                 required
                 type="text"
                 name="direccion"
-                placeholder="Direccion"
+                placeholder="Dirección"
               />
             </p>
             <p>
@@ -334,7 +302,7 @@ const AgregarUsuario = () => {
               <TextField
                 label="Salario"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="salario"
                 required
                 type="text"
@@ -348,12 +316,11 @@ const AgregarUsuario = () => {
               <br />
               <TextField
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="fechaIngreso"
                 required
                 type="date"
                 name="fechaIngreso"
-                onChange={(e) => setFechaIngreso(e.target)}
               />
             </p>
             <p>
@@ -361,7 +328,7 @@ const AgregarUsuario = () => {
               <TextField
                 label="Correo"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="email"
                 required
                 type="text"
@@ -375,7 +342,7 @@ const AgregarUsuario = () => {
               <TextField
                 label="Contraseña"
                 variant="outlined"
-                className="input_formulario"
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="password"
                 required
                 type="text"
@@ -391,47 +358,11 @@ const AgregarUsuario = () => {
                 onClick={logoutAndReauthenticate}
                 type="submit"
                 size="large"
-                style={{ with: "120px", fontSize: "20px" }}
-              >
+                style={{ width: "250px", fontSize: "20px" }}>
                 Agregar Usuario
               </Button>
-              {showReauthForm && (
-                <>
-                  <TextField
-                    label="Correo electrónico"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="email-reauth"
-                    required
-                    type="email"
-                  />
-                  <TextField
-                    label="Contraseña"
-                    variant="outlined"
-                    className="input_formulario"
-                    id="password-reauth"
-                    required
-                    type="password"
-                  />
-                  <Button
-                    variant="outlined"
-                    onClick={handleReauthenticate}
-                    size="large"
-                    style={{ with: "120px", fontSize: "20px" }}
-                  >
-                    Reautenticar
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setShowReauthForm(false)}
-                    size="large"
-                    style={{ with: "120px", fontSize: "20px" }}
-                  >
-                    Cancelar
-                  </Button>
-                </>
-              )}
             </p>
+            
           </form>
         </div>
       </div>
@@ -440,3 +371,43 @@ const AgregarUsuario = () => {
 };
 
 export default AgregarUsuario;
+
+
+
+// </Button>
+// {showReauthForm && (
+//   <>
+//     <TextField
+//       label="Correo electrónico"
+//       variant="outlined"
+//       className="input_formulario"
+//       id="email-reauth"
+//       required
+//       type="email"
+//     />
+//     <TextField
+//       label="Contraseña"
+//       variant="outlined"
+//       className="input_formulario"
+//       id="password-reauth"
+//       required
+//       type="password"
+//     />
+//     <Button
+//       variant="outlined"
+//       onClick={handleReauthenticate}
+//       size="large"
+//       style={{ with: "120px", fontSize: "20px" }}
+//     >
+//       Reautenticar
+//     </Button>
+//     <Button
+//       variant="outlined"
+//       onClick={() => setShowReauthForm(false)}
+//       size="large"
+//       style={{ with: "120px", fontSize: "20px" }}
+//     >
+//       Cancelar
+//     </Button>
+//   </>
+// )}
