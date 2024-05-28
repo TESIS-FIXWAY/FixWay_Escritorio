@@ -50,8 +50,8 @@ const ClienteVista = ({
 
   return (
     <div className="fondo_no">
-      <div className="editar" style={{ width: "850px" }}>
-        <p className="p_editar">Lista Clientes</p>
+      <div className="editar" style={{ width: "1000px" }}>
+        <p className="p_editar">Lista de Clientes</p>
         <input
           type="text"
           placeholder="Buscar cliente..."
