@@ -1,8 +1,17 @@
-import "../styles/admin.css";
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
-import { useState, useEffect } from "react";
+
+import Logo from "../../images/LogoSinFondo.png"
+import "../styles/admin.css"
+import "../styles/darkMode.css";
+
+import { DarkModeContext } from "../../context/darkMode";
+
+import { Logout } from "@mui/icons-material";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import NightlightIcon from "@mui/icons-material/Nightlight";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -30,6 +39,8 @@ const Mecanico = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -63,104 +74,82 @@ const Mecanico = () => {
 
   return (
     <>
-      <div>
-        <header className="header">
-          <div className="contenedor-header">
-            <div className="btn-menu">
-              <label for="btn-menu">
-                <FontAwesomeIcon
-                  icon="fa-solid fa-bars"
-                  className="icon-menu"
-                />
-              </label>
-              <Link to="/indexMecanico" className="menu_home">
-                <label>
-                  <FontAwesomeIcon
-                    icon="fa-solid fa-house"
-                    className="icon-menu"
-                  />
-                </label>
-              </Link>
-            </div>
-            <div className="logo">
-              <h1>Settore</h1>
-            </div>
-            <div className="reloj">
-              <p>{formatTime(currentTime)}</p>
-            </div>
-            <nav className="menu">
-              <a>Mecánico</a>
-            </nav>
-          </div>
-          <button type="submit" onClick={handleLogout} className="boton_salir">
-            <FontAwesomeIcon
-              className="i"
-              icon={["fas", "arrow-right-from-bracket"]}
-              rotation={180}
-            />
-          </button>
-        </header>
-        <div className="capa"></div>
-        <input type="checkbox" id="btn-menu"></input>
-        <div className="contenedor-menu">
-          <div className="cont_menu">
-            <nav>
-              <Link
-                to="/indexMecanico"
-                className={`link ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-house" />
-                <span className="link_name">Volver al Menú</span>
-              </Link>
-              <hr />
-              <Link
-                to="/gestionMantenciones"
-                className={`link ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon
-                  icon="fa-solid fa-clipboard-list"
-                  className="i"
-                />
-                <span className="link_name">Gestion de Mantenciones</span>
-              </Link>
-              <Link
-                to="/listarInventarioMecanico"
-                className={`link ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-list" />
-                <span className="link_name">Listar Inventario</span>
-              </Link>
-              <Link
-                to="/GenerarQR"
-                className={`link ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-qrcode" />
-                <span className="link_name">Generar QR</span>
-              </Link>
-              <Link
-                to="/GenerarListadoMantencion"
-                className={`link ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon className="i" icon="fa-solid fa-file-pdf" />
-                <span className="link_name">Generar Listado Mantencion</span>
-              </Link>
-            </nav>
-            <label for="btn-menu">
-              <FontAwesomeIcon icon="fa-solid fa-arrow-left" />
-            </label>
-          </div>
-        </div>
+    <header className={`encabezado ${isDarkMode ? "dark-mode" : ""}`}>
+      <div className="logo">
+        <Link to="/indexMecanico">
+          <img src={Logo} alt="logo" />
+        </Link>
       </div>
+
+      <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
+        <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
+          <li>
+            <Link
+              to="/gestionMantenciones"
+              className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                window.location.pathname === ""
+                  ? "active"
+                  : ""
+              }`}>
+              <span className="link_name">Gestion de Mantenciones</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/listarInventarioMecanico"
+              className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                window.location.pathname === ""
+                  ? "active"
+                  : ""
+              }`}>
+              <span className="link_name">Listar Inventario</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/GenerarQR"
+              className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                window.location.pathname === ""
+                  ? "active"
+                  : ""
+              }`}>
+              <span className="link_name">Generar QR</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/GenerarListadoMantencion"
+              className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                window.location.pathname === ""
+                  ? "active"
+                  : ""
+              }`}>
+              <span className="link_name">Generar Listado Mantencion</span>
+            </Link>
+          </li>
+        </ul>        
+      </nav>
+
+      <div>
+        <button onClick={toggleDarkMode} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
+          {isDarkMode ? (
+            <WbSunnyIcon color="#B4B4B4" />
+          ) : (
+            <NightlightIcon color="secondary" />
+          )}
+        </button>
+        <button type="submit" onClick={handleLogout} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
+          <Logout />
+        </button>
+      </div>
+      
+    </header>
+
+
+
+
+
+
     </>
   );
 };
