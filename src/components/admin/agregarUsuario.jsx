@@ -5,18 +5,30 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, setDoc, onSnapshot, collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
 import Admin from "./admin";
-import ResetCredential from "./funcionUsuario/resetCredential";
 import validadorRUT from "./validadorRUT";
 
 import "../styles/agregarUsuario.css";
 import "../styles/darkMode.css";
 import { DarkModeContext } from "../../context/darkMode";
+
+const styleReset = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
@@ -24,6 +36,9 @@ const AgregarUsuario = () => {
   const [mensajeValidacion, setMensajeValidacion] = useState(null);
   const [rolValue, setRolValue] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
+  const [showReauthForm, setShowReauthForm] = useState(false);
+  const [reauthEmail, setReauthEmail] = useState("");
+  const [reauthPassword, setReauthPassword] = useState("");
 
   const identifyUser = auth.currentUser;
   const [user, setUser] = useState(null);
@@ -54,45 +69,59 @@ const AgregarUsuario = () => {
         return;
       }
 
-      const nombre = e.target.elements.nombre.value;
-      const apellido = e.target.elements.apellido.value;
-      const telefono = e.target.elements.telefono.value;
-      const direccion = e.target.elements.direccion.value;
       const email = e.target.elements.email.value;
-      const password = e.target.elements.password.value;
-      const salario = e.target.elements.salario.value;
-      const fechaIngreso = e.target.elements.fechaIngreso.value;
+      if (!validateEmail(email)) {
+        setMensajeValidacion("El correo electrónico no es válido");
+        return;
+      }
 
       try {
-        await signOut(auth);
-        const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-        const newUser = userCredentials.user;
-
-        await setDoc(doc(db, "users", newUser.uid), {
-          rut,
-          rol: rolValue,
-          nombre,
-          apellido,
-          telefono,
-          direccion,
-          email,
-          salario,
-          fechaIngreso,
-        });
-
-        setMensaje("Usuario añadido Correctamente");
-
-        await logoutAndReauthenticate();
-        clearFormFields();
-        setMensajeValidacion(null);
-        setMensajeRut(null);
+        setShowReauthForm(true);
       } catch (error) {
-        console.error("Error durante el registro del usuario:", error);
-      } finally {
-        setTimeout(() => {
-          setMensaje(null);
-        }, 2000);
+        console.error("Error durante el cierre de sesión y reinicio:", error);
       }
+    }
+  };
+
+  const handleCreateUser = async () => {
+    const form = document.querySelector('form'); // Obtener el formulario actual
+    const rut = form.elements.rut.value;
+    const nombre = form.elements.nombre.value;
+    const apellido = form.elements.apellido.value;
+    const telefono = form.elements.telefono.value;
+    const direccion = form.elements.direccion.value;
+    const email = form.elements.email.value;
+    const password = form.elements.password.value;
+    const salario = form.elements.salario.value;
+    const fechaIngreso = form.elements.fechaIngreso.value;
+
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+      const newUser = userCredentials.user;
+
+      await setDoc(doc(db, "users", newUser.uid), {
+        rut,
+        rol: rolValue,
+        nombre,
+        apellido,
+        telefono,
+        direccion,
+        email,
+        salario,
+        fechaIngreso,
+      });
+
+      setMensaje("Usuario añadido Correctamente");
+      await logoutAndReauthenticate();
+      clearFormFields();
+      setMensajeValidacion(null);
+      setMensajeRut(null);
+    } catch (error) {
+      console.error("Error durante el registro del usuario:", error);
+    } finally {
+      setTimeout(() => {
+        setMensaje(null);
+      }, 2000);
     }
   };
 
@@ -143,24 +172,26 @@ const AgregarUsuario = () => {
 
   const logoutAndReauthenticate = async () => {
     try {
-      const userEmail = prompt("Ingrese su correo electrónico para agregar el nuevo usuario:");
-      const userPassword = prompt("Ingrese su contraseña para confirmar:");
-
-      await signInWithEmailAndPassword(auth, userEmail, userPassword);
-      clearFormFields();
-
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        const userRef = doc(db, "users", currentUser.uid);
-        onSnapshot(userRef, (snapshot) => {
-          setUser(snapshot.data());
-        });
-      }
-
+      await signOut(auth); // Cerrar sesión del usuario actual
+  
+      // Crear el nuevo usuario con las credenciales proporcionadas
+      await handleCreateUser();
+  
+      // Autenticar al usuario con las credenciales del nuevo usuario
+      await signInWithEmailAndPassword(auth, reauthEmail, reauthPassword);
+  
       console.log("Sesión cerrada y reiniciada correctamente");
     } catch (error) {
       console.error("Error durante el cierre de sesión y reinicio:", error);
     }
+  };
+  
+
+  const handleReauthSubmit = async (e) => {
+    e.preventDefault();
+    await logoutAndReauthenticate();
+    setShowReauthForm(false);
+    await handleCreateUser();
   };
 
   const autocompleteAtSymbol = (e) => {
@@ -202,6 +233,11 @@ const AgregarUsuario = () => {
     } else {
       if (existingSelect) existingSelect.remove();
     }
+  };
+
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return re.test(String(email).toLowerCase());
   };
 
   return (
@@ -345,7 +381,7 @@ const AgregarUsuario = () => {
                 className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                 id="password"
                 required
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Cree su Contraseña"
               />
@@ -355,59 +391,53 @@ const AgregarUsuario = () => {
               <p className="mensaje_validacion">{mensajeValidacion}</p>
               <Button
                 variant="outlined"
-                onClick={logoutAndReauthenticate}
+                onClick={() => setShowReauthForm(true)}
                 type="submit"
                 size="large"
                 style={{ width: "250px", fontSize: "20px" }}>
                 Agregar Usuario
               </Button>
             </p>
-            
           </form>
         </div>
       </div>
+      <Modal
+        open={showReauthForm}
+        onClose={() => setShowReauthForm(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleReset}>
+          <form onSubmit={handleReauthSubmit}>
+            <h2>Confirmar Usuario</h2>
+            <TextField
+              label="Correo Electrónico"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              required
+              type="email"
+              value={reauthEmail}
+              onChange={(e) => setReauthEmail(e.target.value)}
+            />
+            <TextField
+              label="Contraseña"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              required
+              type="password"
+              value={reauthPassword}
+              onChange={(e) => setReauthPassword(e.target.value)}
+            />
+            <Button type="submit" variant="contained" color="primary">
+              Confirmar
+            </Button>
+          </form>
+        </Box>
+      </Modal>
     </>
   );
 };
 
-export default AgregarUsuario;
-
-
-
-// </Button>
-// {showReauthForm && (
-//   <>
-//     <TextField
-//       label="Correo electrónico"
-//       variant="outlined"
-//       className="input_formulario"
-//       id="email-reauth"
-//       required
-//       type="email"
-//     />
-//     <TextField
-//       label="Contraseña"
-//       variant="outlined"
-//       className="input_formulario"
-//       id="password-reauth"
-//       required
-//       type="password"
-//     />
-//     <Button
-//       variant="outlined"
-//       onClick={handleReauthenticate}
-//       size="large"
-//       style={{ with: "120px", fontSize: "20px" }}
-//     >
-//       Reautenticar
-//     </Button>
-//     <Button
-//       variant="outlined"
-//       onClick={() => setShowReauthForm(false)}
-//       size="large"
-//       style={{ with: "120px", fontSize: "20px" }}
-//     >
-//       Cancelar
-//     </Button>
-//   </>
-// )}
+export default AgregarUsuario
