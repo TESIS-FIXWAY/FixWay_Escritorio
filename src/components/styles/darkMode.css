@@ -4,11 +4,23 @@
     background-color: #171717;
     color: red;
 }
+
+
 .boton_salir.dark-mode{
     background-color: #171717;
     color: #B4B4B4;
 }
-  .span.dark-mode {
+
+.boton_darkMode.dark-mode{
+    background-color: #171717;
+    color: #B4B4B4;
+}
+.boton_darkMode.dark-mode:hover {
+    color: #7CE38B;
+}  
+
+
+.span.dark-mode {
     background-color: #B4B4B4;
 }
 .encabezado .arbol .links.dark-mode{

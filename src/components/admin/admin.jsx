@@ -280,11 +280,11 @@ const Admin = () => {
         </nav>
 
         <div>
-          <button onClick={toggleDarkMode} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
+          <button onClick={toggleDarkMode} className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}>
             {isDarkMode ? (
               <WbSunnyIcon color="#B4B4B4" />
             ) : (
-              <NightlightIcon color="secondary" />
+              <NightlightIcon color="#fff" />
             )}
           </button>
           <button type="submit" onClick={handleLogout} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>

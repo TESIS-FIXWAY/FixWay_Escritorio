@@ -69,7 +69,7 @@ const AgregarInventario = () => {
 
   return (
     <>
-      <Admin />
+    <header><Admin /></header>
       <div className="body_formulario">
         <div className="formulario_content">
           <div className="formulario_wrapper">

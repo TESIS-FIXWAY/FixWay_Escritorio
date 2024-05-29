@@ -242,7 +242,7 @@ const AgregarUsuario = () => {
 
   return (
     <>
-      <Admin />
+    <header> <Admin /> </header>
       <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="formulario_content">
           <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>Agregar Usuario</h1>

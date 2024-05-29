@@ -8,7 +8,7 @@ const GestionMantencionesAdmin = () => {
   const [beginTask, setBeginTask] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
-  const [expandedTask, setExpandedTask] = useState(null);
+  const [expandedTasks, setExpandedTasks] = useState([]);
   const [users, setUsers] = useState({});
 
   const calculateContainerHeight = (tasks) => {
@@ -67,9 +67,13 @@ const GestionMantencionesAdmin = () => {
   }, []);
 
   const handleTaskExpand = (taskId) => {
-    setExpandedTask((prevExpandedTask) =>
-      prevExpandedTask === taskId ? null : taskId
-    );
+    setExpandedTasks((prevExpandedTasks) => {
+      if (prevExpandedTasks.includes(taskId)) {
+        return prevExpandedTasks.filter((id) => id !== taskId);
+      } else {
+        return [...prevExpandedTasks, taskId];
+      }
+    });
   };
 
   const getUserName = (userId) => {
@@ -87,7 +91,134 @@ const GestionMantencionesAdmin = () => {
 
   return (
     <>
-      <Admin />
+      <div className="grid">
+        <header> <Admin /> </header>
+
+        <aside className="sidebar_left">
+          <div className="contenedor_mantencion">
+            <div className="mantencion">
+              <div className="titulo_mantencion">pendientes</div>
+
+              <ul style={{ height: calculateContainerHeight(beginTask) }}>
+                {beginTask.map((task) => (
+                  <div
+                    key={task.id}
+                    className={`task-container ${
+                      expandedTasks.includes(task.id) ? "expanded" : ""
+                    }`}
+                    onClick={() => handleTaskExpand(task.id)}
+                  >
+                    <li>Patente: {task.id}</li>
+                    <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                    {/* Mostrar más información solo si la tarea está expandida */}
+                    {expandedTasks.includes(task.id) && (
+                      <>
+                        <li>Descripción: {task.descripcion}</li>
+                        <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                        <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                        <li>
+                          Producto:{" "}
+                          {task.productos.map((producto, index) => (
+                            <p key={index}> - {producto.nombreProducto}</p>
+                          ))}
+                        </li>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </ul>
+
+            </div>
+          </div>
+        </aside>
+
+        <aside className="sidebar_centro">
+          <div className="contenedor_mantencion">
+            <div className="mantencion">
+              <div className="titulo_mantencion">En Proceso</div>
+
+              <ul style={{ height: calculateContainerHeight(inProgressTasks) }}>
+                {inProgressTasks.map((task) => (
+                  <div
+                    key={task.id}
+                    className={`task-container ${
+                      expandedTasks.includes(task.id) ? "expanded" : ""
+                    }`}
+                    onClick={() => handleTaskExpand(task.id)}
+                  >
+                    <li>Patente: {task.id}</li>
+                    <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                    {/* Mostrar más información solo si la tarea está expandida */}
+                    {expandedTasks.includes(task.id) && (
+                      <>
+                        <li>Descripción: {task.descripcion}</li>
+                        <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                        <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                        <li>
+                          Producto:{" "}
+                          {task.productos.map((producto, index) => (
+                            <p key={index}> - {producto.nombreProducto}</p>
+                          ))}
+                        </li>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </ul>
+
+            </div>
+          </div>
+        </aside>
+
+        <aside className="sidebar_rigth">
+          <div className="contenedor_mantencion">
+            <div className="mantencion">
+              <div className="titulo_mantencion">Terminadas</div>
+
+              <ul style={{ height: calculateContainerHeight(completedTasks) }}>
+                {completedTasks.map((task) => (
+                  <div
+                    key={task.id}
+                    className={`task-container ${
+                      expandedTasks.includes(task.id) ? "expanded" : ""
+                    }`}
+                    onClick={() => handleTaskExpand(task.id)}
+                  >
+                    <li>Patente: {task.id}</li>
+                    <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                    {/* Mostrar más información solo si la tarea está expandida */}
+                    {expandedTasks.includes(task.id) && (
+                      <>
+                        <li>Descripción: {task.descripcion}</li>
+                        <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                        <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                        <li>
+                          Producto:{" "}
+                          {task.productos.map((producto, index) => (
+                            <p key={index}> - {producto.nombreProducto}</p>
+                          ))}
+                        </li>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </ul>
+
+            </div>
+          </div>        
+        </aside>
+
+      </div>
+    </>
+  );
+};
+
+export default GestionMantencionesAdmin;
+
+
+
+
+      {/* <Admin />
       <div>
         <div className="container_mantencion_titulo">
           <h1>Gestión de Mantenciones</h1>
@@ -97,6 +228,7 @@ const GestionMantencionesAdmin = () => {
             <div className="container_mantencion_tareas_titulos">
               <h2>Tareas por hacer</h2>
             </div>
+
             <ul style={{ height: calculateContainerHeight(beginTask) }}>
               {beginTask.map((task) => (
                 <div
@@ -119,7 +251,9 @@ const GestionMantencionesAdmin = () => {
                 </div>
               ))}
             </ul>
+
           </div>
+
           <div className="container_mantencion_tareas">
             <div className="container_mantencion_tareas_titulos">
               <h2>Tareas en Proceso</h2>
@@ -148,6 +282,7 @@ const GestionMantencionesAdmin = () => {
               ))}
             </ul>
           </div>
+
           <div className="container_mantencion_tareas">
             <div className="container_mantencion_tareas_titulos">
               <h2>Tareas Entregadas</h2>
@@ -175,9 +310,4 @@ const GestionMantencionesAdmin = () => {
             </ul>
           </div>
         </div>
-      </div>
-    </>
-  );
-};
-
-export default GestionMantencionesAdmin;
+      </div> */}

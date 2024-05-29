@@ -1,10 +1,14 @@
 *{
     box-sizing: border-box;
+    
 }
 
+header {
+    height: 100px;
+  }
 
 .body_formulario{
-    padding: 0 1.5em;
+    margin-top: -100px;
     background-color: #F7F9FB;
     height: 100vh;
     justify-content: center;
@@ -17,7 +21,6 @@
     position: relative; 
     text-align: center;
     padding: 1em;
-    margin: auto; 
 }
 
 
@@ -29,9 +32,6 @@
 }
 
 
-/* .formulario_wrapper > * {
-    padding: 1em;
-} */
 
 .formulario_form{
     margin: 50px auto; 

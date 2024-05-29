@@ -128,7 +128,7 @@
 
 
 
-
+.boton_darkMode,
 .boton_salir {
     border-radius: 10px;
     font-size: 18px;
@@ -136,6 +136,12 @@
     color: #67748E;
     background-color: #F7F9FB;
 }
+.boton_darkMode:hover {
+    color: black;
+  }
+
+
+
 
 
 .menu-toggle {
