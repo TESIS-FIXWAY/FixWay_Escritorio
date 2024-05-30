@@ -103,6 +103,23 @@ const GestionMantencionesAdmin = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const translateEstado = (estado) => {
+    switch (estado) {
+      case "atencion_especial":
+        return "Atención Especial";
+      case "pendiente":
+        return "Pendiente";
+      case "prioridad":
+        return "Prioridad";
+      case "en proceso":
+        return "En Proceso";
+      case "terminado":
+        return "Terminado";
+      default:
+        return estado;
+    }
+  };
+
   return (
     <>
       <div className={`grid ${isDarkMode ? "dark-mode" : ""}`}>
@@ -147,7 +164,7 @@ const GestionMantencionesAdmin = () => {
                           isDarkMode ? "dark-mode" : ""
                         }`}
                       >
-                        Persona a Cargo: {getUserName(task.personaTomadora)}
+                        Estado: {translateEstado(task.estado)}
                       </li>
                     </ul>
 
@@ -280,13 +297,6 @@ const GestionMantencionesAdmin = () => {
                         }`}
                       >
                         Patente: {task.id}
-                      </li>
-                      <li
-                        className={`contenido_lista ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
-                      >
-                        Persona a Cargo: {getUserName(task.personaTomadora)}
                       </li>
                     </ul>
 
