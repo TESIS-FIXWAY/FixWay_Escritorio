@@ -7,6 +7,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import Button from "@mui/material/Button";
 import { DarkModeContext } from "../../context/darkMode";
+import { Download } from "@mui/icons-material";
 
 const GenerarQRADmin = () => {
   const [patentes, setPatentes] = useState([]);
@@ -102,7 +103,7 @@ const GenerarQRADmin = () => {
                     marginBottom: "20px",
                   }}
                 >
-                  Descargar Código QR
+                  Descargar Código QR <Download />
                 </Button>
               </div>
             )}
