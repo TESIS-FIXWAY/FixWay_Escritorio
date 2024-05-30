@@ -460,7 +460,7 @@ const AgregarUsuario = () => {
             />
             <Button
               type="submit"
-              variant="contained"
+              variant="outlined"
               color="primary"
               sx={{
                 fontSize: "19px",
