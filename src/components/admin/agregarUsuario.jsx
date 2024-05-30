@@ -7,25 +7,34 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, setDoc, onSnapshot, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import {
+  doc,
+  setDoc,
+  onSnapshot,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db, auth } from "../../firebase";
-
 import Admin from "./admin";
 import validadorRUT from "./validadorRUT";
-
 import "../styles/agregarUsuario.css";
 import "../styles/darkMode.css";
 import { DarkModeContext } from "../../context/darkMode";
 
 const styleReset = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
 };
@@ -84,7 +93,7 @@ const AgregarUsuario = () => {
   };
 
   const handleCreateUser = async () => {
-    const form = document.querySelector('form'); // Obtener el formulario actual
+    const form = document.querySelector("form");
     const rut = form.elements.rut.value;
     const nombre = form.elements.nombre.value;
     const apellido = form.elements.apellido.value;
@@ -96,7 +105,11 @@ const AgregarUsuario = () => {
     const fechaIngreso = form.elements.fechaIngreso.value;
 
     try {
-      const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const newUser = userCredentials.user;
 
       await setDoc(doc(db, "users", newUser.uid), {
@@ -172,20 +185,14 @@ const AgregarUsuario = () => {
 
   const logoutAndReauthenticate = async () => {
     try {
-      await signOut(auth); // Cerrar sesión del usuario actual
-  
-      // Crear el nuevo usuario con las credenciales proporcionadas
+      await signOut(auth);
       await handleCreateUser();
-  
-      // Autenticar al usuario con las credenciales del nuevo usuario
       await signInWithEmailAndPassword(auth, reauthEmail, reauthPassword);
-  
       console.log("Sesión cerrada y reiniciada correctamente");
     } catch (error) {
       console.error("Error durante el cierre de sesión y reinicio:", error);
     }
   };
-  
 
   const handleReauthSubmit = async (e) => {
     e.preventDefault();
@@ -200,8 +207,14 @@ const AgregarUsuario = () => {
     enteredText = enteredText.replace(/\s/g, "");
     const atPosition = enteredText.lastIndexOf("@");
 
-    const existingSelect = inputField.parentNode.querySelector(".email-domain-select");
-    if (atPosition === -1 || enteredText[atPosition + 1] === "" || enteredText.includes(" ")) {
+    const existingSelect = inputField.parentNode.querySelector(
+      ".email-domain-select"
+    );
+    if (
+      atPosition === -1 ||
+      enteredText[atPosition + 1] === "" ||
+      enteredText.includes(" ")
+    ) {
       if (existingSelect) existingSelect.remove();
       return;
     }
@@ -216,7 +229,9 @@ const AgregarUsuario = () => {
       if (!existingSelect) {
         const select = document.createElement("select");
         select.className = "email-domain-select";
-        select.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
+        select.innerHTML =
+          `<option value="">Seleccione...</option>` +
+          suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
 
         select.onchange = () => {
           if (select.value) {
@@ -228,7 +243,9 @@ const AgregarUsuario = () => {
         inputField.parentNode.appendChild(select);
         inputField.parentNode.insertBefore(select, inputField.nextSibling);
       } else {
-        existingSelect.innerHTML = `<option value="">Seleccione...</option>` + suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
+        existingSelect.innerHTML =
+          `<option value="">Seleccione...</option>` +
+          suggestions.map((s) => `<option value="${s}">${s}</option>`).join("");
       }
     } else {
       if (existingSelect) existingSelect.remove();
@@ -242,11 +259,19 @@ const AgregarUsuario = () => {
 
   return (
     <>
-    <header> <Admin /> </header>
+      <header>
+        {" "}
+        <Admin />{" "}
+      </header>
       <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="formulario_content">
-          <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>Agregar Usuario</h1>
-          <form className={`formulario_form ${isDarkMode ? "dark-mode" : ""}`} onSubmit={submitHandler}>
+          <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
+            Agregar Usuario
+          </h1>
+          <form
+            className={`formulario_form ${isDarkMode ? "dark-mode" : ""}`}
+            onSubmit={submitHandler}
+          >
             <p>
               <br />
               <TextField
@@ -264,7 +289,9 @@ const AgregarUsuario = () => {
             </p>
             <p>
               <br />
-              <FormControl className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}>
+              <FormControl
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+              >
                 <InputLabel id="rol-label">ROL</InputLabel>
                 <Select
                   labelId="rol-label"
@@ -394,7 +421,8 @@ const AgregarUsuario = () => {
                 onClick={() => setShowReauthForm(true)}
                 type="submit"
                 size="large"
-                style={{ width: "250px", fontSize: "20px" }}>
+                style={{ width: "250px", fontSize: "20px" }}
+              >
                 Agregar Usuario
               </Button>
             </p>
@@ -430,7 +458,17 @@ const AgregarUsuario = () => {
               value={reauthPassword}
               onChange={(e) => setReauthPassword(e.target.value)}
             />
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{
+                fontSize: "19px",
+                alignContent: "center",
+                justifyContent: "center",
+                left: "90px",
+              }}
+            >
               Confirmar
             </Button>
           </form>
@@ -440,4 +478,4 @@ const AgregarUsuario = () => {
   );
 };
 
-export default AgregarUsuario
+export default AgregarUsuario;
