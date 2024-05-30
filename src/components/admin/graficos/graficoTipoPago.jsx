@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { db } from "../../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import "../../styles/graficos.css";
 
+Chart.register(ArcElement, Tooltip, Legend);
+
 const GraficoTipoPago = () => {
+  const chartContainerRef = useRef(null);
   const [data, setData] = useState({ debito: 0, credito: 0, contado: 0 });
 
   useEffect(() => {
@@ -76,9 +80,9 @@ const GraficoTipoPago = () => {
   };
 
   return (
-    <div>
+    <div className="grafico-containerTipoPago">
       <h1 className="titulo-GraficoMTipoPago">Tipo de Pago</h1>
-      <div className="grafico-containerTipoPago">
+      <div className="graficoMTipoPago">
         <Doughnut data={chartData} options={options} />
       </div>
     </div>
