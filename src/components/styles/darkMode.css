@@ -119,3 +119,18 @@ main.dark-mode {
     background-color: #3C3C3C;
     color: #B4B4B4;
 }
+
+.task-container.dark-mode{
+    background-color: #17212B;
+}
+.lista_titular.dark-mode{
+    background-color: #17212B;
+}
+.contenido_lista.dark-mode{
+    background-color: #3C3C3C;
+    color: #B4B4B4;
+}
+.descripcion_lista.dark-mode{
+    background-color: #3C3C3C;
+    color: #B4B4B4;
+}
