@@ -1,10 +1,12 @@
 import "../styles/generarQR.css";
-import React, { useState, useEffect } from "react";
+import "../styles/darkMode.css";
+import React, { useState, useEffect, useContext } from "react";
 import Mecanico from "./mecanico";
 import QRCode from "qrcode.react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import Button from "@mui/material/Button";
+import { DarkModeContext } from "../../context/darkMode";
 
 const App = () => {
   const [patentes, setPatentes] = useState([]);
@@ -12,6 +14,7 @@ const App = () => {
   const [selectedPatenteId, setSelectedPatenteId] = useState("");
   const [qrCodeValue, setQrCodeValue] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,37 +79,50 @@ const App = () => {
 
   return (
     <>
-      <Mecanico />
-      <div className="container">
-        <div className="generador_qr_titulo">
-          <h1>Generador de Códigos QR para Patentes</h1>
-        </div>
-        <div>
-          {qrCodeValue && <QRCode id="qr-code-canvas" value={qrCodeValue} />}
-          {qrCodeValue && (
-            <div>
-              <Button variant="outlined" onClick={downloadQRCode}>
-                Descargar Código QR
-              </Button>
-            </div>
-          )}
-          <input
-            className="input_qr"
-            type="text"
-            value={searchInput}
-            onChange={handlePatenteChange}
-            placeholder="Buscar patente..."
-            list="patentes-list"
-            onInput={handlePatenteInput}
-          />
-          <i class="fa-solid fa-magnifying-glass" />
-          <datalist id="patentes-list">
-            {filteredPatentes.map((patente) => (
-              <option key={patente} value={patente}>
-                {patente}
-              </option>
-            ))}
-          </datalist>
+      <header>
+        {" "}
+        <Mecanico />{" "}
+      </header>
+      <div lassName={`body_generarQR ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className="container">
+          <h1 className={`genenrarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}>
+            Generador de Códigos QR para Patentes
+          </h1>
+          <div className={`generarQR_form ${isDarkMode ? "dark-mode" : ""}`}>
+            {qrCodeValue && <QRCode id="qr-code-canvas" value={qrCodeValue} />}
+            {qrCodeValue && (
+              <div>
+                <Button
+                  variant="outlined"
+                  onClick={downloadQRCode}
+                  sx={{
+                    fontSize: "20px",
+                    alignContent: "center",
+                    justifyContent: "center",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Descargar Código QR
+                </Button>
+              </div>
+            )}
+            <input
+              className={`input_generarQR ${isDarkMode ? "dark-mode" : ""}`}
+              type="text"
+              value={searchInput}
+              onChange={handlePatenteChange}
+              placeholder="Buscar patente..."
+              list="patentes-list"
+              onInput={handlePatenteInput}
+            />
+            <datalist id="patentes-list">
+              {filteredPatentes.map((patente) => (
+                <option key={patente} value={patente}>
+                  {patente}
+                </option>
+              ))}
+            </datalist>
+          </div>
         </div>
       </div>
     </>
