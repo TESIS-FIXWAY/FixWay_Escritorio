@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import Chart from "chart.js/auto";
+import { Doughnut } from "react-chartjs-2";
 import "../../styles/graficos.css";
 
 const GraficoTipoPago = () => {
-  const chartContainerRef = useRef(null);
-  const chartRef = useRef(null);
   const [data, setData] = useState({ debito: 0, credito: 0, contado: 0 });
 
   useEffect(() => {
@@ -46,61 +44,43 @@ const GraficoTipoPago = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (Object.values(data).some((count) => count > 0)) {
-      const ctx = chartContainerRef.current.getContext("2d");
+  const chartData = {
+    labels: ["Débito", "Crédito", "Contado"],
+    datasets: [
+      {
+        label: "Tipo de Pago",
+        data: [data.debito, data.credito, data.contado],
+        backgroundColor: [
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+        ],
+        borderColor: [
+          "rgba(75, 192, 192, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
-      if (chartRef.current) {
-        chartRef.current.destroy();
-      }
-
-      chartRef.current = new Chart(ctx, {
-        type: "pie",
-        data: {
-          labels: ["Débito", "Crédito", "Contado"],
-          datasets: [
-            {
-              label: "Tipo de Pago",
-              data: [data.debito, data.credito, data.contado],
-              backgroundColor: [
-                "rgba(75, 192, 192, 0.2)",
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-              ],
-              borderColor: [
-                "rgba(75, 192, 192, 1)",
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: true,
-              position: "top",
-            },
-          },
-        },
-      });
-    }
-  }, [data]);
-
-  useEffect(() => {
-    return () => {
-      if (chartRef.current) {
-        chartRef.current.destroy();
-      }
-    };
-  }, []);
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+      },
+    },
+  };
 
   return (
-    <div className="grafico-containerTipoPago">
+    <div>
       <h1 className="titulo-GraficoMTipoPago">Tipo de Pago</h1>
-      <canvas ref={chartContainerRef} className="graficoMTipoPago"></canvas>
+      <div className="grafico-containerTipoPago">
+        <Doughnut data={chartData} options={options} />
+      </div>
     </div>
   );
 };

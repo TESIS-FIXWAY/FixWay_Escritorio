@@ -1,12 +1,11 @@
 import "../styles/indexAdmin.css";
 import "../styles/darkMode.css";
-
 import React, { useState, useEffect, useContext } from "react";
 import "react-calendar/dist/Calendar.css";
 import Admin from "./admin";
 import { db, auth } from "../../firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
-import { DarkModeContext } from '../../context/darkMode'; // Asegúrate de que la ruta es correcta
+import { DarkModeContext } from "../../context/darkMode";
 
 import Tierra from "./tierra";
 import CarModel from "./auto";
@@ -62,46 +61,53 @@ const IndexAdmin = () => {
   }, []);
 
   return (
-      <div className="layaout">
-        <header>
-          <Admin />
-        </header>
-
-        <aside className={`aside ${isDarkMode ? 'dark-mode' : ''}`}>
-
-          <h1 className="titulo-Grafico ">Estadisticas Generales</h1>
-          <div><HistorialVentas/></div>
-
-          <div className="informacion_widgets_index">
-            <div className="widgets_historial">
-              <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
-                <p>Mantenciones Pendientes:</p>
-                <p>{pendingCount}</p>
-              </div>
-              <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
-                <p>Mantenciones En Proceso:</p>
-                <p>{processCount}</p>
-              </div>
-              <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
-                <p>Mantenciones Entregadas:</p>
-                <p>{deliveredCount}</p>
-              </div>
+    <div className="layaout">
+      <header>
+        <Admin />
+      </header>
+      <aside className={`aside ${isDarkMode ? "dark-mode" : ""}`}>
+        <h1 className="titulo-Grafico ">Estadisticas Generales</h1>
+        <div>
+          <HistorialVentas />
+        </div>
+        <div className="informacion_widgets_index">
+          <div className="widgets_historial">
+            <div
+              className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              <p>Mantenciones Pendientes:</p>
+              <p>{pendingCount}</p>
             </div>
-
-            <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
-              <div>hola</div>
+            <div
+              className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              <p>Mantenciones En Proceso:</p>
+              <p>{processCount}</p>
+            </div>
+            <div
+              className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              <p>Mantenciones Entregadas:</p>
+              <p>{deliveredCount}</p>
             </div>
           </div>
-          
-        </aside>
-
-        <main className={`main ${isDarkMode ? 'dark-mode' : ''}`}>
-          <div><GraficoMisFacturas /></div>
-          {/* <div><CarModel /></div> */}
-          <div><GraficoMisBoletas /></div>
-          {/* <div><GraficoTipoPago /></div> */}
-        </main>
-      </div>
+          <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
+            <div>
+              <GraficoTipoPago />
+            </div>
+          </div>
+        </div>
+      </aside>
+      <main className={`main ${isDarkMode ? "dark-mode" : ""}`}>
+        <div>
+          <GraficoMisFacturas />
+        </div>
+        {/* <div><CarModel /></div> */}
+        <div>
+          <GraficoMisBoletas />
+        </div>
+      </main>
+    </div>
   );
 };
 

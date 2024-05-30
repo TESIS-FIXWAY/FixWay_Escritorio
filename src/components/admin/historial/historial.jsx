@@ -36,7 +36,9 @@ const HistorialVentas = () => {
         break;
       case "mes":
         startDate = new Date(selectedDate);
-        startDate.setDate(selectedDate.getDate() - (selectedDate.getDate() - 1));
+        startDate.setDate(
+          selectedDate.getDate() - (selectedDate.getDate() - 1)
+        );
         endDate = new Date(selectedDate);
         endDate.setDate(selectedDate.getDate() + (28 + selectedDate.getDay()));
         break;
@@ -100,8 +102,12 @@ const HistorialVentas = () => {
       {
         label: "Ventas",
         data: [cantidadBoletas, cantidadFacturas],
-        backgroundColor: isDarkMode ? ["#36A2EB", "#FF6384"] : ["#36A2EB", "#FF6384"],
-        hoverBackgroundColor: isDarkMode ? ["#36A2EB", "#FF6384"] : ["#36A2EB", "#FF6384"],
+        backgroundColor: isDarkMode
+          ? ["#36A2EB", "#FF6384"]
+          : ["#36A2EB", "#FF6384"],
+        hoverBackgroundColor: isDarkMode
+          ? ["#36A2EB", "#FF6384"]
+          : ["#36A2EB", "#FF6384"],
         borderWidth: 0,
       },
     ],
@@ -149,7 +155,6 @@ const HistorialVentas = () => {
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');`}
       </style>
-
       <div className="fechas_selec">
         <select
           value={selectedOption}
@@ -161,7 +166,6 @@ const HistorialVentas = () => {
           <option value="mes">Mes</option>
           <option value="trimestre">Trimestre</option>
         </select>
-
         <DatePicker
           selected={selectedDate}
           onChange={handleDateChange}
@@ -170,23 +174,45 @@ const HistorialVentas = () => {
           calendarClassName={`datepicker-open ${isDarkMode ? "dark-mode" : ""}`}
         />
       </div>
-
       <div className="informacion_widgets">
         <div className="widgets_historial">
           <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
-            <h3 className={`subtitulos_historial ${isDarkMode ? "dark-mode" : ""}`}>Ventas</h3>
-            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>{formatCurrency(totalVentas)}</text>
+            <h3
+              className={`subtitulos_historial ${
+                isDarkMode ? "dark-mode" : ""
+              }`}
+            >
+              Ventas
+            </h3>
+            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>
+              {formatCurrency(totalVentas)}
+            </text>
           </div>
           <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
-            <h3 className={`subtitulos_historial ${isDarkMode ? "dark-mode" : ""}`}>Boletas</h3>
-            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>{cantidadBoletas}</text>
+            <h3
+              className={`subtitulos_historial ${
+                isDarkMode ? "dark-mode" : ""
+              }`}
+            >
+              Boletas
+            </h3>
+            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>
+              {cantidadBoletas}
+            </text>
           </div>
           <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
-            <h3 className={`subtitulos_historial ${isDarkMode ? "dark-mode" : ""}`}>Facturas</h3>
-            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>{cantidadFacturas}</text>
+            <h3
+              className={`subtitulos_historial ${
+                isDarkMode ? "dark-mode" : ""
+              }`}
+            >
+              Facturas
+            </h3>
+            <text className={`texto_total ${isDarkMode ? "dark-mode" : ""}`}>
+              {cantidadFacturas}
+            </text>
           </div>
         </div>
-
         <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
           <Doughnut data={data} options={options} />
         </div>
