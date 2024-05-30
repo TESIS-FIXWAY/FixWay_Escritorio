@@ -3,8 +3,13 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
 import { DarkModeContext } from "../../context/darkMode";
+
 import "../styles/gestionMantenciones.css";
 import "../styles/darkMode.css";
+
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+
 
 const GestionMantencionesAdmin = () => {
   const [beginTask, setBeginTask] = useState([]);
@@ -95,19 +100,11 @@ const GestionMantencionesAdmin = () => {
   return (
     <>
       <div className={`grid ${isDarkMode ? "dark-mode" : ""}`}>
-        <header>
-          {" "}
-          <Admin />{" "}
-        </header>
+        <header> <Admin /> </header>
+
         <aside className={`sidebar_left ${isDarkMode ? "dark-mode" : ""}`}>
-          <div
-            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
-          >
-            <div
-              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
-            >
-              Pendientes
-            </div>
+          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
+            <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}> Pendientes </div>
             <div className={`mantencion ${isDarkMode ? "dark-mode" : ""}`}>
               <ul>
                 {beginTask.map((task) => (
@@ -122,13 +119,9 @@ const GestionMantencionesAdmin = () => {
                     <li>Fecha: {formatDate(new Date(task.fecha))}</li>
                     {expandedTasks.includes(task.id) && (
                       <>
-                        <li>Descripción: {task.descripcion}</li>
-                        <li>
-                          Kilometro de Mantención: {task.kilometrajeMantencion}
-                        </li>
-                        <li>
-                          Persona a Cargo: {getUserName(task.personaTomadora)}
-                        </li>
+                        <li> Descripción: {task.descripcion} </li>
+                        <li> Kilometro de Mantención: {task.kilometrajeMantencion} </li>
+                        <li> Persona a Cargo: {getUserName(task.personaTomadora)} </li>
                         <li>
                           Producto:{" "}
                           {task.productos.map((producto, index) => (
@@ -145,41 +138,39 @@ const GestionMantencionesAdmin = () => {
         </aside>
 
         <aside className={`sidebar_centro ${isDarkMode ? "dark-mode" : ""}`}>
-          <div
-            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
-          >
-            <div
-              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
-            >
-              En Proceso
-            </div>
+          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
+            <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>En Proceso </div>
+            
             <div className="mantencion">
               <ul className="lista_mantencion">
                 {inProgressTasks.map((task) => (
                   <div
                     key={task.id}
-                    className={`task-container ${
+                    className={`task-container ${isDarkMode ? "dark-mode" : ""}
+                    ${
                       expandedTasks.includes(task.id) ? "expanded" : ""
                     }`}
                     onClick={() => handleTaskExpand(task.id)}
                   >
-                    <li>Patente: {task.id}</li>
-                    <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                      <ul className="lista_titular">
+                        <li className="contenido_lista">Patente: {task.id}</li>                        
+                        <li className="contenido_lista">Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                        {expandedTasks.includes(task.id) ? <ExpandLessIcon className="icon up" /> : <ExpandMoreIcon className="icon" />}
+                      </ul>
+
                     {expandedTasks.includes(task.id) && (
                       <>
-                        <li>Descripción: {task.descripcion}</li>
-                        <li>
-                          Kilometro de Mantención: {task.kilometrajeMantencion}
-                        </li>
-                        <li>
-                          Persona a Cargo: {getUserName(task.personaTomadora)}
-                        </li>
-                        <li>
-                          Producto:{" "}
-                          {task.productos.map((producto, index) => (
-                            <p key={index}> - {producto.nombreProducto}</p>
-                          ))}
-                        </li>
+                        <ul className="descripcion_lista ">
+                          <li>Descripción: {task.descripcion}</li>
+                          <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                          <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                          <li>
+                            Producto:{" "}
+                            {task.productos.map((producto, index) => (
+                              <p key={index}> - {producto.nombreProducto}</p>
+                            ))}
+                          </li>
+                        </ul>
                       </>
                     )}
                   </div>
