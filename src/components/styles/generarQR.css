@@ -1,3 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
+header {
+  height: 100px;
+}
+
 .generador_qr_titulo {
   display: flex;
   justify-content: center;
@@ -7,35 +15,34 @@
 
 .input_qr {
   margin: 20px;
-
 }
 
 #qr-code-canvas {
   margin: 20px;
   width: 300px;
   height: 300px;
-  transition: opacity 0.5s ease; /* Agregamos una transición de 0.5 segundos con efecto ease */
+  transition: opacity 0.5s ease;
 }
 
 #qr-code-canvas.show {
-  opacity: 1; 
+  opacity: 1;
 }
-  
+
 button {
   margin: 20px;
-} 
+}
 
 .container {
   text-align: center;
 }
 
-.boton_qr_descargar_qr{
-  background-color: #E74C3C ;
+.boton_qr_descargar_qr {
+  background-color: #e74c3c;
 }
-.boton_qr_imprimir_qr{
-  background-color: #6fa0e8 ;
+.boton_qr_imprimir_qr {
+  background-color: #6fa0e8;
 }
 
-.boton_qr_descargar_qr:hover{
-  background-color: #c0392b ;
+.boton_qr_descargar_qr:hover {
+  background-color: #c0392b;
 }

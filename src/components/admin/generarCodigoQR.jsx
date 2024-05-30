@@ -1,12 +1,12 @@
 import "../styles/generarQR.css";
 import React, { useState, useEffect } from "react";
-import Mecanico from "./mecanico";
+import Admin from "./admin";
 import QRCode from "qrcode.react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import Button from "@mui/material/Button";
 
-const App = () => {
+const GenerarQRADmin = () => {
   const [patentes, setPatentes] = useState([]);
   const [filteredPatentes, setFilteredPatentes] = useState([]);
   const [selectedPatenteId, setSelectedPatenteId] = useState("");
@@ -76,7 +76,10 @@ const App = () => {
 
   return (
     <>
-      <Mecanico />
+      <header>
+        {" "}
+        <Admin />{" "}
+      </header>
       <div className="container">
         <div className="generador_qr_titulo">
           <h1>Generador de Códigos QR para Patentes</h1>
@@ -113,4 +116,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default GenerarQRADmin;

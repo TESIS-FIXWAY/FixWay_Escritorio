@@ -147,6 +147,16 @@ const Admin = () => {
                 <span className="link_name">Mantenciones</span>
               </Link>
             </li>
+            <li>
+              <Link
+                to="/generarqrAdmin"
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
+                  window.location.pathname === "/generarqrAdmin" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Generar QR</span>
+              </Link>
+            </li>
 
             <li onClick={toggleSubMenu2}>
               <Link
@@ -280,14 +290,21 @@ const Admin = () => {
         </nav>
 
         <div>
-          <button onClick={toggleDarkMode} className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}>
+          <button
+            onClick={toggleDarkMode}
+            className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
+          >
             {isDarkMode ? (
               <WbSunnyIcon color="#B4B4B4" />
             ) : (
               <NightlightIcon color="#fff" />
             )}
           </button>
-          <button type="submit" onClick={handleLogout} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
+          <button
+            type="submit"
+            onClick={handleLogout}
+            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+          >
             <Logout />
           </button>
         </div>

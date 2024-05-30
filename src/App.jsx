@@ -17,6 +17,7 @@ import ClienteVista from "./components/admin/factura/clienteVista";
 import ListadoMisFacturas from "./components/admin/listadoMisFacturas";
 import ListadoFacturas from "./components/admin/listadoFacturas/listadoFacturas";
 import CrearClienteFactura from "./components/admin/factura/crearCliente";
+import GenerarQRADmin from "./components/admin/generarCodigoQR";
 
 //mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -66,6 +67,7 @@ function App() {
             <Route path="/agregarInventario" element={<AgregarInventario />} />
             <Route path="/listarInventario" element={<ListarInventario />} />
             <Route path="/generarFactura" element={<GenerarFactura />} />
+            <Route path="/generarqrAdmin" element={<GenerarQRADmin />} />
             <Route
               path="/gestionMantencionesAdmin"
               element={<GestionMantencionesAdmin />}
