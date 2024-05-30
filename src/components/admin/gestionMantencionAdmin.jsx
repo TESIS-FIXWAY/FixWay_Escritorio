@@ -10,7 +10,6 @@ import "../styles/darkMode.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
-
 const GestionMantencionesAdmin = () => {
   const [beginTask, setBeginTask] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
@@ -43,6 +42,8 @@ const GestionMantencionesAdmin = () => {
 
           const sortedTasks = {
             pendiente: [],
+            prioridad: [],
+            atencion_especial: [],
             "en proceso": [],
             terminado: [],
           };
@@ -51,7 +52,12 @@ const GestionMantencionesAdmin = () => {
             sortedTasks[task.estado].push(task);
           });
 
-          setBeginTask(sortedTasks["pendiente"]);
+          const combinedPendingTasks = [
+            ...sortedTasks["pendiente"],
+            ...sortedTasks["prioridad"],
+            ...sortedTasks["atencion_especial"],
+          ];
+          setBeginTask(combinedPendingTasks);
           setInProgressTasks(sortedTasks["en proceso"]);
           setCompletedTasks(sortedTasks["terminado"]);
         });
@@ -100,33 +106,63 @@ const GestionMantencionesAdmin = () => {
   return (
     <>
       <div className={`grid ${isDarkMode ? "dark-mode" : ""}`}>
-        <header> <Admin /> </header>
-
+        <header>
+          {" "}
+          <Admin />{" "}
+        </header>
         <aside className={`sidebar_left ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-            <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}> Pendientes </div>
-            
+          <div
+            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <div
+              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              {" "}
+              Pendientes{" "}
+            </div>
+
             <div className={`mantencion ${isDarkMode ? "dark-mode" : ""}`}>
               <ul className="lista_mantencion">
                 {beginTask.map((task) => (
                   <div
                     key={task.id}
                     className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${
-                      expandedTasks.includes(task.id) ? "expanded" : ""
-                    }`}
+                    ${expandedTasks.includes(task.id) ? "expanded" : ""}`}
                     onClick={() => handleTaskExpand(task.id)}
                   >
-                    <ul className={`lista_titular ${isDarkMode ? "dark-mode" : ""}`}>
-                      <li className={`contenido_lista ${isDarkMode ? "dark-mode" : ""}`}>Patente: {task.id}</li>
-                      <li className={`contenido_lista ${isDarkMode ? "dark-mode" : ""}`}>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                    <ul
+                      className={`lista_titular ${
+                        isDarkMode ? "dark-mode" : ""
+                      }`}
+                    >
+                      <li
+                        className={`contenido_lista ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      >
+                        Patente: {task.id}
+                      </li>
+                      <li
+                        className={`contenido_lista ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      >
+                        Persona a Cargo: {getUserName(task.personaTomadora)}
+                      </li>
                     </ul>
 
                     {expandedTasks.includes(task.id) && (
                       <>
-                        <ul className={`descripcion_lista ${isDarkMode ? "dark-mode" : ""}`}>
+                        <ul
+                          className={`descripcion_lista ${
+                            isDarkMode ? "dark-mode" : ""
+                          }`}
+                        >
                           <li>Descripción: {task.descripcion}</li>
-                          <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                          <li>
+                            Kilometro de Mantención:{" "}
+                            {task.kilometrajeMantencion}
+                          </li>
                           <li>Fecha: {formatDate(new Date(task.fecha))}</li>
                           <li>
                             Producto:{" "}
@@ -145,30 +181,57 @@ const GestionMantencionesAdmin = () => {
         </aside>
 
         <aside className={`sidebar_centro ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-            <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>En Proceso </div>
-            
+          <div
+            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <div
+              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              En Proceso{" "}
+            </div>
+
             <div className="mantencion">
               <ul className="lista_mantencion">
                 {inProgressTasks.map((task) => (
                   <div
                     key={task.id}
                     className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${
-                      expandedTasks.includes(task.id) ? "expanded" : ""
-                    }`}
+                    ${expandedTasks.includes(task.id) ? "expanded" : ""}`}
                     onClick={() => handleTaskExpand(task.id)}
                   >
-                    <ul className={`lista_titular ${isDarkMode ? "dark-mode" : ""}`}>
-                      <li className={`contenido_lista ${isDarkMode ? "dark-mode" : ""}`}>Patente: {task.id}</li>
-                      <li className={`contenido_lista ${isDarkMode ? "dark-mode" : ""}`}>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                    <ul
+                      className={`lista_titular ${
+                        isDarkMode ? "dark-mode" : ""
+                      }`}
+                    >
+                      <li
+                        className={`contenido_lista ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      >
+                        Patente: {task.id}
+                      </li>
+                      <li
+                        className={`contenido_lista ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      >
+                        Persona a Cargo: {getUserName(task.personaTomadora)}
+                      </li>
                     </ul>
 
                     {expandedTasks.includes(task.id) && (
                       <>
-                        <ul className={`descripcion_lista ${isDarkMode ? "dark-mode" : ""}`}>
+                        <ul
+                          className={`descripcion_lista ${
+                            isDarkMode ? "dark-mode" : ""
+                          }`}
+                        >
                           <li>Descripción: {task.descripcion}</li>
-                          <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                          <li>
+                            Kilometro de Mantención:{" "}
+                            {task.kilometrajeMantencion}
+                          </li>
                           <li>Fecha: {formatDate(new Date(task.fecha))}</li>
                           <li>
                             Producto:{" "}
@@ -187,30 +250,58 @@ const GestionMantencionesAdmin = () => {
         </aside>
 
         <aside className={`sidebar_rigth ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-            <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}> Terminadas </div>
-            
+          <div
+            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <div
+              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              {" "}
+              Terminadas{" "}
+            </div>
+
             <div className="mantencion">
               <ul className="lista_mantencion">
                 {completedTasks.map((task) => (
                   <div
                     key={task.id}
                     className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${
-                      expandedTasks.includes(task.id) ? "expanded" : ""
-                    }`}
+                    ${expandedTasks.includes(task.id) ? "expanded" : ""}`}
                     onClick={() => handleTaskExpand(task.id)}
                   >
-                    <ul className={`lista_titular ${isDarkMode ? "dark-mode" : ""}`}>
-                      <li className={`contenido_lista ${isDarkMode ? "dark-mode" : ""}`}>Patente: {task.id}</li>
-                      <li className={`contenido_lista ${isDarkMode ? "dark-mode" : ""}`}>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                    <ul
+                      className={`lista_titular ${
+                        isDarkMode ? "dark-mode" : ""
+                      }`}
+                    >
+                      <li
+                        className={`contenido_lista ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      >
+                        Patente: {task.id}
+                      </li>
+                      <li
+                        className={`contenido_lista ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      >
+                        Persona a Cargo: {getUserName(task.personaTomadora)}
+                      </li>
                     </ul>
 
                     {expandedTasks.includes(task.id) && (
                       <>
-                        <ul className={`descripcion_lista ${isDarkMode ? "dark-mode" : ""}`}>
+                        <ul
+                          className={`descripcion_lista ${
+                            isDarkMode ? "dark-mode" : ""
+                          }`}
+                        >
                           <li>Descripción: {task.descripcion}</li>
-                          <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                          <li>
+                            Kilometro de Mantención:{" "}
+                            {task.kilometrajeMantencion}
+                          </li>
                           <li>Fecha: {formatDate(new Date(task.fecha))}</li>
                           <li>
                             Producto:{" "}
