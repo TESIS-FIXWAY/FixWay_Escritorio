@@ -25,7 +25,7 @@ header {
 .sidebar_centro {
   grid-area: sidebar_centro;
   height: auto;
-  overflow-y: ;
+  overflow-y: auto;
 }
 
 .contenedor_mantencion {

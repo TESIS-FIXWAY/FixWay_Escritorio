@@ -80,9 +80,8 @@ const GraficoTipoPago = () => {
   };
 
   return (
-    <div className="grafico-containerTipoPago">
-      <h1 className="titulo-GraficoMTipoPago">Tipo de Pago</h1>
-      <div className="graficoMTipoPago">
+    <div >
+      <div >
         <Doughnut data={chartData} options={options} />
       </div>
     </div>

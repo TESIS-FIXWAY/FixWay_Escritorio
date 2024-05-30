@@ -1,3 +1,4 @@
+
 .grafico {
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -44,4 +45,13 @@
   height: 100%;
   width: 350px;
   border-radius: 10px;
+}
+
+@media (max-width: 800px) {
+  .grafico,
+  .graficoM,
+  .graficoMTipoPago {
+    width: 90%;
+    margin: 10px auto; /* Centro los elementos horizontalmente */
+  }
 }

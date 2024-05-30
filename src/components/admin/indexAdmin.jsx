@@ -70,6 +70,7 @@ const IndexAdmin = () => {
         <div>
           <HistorialVentas />
         </div>
+
         <div className="informacion_widgets_index">
           <div className="widgets_historial">
             <div
@@ -93,11 +94,13 @@ const IndexAdmin = () => {
           </div>
           <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
             <div>
+            <h1 className="titulo-Grafico ">Tipo de Pago</h1>
               <GraficoTipoPago />
             </div>
           </div>
         </div>
       </aside>
+
       <main className={`main ${isDarkMode ? "dark-mode" : ""}`}>
         <div>
           <GraficoMisFacturas />

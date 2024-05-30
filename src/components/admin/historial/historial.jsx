@@ -213,9 +213,11 @@ const HistorialVentas = () => {
             </text>
           </div>
         </div>
+        
         <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
           <Doughnut data={data} options={options} />
         </div>
+        
       </div>
     </div>
   );
