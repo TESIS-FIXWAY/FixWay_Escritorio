@@ -110,3 +110,12 @@ main.dark-mode {
     background-color: #3C3C3C;
 }
 
+
+/* gestion de mantenciones admin */
+.contenedor_mantencion.dark-mode{
+    background-color: #171717;
+}
+.titulo_mantencion.dark-mode{
+    background-color: #3C3C3C;
+    color: #B4B4B4;
+}

@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
+
+import { DarkModeContext } from "../../context/darkMode";
+
 import "../styles/gestionMantenciones.css";
+import "../styles/darkMode.css";
 
 const GestionMantencionesAdmin = () => {
   const [beginTask, setBeginTask] = useState([]);
@@ -10,6 +14,7 @@ const GestionMantencionesAdmin = () => {
   const [completedTasks, setCompletedTasks] = useState([]);
   const [expandedTasks, setExpandedTasks] = useState([]);
   const [users, setUsers] = useState({});
+  const { isDarkMode } = useContext(DarkModeContext);
 
   const calculateContainerHeight = (tasks) => {
     return tasks.length === 0 ? "200px" : `${tasks.length * 40}px`;
@@ -91,15 +96,15 @@ const GestionMantencionesAdmin = () => {
 
   return (
     <>
-      <div className="grid">
+      <div className={`grid ${isDarkMode ? "dark-mode" : ""}`}>
         <header> <Admin /> </header>
 
-        <aside className="sidebar_left">
-          <div className="contenedor_mantencion">
-            <div className="mantencion">
-              <div className="titulo_mantencion">pendientes</div>
+        <aside className={`sidebar_left ${isDarkMode ? "dark-mode" : ""}`}>
+          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
+          <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>pendientes</div>
+            <div className={`mantencion ${isDarkMode ? "dark-mode" : ""}`}>
 
-              <ul style={{ height: calculateContainerHeight(beginTask) }}>
+              <ul >
                 {beginTask.map((task) => (
                   <div
                     key={task.id}
@@ -132,50 +137,52 @@ const GestionMantencionesAdmin = () => {
           </div>
         </aside>
 
-        <aside className="sidebar_centro">
-          <div className="contenedor_mantencion">
-            <div className="mantencion">
-              <div className="titulo_mantencion">En Proceso</div>
+        <aside className={`sidebar_centro ${isDarkMode ? "dark-mode" : ""}`}>
+          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
+          <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>En Proceso</div>
 
-              <ul style={{ height: calculateContainerHeight(inProgressTasks) }}>
-                {inProgressTasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className={`task-container ${
-                      expandedTasks.includes(task.id) ? "expanded" : ""
-                    }`}
-                    onClick={() => handleTaskExpand(task.id)}
-                  >
-                    <li>Patente: {task.id}</li>
-                    <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                    {/* Mostrar más información solo si la tarea está expandida */}
-                    {expandedTasks.includes(task.id) && (
-                      <>
-                        <li>Descripción: {task.descripcion}</li>
-                        <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
-                        <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
-                        <li>
-                          Producto:{" "}
-                          {task.productos.map((producto, index) => (
-                            <p key={index}> - {producto.nombreProducto}</p>
-                          ))}
-                        </li>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </ul>
+            <div className="mantencion">
+
+                <ul className="lista_mantencion">
+                  {inProgressTasks.map((task) => (
+                    <div
+                      key={task.id}
+                      className={`task-container ${
+                        expandedTasks.includes(task.id) ? "expanded" : ""
+                      }`}
+                      onClick={() => handleTaskExpand(task.id)}
+                    >
+                      <li>Patente: {task.id}</li>
+                      <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                      {/* Mostrar más información solo si la tarea está expandida */}
+                      {expandedTasks.includes(task.id) && (
+                        <>
+                          <li>Descripción: {task.descripcion}</li>
+                          <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
+                          <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                          <li>
+                            Producto:{" "}
+                            {task.productos.map((producto, index) => (
+                              <p key={index}> - {producto.nombreProducto}</p>
+                            ))}
+                          </li>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </ul>
 
             </div>
           </div>
         </aside>
 
-        <aside className="sidebar_rigth">
-          <div className="contenedor_mantencion">
-            <div className="mantencion">
-              <div className="titulo_mantencion">Terminadas</div>
+        <aside className={`sidebar_rigth ${isDarkMode ? "dark-mode" : ""}`}>
+          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
+          <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>Terminadas</div>
 
-              <ul style={{ height: calculateContainerHeight(completedTasks) }}>
+            <div className="mantencion">
+
+              <ul className="lista_mantencion">
                 {completedTasks.map((task) => (
                   <div
                     key={task.id}
