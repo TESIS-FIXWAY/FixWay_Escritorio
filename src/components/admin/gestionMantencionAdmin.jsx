@@ -2,9 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
-
 import { DarkModeContext } from "../../context/darkMode";
-
 import "../styles/gestionMantenciones.css";
 import "../styles/darkMode.css";
 
@@ -97,14 +95,21 @@ const GestionMantencionesAdmin = () => {
   return (
     <>
       <div className={`grid ${isDarkMode ? "dark-mode" : ""}`}>
-        <header> <Admin /> </header>
-
+        <header>
+          {" "}
+          <Admin />{" "}
+        </header>
         <aside className={`sidebar_left ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>pendientes</div>
+          <div
+            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <div
+              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              Pendientes
+            </div>
             <div className={`mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-
-              <ul >
+              <ul>
                 {beginTask.map((task) => (
                   <div
                     key={task.id}
@@ -115,12 +120,15 @@ const GestionMantencionesAdmin = () => {
                   >
                     <li>Patente: {task.id}</li>
                     <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                    {/* Mostrar más información solo si la tarea está expandida */}
                     {expandedTasks.includes(task.id) && (
                       <>
                         <li>Descripción: {task.descripcion}</li>
-                        <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
-                        <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                        <li>
+                          Kilometro de Mantención: {task.kilometrajeMantencion}
+                        </li>
+                        <li>
+                          Persona a Cargo: {getUserName(task.personaTomadora)}
+                        </li>
                         <li>
                           Producto:{" "}
                           {task.productos.map((producto, index) => (
@@ -132,56 +140,65 @@ const GestionMantencionesAdmin = () => {
                   </div>
                 ))}
               </ul>
-
             </div>
           </div>
         </aside>
 
         <aside className={`sidebar_centro ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>En Proceso</div>
-
+          <div
+            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <div
+              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              En Proceso
+            </div>
             <div className="mantencion">
-
-                <ul className="lista_mantencion">
-                  {inProgressTasks.map((task) => (
-                    <div
-                      key={task.id}
-                      className={`task-container ${
-                        expandedTasks.includes(task.id) ? "expanded" : ""
-                      }`}
-                      onClick={() => handleTaskExpand(task.id)}
-                    >
-                      <li>Patente: {task.id}</li>
-                      <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                      {/* Mostrar más información solo si la tarea está expandida */}
-                      {expandedTasks.includes(task.id) && (
-                        <>
-                          <li>Descripción: {task.descripcion}</li>
-                          <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
-                          <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
-                          <li>
-                            Producto:{" "}
-                            {task.productos.map((producto, index) => (
-                              <p key={index}> - {producto.nombreProducto}</p>
-                            ))}
-                          </li>
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </ul>
-
+              <ul className="lista_mantencion">
+                {inProgressTasks.map((task) => (
+                  <div
+                    key={task.id}
+                    className={`task-container ${
+                      expandedTasks.includes(task.id) ? "expanded" : ""
+                    }`}
+                    onClick={() => handleTaskExpand(task.id)}
+                  >
+                    <li>Patente: {task.id}</li>
+                    <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                    {expandedTasks.includes(task.id) && (
+                      <>
+                        <li>Descripción: {task.descripcion}</li>
+                        <li>
+                          Kilometro de Mantención: {task.kilometrajeMantencion}
+                        </li>
+                        <li>
+                          Persona a Cargo: {getUserName(task.personaTomadora)}
+                        </li>
+                        <li>
+                          Producto:{" "}
+                          {task.productos.map((producto, index) => (
+                            <p key={index}> - {producto.nombreProducto}</p>
+                          ))}
+                        </li>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </ul>
             </div>
           </div>
         </aside>
 
         <aside className={`sidebar_rigth ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-          <div className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}>Terminadas</div>
-
+          <div
+            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <div
+              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              Terminadas
+            </div>
             <div className="mantencion">
-
               <ul className="lista_mantencion">
                 {completedTasks.map((task) => (
                   <div
@@ -193,12 +210,12 @@ const GestionMantencionesAdmin = () => {
                   >
                     <li>Patente: {task.id}</li>
                     <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                    {/* Mostrar más información solo si la tarea está expandida */}
                     {expandedTasks.includes(task.id) && (
                       <>
                         <li>Descripción: {task.descripcion}</li>
-                        <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
-                        <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
+                        <li>
+                          Kilometro de Mantención: {task.kilometrajeMantencion}
+                        </li>
                         <li>
                           Producto:{" "}
                           {task.productos.map((producto, index) => (
@@ -210,111 +227,12 @@ const GestionMantencionesAdmin = () => {
                   </div>
                 ))}
               </ul>
-
             </div>
-          </div>        
+          </div>
         </aside>
-
       </div>
     </>
   );
 };
 
 export default GestionMantencionesAdmin;
-
-
-
-
-      {/* <Admin />
-      <div>
-        <div className="container_mantencion_titulo">
-          <h1>Gestión de Mantenciones</h1>
-        </div>
-        <div className="container_mantencion">
-          <div className="container_mantencion_tareas">
-            <div className="container_mantencion_tareas_titulos">
-              <h2>Tareas por hacer</h2>
-            </div>
-
-            <ul style={{ height: calculateContainerHeight(beginTask) }}>
-              {beginTask.map((task) => (
-                <div
-                  key={task.id}
-                  className={`task-container ${
-                    expandedTask === task.id ? "expanded" : ""
-                  }`}
-                  onClick={() => handleTaskExpand(task.id)}
-                >
-                  <li>Patente: {task.id}</li>
-                  <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                  <li>Descripción: {task.descripcion}</li>
-                  <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
-                  <li>
-                    Producto:{" "}
-                    {task.productos.map((producto, index) => (
-                      <p> - {producto.nombreProducto}</p>
-                    ))}
-                  </li>
-                </div>
-              ))}
-            </ul>
-
-          </div>
-
-          <div className="container_mantencion_tareas">
-            <div className="container_mantencion_tareas_titulos">
-              <h2>Tareas en Proceso</h2>
-            </div>
-            <ul style={{ height: calculateContainerHeight(inProgressTasks) }}>
-              {inProgressTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className={`task-container ${
-                    expandedTask === task.id ? "expanded" : ""
-                  }`}
-                  onClick={() => handleTaskExpand(task.id)}
-                >
-                  <li>Patente: {task.id}</li>
-                  <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                  <li>Descripción: {task.descripcion}</li>
-                  <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
-                  <li>Persona a Cargo: {getUserName(task.personaTomadora)}</li>
-                  <li>
-                    Producto:{" "}
-                    {task.productos.map((producto, index) => (
-                      <p> - {producto.nombreProducto}</p>
-                    ))}
-                  </li>
-                </div>
-              ))}
-            </ul>
-          </div>
-
-          <div className="container_mantencion_tareas">
-            <div className="container_mantencion_tareas_titulos">
-              <h2>Tareas Entregadas</h2>
-            </div>
-            <ul style={{ height: calculateContainerHeight(completedTasks) }}>
-              {completedTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className={`task-container ${
-                    expandedTask === task.id ? "expanded" : ""
-                  }`}
-                >
-                  <li>Patente: {task.id}</li>
-                  <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                  <li>Descripción: {task.descripcion}</li>
-                  <li>Kilometro de Mantención: {task.kilometrajeMantencion}</li>
-                  <li>
-                    Producto:{" "}
-                    {task.productos.map((producto, index) => (
-                      <p> - {producto.nombreProducto}</p>
-                    ))}
-                  </li>
-                </div>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div> */}
