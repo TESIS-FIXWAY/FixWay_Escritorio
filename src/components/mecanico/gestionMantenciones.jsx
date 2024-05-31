@@ -159,7 +159,8 @@ const GestionMantenciones = () => {
   };
 
   const getUserName = (userId) => {
-    return users[userId]?.nombreCompleto || "Desconocido";
+    const user = users[userId];
+    return user ? `${user.nombre} ${user.apellido}` : "Desconocido";
   };
 
   const formatoKilometraje = (amount) => {
@@ -227,7 +228,7 @@ const GestionMantenciones = () => {
                         </li>
                         {expandedTask === task.id && (
                           <button
-                            style={{ backgroundColor: "red" }}
+                            style={{ backgroundColor: "#019EFF" }}
                             onClick={() => updateTaskStatus(task, "en proceso")}
                           >
                             Tomar Tarea
@@ -298,7 +299,7 @@ const GestionMantenciones = () => {
                         </li>
                         {expandedTask === task.id && (
                           <button
-                            style={{ backgroundColor: "red" }}
+                            style={{ backgroundColor: "#019EFF" }}
                             onClick={() => updateTaskStatus(task, "terminado")}
                           >
                             Finalizar Tarea
