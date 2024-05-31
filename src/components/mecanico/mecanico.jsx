@@ -53,7 +53,6 @@ const Mecanico = () => {
             <img src={Logo} alt="logo" />
           </Link>
         </div>
-
         <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
           <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
             <li>
@@ -63,7 +62,7 @@ const Mecanico = () => {
                   window.location.pathname === "" ? "active" : ""
                 }`}
               >
-                <span className="link_name">Gestion de Mantenciones</span>
+                <span className="link_name">Tablero de Tareas</span>
               </Link>
             </li>
             <li>
@@ -93,12 +92,13 @@ const Mecanico = () => {
                   window.location.pathname === "" ? "active" : ""
                 }`}
               >
-                <span className="link_name">Historial Mantención</span>
+                <span className="link_name">
+                  Descarga Historial de Mantención
+                </span>
               </Link>
             </li>
           </ul>
         </nav>
-
         <div>
           <button
             onClick={toggleDarkMode}

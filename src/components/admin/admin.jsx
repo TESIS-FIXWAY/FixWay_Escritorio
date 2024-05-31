@@ -144,7 +144,7 @@ const Admin = () => {
                     : ""
                 }`}
               >
-                <span className="link_name">Mantenciones</span>
+                <span className="link_name">Tablero de Tareas</span>
               </Link>
             </li>
             <li>
