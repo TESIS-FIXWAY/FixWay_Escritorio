@@ -1,6 +1,5 @@
 import "../styles/indexAdmin.css";
 import "../styles/darkMode.css";
-
 import React, { useState, useEffect, useContext } from "react";
 import "react-calendar/dist/Calendar.css";
 import Admin from "./admin";
@@ -8,8 +7,8 @@ import { db, auth } from "../../firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 import { DarkModeContext } from "../../context/darkMode";
 
-import Tierra from "./tierra";
-import CarModel from "./auto";
+// import Tierra from "./tierra";
+// import CarModel from "./auto";
 
 import GraficoMisBoletas from "./graficos/graficoMisBoletas";
 import GraficoMisFacturas from "./graficos/graficoMisFacturas";
@@ -40,7 +39,10 @@ const IndexAdmin = () => {
           (doc) => doc.data().estado === "en proceso"
         );
         const pendingMaintenance = maintenanceSnapshot.docs.filter(
-          (doc) => doc.data().estado === "pendiente"
+          (doc) =>
+            doc.data().estado === "pendiente" ||
+            doc.data().estado === "atencion_especial" ||
+            doc.data().estado === "prioridad"
         );
         const deliveredMaintenance = maintenanceSnapshot.docs.filter(
           (doc) => doc.data().estado === "terminado"
@@ -71,7 +73,6 @@ const IndexAdmin = () => {
         <div>
           <HistorialVentas />
         </div>
-
         <div className="informacion_widgets_index">
           <div className="widgets_historial">
             <div
@@ -95,18 +96,16 @@ const IndexAdmin = () => {
           </div>
           <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
             <div>
-            <h1 className="titulo-Grafico ">Tipo de Pago</h1>
+              <h1 className="titulo-Grafico ">Tipo de Pago</h1>
               <GraficoTipoPago />
             </div>
           </div>
         </div>
       </aside>
-
       <main className={`main ${isDarkMode ? "dark-mode" : ""}`}>
         <div>
           <GraficoMisFacturas />
         </div>
-        {/* <div><CarModel /></div> */}
         <div>
           <GraficoMisBoletas />
         </div>
