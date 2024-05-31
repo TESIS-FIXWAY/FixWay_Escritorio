@@ -157,7 +157,20 @@ const Admin = () => {
                 <span className="link_name">Generar QR</span>
               </Link>
             </li>
-
+            <li>
+              <Link
+                to="/historialmantencion"
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
+                  window.location.pathname === "/historialmantencion"
+                    ? "active"
+                    : ""
+                }`}
+              >
+                <span className="link_name">
+                  Descarga Historial de Mantecion
+                </span>
+              </Link>
+            </li>
             <li onClick={toggleSubMenu2}>
               <Link
                 className={`links ${isDarkMode ? "dark-mode" : ""}${
