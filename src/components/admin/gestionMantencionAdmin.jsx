@@ -3,12 +3,8 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
 import { DarkModeContext } from "../../context/darkMode";
-
 import "../styles/gestionMantenciones.css";
 import "../styles/darkMode.css";
-
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 const GestionMantencionesAdmin = () => {
   const [beginTask, setBeginTask] = useState([]);
@@ -120,6 +116,10 @@ const GestionMantencionesAdmin = () => {
     }
   };
 
+  const formatoKilometraje = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
   return (
     <>
       <div className={`grid ${isDarkMode ? "dark-mode" : ""}`}>
@@ -137,7 +137,6 @@ const GestionMantencionesAdmin = () => {
               {" "}
               Pendientes{" "}
             </div>
-
             <div className={`mantencion ${isDarkMode ? "dark-mode" : ""}`}>
               <ul className="lista_mantencion">
                 {beginTask.map((task) => (
@@ -178,7 +177,7 @@ const GestionMantencionesAdmin = () => {
                           <li>Descripción: {task.descripcion}</li>
                           <li>
                             Kilometro de Mantención:{" "}
-                            {task.kilometrajeMantencion}
+                            {formatoKilometraje(task.kilometrajeMantencion)}
                           </li>
                           <li>Fecha: {formatDate(new Date(task.fecha))}</li>
                           <li>
@@ -196,7 +195,6 @@ const GestionMantencionesAdmin = () => {
             </div>
           </div>
         </aside>
-
         <aside className={`sidebar_centro ${isDarkMode ? "dark-mode" : ""}`}>
           <div
             className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
@@ -247,7 +245,7 @@ const GestionMantencionesAdmin = () => {
                           <li>Descripción: {task.descripcion}</li>
                           <li>
                             Kilometro de Mantención:{" "}
-                            {task.kilometrajeMantencion}
+                            {formatoKilometraje(task.kilometrajeMantencion)}
                           </li>
                           <li>Fecha: {formatDate(new Date(task.fecha))}</li>
                           <li>
@@ -265,7 +263,6 @@ const GestionMantencionesAdmin = () => {
             </div>
           </div>
         </aside>
-
         <aside className={`sidebar_rigth ${isDarkMode ? "dark-mode" : ""}`}>
           <div
             className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
@@ -310,7 +307,7 @@ const GestionMantencionesAdmin = () => {
                           <li>Descripción: {task.descripcion}</li>
                           <li>
                             Kilometro de Mantención:{" "}
-                            {task.kilometrajeMantencion}
+                            {formatoKilometraje(task.kilometrajeMantencion)}
                           </li>
                           <li>Fecha: {formatDate(new Date(task.fecha))}</li>
                           <li>
