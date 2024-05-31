@@ -1,46 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
-
-import Logo from "../../images/LogoSinFondo.png"
-import "../styles/admin.css"
+import Logo from "../../images/LogoSinFondo.png";
+import "../styles/admin.css";
 import "../styles/darkMode.css";
-
 import { DarkModeContext } from "../../context/darkMode";
-
 import { Logout } from "@mui/icons-material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBars,
-  faArrowLeft,
-  faArrowRightFromBracket,
-  faUser,
-  faUserPlus,
-  faUsers,
-  faHouse,
-  faQrcode,
-} from "@fortawesome/free-solid-svg-icons";
-library.add(
-  faBars,
-  faArrowLeft,
-  faArrowRightFromBracket,
-  faUser,
-  faUserPlus,
-  faUsers,
-  faHouse,
-  faQrcode
-);
 
 const Mecanico = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
-
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -74,82 +47,78 @@ const Mecanico = () => {
 
   return (
     <>
-    <header className={`encabezado ${isDarkMode ? "dark-mode" : ""}`}>
-      <div className="logo">
-        <Link to="/indexMecanico">
-          <img src={Logo} alt="logo" />
-        </Link>
-      </div>
+      <header className={`encabezado ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className="logo">
+          <Link to="/indexMecanico">
+            <img src={Logo} alt="logo" />
+          </Link>
+        </div>
 
-      <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
-        <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
-          <li>
-            <Link
-              to="/gestionMantenciones"
-              className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                window.location.pathname === ""
-                  ? "active"
-                  : ""
-              }`}>
-              <span className="link_name">Gestion de Mantenciones</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/listarInventarioMecanico"
-              className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                window.location.pathname === ""
-                  ? "active"
-                  : ""
-              }`}>
-              <span className="link_name">Listar Inventario</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/GenerarQR"
-              className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                window.location.pathname === ""
-                  ? "active"
-                  : ""
-              }`}>
-              <span className="link_name">Generar QR</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/GenerarListadoMantencion"
-              className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                window.location.pathname === ""
-                  ? "active"
-                  : ""
-              }`}>
-              <span className="link_name">Generar Listado Mantencion</span>
-            </Link>
-          </li>
-        </ul>        
-      </nav>
+        <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
+          <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
+            <li>
+              <Link
+                to="/gestionMantenciones"
+                className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                  window.location.pathname === "" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Gestion de Mantenciones</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/listarInventarioMecanico"
+                className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                  window.location.pathname === "" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Listar Inventario</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/GenerarQR"
+                className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                  window.location.pathname === "" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Generar QR</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/GenerarListadoMantencion"
+                className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                  window.location.pathname === "" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Historial Mantención</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
-      <div>
-        <button onClick={toggleDarkMode} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
-          {isDarkMode ? (
-            <WbSunnyIcon color="#B4B4B4" />
-          ) : (
-            <NightlightIcon color="secondary" />
-          )}
-        </button>
-        <button type="submit" onClick={handleLogout} className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}>
-          <Logout />
-        </button>
-      </div>
-      
-    </header>
-
-
-
-
-
-
+        <div>
+          <button
+            onClick={toggleDarkMode}
+            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            {isDarkMode ? (
+              <WbSunnyIcon color="#B4B4B4" />
+            ) : (
+              <NightlightIcon color="secondary" />
+            )}
+          </button>
+          <button
+            type="submit"
+            onClick={handleLogout}
+            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <Logout />
+          </button>
+        </div>
+      </header>
     </>
   );
 };
