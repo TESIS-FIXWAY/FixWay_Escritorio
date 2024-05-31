@@ -993,9 +993,7 @@ const GenerarFactura = () => {
 
   return (
     <>
-      <header className="header">
         <Admin />
-      </header>
       <div className="tabla_listar">
         <div className="table_header">
           <h2>Generar Factura</h2>
