@@ -177,6 +177,8 @@ const AgregarUsuario = () => {
       "email",
       "fechaIngreso",
     ];
+    setReauthEmail("");
+    setReauthPassword("");
 
     fieldIds.forEach((fieldId) => {
       document.getElementById(fieldId).value = "";
@@ -255,6 +257,12 @@ const AgregarUsuario = () => {
   const validateEmail = (email) => {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     return re.test(String(email).toLowerCase());
+  };
+
+  const handleCancelReauth = () => {
+    setShowReauthForm(false);
+    setReauthEmail("");
+    setReauthPassword("");
   };
 
   return (
@@ -418,7 +426,6 @@ const AgregarUsuario = () => {
               <p className="mensaje_validacion">{mensajeValidacion}</p>
               <Button
                 variant="outlined"
-                onClick={() => setShowReauthForm(true)}
                 type="submit"
                 size="large"
                 style={{ width: "250px", fontSize: "20px" }}
@@ -461,15 +468,24 @@ const AgregarUsuario = () => {
             <Button
               type="submit"
               variant="outlined"
-              color="primary"
+              color="success"
               sx={{
                 fontSize: "19px",
-                alignContent: "center",
-                justifyContent: "center",
-                left: "90px",
+                left: "20px",
               }}
             >
               Confirmar
+            </Button>
+            <Button
+              onClick={() => handleCancelReauth()}
+              variant="outlined"
+              color="error"
+              sx={{
+                fontSize: "19px",
+                left: "40px",
+              }}
+            >
+              Cancelar
             </Button>
           </form>
         </Box>
