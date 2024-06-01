@@ -7,6 +7,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 
 const Notificacion = () => {
   const [notification, setNotification] = useState(null);
+  const [severity, setSeverity] = useState("info");
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -24,6 +25,7 @@ const Notificacion = () => {
     onMessage(messaging, (payload) => {
       console.log("Message received. ", payload);
       setNotification(payload.notification);
+      setSeverity("info");
     });
 
     const unsubFirestoreUsers = onSnapshot(
@@ -38,16 +40,19 @@ const Notificacion = () => {
               title: "Nuevo usuario agregado",
               body: `Se ha agregado un nuevo usuario: ${user.nombre} ${user.apellido}`,
             });
+            setSeverity("info");
           } else if (change.type === "modified") {
             setNotification({
               title: "Usuario modificado",
               body: `Se ha modificado el usuario: ${user.nombre}`,
             });
+            setSeverity("info");
           } else if (change.type === "removed") {
             setNotification({
               title: "Usuario eliminado",
               body: `Se ha eliminado el usuario: ${user.nombre} ${user.apellido}`,
             });
+            setSeverity("error");
           }
         });
       }
@@ -69,23 +74,96 @@ const Notificacion = () => {
               title: "Nueva mantención agregada",
               body: `Se ha agregado una mantención con ID: ${change.doc.id}`,
             });
+            setSeverity("info");
           } else if (change.type === "modified") {
             if (mantencion.estado === "en proceso") {
               setNotification({
                 title: "Mantención en proceso",
                 body: `La mantención con ID ${change.doc.id} está en proceso.`,
               });
+              setSeverity("info");
             } else if (mantencion.estado === "terminado") {
               setNotification({
                 title: "Mantención Terminada",
                 body: `Se ha finalizado la mantención con éxito: ${change.doc.id}`,
               });
+              setSeverity("success");
             } else {
               setNotification({
                 title: "Estado de Mantención modificado",
                 body: `Se ha modificado el estado: ${mantencion.estado}`,
               });
+              setSeverity("info");
             }
+          }
+        });
+      }
+    );
+
+    const unsubFirestoreInventario = onSnapshot(
+      collection(db, "inventario"),
+      (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const inventario = change.doc.data();
+          console.log(
+            `Change detected: ${change.type}`,
+            change.doc.id,
+            inventario
+          );
+
+          if (change.type === "modified") {
+            setNotification({
+              title: "Inventario modificado",
+              body: `Se ha modificado el inventario con ID: ${change.doc.id}`,
+            });
+            setSeverity("info");
+
+            if (inventario.stock === 0) {
+              setNotification({
+                title: "Producto sin stock",
+                body: `El producto con ID ${change.doc.id} no tiene stock.`,
+              });
+              setSeverity("error");
+            } else if (inventario.stock < 10) {
+              setNotification({
+                title: "Stock bajo",
+                body: `El producto con ID ${change.doc.id} tiene menos de 10 unidades en stock.`,
+              });
+              setSeverity("warning");
+            }
+          }
+        });
+      }
+    );
+    const unsubFirestoreAutomovil = onSnapshot(
+      collection(db, "automoviles"),
+      (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const automoviles = change.doc.data();
+          console.log(
+            `Change detected: ${change.type}`,
+            change.doc.id,
+            automoviles
+          );
+
+          if (change.type === "added") {
+            setNotification({
+              title: "Nuevo automóvil agregado",
+              body: `Se ha agregado un nuevo automóvil: ${automoviles.id}`,
+            });
+            setSeverity("info");
+          } else if (change.type === "modified") {
+            setNotification({
+              title: "Automóvil modificado",
+              body: `Se ha modificado el automóvil: ${automoviles.id}`,
+            });
+            setSeverity("info");
+          } else if (change.type === "removed") {
+            setNotification({
+              title: "Automóvil eliminado",
+              body: `Se ha eliminado el automóvil: ${automoviles.id}`,
+            });
+            setSeverity("error");
           }
         });
       }
@@ -96,6 +174,8 @@ const Notificacion = () => {
     return () => {
       unsubFirestoreUsers();
       unsubFirestoreMantenciones();
+      unsubFirestoreInventario();
+      unsubFirestoreAutomovil();
     };
   }, []);
 
@@ -104,9 +184,9 @@ const Notificacion = () => {
       {notification && (
         <Alert
           icon={<CheckIcon fontSize="inherit" />}
-          severity="info"
+          severity={severity}
           onClose={() => setNotification(null)}
-          style={{ marginBottom: "10px" }}
+          style={{ marginBottom: "20px" }}
         >
           <strong>{notification.title}</strong>
           <p>{notification.body}</p>
