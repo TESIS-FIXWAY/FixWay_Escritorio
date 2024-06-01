@@ -6,9 +6,12 @@ import { DarkModeContext } from "../../context/darkMode";
 import { Logout } from "@mui/icons-material";
 import "../styles/admin.css";
 import "../styles/darkMode.css";
+import Notificacion from "./notificaciones";
+import { Button } from "@mui/material";
 
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const Admin = () => {
   const { user, logout } = UserAuth();
@@ -20,6 +23,7 @@ const Admin = () => {
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
   const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -80,6 +84,11 @@ const Admin = () => {
     setIsSubMenuOpen1(false);
     setIsSubMenuOpen2(false);
     setIsSubMenuOpen3(false);
+  };
+
+  const handleShowNotification = () => {
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 5000); // Mostrar notificación por 5 segundos
   };
 
   return (
@@ -303,6 +312,14 @@ const Admin = () => {
         </nav>
 
         <div>
+          <button
+            className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
+            onClick={handleShowNotification}
+          >
+            <NotificationsIcon />
+          </button>
+
+          {showNotification && <Notificacion />}
           <button
             onClick={toggleDarkMode}
             className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}

@@ -50,6 +50,7 @@
     "react-dom": "18.2.0",
     "react-google-charts": "^4.0.1",
     "react-router-dom": "^6.16.0",
+    "react-toastify": "^10.0.5",
     "recharts": "^2.12.6",
     "styled-components": "^6.1.9",
     "three": "^0.164.1",
