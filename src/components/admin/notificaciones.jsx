@@ -9,6 +9,23 @@ const Notificacion = () => {
   const [notification, setNotification] = useState(null);
   const [severity, setSeverity] = useState("info");
 
+  const formatoDinero = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
+  const translateEstado = (tipoPago) => {
+    switch (tipoPago) {
+      case "credito":
+        return "Crédito";
+      case "contado":
+        return "Contado";
+      case "debito":
+        return "Débito";
+      default:
+        return tipoPago;
+    }
+  };
+
   useEffect(() => {
     const requestPermission = async () => {
       try {
@@ -135,6 +152,7 @@ const Notificacion = () => {
         });
       }
     );
+
     const unsubFirestoreAutomovil = onSnapshot(
       collection(db, "automoviles"),
       (snapshot) => {
@@ -149,21 +167,45 @@ const Notificacion = () => {
           if (change.type === "added") {
             setNotification({
               title: "Nuevo automóvil agregado",
-              body: `Se ha agregado un nuevo automóvil: ${automoviles.id}`,
+              body: `Se ha agregado un nuevo automóvil: ${change.doc.id}`,
             });
             setSeverity("info");
           } else if (change.type === "modified") {
             setNotification({
               title: "Automóvil modificado",
-              body: `Se ha modificado el automóvil: ${automoviles.id}`,
+              body: `Se ha modificado el automóvil: ${change.doc.id}`,
             });
             setSeverity("info");
           } else if (change.type === "removed") {
             setNotification({
               title: "Automóvil eliminado",
-              body: `Se ha eliminado el automóvil: ${automoviles.id}`,
+              body: `Se ha eliminado el automóvil: ${change.doc.id}`,
             });
             setSeverity("error");
+          }
+        });
+      }
+    );
+
+    const unsubFirestoreHistorialVentas = onSnapshot(
+      collection(db, "historialVentas"),
+      (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const historialVentas = change.doc.data();
+          console.log(
+            `Change detected: ${change.type}`,
+            change.doc.id,
+            historialVentas
+          );
+
+          if (change.type === "added" || change.type === "modified") {
+            setNotification({
+              title: "Se realizo una Compra",
+              body: `Con tipo de pago: ${translateEstado(
+                historialVentas.tipoPago
+              )} es de ${formatoDinero(historialVentas.totalCompra)}`,
+            });
+            setSeverity("info");
           }
         });
       }
@@ -176,6 +218,7 @@ const Notificacion = () => {
       unsubFirestoreMantenciones();
       unsubFirestoreInventario();
       unsubFirestoreAutomovil();
+      unsubFirestoreHistorialVentas();
     };
   }, []);
 
