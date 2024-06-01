@@ -26,34 +26,76 @@ const Notificacion = () => {
       setNotification(payload.notification);
     });
 
-    const unsubFirestore = onSnapshot(collection(db, "users"), (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        const user = change.doc.data();
-        console.log(`Change detected: ${change.type}`, change.doc.id, user);
+    const unsubFirestoreUsers = onSnapshot(
+      collection(db, "users"),
+      (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const user = change.doc.data();
+          console.log(`Change detected: ${change.type}`, change.doc.id, user);
 
-        if (change.type === "added") {
-          setNotification({
-            title: "Nuevo usuario agregado",
-            body: `Se ha agregado un nuevo usuario: ${user.nombre} ${user.apellido}`,
-          });
-        } else if (change.type === "modified") {
-          setNotification({
-            title: "Usuario modificado",
-            body: `Se ha modificado el usuario: ${user.nombre}`,
-          });
-        } else if (change.type === "removed") {
-          setNotification({
-            title: "Usuario eliminado",
-            body: `Se ha eliminado el usuario: ${user.nombre}`,
-          });
-        }
-      });
-    });
+          if (change.type === "added") {
+            setNotification({
+              title: "Nuevo usuario agregado",
+              body: `Se ha agregado un nuevo usuario: ${user.nombre} ${user.apellido}`,
+            });
+          } else if (change.type === "modified") {
+            setNotification({
+              title: "Usuario modificado",
+              body: `Se ha modificado el usuario: ${user.nombre}`,
+            });
+          } else if (change.type === "removed") {
+            setNotification({
+              title: "Usuario eliminado",
+              body: `Se ha eliminado el usuario: ${user.nombre} ${user.apellido}`,
+            });
+          }
+        });
+      }
+    );
+
+    const unsubFirestoreMantenciones = onSnapshot(
+      collection(db, "mantenciones"),
+      (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const mantencion = change.doc.data();
+          console.log(
+            `Change detected: ${change.type}`,
+            change.doc.id,
+            mantencion
+          );
+
+          if (change.type === "added") {
+            setNotification({
+              title: "Nueva mantención agregada",
+              body: `Se ha agregado una mantención con ID: ${change.doc.id}`,
+            });
+          } else if (change.type === "modified") {
+            if (mantencion.estado === "en proceso") {
+              setNotification({
+                title: "Mantención en proceso",
+                body: `La mantención con ID ${change.doc.id} está en proceso.`,
+              });
+            } else if (mantencion.estado === "terminado") {
+              setNotification({
+                title: "Mantención Terminada",
+                body: `Se ha finalizado la mantención con éxito: ${change.doc.id}`,
+              });
+            } else {
+              setNotification({
+                title: "Estado de Mantención modificado",
+                body: `Se ha modificado el estado: ${mantencion.estado}`,
+              });
+            }
+          }
+        });
+      }
+    );
 
     requestPermission();
 
     return () => {
-      unsubFirestore();
+      unsubFirestoreUsers();
+      unsubFirestoreMantenciones();
     };
   }, []);
 
