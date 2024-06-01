@@ -211,6 +211,28 @@ const Notificacion = () => {
       }
     );
 
+    const unsubFirestoreFacturas = onSnapshot(
+      collection(db, "facturas"),
+      (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const facturas = change.doc.data();
+          console.log(
+            `Change detected: ${change.type}`,
+            change.doc.id,
+            facturas
+          );
+
+          if (change.type === "added" || change.type === "modified") {
+            setNotification({
+              title: "Se agrego una Factura de Proveedor",
+              body: `Proveedor: ${facturas.proveedor} con fecha:  ${facturas.fecha}`,
+            });
+            setSeverity("info");
+          }
+        });
+      }
+    );
+
     requestPermission();
 
     return () => {
@@ -219,6 +241,7 @@ const Notificacion = () => {
       unsubFirestoreInventario();
       unsubFirestoreAutomovil();
       unsubFirestoreHistorialVentas();
+      unsubFirestoreFacturas();
     };
   }, []);
 

@@ -7,7 +7,6 @@ import { Logout } from "@mui/icons-material";
 import "../styles/admin.css";
 import "../styles/darkMode.css";
 import Notificacion from "./notificaciones";
-import { Button } from "@mui/material";
 
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
@@ -88,7 +87,7 @@ const Admin = () => {
 
   const handleShowNotification = () => {
     setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 5000); // Mostrar notificación por 5 segundos
+    setTimeout(() => setShowNotification(false), 5000);
   };
 
   return (
