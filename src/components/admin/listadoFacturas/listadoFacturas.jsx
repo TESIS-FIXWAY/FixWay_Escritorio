@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Admin from "../admin";
 import { db, storage } from "../../../firebase";
 import {
@@ -8,7 +8,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -68,7 +68,7 @@ const ListadoFacturas = () => {
     );
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "facturas")),
       (querySnapshot) => {
@@ -93,9 +93,18 @@ const ListadoFacturas = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const deletefactura = async (facturaId) => {
+  const deleteFactura = async (facturaId) => {
     try {
+      const factura = facturas.find((factura) => factura.id === facturaId);
+      if (!factura) {
+        throw new Error("Factura no encontrada");
+      }
+
+      const fileRef = ref(storage, factura.url);
+      await deleteObject(fileRef);
+
       await deleteDoc(doc(db, "facturas", facturaId));
+
       setFacturas((prevFactura) =>
         prevFactura.filter((factura) => factura.id !== facturaId)
       );
@@ -295,7 +304,7 @@ const ListadoFacturas = () => {
                               </p>
                               <button
                                 className="guardar"
-                                onClick={() => deletefactura(factura.id)}
+                                onClick={() => deleteFactura(factura.id)}
                               >
                                 <FontAwesomeIcon icon="fa-solid fa-check" />
                               </button>
