@@ -5,15 +5,19 @@ import Logo from "../../images/LogoSinFondo.png";
 import "../styles/admin.css";
 import "../styles/darkMode.css";
 import { DarkModeContext } from "../../context/darkMode";
+import NotificacionMecanico from "./notificacionesMecanico";
+
 import { Logout } from "@mui/icons-material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const Mecanico = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -43,6 +47,11 @@ const Mecanico = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleShowNotification = () => {
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 5000);
   };
 
   return (
@@ -100,6 +109,14 @@ const Mecanico = () => {
           </ul>
         </nav>
         <div>
+          <button
+            className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
+            onClick={handleShowNotification}
+          >
+            <NotificationsIcon />
+          </button>
+
+          {showNotification && <NotificacionMecanico />}
           <button
             onClick={toggleDarkMode}
             className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
