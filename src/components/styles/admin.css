@@ -1,468 +1,278 @@
-#earth-container {
-    width: 550px;
-    height: 350px;
-    margin: auto; /* Centra el contenedor horizontalmente */
-    border: 1px solid #000; /* Opcional: Añadir un borde para visualizar el contenedor */
-    background: transparent; /* Fondo transparente */
-    border: none; /* Sin bordes */
-    z-index: 0;
-  }
-  
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+#earth-container {
+  width: 550px;
+  height: 350px;
+  margin: auto; /* Centra el contenedor horizontalmente */
+  background: transparent; /* Fondo transparente */
+  border: none; /* Sin bordes */
+  z-index: 0;
 }
 
 .encabezado {
-    width: 100%;
-    height: 100px;
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 10px;
-    background-color: #F7F9FB;
-    border-bottom: 1px solid #000;
-    z-index: 99;
+  width: 100%;
+  height: 100px;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #f7f9fb;
+  border-bottom: 1px solid #000;
+  z-index: 99;
 }
 
-
-
 .contenedor_principal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
 }
 
 .encabezado .logo img {
-    height: 100px;
-    width: auto;
-    transition: all 0.5s;
+  height: 100px;
+  width: auto;
+  transition: all 0.5s;
 }
 
 .encabezado .logo img:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .encabezado .arbol .links {
-    padding: 15px 1px;
-    color: #67748E;
-    text-decoration: none;
-    transition: border-bottom 400ms ease, color 400ms ease;
-    position: relative;
-    cursor: pointer;
+  padding: 15px 1px;
+  color: #67748e;
+  text-decoration: none;
+  transition: border-bottom 400ms ease, color 400ms ease;
+  position: relative;
+  cursor: pointer;
 }
 
 .encabezado .arbol .links .MuiSvgIcon-root {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .encabezado .arbol .links:hover,
 .encabezado .arbol .links.active {
-    border-bottom: 5px solid #000;
-    color: #000;
-    border-radius: 0;
+  border-bottom: 5px solid #000;
+  color: #000;
+  border-radius: 0;
 }
 
 .encabezado .arbol {
-    display: flex;
+  display: flex;
 }
 
 .encabezado .arbol ul {
-    display: flex;
-    list-style: none;
+  display: flex;
+  list-style: none;
 }
 
 .encabezado .arbol li {
-    display: inline-block;
-    padding: 0 20px;
-    position: relative;
+  display: inline-block;
+  padding: 0 20px;
+  position: relative;
 }
 
-
-
-
-
+/* Estilo base para los sub-menús */
 .encabezado .sub-menu {
-    display: none;
-    display: grid;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    background-color: white;
-    list-style: none;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    width: 200px;
-    height: auto;
-    padding: 0;
-    margin: 0;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  list-style: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 10px; /* Redondea los bordes del sub-menú */
+  padding: 5px 0; /* Añade un poco de espacio interno al sub-menú */
 }
 
+/* Ajustamos el estilo de los elementos de la lista */
 .encabezado .sub-menu li {
-    display: block; /* Para que cada elemento esté en una línea separada */
-    padding: 10px 20px;
-    width: 100%; /* Ocupa todo el ancho disponible */
-}
-.encabezado .sub-menu li {
-    color: black;
-    text-decoration: none;
+  padding: 10px 20px;
+  color: black;
+  text-decoration: none;
+  border-radius: 10px; /* Redondea los bordes de los elementos del sub-menú */
 }
 
-.encabezado .arbol .link:hover .sub-menu,
-.encabezado .arbol .link.active .sub-menu {
-    display: block;
+/* Ajustamos el estilo de los enlaces en el menú principal */
+.encabezado .arbol .links {
+  padding: 15px 1px;
+  color: #67748e;
+  text-decoration: none;
+  transition: border-bottom 400ms ease, color 400ms ease;
+  position: relative;
+  cursor: pointer;
+  border-bottom: none; /* Elimina el subrayado de los elementos <li> */
 }
 
+/* Estilo especial para el elemento "Agregar Factura Proveedor" */
+.encabezado .sub-menu li:nth-child(2) {
+  margin-top: 10px; /* Ajusta el espacio entre los elementos del sub-menú */
+}
 
-
-
-
-
+/* Estilos para hover y elemento activo */
+.encabezado .arbol .links:hover,
+.encabezado .arbol .links.active {
+  border-bottom: none; /* Elimina el subrayado en hover y activo */
+  color: #000;
+  border-radius: 0;
+}
 
 .boton_darkMode,
 .boton_salir {
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    color: #67748E;
-    background-color: #F7F9FB;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #67748e;
+  background-color: #f7f9fb;
 }
+
 .boton_darkMode:hover {
-    color: black;
-  }
-
-
-
-
+  color: black;
+}
 
 .menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: #67748E;
-    background-color: #F7F9FB;
-    cursor: pointer;
+  display: none;
+  background: none;
+  border: none;
+  color: #67748e;
+  background-color: #f7f9fb;
+  cursor: pointer;
 }
 
 .menu_ico {
-    font-size: 40px; /* Ajusta el tamaño del icono aquí */
+  font-size: 40px; /* Ajusta el tamaño del icono aquí */
 }
 
-
-
-
-
-
-.overlay{
-    display: none;
+.overlay {
+  display: none;
 }
 
 .burger {
-    position: relative;
-    width: 30px;
-    height: 25px;
-    background: transparent;
-    cursor: pointer;
-  }
-  
-  .burger input {
-    display: none;
-  }
-  
-  .burger span {
-    display: block;
-    position: absolute;
-    height: 4px;
-    width: 100%;
-    background: black;
-    border-radius: 9px;
-    opacity: 1;
-    left: 0;
-    transform: rotate(0deg);
-    transition: .25s ease-in-out;
-  }
+  position: relative;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  cursor: pointer;
+}
 
-  .burger span:nth-of-type(1) {
-    top: 0px;
-    transform-origin: left center;
-  }
-  
-  .burger span:nth-of-type(2) {
-    top: 50%;
-    transform: translateY(-50%);
-    transform-origin: left center;
-  }
-  
-  .burger span:nth-of-type(3) {
-    top: 100%;
-    transform-origin: left center;
-    transform: translateY(-100%);
-  }
-  
-  .burger input:checked ~ span:nth-of-type(1) {
-    transform: rotate(45deg);
-    top: 0px;
-    left: 5px;
-  }
-  
-  .burger input:checked ~ span:nth-of-type(2) {
-    width: 0%;
-    opacity: 0;
-  }
-  
-  .burger input:checked ~ span:nth-of-type(3) {
-    transform: rotate(-45deg);
-    top: 21px;
-    left: 5px;
-  }
+.burger input {
+  display: none;
+}
 
+.burger span {
+  display: block;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: black;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: 0.25s ease-in-out;
+}
 
-  
+.burger span:nth-of-type(1) {
+  top: 0px;
+  transform-origin: left center;
+}
+
+.burger span:nth-of-type(2) {
+  top: 50%;
+  transform: translateY(-50%);
+  transform-origin: left center;
+}
+
+.burger span:nth-of-type(3) {
+  top: 100%;
+  transform-origin: left center;
+  transform: translateY(-100%);
+}
+
+.burger input:checked ~ span:nth-of-type(1) {
+  transform: rotate(45deg);
+  top: 0px;
+  left: 5px;
+}
+
+.burger input:checked ~ span:nth-of-type(2) {
+  width: 0%;
+  opacity: 0;
+}
+
+.burger input:checked ~ span:nth-of-type(3) {
+  transform: rotate(-45deg);
+  top: 21px;
+  left: 5px;
+}
+
 @media (max-width: 887px) {
-
-    .encabezado .arbol {
-        display: none;
-        position: absolute;
-        top: 100px;
-        left: 0;
-        height: 100vh;
-        width: 250px;
-        background-color: #E9ECEF;
-        flex-direction: column;
-        align-items: flex-start;
-        transition: all 0.5s ease 0s;
-    }
-    .encabezado .arbol .link {
-        padding: 15px 20px; /* Ajusta el padding según tu preferencia */
-        color: #67748E;
-        text-decoration: none;
-        transition: border-left 400ms ease, color 400ms ease;
-        position: relative;
-        cursor: pointer;
-        width: 100%; /* Ajusta el ancho de los elementos al 100% */
-        box-sizing: border-box; /* Incluye el padding en el ancho total */
-        display: flex; /* Permite que los elementos ocupen toda la anchura disponible */
-        align-items: center; /* Centra verticalmente el contenido */
-    }
-    
-    .encabezado .arbol .link .MuiSvgIcon-root {
-        margin-right: 10px;
-    }
-    
-    .encabezado .arbol .link:hover,
-    .encabezado .arbol .link.active {
-        border-left: 5px solid #000;
-        color: #000;
-        border-radius: 0;
-    }
-    .encabezado .arbol.open {
-        display: flex;
-        transition: all 0.5s ease 0s;
-    }
-    hr {
-        margin: 10px 10px 10px -10px;
-        color: #fff;
-        width: 100%;
-    }
-    .overlay {
-        display: flex;
-    }
-}
-
-
-/* .reloj {
-    position: fixed;
-    right: 230px;
-    top: 35px;
-    color: #67748E;
-    font-size: 18px;
-  }
-  
-
-.header {
-    background-color: #F7F9FB;
-    height: 80px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0px 10px;
-    z-index: 0;
-}
-
-.contenedor-header{
-    width: 100%;
-    max-width: 100%;
-    margin: auto;
-}
-.contenedor-header .btn-menu, .logo{
-    float: left;
-    line-height:100px;
-    color: #67748E;
-}
-.contenedor-header .btn-menu label{
-    font-size: 25px;
-    cursor: pointer;
-    padding: 20px
-}
-.logo h1{
-   font-weight: 400;
-    font-size: 22px;
-    margin-left: 10px;
-}
-.contenedor-header .menu{
-    float: right;
-    line-height: 100px;
-}
-.contenedor-header .menu a{
-    display: inline-block;
-    padding: 15px;
-    color: #67748E;
-    line-height: normal;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border-bottom: 2px solid transparent;
-    font-size: 15px;
-    margin-right: 5px;
-}
-.contenedor-header .menu a:hover{
-    border-bottom: 2px solid #ADE3FF;
-    padding-bottom: 5px;
-}
-
-.menu_home{
-    color: #67748E;
-    font-size: 30px !important;
-    transition: all 0.3s ease; 
-}
-.menu_home:hover{
-    color: #17C1E8;
-    transform: scale(1.1); 
-}
-
-
-.icon-menu:hover{
-    color: #000;
-    font-size: 30px;
-    transform: translateY(-2%);
-    transition: all 0.1s ease-out 0.3s;
-}
-
-.boton_salir {
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    color: #67748E;
-    background-color: #F7F9FB;
-    margin-bottom: -2px; 
-}
-.boton_salir:hover {
-    color: #9D9D9D;
-    font-size: 20px;
-    transform: translateY(-1%);
-    transition: all 0.3s ease-out 0.1s;
-}
-
-
-
-
-
-
-
-.contenedor-menu {
-    position: fixed;
-    top: 80px; 
-    left: 0;
-    width: 250px;
-    height: calc(100% - 80px); 
-    transition: transform 0.3s ease, opacity 0.3s ease; 
-    z-index: 99; 
-    opacity: 1; 
-}
-
-#btn-menu:checked ~ .contenedor-menu {
-    transform: translateX(0%);
-}
-
-.cont_menu {
-    width: 100%; 
-    max-width: 250px;
-    background: #F7F9FB;
-    height: 100%;
-    position: relative;
-    transition: transform 500ms ease;
-    transform: translateX(-100%);
-    overflow-y: auto; 
-}
-
-#btn-menu:checked ~ .contenedor-menu .cont_menu {
-    transform: translateX(0%);
-}
-
-
-
-.cont_menu nav .link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    padding: 15px;
-    color: #67748E;
-    transition: border-left 400ms ease, color 400ms ease;
-}
-
-.cont_menu nav .link .MuiSvgIcon-root {
-    margin-right: 10px; 
-}
-
-
-
-.cont_menu nav .link:hover,
-.cont_menu nav .link.active {
-    border-left: 5px solid #000;
-    color: #000; 
-    border-radius: 0; 
-}
-
-
-
-
-
-
-.cont_menu label {
+  .encabezado .arbol {
+    display: none;
     position: absolute;
-    right: 20px;
-    top: 15px;
-    color: #fff;
+    top: 100px;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #e9ecef;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: all 0.5s ease 0s;
+  }
+
+  .encabezado .arbol .link {
+    padding: 15px 20px; /* Ajusta el padding según tu preferencia */
+    color: #67748e;
+    text-decoration: none;
+    transition: border-left 400ms ease, color 400ms ease;
+    position: relative;
     cursor: pointer;
-    font-size: 25px;
-}
-.cont_menu label:hover{
-    color: #000; 
-    border-radius: 0; 
-}
-.cont_menu hr {
-    margin: 10px;
+    width: 100%; /* Ajusta el ancho de los elementos al 100% */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    display: flex; /* Permite que los elementos ocupen toda la anchura disponible */
+    align-items: center; /* Centra verticalmente el contenido */
+  }
+
+  .encabezado .arbol .link .MuiSvgIcon-root {
+    margin-right: 10px;
+  }
+
+  .encabezado .arbol .link:hover,
+  .encabezado .arbol .link.active {
+    border-left: 5px solid #000;
+    color: #000;
+    border-radius: 0;
+  }
+
+  .encabezado .arbol.open {
+    display: flex;
+    transition: all 0.5s ease 0s;
+  }
+
+  hr {
+    margin: 10px 10px 10px -10px;
     color: #fff;
+    width: 100%;
+  }
+
+  .overlay {
+    display: flex;
+  }
 }
- */
 
-
-
-
-
-
-
-
-
+.notification-container {
+  position: absolute;
+  top: 100px; /* Ajusta la posición más abajo */
+  right: 0;
+  z-index: 1000;
+}

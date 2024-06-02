@@ -110,13 +110,16 @@ const Mecanico = () => {
         </nav>
         <div>
           <button
-            className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
+            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
             onClick={handleShowNotification}
           >
             <NotificationsIcon />
           </button>
-
-          {showNotification && <NotificacionMecanico />}
+          {showNotification && (
+            <div className="notification-container">
+              <NotificacionMecanico />
+            </div>
+          )}
           <button
             onClick={toggleDarkMode}
             className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}

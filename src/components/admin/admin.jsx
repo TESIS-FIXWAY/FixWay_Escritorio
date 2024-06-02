@@ -98,7 +98,6 @@ const Admin = () => {
             <img src={Logo} alt="logo" />
           </Link>
         </div>
-
         <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
           <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
             <li onClick={toggleSubMenu1}>
@@ -142,7 +141,6 @@ const Admin = () => {
                 </ul>
               )}
             </li>
-
             <li>
               <Link
                 to="/gestionMantencionesAdmin"
@@ -266,7 +264,6 @@ const Admin = () => {
                 </ul>
               )}
             </li>
-
             <li onClick={toggleSubMenu4}>
               <Link
                 className={`links ${isDarkMode ? "dark-mode" : ""}${
@@ -309,16 +306,18 @@ const Admin = () => {
             </li>
           </ul>
         </nav>
-
         <div>
           <button
-            className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
+            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
             onClick={handleShowNotification}
           >
             <NotificationsIcon />
           </button>
-
-          {showNotification && <Notificacion />}
+          {showNotification && (
+            <div className="notification-container">
+              <Notificacion />
+            </div>
+          )}
           <button
             onClick={toggleDarkMode}
             className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
@@ -337,7 +336,6 @@ const Admin = () => {
             <Logout />
           </button>
         </div>
-
         <div className="overlay">
           <label className="burger" htmlFor="burger">
             <input
@@ -351,7 +349,6 @@ const Admin = () => {
             <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
             <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
           </label>
-
           <div className={`arbol ${isMenuOpen ? "open" : ""}`}>
             <Link
               itemId="pickers-community"
@@ -417,7 +414,6 @@ const Admin = () => {
             >
               <span className="link_name">Agregar Inventario</span>
             </Link>
-
             <Link
               to="/listarInventario"
               className={`link ${
