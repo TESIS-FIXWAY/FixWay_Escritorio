@@ -1,7 +1,11 @@
+import "../components/styles/recuperarContrasena.css";
 import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const RecuperarContrasena = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +30,7 @@ const RecuperarContrasena = () => {
 
   return (
     <div className="recuperar-contrasena">
-      <h2>Recuperar Contraseña</h2>
+      <h1>Recuperar Contraseña</h1>
       {emailSent ? (
         <p>
           Se ha enviado un correo electrónico con instrucciones para restablecer
@@ -34,13 +38,24 @@ const RecuperarContrasena = () => {
         </p>
       ) : (
         <>
-          <input
+          <TextField
             type="email"
-            placeholder="Correo electrónico"
+            label="Correo Electrónico"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            sx={{ width: "16%" }}
           />
-          <button onClick={handleForgotPassword}>Enviar</button>
+          <Button
+            onClick={handleForgotPassword}
+            variant="outlined"
+            sx={{
+              fontSize: "19px",
+              marginBottom: "19px",
+              top: "10px",
+            }}
+          >
+            Enviar
+          </Button>
           {error && <p style={{ color: "red" }}>{error}</p>}
         </>
       )}
