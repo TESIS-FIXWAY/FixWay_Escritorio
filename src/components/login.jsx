@@ -4,11 +4,7 @@ import React, { useState, useEffect } from "react";
 import { db, auth } from "../firebase";
 import { Link } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -61,22 +57,6 @@ const Login = () => {
     }
   }
 
-  async function handleForgotPassword() {
-    const email = prompt("Ingresa tu correo electrónico:");
-
-    try {
-      await sendPasswordResetEmail(auth, email);
-      setResetPasswordSent(true);
-    } catch (error) {
-      console.error(
-        "Error al enviar el correo electrónico de restablecimiento de contraseña:",
-        error
-      );
-      setError(
-        "Error al enviar el correo electrónico de restablecimiento de contraseña."
-      );
-    }
-  }
   useEffect(() => {
     if (user) {
       user.rol === "administrador"
@@ -130,11 +110,7 @@ const Login = () => {
               </form>
               {error && <p style={{ marginTop: 10, fontSize: 15 }}>{error}</p>}
               <br />
-              <Link
-                to="/loginRecuperar"
-                className="resetPassword"
-                onClick={handleForgotPassword}
-              >
+              <Link to="/recuperarContrasena" className="resetPassword">
                 Olvidé mi Contraseña
               </Link>
             </div>

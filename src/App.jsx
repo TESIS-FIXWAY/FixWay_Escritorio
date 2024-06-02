@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 //componets (vistas)
 import Login from "./components/login";
+import RecuperarContrasena from "./components/RecuperarContrasena";
 import LoadingScreen from "./components/loadingScreen";
 
 //admin
@@ -52,6 +53,10 @@ function App() {
         <AuthContextProvider>
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route
+              path="/recuperarContrasena"
+              element={<RecuperarContrasena />}
+            />
             <Route
               path="/admin"
               element={
