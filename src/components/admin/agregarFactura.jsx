@@ -3,7 +3,7 @@ import { storage, db } from "../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Admin from "../admin/admin";
-import { Button } from "@mui/material";
+import { Button, CircularProgress, Typography, Box } from "@mui/material";
 import "../styles/agregarUsuario.css";
 import "../styles/darkMode.css";
 import { DarkModeContext } from "../../context/darkMode";
@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 const AgregarFactura = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [file, setFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [mensaje, setMensaje] = useState(null);
   const [state, setState] = useState({
@@ -28,6 +29,15 @@ const AgregarFactura = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
+    if (selectedFile && selectedFile.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setFilePreview(null);
+    }
   };
 
   const handleUpload = async () => {
@@ -96,6 +106,7 @@ const AgregarFactura = () => {
       setMensaje("Se ha guardado correctamente");
       setState({ fecha: "", proveedor: "", detalle: "" });
       setFile(null);
+      setFilePreview(null);
     } catch (error) {
       console.error("Error al agregar el documento:", error);
       setMensaje("Ha ocurrido un error al guardar");
@@ -183,20 +194,60 @@ const AgregarFactura = () => {
                     className={`input_formulario ${
                       isDarkMode ? "dark-mode" : ""
                     }`}
+                    style={{ display: "none" }}
+                    id="upload-input"
                   />
+                  <label htmlFor="upload-input">
+                    <Button
+                      variant="contained"
+                      component="span"
+                      className={`input_formulario ${
+                        isDarkMode ? "dark-mode" : ""
+                      }`}
+                    >
+                      Seleccionar Archivo
+                    </Button>
+                  </label>
                 </p>
-                {mensaje && <p className="mensaje">{mensaje}</p>}
+                {file && (
+                  <Box mt={2}>
+                    <Typography variant="body2">
+                      Archivo seleccionado: {file.name}
+                    </Typography>
+                    {filePreview && (
+                      <img
+                        src={filePreview}
+                        alt="Previsualización"
+                        style={{ width: "100px", marginTop: "10px" }}
+                      />
+                    )}
+                  </Box>
+                )}
+                {mensaje && (
+                  <Typography className="mensaje" color="error">
+                    {mensaje}
+                  </Typography>
+                )}
                 <p className="block_boton">
                   <Button
                     variant="outlined"
                     type="submit"
                     size="large"
                     disabled={uploading}
-                    style={{ with: "120px", fontSize: "20px" }}
+                    style={{
+                      width: "300px",
+                      fontSize: "16px",
+                      marginBottom: "10px",
+                    }}
                   >
                     Agregar Factura Proveedor
                   </Button>
-                  {uploading && <p>Subiendo Archivo</p>}
+                  {uploading && (
+                    <div style={{ marginTop: "10px" }}>
+                      <CircularProgress />
+                      <Typography>Subiendo Archivo</Typography>
+                    </div>
+                  )}
                 </p>
               </form>
             </div>
