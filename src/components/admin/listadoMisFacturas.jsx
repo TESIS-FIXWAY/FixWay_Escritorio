@@ -15,8 +15,8 @@ import "../styles/listadoMisFacturas.css";
 
 const ListadoMisFacturas = () => {
   const [facturas, setFacturas] = useState([]);
+  const [facturaFiltrada, setFacturaFiltrada] = useState([]);
   const [selectedFactura, setSelectedFactura] = useState(null);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const cargarFacturas = async () => {
@@ -33,12 +33,13 @@ const ListadoMisFacturas = () => {
           })
         );
         setFacturas(facturasData);
+        setFacturaFiltrada(facturasData);
       } catch (error) {
         console.error("Error al cargar las facturas:", error);
       }
     };
     cargarFacturas();
-  }, [refresh]);
+  }, []);
 
   const downloadPDF = async (pdfPath) => {
     try {
@@ -57,14 +58,14 @@ const ListadoMisFacturas = () => {
 
   const filtrarFactura = (e) => {
     const texto = e.target.value.toLowerCase();
-    const facturasFiltradas = facturas.filter((factura) => {
-      const nombreArchivo = factura.id.toLowerCase();
-      return nombreArchivo.includes(texto);
-    });
-    setFacturas(facturasFiltradas);
-
     if (texto === "") {
-      setRefresh((prevRefresh) => !prevRefresh);
+      setFacturaFiltrada(facturas);
+    } else {
+      const facturasFiltradas = facturas.filter((factura) => {
+        const nombreArchivo = factura.id.toLowerCase();
+        return nombreArchivo.includes(texto);
+      });
+      setFacturaFiltrada(facturasFiltradas);
     }
   };
 
@@ -98,7 +99,7 @@ const ListadoMisFacturas = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {facturas.map((factura) => (
+                {facturaFiltrada.map((factura) => (
                   <TableRow key={factura.id}>
                     <TableCell>{factura.id}</TableCell>
                     <TableCell>

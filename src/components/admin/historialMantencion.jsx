@@ -12,9 +12,11 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { set } from "date-fns";
 
 const HistorialMantencionAdmin = () => {
   const [mantenciones, setMantenciones] = useState([]);
+  const [mantencionesFiltradas, setMantencionesFiltradas] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
@@ -27,24 +29,25 @@ const HistorialMantencionAdmin = () => {
           ...doc.data(),
         }));
         setMantenciones(mantencionesData);
+        setMantencionesFiltradas(mantencionesData);
       } catch (error) {
         console.error("Error fetching mantenciones:", error);
       }
     };
 
     fetchMantenciones();
-  }, [refresh]);
+  }, []);
 
   const filtrarPatente = (e) => {
     const texto = e.target.value.toLowerCase();
-    const mantencionesFiltradas = mantenciones.filter((item) => {
-      const patente = item.id.toLowerCase();
-      return patente.includes(texto);
-    });
-    setMantenciones(mantencionesFiltradas);
-
     if (texto === "") {
-      setRefresh((prevRefresh) => !prevRefresh);
+      setMantencionesFiltradas(mantenciones);
+    } else {
+      const mantencionesFiltradas = mantenciones.filter((item) => {
+        const patente = item.id.toLowerCase();
+        return patente.includes(texto);
+      });
+      setMantencionesFiltradas(mantencionesFiltradas);
     }
   };
 
@@ -157,7 +160,7 @@ const HistorialMantencionAdmin = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {mantenciones.map((mantencion) => (
+                {mantencionesFiltradas.map((mantencion) => (
                   <TableRow key={mantencion.id}>
                     <TableCell>{mantencion.id}</TableCell>
                     <TableCell>

@@ -7,9 +7,9 @@ import {
   query,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
-import { deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditarUsuarioModalFactura from "./editarUsuarioModalFactura";
@@ -45,12 +45,12 @@ import Button from "@mui/material/Button";
 
 const ListadoFacturas = () => {
   const [facturas, setFacturas] = useState([]);
+  const [facturaFiltrada, setFacturaFiltrada] = useState([]);
   const navigate = useNavigate();
   const [editingFacturaId, setEditingFacturaId] = useState(null);
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteFacturaId, setDeleteFacturaId] = useState(null);
   const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [refresh, setRefresh] = useState(false);
 
   const editarUsuarioModalFactura = ({
     factura,
@@ -77,11 +77,12 @@ const ListadoFacturas = () => {
           ...doc.data(),
         }));
         setFacturas(facturasData);
+        setFacturaFiltrada(facturasData);
       }
     );
 
     return () => unsubscribe();
-  }, [refresh]);
+  }, []);
 
   const startDelete = (facturaId) => {
     setDeleteFacturaId(facturaId);
@@ -106,6 +107,9 @@ const ListadoFacturas = () => {
       await deleteDoc(doc(db, "facturas", facturaId));
 
       setFacturas((prevFactura) =>
+        prevFactura.filter((factura) => factura.id !== facturaId)
+      );
+      setFacturaFiltrada((prevFactura) =>
         prevFactura.filter((factura) => factura.id !== facturaId)
       );
       console.log("Factura eliminada correctamente.");
@@ -137,20 +141,20 @@ const ListadoFacturas = () => {
 
   const filtrarFactura = (e) => {
     const texto = e.target.value.toLowerCase();
-    const facturasFiltrados = facturas.filter((factura) => {
-      const proveedor = factura.proveedor.toLowerCase();
-      const fecha = factura.fecha.toLowerCase();
-      const detalle = factura.detalle.toLowerCase();
-      return (
-        proveedor.includes(texto) ||
-        fecha.includes(texto) ||
-        detalle.includes(texto)
-      );
-    });
-    setFacturas(facturasFiltrados);
-
     if (texto === "") {
-      setRefresh((prevRefresh) => !prevRefresh);
+      setFacturaFiltrada(facturas);
+    } else {
+      const facturasFiltrados = facturas.filter((factura) => {
+        const proveedor = factura.proveedor.toLowerCase();
+        const fecha = factura.fecha.toLowerCase();
+        const detalle = factura.detalle.toLowerCase();
+        return (
+          proveedor.includes(texto) ||
+          fecha.includes(texto) ||
+          detalle.includes(texto)
+        );
+      });
+      setFacturaFiltrada(facturasFiltrados);
     }
   };
 
@@ -170,6 +174,7 @@ const ListadoFacturas = () => {
       factura.id === editingFacturaId ? { ...factura, [name]: value } : factura
     );
     setFacturas(updatedFacturas);
+    setFacturaFiltrada(updatedFacturas);
   };
 
   const agregarFactura = () => {
@@ -218,7 +223,7 @@ const ListadoFacturas = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {facturas.map((factura) => (
+                {facturaFiltrada.map((factura) => (
                   <TableRow key={factura.id}>
                     <TableCell>{factura.proveedor}</TableCell>
                     <TableCell>{factura.fecha}</TableCell>

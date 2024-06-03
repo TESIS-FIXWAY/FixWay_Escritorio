@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Admin from "../admin";
 import { db } from "../../../firebase";
 import {
@@ -42,14 +42,14 @@ library.add(
 
 const ListarInventario = () => {
   const [inventario, setInventario] = useState([]);
+  const [inventarioFiltrado, setInventarioFiltrado] = useState([]);
   const [editingInventarioId, setEditingInventarioId] = useState(null);
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteInventarioId, setDeleteInventarioId] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "inventario")),
       (querySnapshot) => {
@@ -58,11 +58,12 @@ const ListarInventario = () => {
           ...doc.data(),
         }));
         setInventario(inventarioData);
+        setInventarioFiltrado(inventarioData);
       }
     );
 
     return () => unsubscribe();
-  }, [refresh]);
+  }, []);
 
   const startDelete = (inventarioId) => {
     setDeleteInventarioId(inventarioId);
@@ -78,6 +79,9 @@ const ListarInventario = () => {
     try {
       await deleteDoc(doc(db, "inventario", inventarioId));
       setInventario((prevInventario) =>
+        prevInventario.filter((inventario) => inventario.id !== inventarioId)
+      );
+      setInventarioFiltrado((prevInventario) =>
         prevInventario.filter((inventario) => inventario.id !== inventarioId)
       );
       console.log("Factura eliminada correctamente.");
@@ -109,36 +113,37 @@ const ListarInventario = () => {
 
   const filtrarInventario = (e) => {
     const texto = e.target.value.toLowerCase();
-    const inventarioFiltrados = inventario.filter((item) => {
-      const {
-        codigoProducto,
-        nombreProducto,
-        categoria,
-        marca,
-        cantidad,
-        costo,
-      } = item;
-
-      const codigoProductoLower = codigoProducto.toLowerCase();
-      const nombreProductoLower = nombreProducto.toLowerCase();
-      const categoriaLower = categoria.toLowerCase();
-      const marcaLower = marca.toLowerCase();
-      const cantidadLower = cantidad.toString().toLowerCase();
-      const costoLower = costo.toString().toLowerCase();
-
-      return (
-        codigoProductoLower.includes(texto) ||
-        nombreProductoLower.includes(texto) ||
-        categoriaLower.includes(texto) ||
-        marcaLower.includes(texto) ||
-        cantidadLower.includes(texto) ||
-        costoLower.includes(texto)
-      );
-    });
-    setInventario(inventarioFiltrados);
 
     if (texto === "") {
-      setRefresh((prevRefresh) => !prevRefresh);
+      setInventarioFiltrado(inventario);
+    } else {
+      const inventarioFiltrados = inventario.filter((item) => {
+        const {
+          codigoProducto,
+          nombreProducto,
+          categoria,
+          marca,
+          cantidad,
+          costo,
+        } = item;
+  
+        const codigoProductoLower = codigoProducto.toLowerCase();
+        const nombreProductoLower = nombreProducto.toLowerCase();
+        const categoriaLower = categoria.toLowerCase();
+        const marcaLower = marca.toLowerCase();
+        const cantidadLower = cantidad.toString().toLowerCase();
+        const costoLower = costo.toString().toLowerCase();
+  
+        return (
+          codigoProductoLower.includes(texto) ||
+          nombreProductoLower.includes(texto) ||
+          categoriaLower.includes(texto) ||
+          marcaLower.includes(texto) ||
+          cantidadLower.includes(texto) ||
+          costoLower.includes(texto)
+        );
+      });
+      setInventarioFiltrado(inventarioFiltrados);
     }
   };
 
@@ -149,6 +154,7 @@ const ListarInventario = () => {
         : inventario
     );
     setInventario(updatedInventario);
+    setInventarioFiltrado(updatedInventario);
   };
 
   const agregarInventario = () => {
@@ -204,7 +210,7 @@ const ListarInventario = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {inventario.map((inventario) => (
+                {inventarioFiltrado.map((inventario) => (
                   <TableRow
                     key={inventario.id}
                     style={getRowStyle(inventario.cantidad)}
