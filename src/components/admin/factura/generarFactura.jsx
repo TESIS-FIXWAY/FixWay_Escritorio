@@ -40,6 +40,7 @@ import Button from "@mui/material/Button";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
+  const [inventarioFiltrados, setInventarioFiltrados] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [showProductList, setShowProductList] = useState(false);
   const [tipoPago, setTipoPago] = useState("");
@@ -47,6 +48,7 @@ const GenerarFactura = () => {
   const [descuentoMenuValue, setDescuentoMenuValue] = useState(0);
   const [descuentoAplicado, setDescuentoAplicado] = useState(0);
   const [clientes, setClientes] = useState([]);
+  const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [showClienteVista, setShowClienteVista] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -793,13 +795,14 @@ const GenerarFactura = () => {
           ...doc.data(),
         }));
         setInventario(datosInventario);
+        setInventarioFiltrados(datosInventario);
       } catch (error) {
         console.error("Error al obtener el inventario:", error);
       }
     };
 
     obtenerInventario();
-  }, [actualizacion, refresh]);
+  }, [actualizacion]);
 
   const toggleSeleccionProducto = (id) => {
     const productoIndex = productosSeleccionados.findIndex(
@@ -849,14 +852,15 @@ const GenerarFactura = () => {
 
   const buscadorProducto = (e) => {
     const { value } = e.target;
-    const inventarioFiltrado = inventario.filter((producto) => {
-      return producto.nombreProducto
-        .toLowerCase()
-        .includes(value.toLowerCase());
-    });
-    setInventario(inventarioFiltrado);
     if (value === "") {
-      setRefresh((prevRefresh) => !prevRefresh);
+      setInventarioFiltrados(inventario);
+    } else {
+      const inventarioFiltrado = inventario.filter((producto) => {
+        return producto.nombreProducto
+          .toLowerCase()
+          .includes(value.toLowerCase());
+      });
+      setInventarioFiltrados(inventarioFiltrado);
     }
   };
 
@@ -906,13 +910,14 @@ const GenerarFactura = () => {
           ...doc.data(),
         }));
         setClientes(datosClientes);
+        setClientesFiltrados(datosClientes);
       } catch (error) {
         console.error("Error al obtener la lista de clientes:", error);
       }
     };
 
     obtenerClientes();
-  }, [refresh]);
+  }, []);
 
   const toggleClienteVista = () => {
     setShowClienteVista(!showClienteVista);
@@ -930,6 +935,7 @@ const GenerarFactura = () => {
       await deleteDoc(clienteDocRef);
 
       setClientes(clientes.filter((cliente) => cliente.id !== clienteId));
+      setClientesFiltrados(clientesFiltrados.filter((cliente) => cliente.id !== clienteId));
     } catch (error) {
       console.error("Error al eliminar el cliente:", error);
     }
@@ -937,19 +943,19 @@ const GenerarFactura = () => {
 
   const filtrarCliente = (e) => {
     const texto = e.target.value.toLowerCase();
-    const filtro = clientes.filter((clientes) => {
-      return (
-        clientes.nombre.toLowerCase().includes(texto) ||
-        clientes.apellido.toLowerCase().includes(texto) ||
-        clientes.rut.toLowerCase().includes(texto) ||
-        clientes.email.toLowerCase().includes(texto) ||
-        clientes.telefono.toLowerCase().includes(texto)
-      );
-    });
-    setClientes(filtro);
-
     if (texto === "") {
-      setRefresh((prevRefresh) => !prevRefresh);
+      setClientesFiltrados(clientes);
+    } else {
+      const filtro = clientes.filter((clientes) => {
+        return (
+          clientes.nombre.toLowerCase().includes(texto) ||
+          clientes.apellido.toLowerCase().includes(texto) ||
+          clientes.rut.toLowerCase().includes(texto) ||
+          clientes.email.toLowerCase().includes(texto) ||
+          clientes.telefono.toLowerCase().includes(texto)
+        );
+      });
+      setClientesFiltrados(filtro);
     }
   };
 
@@ -961,6 +967,7 @@ const GenerarFactura = () => {
             <ClienteVista
               clientes={clientes}
               setClientes={setClientes}
+              clientesFiltrados={clientesFiltrados}
               toggleClienteVista={toggleClienteVista}
               seleccionarCliente={seleccionarCliente}
               eliminarCliente={eliminarCliente}
@@ -1082,7 +1089,7 @@ const GenerarFactura = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {inventario.map((item) => (
+                {inventarioFiltrados.map((item) => (
                   <TableRow key={item.id} style={getRowStyle(item.cantidad)}>
                     <TableCell>
                       <Checkbox

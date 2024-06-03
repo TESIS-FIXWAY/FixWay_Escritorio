@@ -10,6 +10,7 @@ const ClienteVista = ({
   setClienteRut,
   setClienteEmail,
   setClienteTelefono,
+  clientesFiltrados,
   toggleClienteVista,
   seleccionarCliente,
   eliminarCliente,
@@ -70,7 +71,7 @@ const ClienteVista = ({
               </tr>
             </thead>
             <tbody>
-              {clientes.map((item, index) => (
+              {clientesFiltrados.map((item, index) => (
                 <tr key={index}>
                   <td>{item.nombre}</td>
                   <td>{item.apellido}</td>
