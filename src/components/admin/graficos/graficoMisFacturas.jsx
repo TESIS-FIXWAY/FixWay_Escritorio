@@ -4,7 +4,9 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { Chart } from "react-google-charts";
 import "../../styles/graficos.css";
 import "../../styles/darkMode.css";
-import { DarkModeContext } from '../../../context/darkMode'; 
+import { DarkModeContext } from "../../../context/darkMode";
+
+Chart.register(ArcElement, Tooltip, Legend);
 
 const GraficoMisFacturas = () => {
   const [data, setData] = useState([]);
@@ -97,7 +99,9 @@ const GraficoMisFacturas = () => {
 
   return (
     <div className={`grafico-container ${isDarkMode ? "dark-mode" : ""}`}>
-      <h1 className={`titulo-Grafico ${isDarkMode ? "dark-mode" : ""}`}>Facturas</h1>
+      <h1 className={`titulo-Grafico ${isDarkMode ? "dark-mode" : ""}`}>
+        Facturas
+      </h1>
       <div className={`grafico ${isDarkMode ? "dark-mode" : ""}`}>
         <Chart
           width={"100%"}
