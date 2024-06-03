@@ -856,9 +856,10 @@ const GenerarFactura = () => {
       setInventarioFiltrados(inventario);
     } else {
       const inventarioFiltrado = inventario.filter((producto) => {
-        return producto.nombreProducto
-          .toLowerCase()
-          .includes(value.toLowerCase());
+        return (
+          producto.nombreProducto.toLowerCase().includes(value.toLowerCase()) ||
+          producto.id.toLowerCase().includes(value.toLowerCase())
+        );
       });
       setInventarioFiltrados(inventarioFiltrado);
     }
@@ -935,7 +936,9 @@ const GenerarFactura = () => {
       await deleteDoc(clienteDocRef);
 
       setClientes(clientes.filter((cliente) => cliente.id !== clienteId));
-      setClientesFiltrados(clientesFiltrados.filter((cliente) => cliente.id !== clienteId));
+      setClientesFiltrados(
+        clientesFiltrados.filter((cliente) => cliente.id !== clienteId)
+      );
     } catch (error) {
       console.error("Error al eliminar el cliente:", error);
     }
@@ -1000,7 +1003,7 @@ const GenerarFactura = () => {
 
   return (
     <>
-        <Admin />
+      <Admin />
       <div className="tabla_listar">
         <div className="table_header">
           <h2>Generar Factura</h2>
