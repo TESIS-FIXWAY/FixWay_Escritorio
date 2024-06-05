@@ -6,8 +6,6 @@ import "../../styles/graficos.css";
 import "../../styles/darkMode.css";
 import { DarkModeContext } from "../../../context/darkMode";
 
-Chart.register(ArcElement, Tooltip, Legend);
-
 const GraficoMisFacturas = () => {
   const [data, setData] = useState([]);
   const { isDarkMode } = useContext(DarkModeContext);

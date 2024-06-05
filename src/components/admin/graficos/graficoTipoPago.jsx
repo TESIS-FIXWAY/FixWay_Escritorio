@@ -80,8 +80,8 @@ const GraficoTipoPago = () => {
   };
 
   return (
-    <div >
-      <div >
+    <div>
+      <div>
         <Doughnut data={chartData} options={options} />
       </div>
     </div>
