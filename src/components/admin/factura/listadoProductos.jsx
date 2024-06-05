@@ -1,4 +1,14 @@
 import React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
 export default function ListadoProductos({
   showProductList,
   productosSeleccionados,
@@ -10,32 +20,29 @@ export default function ListadoProductos({
   if (showProductList) {
     return (
       <div className="fondo_no">
-        <div className="editar" style={{ width: "750px" }}>
+        <div className="editar" style={{ width: "950px" }}>
           <p className="p_editar">Productos Seleccionados</p>
-          <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Código</th>
-                  <th scope="col">
-                    Nombre del <br /> Producto
-                  </th>
-                  <th scope="col">Costo</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
+          <TableContainer component={Paper} style={{ maxHeight: "400px" }}>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Código</TableCell>
+                  <TableCell>Nombre del Producto</TableCell>
+                  <TableCell>Costo</TableCell>
+                  <TableCell>Cantidad</TableCell>
+                  <TableCell>Acciones</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {productosSeleccionados.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.id}</td>
-                    <td>{item.nombreProducto}</td>
-                    <td>{item.costo}</td>
-                    <td>
-                      <input
+                  <TableRow key={index}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.nombreProducto}</TableCell>
+                    <TableCell>{item.costo}</TableCell>
+                    <TableCell>
+                      <TextField
                         type="number"
-                        min="0"
-                        style={{ width: "80px" }}
+                        inputProps={{ min: 0, style: { width: "80px" } }}
                         value={item.cantidad || 0}
                         onChange={(e) => {
                           const nuevaCantidad =
@@ -43,38 +50,43 @@ export default function ListadoProductos({
                           actualizarCantidadManual(item.id, nuevaCantidad);
                         }}
                       />
-                    </td>
-                    <td>
-                      <button
+                    </TableCell>
+                    <TableCell>
+                      <Button
                         onClick={() => quitarProducto(item.id)}
-                        style={{ backgroundColor: "red" }}
+                        variant="contained"
+                        sx={{ color: "white" }}
                       >
                         Quitar
-                      </button>
-                    </td>
-                  </tr>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "10px",
+            }}
+          >
+            <Button
+              style={{ background: "#E74C3C", color: "#fff" }}
+              variant="contained"
+              onClick={() => setProductosSeleccionados([])}
+            >
+              Vaciar Lista
+            </Button>
+            <Button
+              style={{ background: "#1DC258", color: "#fff" }}
+              variant="contained"
+              onClick={toggleProductList}
+            >
+              Ocultar listado de productos
+            </Button>
           </div>
-          <tfoot>
-            <tr>
-              <td colSpan="5">
-                <button
-                  style={{ background: "#E74C3C", marginRight: "10px" }}
-                  onClick={() => setProductosSeleccionados([])}
-                >
-                  Vaciar Lista
-                </button>
-                <button
-                  style={{ background: "#1DC258" }}
-                  onClick={toggleProductList}
-                >
-                  Ocultar listado de productos
-                </button>
-              </td>
-            </tr>
-          </tfoot>
         </div>
       </div>
     );

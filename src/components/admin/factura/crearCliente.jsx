@@ -3,6 +3,11 @@ import { db } from "../../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import validadorRUT from "../validadorRUT";
 import { useNavigate } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
 const CrearClienteFactura = () => {
   const [clienteNombre, setClienteNombre] = useState("");
@@ -12,6 +17,7 @@ const CrearClienteFactura = () => {
   const [clienteTelefono, setClienteTelefono] = useState("");
   const [mensajeRut, setMensajeRut] = useState("");
   const [errorMensaje, setErrorMensaje] = useState("");
+  const [mensajeEmail, setMensajeEmail] = useState("");
   const navigate = useNavigate();
 
   const validarRutOnChange = () => {
@@ -25,6 +31,11 @@ const CrearClienteFactura = () => {
     }
   };
 
+  const validarEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const agregarCliente = async () => {
     if (
       !clienteNombre ||
@@ -35,6 +46,13 @@ const CrearClienteFactura = () => {
     ) {
       setErrorMensaje("Todos los campos son obligatorios.");
       return;
+    }
+
+    if (!validarEmail(clienteEmail)) {
+      setMensajeEmail("Email inválido.");
+      return;
+    } else {
+      setMensajeEmail("");
     }
 
     try {
@@ -52,6 +70,7 @@ const CrearClienteFactura = () => {
       setClienteTelefono("");
       setMensajeRut("");
       setErrorMensaje("");
+      setMensajeEmail("");
       alert("Cliente agregado exitosamente!");
       navigate("/generarFactura");
     } catch (e) {
@@ -67,64 +86,86 @@ const CrearClienteFactura = () => {
     setClienteTelefono("");
     setMensajeRut("");
     setErrorMensaje("");
+    setMensajeEmail("");
     navigate("/generarFactura");
   };
 
   return (
-    <div className="fondo_no">
-      <div className="editar" style={{ width: "500px" }}>
-        <div className="descuento-menu">
-          <input
-            type="text"
-            placeholder="Nombre"
-            id="nombre"
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      className="fondo_no"
+    >
+      <Paper elevation={3} style={{ width: "500px", padding: "20px" }}>
+        <Typography variant="h6" gutterBottom>
+          Crear Cliente para Factura
+        </Typography>
+        <Box display="flex" flexDirection="column" gap={2}>
+          <TextField
+            label="Nombre"
+            variant="outlined"
             value={clienteNombre}
             onChange={(e) => setClienteNombre(e.target.value)}
           />
-          <input
-            type="text"
-            id="apellido"
-            placeholder="Apellido"
+          <TextField
+            label="Apellido"
+            variant="outlined"
             value={clienteApellido}
             onChange={(e) => setClienteApellido(e.target.value)}
           />
-          <input
-            type="text"
-            placeholder="Rut (11.111.111-1)"
+          <TextField
+            label="Rut (11.111.111-1)"
+            variant="outlined"
             value={clienteRut}
             id="rut"
             onChange={(e) => setClienteRut(e.target.value)}
             onBlur={validarRutOnChange}
           />
-          <p className="mensaje_rut">{mensajeRut}</p>
-          <input
-            type="text"
-            placeholder="Email"
-            id="email"
+          <Typography variant="body2" color="textSecondary">
+            {mensajeRut}
+          </Typography>
+          <TextField
+            label="Email"
+            variant="outlined"
             value={clienteEmail}
             onChange={(e) => setClienteEmail(e.target.value)}
           />
-          <input
-            type="text"
-            placeholder="Ejemplo: +56 9 12345678"
-            pattern="[+]56 [0-9]{1} [0-9]{8}"
-            id="telefono"
+          <Typography variant="body2" color="error">
+            {mensajeEmail}
+          </Typography>
+          <TextField
+            label="Teléfono (Ejemplo: +56 9 12345678)"
+            variant="outlined"
             value={clienteTelefono}
             onChange={(e) => setClienteTelefono(e.target.value)}
+            inputProps={{ pattern: "[+]56 [0-9]{1} [0-9]{8}" }}
           />
-          {errorMensaje && <p className="error">{errorMensaje}</p>}
-          <button onClick={agregarCliente} style={{ background: "#1DC258" }}>
-            Agregar Cliente
-          </button>
-          <button
-            onClick={toggleAgregarCliente}
-            style={{ background: "#E74C3C" }}
-          >
-            Cancelar
-          </button>
-        </div>
-      </div>
-    </div>
+          {errorMensaje && (
+            <Typography variant="body2" color="error">
+              {errorMensaje}
+            </Typography>
+          )}
+          <Box display="flex" justifyContent="space-between">
+            <Button
+              onClick={agregarCliente}
+              variant="contained"
+              color="success"
+            >
+              Agregar Cliente
+            </Button>
+            <Button
+              onClick={toggleAgregarCliente}
+              variant="contained"
+              color="error"
+            >
+              Cancelar
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

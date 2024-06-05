@@ -1,6 +1,15 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import DoneIcon from "@mui/icons-material/Done";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ClienteVista = ({
   clientes,
@@ -51,64 +60,60 @@ const ClienteVista = ({
 
   return (
     <div className="fondo_no">
-      <div className="editar" style={{ width: "1000px" }}>
+      <div className="editar" style={{ width: "1550px" }}>
         <p className="p_editar">Lista de Clientes</p>
         <input
           type="text"
           placeholder="Buscar cliente..."
           onChange={filtrarCliente}
         />
-        <div style={{ maxHeight: "300px", overflowY: "auto" }}>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">RUT</th>
-                <th scope="col">Email</th>
-                <th scope="col">Teléfono</th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
+        <TableContainer component={Paper} style={{ maxHeight: "800px" }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Apellido</TableCell>
+                <TableCell>RUT</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Teléfono</TableCell>
+                <TableCell>Acciones</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {clientesFiltrados.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.nombre}</td>
-                  <td>{item.apellido}</td>
-                  <td>{item.rut}</td>
-                  <td>{item.email}</td>
-                  <td>{item.telefono}</td>
-                  <td>
-                    <button onClick={() => seleccionarCliente(item)}>
-                      <FontAwesomeIcon icon="fa-solid fa-check" />
-                    </button>
-                    <button onClick={() => handleEliminarCliente(item.id)}>
-                      <FontAwesomeIcon icon="fa-solid fa-trash" />
-                    </button>
-                  </td>
-                </tr>
+                <TableRow key={index}>
+                  <TableCell>{item.nombre}</TableCell>
+                  <TableCell>{item.apellido}</TableCell>
+                  <TableCell>{item.rut}</TableCell>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.telefono}</TableCell>
+                  <TableCell>
+                    <Button onClick={() => seleccionarCliente(item)}>
+                      <DoneIcon sx={{ color: "white" }} />
+                    </Button>
+                    <Button onClick={() => handleEliminarCliente(item.id)}>
+                      <DeleteIcon sx={{ color: "white" }} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "10px",
+          }}
+        >
+          <Button onClick={crearCliente} variant="outlined">
+            Crear Cliente
+          </Button>
+          <Button onClick={toggleClienteVista} variant="outlined">
+            Ocultar listado de clientes
+          </Button>
         </div>
-        <tfoot>
-          <tr>
-            <td colSpan="6">
-              <button
-                style={{ background: "#437FF3", marginTop: "10px" }}
-                onClick={crearCliente}
-              >
-                Crear Cliente
-              </button>
-              <button
-                style={{ background: "#1DC258" }}
-                onClick={toggleClienteVista}
-              >
-                Ocultar listado de clientes
-              </button>
-            </td>
-          </tr>
-        </tfoot>
       </div>
     </div>
   );
