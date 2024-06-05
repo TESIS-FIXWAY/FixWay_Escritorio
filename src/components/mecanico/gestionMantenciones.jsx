@@ -114,11 +114,12 @@ const GestionMantenciones = () => {
             estado: newStatus,
           });
 
-          if (!inProgressTasks.some((t) => t.id === task.id)) {
-            setInProgressTasks((prevInProgressTasks) =>
-              addTo(prevInProgressTasks, task)
-            );
-          }
+          setInProgressTasks((prevInProgressTasks) =>
+            removeFrom(prevInProgressTasks, task.id)
+          );
+          setCompletedTasks((prevCompletedTasks) =>
+            addTo(prevCompletedTasks, task)
+          );
           break;
         default:
           break;
@@ -206,7 +207,6 @@ const GestionMantenciones = () => {
                       Estado: {translateEstado(task.estado)}
                     </li>
                   </ul>
-
                   {expandedTask === task.id && (
                     <>
                       <ul
@@ -277,7 +277,6 @@ const GestionMantenciones = () => {
                       Persona a Cargo: {getUserName(task.personaTomadora)}
                     </li>
                   </ul>
-
                   {expandedTask === task.id && (
                     <>
                       <ul
@@ -341,7 +340,6 @@ const GestionMantenciones = () => {
                       Patente: {task.id}
                     </li>
                   </ul>
-
                   {expandedTask === task.id && (
                     <>
                       <ul

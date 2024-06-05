@@ -12,12 +12,10 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { set } from "date-fns";
 
 const HistorialMantencionAdmin = () => {
   const [mantenciones, setMantenciones] = useState([]);
   const [mantencionesFiltradas, setMantencionesFiltradas] = useState([]);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchMantenciones = async () => {
@@ -137,7 +135,7 @@ const HistorialMantencionAdmin = () => {
                 onChange={filtrarPatente}
                 type="text"
                 id="Buscar Usuario"
-                label="Buscar Inventario"
+                label="Buscar Patente"
                 variant="outlined"
                 sx={{
                   width: "220px",
@@ -162,7 +160,7 @@ const HistorialMantencionAdmin = () => {
               <TableBody>
                 {mantencionesFiltradas.map((mantencion) => (
                   <TableRow key={mantencion.id}>
-                    <TableCell>{mantencion.id}</TableCell>
+                    <TableCell>{mantencion.patente}</TableCell>
                     <TableCell>
                       {formatDate(new Date(mantencion.fecha))}
                     </TableCell>

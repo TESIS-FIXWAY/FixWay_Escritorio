@@ -134,7 +134,7 @@ const GenerarListadoMantencion = () => {
                 onChange={filtrarPatente}
                 type="text"
                 id="Buscar Usuario"
-                label="Buscar Inventario"
+                label="Buscar Patente"
                 variant="outlined"
                 sx={{
                   width: "220px",
@@ -159,7 +159,7 @@ const GenerarListadoMantencion = () => {
               <TableBody>
                 {mantenciones.map((mantencion) => (
                   <TableRow key={mantencion.id}>
-                    <TableCell>{mantencion.id}</TableCell>
+                    <TableCell>{mantencion.patente}</TableCell>
                     <TableCell>
                       {formatDate(new Date(mantencion.fecha))}
                     </TableCell>
