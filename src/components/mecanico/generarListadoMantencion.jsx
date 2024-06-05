@@ -122,6 +122,10 @@ const GenerarListadoMantencion = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const formatoKilometraje = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
   return (
     <>
       <Mecanico />
@@ -153,6 +157,7 @@ const GenerarListadoMantencion = () => {
                 <TableRow>
                   <TableCell>Patente</TableCell>
                   <TableCell>Fecha</TableCell>
+                  <TableCell>Kilometraje de Mantención</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
@@ -162,6 +167,9 @@ const GenerarListadoMantencion = () => {
                     <TableCell>{mantencion.patente}</TableCell>
                     <TableCell>
                       {formatDate(new Date(mantencion.fecha))}
+                    </TableCell>
+                    <TableCell>
+                      {formatoKilometraje(mantencion.kilometrajeMantencion)}
                     </TableCell>
                     <TableCell>
                       <Button
