@@ -33,6 +33,22 @@
   border-radius: 0;
 }
 
+/* sub menu */
+
+.dark-mode .sub-menu {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode .sub-menu li a {
+  color: #fff;
+}
+
+.dark-mode .sub-menu li a:hover {
+  background-color: #555;
+  color: #fff;
+}
+
 @media (max-width: 878px) {
   .encabezado .arbol {
     display: none;
