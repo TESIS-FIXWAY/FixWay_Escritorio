@@ -162,3 +162,77 @@ main.dark-mode {
 .input_generarQR.dark-mode {
   background-color: #3c3c3c;
 }
+
+/* listar factura porveedor */
+
+.dark-mode .MuiTableCell-root {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.dark-mode .MuiTableHead-root .MuiTableCell-root {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.dark-mode .MuiTableRow-root:nth-of-type(odd) {
+  background-color: #2a2a2a;
+}
+
+.dark-mode .MuiTableRow-root:nth-of-type(even) {
+  background-color: #1e1e1e;
+}
+
+.dark-mode .MuiIconButton-root {
+  color: #ffffff;
+}
+
+.dark-mode .MuiButton-root {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #444444;
+}
+
+.dark-mode .MuiDialog-paper {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.dark-mode .MuiDialogTitle-root,
+.dark-mode .MuiDialogContent-root,
+.dark-mode .MuiDialogActions-root {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.dark-mode .input_formulario {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444444;
+}
+
+.dark-mode .listado-facturas-container {
+  background-color: #000000; /* Fondo negro */
+}
+
+.dark-mode h2 {
+  color: #ffffff; /* Color del texto del título */
+}
+
+.dark-mode .MuiTableContainer-root {
+  background-color: #000000; /* Fondo negro */
+}
+
+.dark-mode .MuiPaper-root {
+  background-color: #000000; /* Fondo negro */
+}
+
+.dark-mode .MuiButton-containedPrimary {
+  background-color: #000000; /* Fondo negro */
+}
+
+.dark-mode .MuiInputBase-root {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444444;
+}

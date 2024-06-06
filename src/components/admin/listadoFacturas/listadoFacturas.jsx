@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import "../../styles/darkMode.css";
 import Admin from "../admin";
 import { db, storage } from "../../../firebase";
 import {
@@ -11,27 +12,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditarUsuarioModalFactura from "./editarUsuarioModalFactura";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faFilePen,
-  faTrash,
-  faMagnifyingGlass,
-  faCheck,
-  faDownload,
-  faXmark,
-  faFileCirclePlus,
-} from "@fortawesome/free-solid-svg-icons";
-library.add(
-  faFilePen,
-  faTrash,
-  faMagnifyingGlass,
-  faCheck,
-  faXmark,
-  faDownload,
-  faFileCirclePlus
-);
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -42,31 +23,27 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DownloadIcon from "@mui/icons-material/Download";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import { DarkModeContext } from "../../../context/darkMode";
 
 const ListadoFacturas = () => {
   const [facturas, setFacturas] = useState([]);
   const [facturaFiltrada, setFacturaFiltrada] = useState([]);
   const navigate = useNavigate();
   const [editingFacturaId, setEditingFacturaId] = useState(null);
-  const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteFacturaId, setDeleteFacturaId] = useState(null);
-  const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  const editarUsuarioModalFactura = ({
-    factura,
-    onSave,
-    onCancel,
-    onInputChange,
-  }) => {
-    return (
-      <EditarUsuarioModalFactura
-        factura={factura}
-        onSave={onSave}
-        onCancel={onCancel}
-        onInputChange={onInputChange}
-      />
-    );
-  };
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -86,17 +63,19 @@ const ListadoFacturas = () => {
 
   const startDelete = (facturaId) => {
     setDeleteFacturaId(facturaId);
-    setIsDeleteModalOpen(true);
+    setOpenDeleteDialog(true);
   };
 
   const cancelDelete = () => {
     setDeleteFacturaId(null);
-    setIsDeleteModalOpen(false);
+    setOpenDeleteDialog(false);
   };
 
-  const deleteFactura = async (facturaId) => {
+  const deleteFactura = async () => {
     try {
-      const factura = facturas.find((factura) => factura.id === facturaId);
+      const factura = facturas.find(
+        (factura) => factura.id === deleteFacturaId
+      );
       if (!factura) {
         throw new Error("Factura no encontrada");
       }
@@ -104,15 +83,16 @@ const ListadoFacturas = () => {
       const fileRef = ref(storage, factura.url);
       await deleteObject(fileRef);
 
-      await deleteDoc(doc(db, "facturas", facturaId));
+      await deleteDoc(doc(db, "facturas", deleteFacturaId));
 
       setFacturas((prevFactura) =>
-        prevFactura.filter((factura) => factura.id !== facturaId)
+        prevFactura.filter((factura) => factura.id !== deleteFacturaId)
       );
       setFacturaFiltrada((prevFactura) =>
-        prevFactura.filter((factura) => factura.id !== facturaId)
+        prevFactura.filter((factura) => factura.id !== deleteFacturaId)
       );
       console.log("Factura eliminada correctamente.");
+      cancelDelete();
     } catch (error) {
       console.error("Error al eliminar la factura:", error);
     }
@@ -120,19 +100,16 @@ const ListadoFacturas = () => {
 
   const startEditing = (facturaId) => {
     setEditingFacturaId(facturaId);
-    setIsEditingModalOpen(true);
   };
 
   const cancelEditing = () => {
     setEditingFacturaId(null);
-    setIsEditingModalOpen(false);
   };
 
   const saveEdit = async (facturaId, updatedData) => {
     try {
       await updateDoc(doc(db, "facturas", facturaId), updatedData);
       setEditingFacturaId(null);
-      setIsEditingModalOpen(false);
       console.log("Factura actualizada correctamente.");
     } catch (error) {
       console.error("Error al actualizar la factura:", error);
@@ -169,9 +146,9 @@ const ListadoFacturas = () => {
     }
   };
 
-  const onInputChange = (name, value) => {
+  const onInputChange = (facturaId, name, value) => {
     const updatedFacturas = facturas.map((factura) =>
-      factura.id === editingFacturaId ? { ...factura, [name]: value } : factura
+      factura.id === facturaId ? { ...factura, [name]: value } : factura
     );
     setFacturas(updatedFacturas);
     setFacturaFiltrada(updatedFacturas);
@@ -184,160 +161,189 @@ const ListadoFacturas = () => {
   return (
     <>
       <Admin />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h1>Listado Facturas Proveedores</h1>
-          <div>
-            <Box>
-              <TextField
-                onChange={filtrarFactura}
-                id="Buscar Usuario"
-                label="Buscar Factura"
-                variant="outlined"
-                sx={{
-                  width: "220px",
-                  height: "55px",
-                  marginTop: "10px",
-                  right: "20px",
-                }}
-              />
-              <Button
-                variant="outlined"
-                onClick={agregarFactura}
-                sx={{ width: "220px", height: "55px", marginTop: "10px" }}
-              >
-                Ingresar Nueva Factura
-              </Button>
-            </Box>
-          </div>
-        </div>
-        <div className="table_section">
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Proveedor</TableCell>
-                  <TableCell>Fecha</TableCell>
-                  <TableCell>Detalle</TableCell>
-                  <TableCell>Acciones</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {facturaFiltrada.map((factura) => (
-                  <TableRow key={factura.id}>
-                    <TableCell>{factura.proveedor}</TableCell>
-                    <TableCell>{factura.fecha}</TableCell>
-                    <TableCell>{factura.detalle}</TableCell>
-                    <TableCell>
-                      {editingFacturaId === factura.id ? (
-                        <>
-                          <div className="fondo_no">
-                            <div className="editar">
-                              <p className="p_editar">
-                                <label className="etiqueta_editar">
-                                  Proveedor
-                                </label>
-                                <input
-                                  type="text"
-                                  value={factura.proveedor}
-                                  onChange={(e) =>
-                                    onInputChange("proveedor", e.target.value)
-                                  }
-                                />
-                              </p>
-                              <p className="p_editar">
-                                <label className="etiqueta_editar">Fecha</label>
-                                <input
-                                  type="date"
-                                  value={factura.fecha}
-                                  onChange={(e) =>
-                                    onInputChange("fecha", e.target.value)
-                                  }
-                                />
-                              </p>
-                              <p className="p_editar">
-                                <label className="etiqueta_editar">
-                                  Detalle
-                                </label>
-                                <input
-                                  type="text"
-                                  value={factura.detalle}
-                                  onChange={(e) =>
-                                    onInputChange("detalle", e.target.value)
-                                  }
-                                />
-                              </p>
-                              <button
-                                className="guardar"
-                                onClick={() =>
-                                  saveEdit(factura.id, {
-                                    proveedor: factura.proveedor,
-                                    fecha: factura.fecha,
-                                    detalle: factura.detalle,
-                                  })
-                                }
-                              >
-                                <FontAwesomeIcon icon="fa-solid fa-check" />
-                              </button>
-                              <button
-                                className="cancelar"
-                                onClick={cancelEditing}
-                              >
-                                <FontAwesomeIcon icon="fa-solid fa-xmark" />
-                              </button>
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <button onClick={() => startEditing(factura.id)}>
-                          <FontAwesomeIcon icon="fa-solid fa-file-pen" />
-                        </button>
-                      )}
-                      <button style={{ backgroundColor: "#1DC258" }}>
-                        <FontAwesomeIcon
-                          onClick={() => downloadPDF(factura.url)}
-                          icon={faDownload}
-                        />
-                      </button>
-                      {deleteFacturaId === factura.id ? (
-                        <>
-                          <div className="fondo_no">
-                            <div className="editar">
-                              <p className="p_editar">
-                                ¿Estás seguro de que deseas <br /> eliminar esta
-                                factura?
-                              </p>
-                              <button
-                                className="guardar"
-                                onClick={() => deleteFactura(factura.id)}
-                              >
-                                <FontAwesomeIcon icon="fa-solid fa-check" />
-                              </button>
-                              <button
-                                className="cancelar"
-                                onClick={() => cancelDelete()}
-                              >
-                                <FontAwesomeIcon icon="fa-solid fa-xmark" />
-                              </button>
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <button
-                          onClick={() => startDelete(factura.id)}
-                          style={{ backgroundColor: "red" }}
+      <Box
+        className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}
+        sx={{ p: 3 }}
+      >
+        <Box
+          className={`table_header ${isDarkMode ? "dark-mode" : ""}`}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
+          <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
+            Listado Facturas Proveedores
+          </h1>
+          <Box>
+            <TextField
+              onChange={filtrarFactura}
+              id="Buscar Factura"
+              label="Buscar Factura"
+              variant="outlined"
+              className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+              sx={{ width: "220px", mr: 2 }}
+            />
+            <Button
+              variant="contained"
+              onClick={agregarFactura}
+              className={`${isDarkMode ? "dark-mode" : ""}`}
+              sx={{ height: "55px" }}
+            >
+              Ingresar Nueva Factura
+            </Button>
+          </Box>
+        </Box>
+        <TableContainer
+          component={Paper}
+          className={`${isDarkMode ? "dark-mode" : ""}`}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                  Proveedor
+                </TableCell>
+                <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                  Fecha
+                </TableCell>
+                <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                  Detalle
+                </TableCell>
+                <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                  Acciones
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {facturaFiltrada.map((factura) => (
+                <TableRow key={factura.id}>
+                  <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                    {editingFacturaId === factura.id ? (
+                      <TextField
+                        value={factura.proveedor}
+                        onChange={(e) =>
+                          onInputChange(factura.id, "proveedor", e.target.value)
+                        }
+                        className={`input_formulario ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      />
+                    ) : (
+                      factura.proveedor
+                    )}
+                  </TableCell>
+                  <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                    {editingFacturaId === factura.id ? (
+                      <TextField
+                        type="date"
+                        value={factura.fecha}
+                        onChange={(e) =>
+                          onInputChange(factura.id, "fecha", e.target.value)
+                        }
+                        className={`input_formulario ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      />
+                    ) : (
+                      factura.fecha
+                    )}
+                  </TableCell>
+                  <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                    {editingFacturaId === factura.id ? (
+                      <TextField
+                        value={factura.detalle}
+                        onChange={(e) =>
+                          onInputChange(factura.id, "detalle", e.target.value)
+                        }
+                        className={`input_formulario ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      />
+                    ) : (
+                      factura.detalle
+                    )}
+                  </TableCell>
+                  <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                    {editingFacturaId === factura.id ? (
+                      <>
+                        <IconButton
+                          sx={{ color: "white" }}
+                          onClick={() =>
+                            saveEdit(factura.id, {
+                              proveedor: factura.proveedor,
+                              fecha: factura.fecha,
+                              detalle: factura.detalle,
+                            })
+                          }
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
                         >
-                          <FontAwesomeIcon icon="fa-solid fa-trash" />
-                        </button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      </div>
+                          <CheckIcon />
+                        </IconButton>
+                        <IconButton
+                          sx={{ color: "white" }}
+                          onClick={cancelEditing}
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <>
+                        <IconButton
+                          sx={{ color: "white" }}
+                          onClick={() => startEditing(factura.id)}
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          sx={{ color: "white" }}
+                          onClick={() => startDelete(factura.id)}
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          sx={{ color: "black" }}
+                          onClick={() => downloadPDF(factura.url)}
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          <DownloadIcon />
+                        </IconButton>
+                      </>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+      <Dialog
+        open={openDeleteDialog}
+        onClose={cancelDelete}
+        className={`${isDarkMode ? "dark-mode" : ""}`}
+      >
+        <DialogTitle className={`${isDarkMode ? "dark-mode" : ""}`}>
+          Confirmar Eliminación
+        </DialogTitle>
+        <DialogContent className={`${isDarkMode ? "dark-mode" : ""}`}>
+          <DialogContentText className={`${isDarkMode ? "dark-mode" : ""}`}>
+            ¿Estás seguro de que deseas eliminar esta factura?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions className={`${isDarkMode ? "dark-mode" : ""}`}>
+          <Button onClick={cancelDelete} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={deleteFactura} color="secondary">
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
