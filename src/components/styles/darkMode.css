@@ -1,136 +1,148 @@
 /* admin */
 
 .encabezado.dark-mode {
-    background-color: #171717;
-    color: red;
+  background-color: #171717;
+  color: red;
 }
 
-
-.boton_salir.dark-mode{
-    background-color: #171717;
-    color: #B4B4B4;
+.boton_salir.dark-mode {
+  background-color: #171717;
+  color: #b4b4b4;
 }
 
-.boton_darkMode.dark-mode{
-    background-color: #171717;
-    color: #B4B4B4;
+.boton_darkMode.dark-mode {
+  background-color: #171717;
+  color: #b4b4b4;
 }
 .boton_darkMode.dark-mode:hover {
-    color: #7CE38B;
-}  
-
+  color: #7ce38b;
+}
 
 .span.dark-mode {
-    background-color: #B4B4B4;
+  background-color: #b4b4b4;
 }
-.encabezado .arbol .links.dark-mode{
-    color: #B4B4B4;
-    text-decoration: none;
-    transition: border-bottom 400ms ease, color 400ms ease;
-} 
+.encabezado .arbol .links.dark-mode {
+  color: #b4b4b4;
+  text-decoration: none;
+  transition: border-bottom 400ms ease, color 400ms ease;
+}
 .encabezado .arbol .links.dark-mode:hover,
 .encabezado .arbol .links.dark-mode.active {
-    border-bottom: 5px solid #7CE38B;
-    color: #2EAB59;
-    border-radius: 0;
+  border-bottom: 5px solid #7ce38b;
+  color: #2eab59;
+  border-radius: 0;
 }
 
 @media (max-width: 878px) {
-    .encabezado .arbol {
-        display: none;
-        background-color: #E9ECEF;
-        transition: all 0.5s ease 0s;
-    }
-    .encabezado .arbol .link {
-        color: #3C3C3C;
-        text-decoration: none;
-        transition: border-left 400ms ease, color 400ms ease;
-    }
-    .encabezado .arbol .link:hover.dark-mode,
-    .encabezado .arbol .link.active.dark-mode {
-        border-left: 5px solid #2EAB59;
-        color: #2EAB59;
-    }
-    hr.dark-mode{
-        margin: 10px 10px 10px -10px;
-        color: #B4B4B4;
-    }
+  .encabezado .arbol {
+    display: none;
+    background-color: #e9ecef;
+    transition: all 0.5s ease 0s;
+  }
+  .encabezado .arbol .link {
+    color: #3c3c3c;
+    text-decoration: none;
+    transition: border-left 400ms ease, color 400ms ease;
+  }
+  .encabezado .arbol .link:hover.dark-mode,
+  .encabezado .arbol .link.active.dark-mode {
+    border-left: 5px solid #2eab59;
+    color: #2eab59;
+  }
+  hr.dark-mode {
+    margin: 10px 10px 10px -10px;
+    color: #b4b4b4;
+  }
 }
-
 
 /* index */
 
 aside.dark-mode {
-    background-color: #171717;
-  }
+  background-color: #171717;
+}
 main.dark-mode {
-    background-color: #171717;
-  }
+  background-color: #171717;
+}
 
 /* grafico historial */
-.seleccionar.dark-mode{
-    border: none !important;
-    background-color: #171717;
-    color: #B4B4B4;
+.seleccionar.dark-mode {
+  border: none !important;
+  background-color: #171717;
+  color: #b4b4b4;
 }
-.fecha_historial.dark-mode{
-    color: #B4B4B4;
-    border: none;
-    background-color: #171717;
+.fecha_historial.dark-mode {
+  color: #b4b4b4;
+  border: none;
+  background-color: #171717;
 }
-.container_widgets.dark-mode{
-    background-color: #3C3C3C;
-    color: #B4B4B4;
+.container_widgets.dark-mode {
+  background-color: #3c3c3c;
+  color: #b4b4b4;
 }
-.subtitulos_historial.dark-mode{
-    color: #B4B4B4;
+.subtitulos_historial.dark-mode {
+  color: #b4b4b4;
 }
-.texto_total.dark-mode{
-    color: #B4B4B4;
+.texto_total.dark-mode {
+  color: #b4b4b4;
 }
-.chart_container.dark-mode{
-    background-color: #171717;
-    color: #B4B4B4;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+.chart_container.dark-mode {
+  background-color: #171717;
+  color: #b4b4b4;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
 }
 
 /* crear usuarios */
 
-.body_formulario.dark-mode{
-    background-color: #171717;
+.body_formulario.dark-mode {
+  background-color: #171717;
 }
-.formulario_titulo.dark-mode{
-    color: #B4B4B4;
+.formulario_titulo.dark-mode {
+  color: #b4b4b4;
 }
-.formulario_form.dark-mode{
-    background-color: #171717;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0); 
+.formulario_form.dark-mode {
+  background-color: #171717;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
 }
-.input_formulario.dark-mode{
-    background-color: #3C3C3C;
+.input_formulario.dark-mode {
+  background-color: #3c3c3c;
 }
-
 
 /* gestion de mantenciones admin */
-.contenedor_mantencion.dark-mode{
-    background-color: #171717;
+.contenedor_mantencion.dark-mode {
+  background-color: #171717;
 }
-.titulo_mantencion.dark-mode{
-    background-color: #3C3C3C;
-    color: #B4B4B4;
+.titulo_mantencion.dark-mode {
+  background-color: #3c3c3c;
+  color: #b4b4b4;
 }
 
-.task-container.dark-mode{
-    background-color: #17212B;
+.task-container.dark-mode {
+  background-color: #17212b;
 }
-.lista_titular.dark-mode{
-    background-color: #17212B;
+.lista_titular.dark-mode {
+  background-color: #17212b;
 }
-.contenido_lista.dark-mode{
-    background-color: #3C3C3C;
-    color: #B4B4B4;
+.contenido_lista.dark-mode {
+  background-color: #3c3c3c;
+  color: #b4b4b4;
 }
-.descripcion_lista.dark-mode{
-    background-color: #3C3C3C;
-    color: #B4B4B4;
+.descripcion_lista.dark-mode {
+  background-color: #3c3c3c;
+  color: #b4b4b4;
+}
+
+/* generarQR Admin & Mecanico */
+
+.body_generarQR.dark-mode {
+  background-color: #171717;
+}
+.generarQR_titulo.dark-mode {
+  color: #b4b4b4;
+}
+.formulario_form_generarQR.dark-mode {
+  background-color: #171717;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+}
+.input_generarQR.dark-mode {
+  background-color: #3c3c3c;
 }
