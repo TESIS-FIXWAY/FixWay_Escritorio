@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import "../../styles/darkMode.css";
 import Admin from "../admin";
 import { db } from "../../../firebase";
 import {
@@ -10,17 +11,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faFilePen,
-  faTrash,
-  faSearch,
-  faCheck,
-  faXmark,
-  faDownload,
-  faCartFlatbed,
-} from "@fortawesome/free-solid-svg-icons";
+import { DarkModeContext } from "../../../context/darkMode";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -30,15 +21,21 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-library.add(
-  faFilePen,
-  faTrash,
-  faSearch,
-  faCheck,
-  faXmark,
-  faDownload,
-  faCartFlatbed
-);
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { Typography } from "@mui/material";
 
 const ListarInventario = () => {
   const [inventario, setInventario] = useState([]);
@@ -46,7 +43,8 @@ const ListarInventario = () => {
   const [editingInventarioId, setEditingInventarioId] = useState(null);
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteInventarioId, setDeleteInventarioId] = useState(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const { isDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,12 +65,12 @@ const ListarInventario = () => {
 
   const startDelete = (inventarioId) => {
     setDeleteInventarioId(inventarioId);
-    setIsDeleteModalOpen(true);
+    setOpenDeleteDialog(true);
   };
 
   const cancelDelete = () => {
     setDeleteInventarioId(null);
-    setIsDeleteModalOpen(false);
+    setOpenDeleteDialog(false);
   };
 
   const deleteInventario = async (inventarioId) => {
@@ -84,7 +82,7 @@ const ListarInventario = () => {
       setInventarioFiltrado((prevInventario) =>
         prevInventario.filter((inventario) => inventario.id !== inventarioId)
       );
-      console.log("Factura eliminada correctamente.");
+      console.log("Producto eliminado correctamente.");
     } catch (error) {
       console.error("Error al eliminar la factura:", error);
     }
@@ -105,9 +103,9 @@ const ListarInventario = () => {
       await updateDoc(doc(db, "inventario", inventarioId), updatedData);
       setEditingInventarioId(null);
       setIsEditingModalOpen(false);
-      console.log("Factura actualizada correctamente.");
+      console.log("producto actualizado correctamente.");
     } catch (error) {
-      console.error("Error al actualizar la factura:", error);
+      console.error("Error al actualizar el producto:", error);
     }
   };
 
@@ -126,14 +124,14 @@ const ListarInventario = () => {
           cantidad,
           costo,
         } = item;
-  
+
         const codigoProductoLower = codigoProducto.toLowerCase();
         const nombreProductoLower = nombreProducto.toLowerCase();
         const categoriaLower = categoria.toLowerCase();
         const marcaLower = marca.toLowerCase();
         const cantidadLower = cantidad.toString().toLowerCase();
         const costoLower = costo.toString().toLowerCase();
-  
+
         return (
           codigoProductoLower.includes(texto) ||
           nombreProductoLower.includes(texto) ||
@@ -168,9 +166,11 @@ const ListarInventario = () => {
   return (
     <>
       <Admin />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h1>Listado Inventario</h1>
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
+            Listado Inventario
+          </h1>
           <div>
             <Box>
               <TextField
@@ -225,42 +225,54 @@ const ListarInventario = () => {
                       {editingInventarioId === inventario.id ? (
                         <div className="fondo_no">
                           <div className="editar">
-                            <p className="p_editar">Editar inventario</p>
-                            <p className="p_editar">
-                              <label htmlFor="">Codigo Producto</label>
-                              <input
-                                type="text"
-                                value={inventario.codigoProducto}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    inventario.id,
-                                    "codigoProducto",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </p>
-                            <p className="p_editar">
-                              <label htmlFor="">Nombre Producto</label>
-                              <input
-                                type="text"
-                                value={inventario.nombreProducto}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    inventario.id,
-                                    "nombreProducto",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </p>
-                            <p>
-                              <label htmlFor="">Categoria</label>
-                              <br />
-                              <select
+                            <Typography
+                              variant="h5"
+                              className={`formulario_titulo ${
+                                isDarkMode ? "dark-mode" : ""
+                              }`}
+                            >
+                              Editar inventario
+                            </Typography>
+                            <TextField
+                              label="Codigo Producto"
+                              value={inventario.codigoProducto}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "codigoProducto",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <TextField
+                              label="Nombre Producto"
+                              value={inventario.nombreProducto}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "nombreProducto",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <FormControl
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            >
+                              <InputLabel id="categoria-label">
+                                Categoría
+                              </InputLabel>
+                              <Select
+                                labelId="categoria-label"
                                 id="categoria"
-                                required
-                                name="categoria"
+                                value={inventario.categoria}
                                 onChange={(e) =>
                                   handleInputChange(
                                     inventario.id,
@@ -268,140 +280,169 @@ const ListarInventario = () => {
                                     e.target.value
                                   )
                                 }
+                                label="Categoría"
                               >
-                                <option
-                                  value={inventario.categoria}
-                                  disabled
-                                  defaultValue={inventario.categoria}
-                                >
+                                <MenuItem value="" disabled>
                                   Seleccione una categoría
-                                </option>
-                                <option value="Sistema de Suspensión">
+                                </MenuItem>
+                                <MenuItem value="Sistema de Suspensión">
                                   Sistema de Suspensión
-                                </option>
-                                <option value="Afinación del Motor">
+                                </MenuItem>
+                                <MenuItem value={"Afinación del Motor"}>
                                   Afinación del Motor
-                                </option>
-                                <option value="Sistema de Inyección Electrónica">
+                                </MenuItem>
+                                <MenuItem
+                                  value={"Sistema de Inyección Electrónica"}
+                                >
                                   Sistema de Inyección Electrónica
-                                </option>
-                                <option value="Sistema de Escape">
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Escape"}>
                                   Sistema de Escape
-                                </option>
-                                <option value="Sistema de Climatización">
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Climatización"}>
                                   Sistema de Climatización
-                                </option>
-                                <option value="Sistema de Lubricación">
-                                  Sistemas de Lubricación
-                                </option>
-                                <option value="Sistema de Dirección">
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Lubricación"}>
+                                  Sistema de Lubricación
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Dirección"}>
                                   Sistema de Dirección
-                                </option>
-                                <option value="Sistema de Frenos">
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Frenos"}>
                                   Sistema de Frenos
-                                </option>
-                                <option value="Sistema de Encendido">
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Encendido"}>
                                   Sistema de Encendido
-                                </option>
-                                <option value="Inspección de Carrocería y Pintura">
+                                </MenuItem>
+                                <MenuItem
+                                  value={"Inspección de Carrocería y Pintura"}
+                                >
                                   Inspección de Carrocería y Pintura
-                                </option>
-                                <option value="Sistema de Transmisión">
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Transmisión"}>
                                   Sistema de Transmisión
-                                </option>
-                                <option value="Sistema de Refrigeración">
+                                </MenuItem>
+                                <MenuItem value={"Sistema de Refrigeración"}>
                                   Sistema de Refrigeración
-                                </option>
-                              </select>
-                            </p>
-                            <p className="p_editar">
-                              <label htmlFor="">Marca</label>
-                              <input
-                                type="text"
-                                value={inventario.marca}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    inventario.id,
-                                    "marca",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </p>
-                            <p className="p_editar">
-                              <label htmlFor="">Cantidad</label>
-                              <input
-                                type="text"
-                                value={inventario.cantidad}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    inventario.id,
-                                    "cantidad",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </p>
-                            <p className="p_editar">
-                              <label htmlFor="">Costo</label>
-                              <input
-                                type="text"
-                                value={inventario.costo}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    inventario.id,
-                                    "costo",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </p>
-                            <button
-                              className="guardar"
+                                </MenuItem>
+                                <MenuItem
+                                  value={"Accesorios y Personalización"}
+                                >
+                                  Accesorios y Personalización
+                                </MenuItem>
+                                <MenuItem value={"Herramientas y Equipos"}>
+                                  Herramientas y Equipos
+                                </MenuItem>
+                              </Select>
+                            </FormControl>
+                            <TextField
+                              label="Marca"
+                              value={inventario.marca}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "marca",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <TextField
+                              label="Cantidad"
+                              value={inventario.cantidad}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "cantidad",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <TextField
+                              label="Costo"
+                              value={inventario.costo}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "costo",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <IconButton
                               onClick={() =>
                                 saveEdit(inventario.id, inventario)
                               }
+                              sx={{ background: "#0298CF" }}
                             >
-                              <FontAwesomeIcon icon="fa-solid fa-check" />
-                            </button>
-                            <button
-                              className="cancelar"
+                              <CheckIcon sx={{ color: "white" }} />
+                            </IconButton>
+                            <IconButton
                               onClick={() => cancelEditing()}
+                              sx={{ background: "red" }}
                             >
-                              <FontAwesomeIcon icon="fa-solid fa-xmark" />
-                            </button>
+                              <CloseIcon sx={{ color: "white" }} />
+                            </IconButton>
                           </div>
                         </div>
                       ) : (
-                        <button onClick={() => startEditing(inventario.id)}>
-                          <FontAwesomeIcon icon="fa-solid fa-file-pen" />
-                        </button>
+                        <IconButton
+                          sx={{ color: "white" }}
+                          onClick={() => startEditing(inventario.id)}
+                        >
+                          <EditIcon />
+                        </IconButton>
                       )}
                       {deleteInventarioId === inventario.id ? (
-                        <div className="fondo_no">
-                          <div className="editar">
-                            <p className="p_editar">
-                              ¿Estás seguro que deseas <br /> eliminar este
+                        <Dialog
+                          open={openDeleteDialog}
+                          onClose={cancelDelete}
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          <DialogTitle
+                            className={`${isDarkMode ? "dark-mode" : ""}`}
+                          >
+                            Confirmar Eliminación
+                          </DialogTitle>
+                          <DialogContent
+                            className={`${isDarkMode ? "dark-mode" : ""}`}
+                          >
+                            <DialogContentText
+                              className={`${isDarkMode ? "dark-mode" : ""}`}
+                            >
+                              ¿Estás seguro de que deseas eliminar este
                               producto?
-                            </p>
-                            <button
-                              className="guardar"
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions
+                            className={`${isDarkMode ? "dark-mode" : ""}`}
+                          >
+                            <Button onClick={cancelDelete} color="primary">
+                              Cancelar
+                            </Button>
+                            <Button
                               onClick={() => deleteInventario(inventario.id)}
+                              color="secondary"
                             >
-                              <FontAwesomeIcon icon="fa-solid fa-check" />
-                            </button>
-                            <button
-                              className="cancelar"
-                              onClick={() => cancelDelete()}
-                            >
-                              <FontAwesomeIcon icon="fa-solid fa-xmark" />
-                            </button>
-                          </div>
-                        </div>
+                              Eliminar
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
                       ) : (
-                        <button onClick={() => startDelete(inventario.id)}>
-                          <FontAwesomeIcon icon="fa-solid fa-trash" />
-                        </button>
+                        <IconButton
+                          sx={{ color: "white" }}
+                          onClick={() => startDelete(inventario.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       )}
                     </TableCell>
                   </TableRow>
