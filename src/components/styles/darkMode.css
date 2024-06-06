@@ -6,12 +6,12 @@
 }
 
 .boton_salir.dark-mode {
-  background-color: #171717;
+  background-color: #333;
   color: #b4b4b4;
 }
 
 .boton_darkMode.dark-mode {
-  background-color: #171717;
+  background-color: #333;
   color: #b4b4b4;
 }
 .boton_darkMode.dark-mode:hover {
@@ -33,11 +33,26 @@
   border-radius: 0;
 }
 
+.boton_config.dark-mode{
+  background-color: #171717;
+  color: #b4b4b4;
+}
+.settings-menu.dark-mode{
+  background-color: #333;
+  color: #b4b4b4;
+}
+
+.notification-container.dark-mode{
+  background-color: #333;
+  color: #2eab59;
+}
+
+
 /* sub menu */
 
 .dark-mode .sub-menu {
   background-color: #333;
-  color: #fff;
+  color: #b4b4b4;
 }
 
 .dark-mode .sub-menu li a {
@@ -79,6 +94,8 @@ aside.dark-mode {
 main.dark-mode {
   background-color: #171717;
 }
+
+
 
 /* grafico historial */
 .seleccionar.dark-mode {

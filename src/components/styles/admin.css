@@ -87,10 +87,20 @@
 
 .boton_config {
   position: relative;
-  align-items: center;
-  
+  margin-right: 50px; 
   color: #67748e;
   background-color: #f7f9fb;
+}
+.boton_config.rotate {
+  animation: rotate 1s linear forwards; 
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(1000deg); 
+  }
 }
 
 .settings-menu {
@@ -178,8 +188,9 @@
 
 .notification-container {
   position: absolute;
-  top: 100px; 
-  right: 0;
+  width: 400px;
+  top: 200px; 
+  right: 1px;
   z-index: 1000;
 }
 
@@ -187,6 +198,7 @@
 .burger {
   position: relative;
   width: 30px;
+  right: 20px;
   height: 25px;
   background: transparent;
   cursor: pointer;

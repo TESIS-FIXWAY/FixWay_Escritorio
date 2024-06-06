@@ -22,7 +22,6 @@ const Admin = () => {
   const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
   const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
-  const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(false);
@@ -64,38 +63,43 @@ const Admin = () => {
     setIsSubMenuOpen1(!isSubMenuOpen1);
     setIsSubMenuOpen2(false);
     setIsSubMenuOpen3(false);
-    setIsSubMenuOpen4(false);
+    setIsSettingsMenuOpen(false)
   };
 
   const toggleSubMenu2 = () => {
     setIsSubMenuOpen2(!isSubMenuOpen2);
     setIsSubMenuOpen1(false);
     setIsSubMenuOpen3(false);
-    setIsSubMenuOpen4(false);
+    setIsSettingsMenuOpen(false)
   };
 
   const toggleSubMenu3 = () => {
     setIsSubMenuOpen3(!isSubMenuOpen3);
     setIsSubMenuOpen1(false);
     setIsSubMenuOpen2(false);
-    setIsSubMenuOpen4(false);
-  };
-
-  const toggleSubMenu4 = () => {
-    setIsSubMenuOpen4(!isSubMenuOpen4);
-    setIsSubMenuOpen1(false);
-    setIsSubMenuOpen2(false);
-    setIsSubMenuOpen3(false);
+    setIsSettingsMenuOpen(false)
   };
 
   const toggleSettingsMenu = () => {
     setIsSettingsMenuOpen(!isSettingsMenuOpen);
+    setIsSubMenuOpen1(false);
+    setIsSubMenuOpen2(false);
+    setIsSubMenuOpen3(false);
   };
 
   const handleShowNotification = () => {
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 5000);
   };
+
+  const handleRotate = () => {
+    const botonConfig = document.querySelector(".boton_config");
+    botonConfig.classList.add("rotate");
+    setTimeout(() => {
+      botonConfig.classList.remove("rotate");
+    }, 300); // Ajusta el tiempo según la duración de la animación CSS
+  };
+  
 
   return (
     <>
@@ -257,7 +261,7 @@ const Admin = () => {
 
 
 
-            <li onClick={toggleSubMenu4}>
+            <li onClick={toggleSubMenu3}>
               <Link
                 className={`links ${isDarkMode ? "dark-mode" : ""}${
                   window.location.pathname === "/agregarInventario" ||
@@ -268,7 +272,7 @@ const Admin = () => {
               >
                 <span className="link_name">Inventario</span>
               </Link>
-              {isSubMenuOpen4 && (
+              {isSubMenuOpen3 && (
                 <ul className="sub-menu">
                   <li>
                     <Link
@@ -305,7 +309,10 @@ const Admin = () => {
         <div>
 
           <button
-            onClick={toggleSettingsMenu}
+            onClick={() => {
+              toggleSettingsMenu();
+              handleRotate();
+            }}            
             className={`boton_config ${isDarkMode ? "dark-mode" : ""}`}
           >
             <SettingsIcon />
@@ -339,7 +346,7 @@ const Admin = () => {
                         <NightlightIcon color="#fff" />
                       )}
                     </button>
-                    <span className="link_name">Modo Oscuro</span>
+                    <span>Modo Oscuro</span>
                   </li>
 
                   <li>
@@ -350,7 +357,7 @@ const Admin = () => {
                     >
                       <Logout />
                     </button>
-                    <span className="">cerrar sesion</span>
+                    <span>cerrar sesion</span>
                   </li>
 
                 </ul>

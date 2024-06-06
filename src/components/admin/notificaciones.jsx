@@ -1,39 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, db } from "../../firebase";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 import { collection, onSnapshot } from "firebase/firestore";
 import { styled } from "@mui/system";
-
-const NotificationContainer = styled("div")({
-  maxWidth: "600px",
-  margin: "0 auto",
-  padding: "20px",
-  borderRadius: "8px",
-  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-  backgroundColor: "#f9f9f9",
-});
-
-const Notification = styled(Alert)({
-  display: "flex",
-  alignItems: "center",
-  marginBottom: "20px",
-  borderRadius: "8px",
-  padding: "10px 20px",
-  boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-});
-
-const NotificationTitle = styled("strong")({
-  fontWeight: "bold",
-  marginRight: "10px",
-});
-
-const NotificationBody = styled("p")({
-  margin: 0,
-});
+import { DarkModeContext } from "../../context/darkMode";
 
 const Notificacion = () => {
+  const { isDarkMode } = useContext(DarkModeContext); 
+
+  const NotificationContainer = styled("div")({
+    maxWidth: "600px",
+    margin: "0 auto",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    backgroundColor: isDarkMode ? "#333" : "#f9f9f9", 
+  });
+
+  const Notification = styled(Alert)({
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "20px",
+    borderRadius: "8px",
+    padding: "10px 20px",
+    boxShadow: "0 0 5px rgba(0,0,0,0.1)",
+    backgroundColor: isDarkMode ? "#555" : "#fff",
+  });
+
+  const NotificationTitle = styled("strong")({
+    fontWeight: "bold",
+    marginRight: "10px",
+    color: isDarkMode ? "#fff" : "#b4b4b4", 
+  });
+
+  const NotificationBody = styled("p")({
+    margin: 0,
+    color: isDarkMode ? "#ccc" : "#666", 
+  });
+
   const [notification, setNotification] = useState(null);
   const [severity, setSeverity] = useState("info");
 
