@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Admin from "../admin";
+import "../../styles/darkMode.css";
+import { DarkModeContext } from "../../../context/darkMode";
 import jsPDF from "jspdf";
 import { db, auth, storage } from "../../../firebase";
 import {
@@ -58,7 +60,7 @@ const GenerarFactura = () => {
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
   const [actualizacion, setActualizacion] = useState(0);
-  const [refresh, setRefresh] = useState(false);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const identifyUser = auth.currentUser;
@@ -1019,9 +1021,11 @@ const GenerarFactura = () => {
   return (
     <>
       <Admin />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h2>Generar Factura</h2>
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <h2 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
+            Generar Factura
+          </h2>
           <Stack spacing={2} direction="row">
             <Button
               onClick={() => generarFactura(productosSeleccionados)}
