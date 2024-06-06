@@ -36,6 +36,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Typography } from "@mui/material";
+import Paper from "@mui/material/Paper";
 
 const ListarInventario = () => {
   const [inventario, setInventario] = useState([]);
@@ -223,8 +224,19 @@ const ListarInventario = () => {
                     <TableCell>{inventario.costo}</TableCell>
                     <TableCell>
                       {editingInventarioId === inventario.id ? (
-                        <div className="fondo_no">
-                          <div className="editar">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100vh",
+                          }}
+                          className="fondo_no"
+                        >
+                          <Paper
+                            elevation={3}
+                            style={{ width: "500px", padding: "20px" }}
+                          >
                             <Typography
                               variant="h5"
                               className={`formulario_titulo ${
@@ -377,21 +389,30 @@ const ListarInventario = () => {
                               fullWidth
                               margin="normal"
                             />
-                            <IconButton
-                              onClick={() =>
-                                saveEdit(inventario.id, inventario)
-                              }
-                              sx={{ background: "#0298CF" }}
+                            <Box
+                              display="flex"
+                              justifyContent="space-between"
+                              width="100%"
                             >
-                              <CheckIcon sx={{ color: "white" }} />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => cancelEditing()}
-                              sx={{ background: "red" }}
-                            >
-                              <CloseIcon sx={{ color: "white" }} />
-                            </IconButton>
-                          </div>
+                              <Button
+                                onClick={() => {
+                                  saveEdit(inventario.id, inventario);
+                                }}
+                                variant="contained"
+                                startIcon={<CheckIcon />}
+                              >
+                                Aplicar
+                              </Button>
+                              <Button
+                                onClick={() => cancelEditing()}
+                                variant="contained"
+                                color="error"
+                                startIcon={<CloseIcon />}
+                              >
+                                Cancelar
+                              </Button>
+                            </Box>
+                          </Paper>
                         </div>
                       ) : (
                         <IconButton
