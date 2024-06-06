@@ -82,6 +82,16 @@ const GenerarFactura = () => {
       return;
     }
 
+    if (!clienteSeleccionado) {
+      alert("Debe seleccionar un cliente");
+      return;
+    }
+
+    if (!tipoPago) {
+      alert("Debe selecionar un tipo de pago");
+      return;
+    }
+
     let facturasCollection;
     let nuevaFactura;
 
@@ -504,6 +514,11 @@ const GenerarFactura = () => {
   const generarBoleta = async () => {
     if (productosSeleccionados.length === 0) {
       alert("No hay productos seleccionados para generar la boleta.");
+      return;
+    }
+
+    if (!tipoPago) {
+      alert("Debe selecionar un tipo de pago");
       return;
     }
 
