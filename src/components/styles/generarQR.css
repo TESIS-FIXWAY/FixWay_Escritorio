@@ -2,12 +2,8 @@
   box-sizing: border-box;
 }
 
-header {
-  height: 60px;
-}
-
 .body_generarQR {
-  margin-top: -100px;
+  margin-top: -60px;
   background-color: #f7f9fb;
   height: 100vh;
   justify-content: center;
@@ -16,32 +12,21 @@ header {
 }
 
 .formulario_content_generarQR {
-  width: 700px;
   position: relative;
   text-align: center;
   padding: 1em;
 }
 
-.container {
-  width: 700px;
-  position: relative;
-  text-align: center;
-  padding: 1em;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
+
 
 .generarQR_titulo {
   text-align: center;
   font-size: 3em;
-  margin-top: 20px;
 }
 
 .formulario_form_generarQR {
-  margin: 50px auto;
+  margin: 50px ;
   padding: 1em;
-  display: grid;
   grid-template-columns: 1fr 1fr;
   background-color: #ffffff;
   border-radius: 10px;
