@@ -33,20 +33,19 @@
   border-radius: 0;
 }
 
-.boton_config.dark-mode{
+.boton_config.dark-mode {
   background-color: #171717;
   color: #b4b4b4;
 }
-.settings-menu.dark-mode{
+.settings-menu.dark-mode {
   background-color: #333;
   color: #b4b4b4;
 }
 
-.notification-container.dark-mode{
+.notification-container.dark-mode {
   background-color: #333;
   color: #2eab59;
 }
-
 
 /* sub menu */
 
@@ -94,8 +93,6 @@ aside.dark-mode {
 main.dark-mode {
   background-color: #171717;
 }
-
-
 
 /* grafico historial */
 .seleccionar.dark-mode {
@@ -252,4 +249,35 @@ main.dark-mode {
   background-color: #2a2a2a;
   color: #ffffff;
   border: 1px solid #444444;
+}
+
+/* Historial Mantencion Admin */
+
+.table_header.dark-mode {
+  background-color: #444;
+}
+
+.table_section.dark-mode {
+  background-color: #555;
+}
+
+.text-field-dark-mode .MuiInputBase-input {
+  color: #fff;
+}
+
+.text-field-dark-mode .MuiInputLabel-root {
+  color: #fff;
+}
+
+.text-field-dark-mode .MuiOutlinedInput-notchedOutline {
+  border-color: #fff;
+}
+
+.button-dark-mode {
+  background-color: #777;
+  color: #fff;
+}
+
+.button-dark-mode:hover {
+  background-color: #999;
 }

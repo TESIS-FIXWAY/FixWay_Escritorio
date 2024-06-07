@@ -34,6 +34,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import { Typography } from "@mui/material";
 import { DarkModeContext } from "../../../context/darkMode";
 
 const ListadoFacturas = () => {
@@ -163,7 +164,7 @@ const ListadoFacturas = () => {
       <Admin />
       <Box
         className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}
-        sx={{ p: 3 }}
+        sx={{ p: 2 }}
       >
         <Box
           className={`table_header ${isDarkMode ? "dark-mode" : ""}`}
@@ -174,9 +175,13 @@ const ListadoFacturas = () => {
             mb: 3,
           }}
         >
-          <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
-            Listado Facturas Proveedores
-          </h1>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Listado de Facturas Proveedores
+          </Typography>
           <Box>
             <TextField
               onChange={filtrarFactura}
@@ -307,7 +312,7 @@ const ListadoFacturas = () => {
                           <DeleteIcon />
                         </IconButton>
                         <IconButton
-                          sx={{ color: "black" }}
+                          sx={{ color: "black", background: "green" }}
                           onClick={() => downloadPDF(factura.url)}
                           className={`${isDarkMode ? "dark-mode" : ""}`}
                         >

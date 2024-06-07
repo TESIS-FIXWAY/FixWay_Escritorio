@@ -1,10 +1,24 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useContext } from "react";
+import { DarkModeContext } from "../../../context/darkMode";
 import "../../styles/previsualizarUsuario.css";
 import "../../styles/listarUsuario.css";
+import "../../styles/darkMode.css";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import { Typography } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
   const [editing, setEditing] = useState(false);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   const toggleEdit = () => {
     setEditing(!editing);
@@ -22,136 +36,162 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
     <div className="fondo_no">
       <div className="editar" style={{ width: "560px" }}>
         {editing ? (
-          <>
-            <p className="p_editar">Editar Usuario</p>
-
-            <p className="p_editar">
-              <label className="etiqueta_editar">Rol</label>
-              <select
-                className="select_rol"
+          <Paper elevation={3} style={{ width: "500px", padding: "20px" }}>
+            <Typography
+              variant="h5"
+              className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
+            >
+              Editar Usuario
+            </Typography>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Rol</InputLabel>
+              <Select
                 value={user.rol}
                 onChange={(e) => handleInputChange("rol", e.target.value)}
               >
-                <option value="mecanico" className="p_editar">
-                  Mecánico
-                </option>
-                <option value="administrador" className="p_editar">
-                  Administrador
-                </option>
-              </select>
-            </p>
-
-            <p className="p_editar">
-              <label className="etiqueta_editar">Nombre</label>
-              <input
-                type="text"
-                value={user.nombre}
-                onChange={(e) => handleInputChange("nombre", e.target.value)}
-              />
-            </p>
-
-            <p className="p_editar">
-              <label className="etiqueta_editar">Apellido</label>
-              <input
-                type="text"
-                value={user.apellido}
-                onChange={(e) => handleInputChange("apellido", e.target.value)}
-              />
-            </p>
-
-            <p className="p_editar">
-              <label className="etiqueta_editar">Teléfono</label>
-              <input
-                type="text"
-                value={user.telefono}
-                onChange={(e) => handleInputChange("telefono", e.target.value)}
-              />
-            </p>
-
-            <p className="p_editar">
-              <label className="etiqueta_editar">Dirección</label>
-              <input
-                type="text"
-                value={user.direccion}
-                onChange={(e) => handleInputChange("direccion", e.target.value)}
-              />
-            </p>
-
-            <p className="p_editar">
-              <label className="etiqueta_editar">Sueldo</label>
-              <input
-                type="text"
-                value={user.salario}
-                onChange={(e) => handleInputChange("salario", e.target.value)}
-              />
-            </p>
-
-            <p className="p_editar">
-              <label className="etiqueta_editar">Fecha de Ingreso</label>
-              <input
-                type="date"
-                value={user.fechaIngreso}
-                onChange={(e) =>
-                  handleInputChange("fechaIngreso", e.target.value)
-                }
-              />
-            </p>
-
-            <button
-              className="guardar"
-              onClick={() => {
-                onSave(user.id, {
-                  nombre: user.nombre,
-                  apellido: user.apellido,
-                  telefono: user.telefono,
-                  direccion: user.direccion,
-                  salario: user.salario,
-                  fechaIngreso: user.fechaIngreso,
-                });
-                toggleEdit();
+                <MenuItem value="mecanico">Mecánico</MenuItem>
+                <MenuItem value="administrador">Administrador</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              label="Nombre"
+              value={user.nombre}
+              onChange={(e) => handleInputChange("nombre", e.target.value)}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Apellido"
+              value={user.apellido}
+              onChange={(e) => handleInputChange("apellido", e.target.value)}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Teléfono"
+              value={user.telefono}
+              onChange={(e) => handleInputChange("telefono", e.target.value)}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Dirección"
+              value={user.direccion}
+              onChange={(e) => handleInputChange("direccion", e.target.value)}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Sueldo"
+              value={user.salario}
+              onChange={(e) => handleInputChange("salario", e.target.value)}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Fecha de Ingreso"
+              type="date"
+              value={user.fechaIngreso}
+              onChange={(e) =>
+                handleInputChange("fechaIngreso", e.target.value)
+              }
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
               }}
+            />
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              width="100%"
+              marginTop="16px"
             >
-              <FontAwesomeIcon icon="fa-solid fa-check" /> Guardar
-            </button>
-            <button className="cancelar" onClick={toggleEdit}>
-              <FontAwesomeIcon icon="fa-solid fa-xmark" /> Cancelar
-            </button>
-          </>
+              <Button
+                onClick={() => {
+                  onSave(user.id, {
+                    nombre: user.nombre,
+                    apellido: user.apellido,
+                    telefono: user.telefono,
+                    direccion: user.direccion,
+                    salario: user.salario,
+                    fechaIngreso: user.fechaIngreso,
+                  });
+                  toggleEdit();
+                }}
+                variant="outlined"
+                startIcon={<CheckIcon />}
+                sx={{ color: "white", backgroundColor: "green" }}
+              >
+                Guardar
+              </Button>
+              <Button
+                onClick={toggleEdit}
+                variant="outlined"
+                startIcon={<CloseIcon />}
+                sx={{ color: "white", backgroundColor: "red" }}
+              >
+                Cancelar
+              </Button>
+            </Box>
+          </Paper>
         ) : (
           <>
-            <p className="p_editar">
-              {" "}
-              <strong style={{ fontSize: "27px" }}>
+            <Paper elevation={3} style={{ padding: "20px" }}>
+              <Typography variant="h6" gutterBottom>
                 Previsualización de Usuario
-              </strong>
-            </p>
-            <p className="p_editar">
-              <strong>Rol:</strong> {user.rol}
-            </p>
-            <p className="p_editar">
-              <strong>Nombre:</strong> {user.nombre} {user.apellido}
-            </p>
-            <p className="p_editar">
-              <strong>Teléfono:</strong> {user.telefono}
-            </p>
-            <p className="p_editar">
-              <strong>Correo Electrónico:</strong> {user.email}
-            </p>
-            <p className="p_editar">
-              <strong>Dirección:</strong> {user.direccion}
-            </p>
-            <p className="p_editar">
-              <strong>Sueldo:</strong> {user.salario}
-            </p>
-            <p className="p_editar">
-              <strong>Fecha de Ingreso:</strong> {user.fechaIngreso}
-            </p>
-            <button className="guardar" onClick={handleEdit}>
-              <FontAwesomeIcon icon="fa-solid fa-user-pen" /> Editar
-            </button>
-            <button className="cancelar" onClick={onCancel}>
-              <FontAwesomeIcon icon="fa-solid fa-xmark" /> Cerrar
-            </button>
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>Rol:</strong> {user.rol}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>Nombre:</strong> {user.nombre} {user.apellido}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>Teléfono:</strong> {user.telefono}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>Correo Electrónico:</strong> {user.email}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>Dirección:</strong> {user.direccion}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>Sueldo:</strong> {user.salario}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <strong>Fecha de Ingreso:</strong> {user.fechaIngreso}
+              </Typography>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                width="100%"
+                marginTop="16px"
+              >
+                <Button
+                  onClick={handleEdit}
+                  startIcon={<EditIcon />}
+                  variant="outlined"
+                  sx={{ color: "white", backgroundColor: "blue" }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  onClick={onCancel}
+                  startIcon={<CloseIcon />}
+                  variant="outlined"
+                  sx={{ color: "white", backgroundColor: "red" }}
+                >
+                  Cerrar
+                </Button>
+              </Box>
+            </Paper>
           </>
         )}
       </div>

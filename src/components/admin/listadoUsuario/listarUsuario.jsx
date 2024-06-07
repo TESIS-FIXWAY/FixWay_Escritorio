@@ -1,5 +1,7 @@
 import "../../styles/listarUsuario.css";
-import React, { useState, useEffect } from "react";
+import "../../styles/darkMode.css";
+import React, { useState, useEffect, useContext } from "react";
+import { DarkModeContext } from "../../../context/darkMode";
 import Admin from "../admin";
 import { db } from "../../../firebase";
 import {
@@ -11,15 +13,6 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faUserPen,
-  faTrash,
-  faMagnifyingGlass,
-  faCheck,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
 import PrevisualizarUsuario from "./previsualizarUsuario";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -31,7 +24,14 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-library.add(faUserPen, faTrash, faMagnifyingGlass, faCheck, faXmark);
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { Typography } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ListarUsuario = () => {
   const [users, setUsers] = useState([]);
@@ -40,6 +40,7 @@ const ListarUsuario = () => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { isDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
 
   const formatSalario = (value) => {
@@ -148,9 +149,15 @@ const ListarUsuario = () => {
   return (
     <>
       <Admin />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h1>Listar Usuarios</h1>
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Listado de Usuarios
+          </Typography>
           <div>
             <Box>
               <TextField
@@ -164,18 +171,23 @@ const ListarUsuario = () => {
                   marginTop: "10px",
                   right: "20px",
                 }}
+                className={isDarkMode ? "dark-mode" : ""}
               />
               <Button
                 variant="outlined"
                 onClick={agregarUsuario}
                 sx={{ width: "220px", height: "55px", marginTop: "10px" }}
+                className={isDarkMode ? "dark-mode" : ""}
               >
                 Ingresar Nuevo Usuario
               </Button>
             </Box>
           </div>
         </div>
-        <TableContainer component={Paper}>
+        <TableContainer
+          component={Paper}
+          className={isDarkMode ? "dark-mode" : ""}
+        >
           <Table>
             <TableHead>
               <TableRow>
@@ -207,35 +219,60 @@ const ListarUsuario = () => {
                       />
                     ) : (
                       <>
-                        <button onClick={() => startEditing(user.id)}>
-                          <FontAwesomeIcon icon={faUserPen} />
-                        </button>
+                        <Button
+                          onClick={() => startEditing(user.id)}
+                          className={isDarkMode ? "dark-mode" : ""}
+                          startIcon={<EditIcon />}
+                          variant="outlined"
+                          sx={{ color: "white" }}
+                        >
+                          Editar
+                        </Button>
                       </>
                     )}
                     {deleteUserId === user.id ? (
-                      <>
-                        <div className="fondo_no">
-                          <div className="editar">
-                            <p className="p_editar">
-                              ¿Estás seguro de que deseas <br /> eliminar este
-                              usuario?
-                            </p>
-                            <button
-                              className="guardar"
-                              onClick={() => deleteUser(user.id)}
-                            >
-                              <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                            <button className="cancelar" onClick={cancelDelete}>
-                              <FontAwesomeIcon icon={faXmark} />
-                            </button>
-                          </div>
-                        </div>
-                      </>
+                      <Dialog
+                        open={startDelete}
+                        onClose={cancelDelete}
+                        className={`${isDarkMode ? "dark-mode" : ""}`}
+                      >
+                        <DialogTitle
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          Confirmar Eliminación
+                        </DialogTitle>
+                        <DialogContent
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          <DialogContentText
+                            className={`${isDarkMode ? "dark-mode" : ""}`}
+                          >
+                            ¿Estás seguro de que deseas eliminar este usuario?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions
+                          className={`${isDarkMode ? "dark-mode" : ""}`}
+                        >
+                          <Button onClick={cancelDelete} color="primary">
+                            Cancelar
+                          </Button>
+                          <Button
+                            onClick={() => deleteUser(user.id)}
+                            color="secondary"
+                          >
+                            Eliminar
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     ) : (
-                      <button onClick={() => startDelete(user.id)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
+                      <Button
+                        onClick={() => startDelete(user.id)}
+                        className={isDarkMode ? "dark-mode" : ""}
+                        startIcon={<DeleteIcon />}
+                        sx={{ color: "white", left: "12px" }}
+                      >
+                        Eliminar
+                      </Button>
                     )}
                   </TableCell>
                 </TableRow>

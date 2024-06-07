@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import "../styles/darkMode.css";
+import React, { useState, useContext } from "react";
 import Admin from "./admin";
+import { DarkModeContext } from "../../context/darkMode";
 import { db } from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import TextField from "@mui/material/TextField";
@@ -21,6 +23,7 @@ const AgregarInventario = () => {
   });
 
   const [mensajeExito, setMensajeExito] = useState("");
+  const { isDarkMode } = useContext(DarkModeContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -69,22 +72,33 @@ const AgregarInventario = () => {
 
   return (
     <>
-    <header><Admin /></header>
-      <div className="body_formulario">
+      <header>
+        <Admin />
+      </header>
+      <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="formulario_content">
           <div className="formulario_wrapper">
             <div className="formulario_contact">
-              <h1 className="formulario_titulo">Agregar Inventario</h1>
+              <h1
+                className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
+              >
+                Agregar Inventario
+              </h1>
               {mensajeExito && (
                 <div className="mensaje_exito">{mensajeExito}</div>
               )}
-              <form className="formulario_form" onSubmit={submitHandler}>
+              <form
+                className={`formulario_form ${isDarkMode ? "dark-mode" : ""}`}
+                onSubmit={submitHandler}
+              >
                 <p>
                   <br />
                   <TextField
                     label="Código Producto"
                     variant="outlined"
-                    className="input_formulario"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
                     id="codigoProducto"
                     required
                     type="text"
@@ -99,7 +113,9 @@ const AgregarInventario = () => {
                   <TextField
                     label="Nombre Producto"
                     variant="outlined"
-                    className="input_formulario"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
                     id="nombreProducto"
                     required
                     type="text"
@@ -114,7 +130,9 @@ const AgregarInventario = () => {
                   <TextField
                     label="Descripción"
                     variant="outlined"
-                    className="input_formulario"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
                     id="descripcion"
                     required
                     type="text"
@@ -129,7 +147,9 @@ const AgregarInventario = () => {
                   <TextField
                     label="Cantidad"
                     variant="outlined"
-                    className="input_formulario"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
                     id="cantidad"
                     required
                     type="text"
@@ -144,7 +164,9 @@ const AgregarInventario = () => {
                   <TextField
                     label="Costo"
                     variant="outlined"
-                    className="input_formulario"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
                     id="costo"
                     required
                     type="text"
@@ -220,7 +242,9 @@ const AgregarInventario = () => {
                   <TextField
                     label="Marca"
                     variant="outlined"
-                    className="input_formulario"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
                     id="marca"
                     required
                     type="text"

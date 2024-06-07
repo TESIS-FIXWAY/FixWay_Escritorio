@@ -169,9 +169,13 @@ const ListarInventario = () => {
       <Admin />
       <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
         <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
-          <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
             Listado Inventario
-          </h1>
+          </Typography>
           <div>
             <Box>
               <TextField

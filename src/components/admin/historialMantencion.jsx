@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import "../styles/darkMode.css";
+import React, { useState, useEffect, useContext } from "react";
 import Admin from "./admin";
+import { DarkModeContext } from "../../context/darkMode";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import jsPDF from "jspdf";
@@ -12,10 +14,13 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import DownloadIcon from "@mui/icons-material/Download";
+import { Typography } from "@mui/material";
 
 const HistorialMantencionAdmin = () => {
   const [mantenciones, setMantenciones] = useState([]);
   const [mantencionesFiltradas, setMantencionesFiltradas] = useState([]);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const fetchMantenciones = async () => {
@@ -130,9 +135,15 @@ const HistorialMantencionAdmin = () => {
   return (
     <>
       <Admin />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h1>Historial Mantención</h1>
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Historial Mantención
+          </Typography>
           <div>
             <Box>
               <TextField
@@ -141,6 +152,7 @@ const HistorialMantencionAdmin = () => {
                 id="Buscar Usuario"
                 label="Buscar Patente"
                 variant="outlined"
+                className={isDarkMode ? "text-field-dark-mode" : ""}
                 sx={{
                   width: "220px",
                   height: "55px",
@@ -151,7 +163,7 @@ const HistorialMantencionAdmin = () => {
             </Box>
           </div>
         </div>
-        <div className="table_section">
+        <div className={`table_section ${isDarkMode ? "dark-mode" : ""}`}>
           <TableContainer component={Box}>
             <Table>
               <TableHead>
@@ -177,6 +189,8 @@ const HistorialMantencionAdmin = () => {
                         onClick={() => generarPDF(mantencion)}
                         variant="contained"
                         color="secondary"
+                        startIcon={<DownloadIcon />}
+                        className={isDarkMode ? "button-dark-mode" : ""}
                       >
                         Descargar
                       </Button>

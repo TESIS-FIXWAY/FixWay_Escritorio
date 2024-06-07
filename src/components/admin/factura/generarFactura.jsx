@@ -39,6 +39,7 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 
 const GenerarFactura = () => {
   const [inventario, setInventario] = useState([]);
@@ -1023,9 +1024,13 @@ const GenerarFactura = () => {
       <Admin />
       <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
         <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
-          <h2 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h4"
+            justifyContent="space-between"
+            className={`${isDarkMode ? "dark-mode" : ""}`}
+          >
             Generar Factura
-          </h2>
+          </Typography>
           <Stack spacing={2} direction="row">
             <Button
               onClick={() => generarFactura(productosSeleccionados)}

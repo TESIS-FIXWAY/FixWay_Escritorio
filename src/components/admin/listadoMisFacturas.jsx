@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+import "../styles/listadoMisFacturas.css";
+import "../styles/darkMode.css";
+import React, { useState, useEffect, useContext } from "react";
 import Admin from "./admin";
+import { DarkModeContext } from "../../context/darkMode";
 import { storage } from "../../firebase";
 import { getDownloadURL, getMetadata, ref, listAll } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,12 +14,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import "../styles/listadoMisFacturas.css";
+import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
+import DownloadIcon from "@mui/icons-material/Download";
+import PreviewIcon from "@mui/icons-material/Preview";
 
 const ListadoMisFacturas = () => {
   const [facturas, setFacturas] = useState([]);
   const [facturaFiltrada, setFacturaFiltrada] = useState([]);
   const [selectedFactura, setSelectedFactura] = useState(null);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const cargarFacturas = async () => {
@@ -76,9 +83,15 @@ const ListadoMisFacturas = () => {
   return (
     <>
       <Admin />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h1>Listado de Mis Facturas / Boletas</h1>
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Listado de Mis Facturas / Boletas
+          </Typography>
           <div>
             <TextField
               type="text"
@@ -86,10 +99,11 @@ const ListadoMisFacturas = () => {
               label="buscar factura"
               onChange={filtrarFactura}
               size="medium"
+              className={isDarkMode ? "text-field-dark-mode" : ""}
             />
           </div>
         </div>
-        <div className="table_section">
+        <div className={`table_section ${isDarkMode ? "dark-mode" : ""}`}>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -103,12 +117,24 @@ const ListadoMisFacturas = () => {
                   <TableRow key={factura.id}>
                     <TableCell>{factura.id}</TableCell>
                     <TableCell>
-                      <button onClick={() => setSelectedFactura(factura)}>
+                      <Button
+                        onClick={() => setSelectedFactura(factura)}
+                        className={isDarkMode ? "button-dark-mode" : ""}
+                        variant="outlined"
+                        sx={{ color: "white" }}
+                        startIcon={<PreviewIcon />}
+                      >
                         Ver
-                      </button>
-                      <button onClick={() => downloadPDF(factura.id)}>
+                      </Button>
+                      <Button
+                        onClick={() => downloadPDF(factura.id)}
+                        className={isDarkMode ? "button-dark-mode" : ""}
+                        variant="outlined"
+                        sx={{ color: "white", left: "12px" }}
+                        startIcon={<DownloadIcon />}
+                      >
                         Descargar
-                      </button>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -118,17 +144,22 @@ const ListadoMisFacturas = () => {
         </div>
       </div>
       {selectedFactura && (
-        <div className="preview_pdf_container">
-          <div className="preview_header">
+        <div
+          className={`preview_pdf_container ${isDarkMode ? "dark-mode" : ""}`}
+        >
+          <div className={`preview_header ${isDarkMode ? "dark-mode" : ""}`}>
             <h2 className="tituloPrevisualizacion">Previsualización</h2>
-            <button className="cerrar_btn" onClick={cerrarPrevisualizacion}>
+            <button
+              className={`cerrar_btn ${isDarkMode ? "button-dark-mode" : ""}`}
+              onClick={cerrarPrevisualizacion}
+            >
               <FontAwesomeIcon icon="fa-solid fa-times" />
             </button>
           </div>
           <embed
             src={selectedFactura.url}
             type="application/pdf"
-            className="preview_pdf"
+            className={`preview_pdf ${isDarkMode ? "dark-mode" : ""}`}
           />
         </div>
       )}
