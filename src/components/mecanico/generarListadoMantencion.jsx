@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { DarkModeContext } from "../../context/darkMode";
 import Mecanico from "./mecanico";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
@@ -12,10 +13,13 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import DownloadIcon from "@mui/icons-material/Download";
+import { Typography } from "@mui/material";
 
 const GenerarListadoMantencion = () => {
   const [mantenciones, setMantenciones] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const fetchMantenciones = async () => {
@@ -129,9 +133,15 @@ const GenerarListadoMantencion = () => {
   return (
     <>
       <Mecanico />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h1>Historial Mantención</h1>
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Historial Mantención
+          </Typography>
           <div>
             <Box>
               <TextField
@@ -146,36 +156,54 @@ const GenerarListadoMantencion = () => {
                   marginTop: "10px",
                   right: "20px",
                 }}
+                className={isDarkMode ? "dark-mode" : ""}
               />
             </Box>
           </div>
         </div>
         <div className="table_section">
-          <TableContainer component={Box}>
-            <Table>
+          <TableContainer
+            component={Box}
+            className={isDarkMode ? "dark-mode" : ""}
+          >
+            <Table className={isDarkMode ? "dark-mode" : ""}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Patente</TableCell>
-                  <TableCell>Fecha</TableCell>
-                  <TableCell>Kilometraje de Mantención</TableCell>
-                  <TableCell>Acciones</TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Patente
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Fecha
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Kilometraje de Mantención
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Acciones
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {mantenciones.map((mantencion) => (
-                  <TableRow key={mantencion.id}>
-                    <TableCell>{mantencion.patente}</TableCell>
-                    <TableCell>
+                  <TableRow
+                    key={mantencion.id}
+                    className={isDarkMode ? "dark-mode" : ""}
+                  >
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                      {mantencion.patente}
+                    </TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
                       {formatDate(new Date(mantencion.fecha))}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
                       {formatoKilometraje(mantencion.kilometrajeMantencion)}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
                       <Button
                         onClick={() => generarPDF(mantencion)}
                         variant="contained"
                         color="secondary"
+                        startIcon={<DownloadIcon />}
                       >
                         Descargar
                       </Button>

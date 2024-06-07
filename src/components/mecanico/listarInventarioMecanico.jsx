@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { DarkModeContext } from "../../context/darkMode";
 import Mecanico from "./mecanico";
 import { db } from "../../firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
@@ -10,11 +11,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { Typography } from "@mui/material";
 
 const ListarInventario = () => {
   const [inventario, setInventario] = useState([]);
   const [filteredInventario, setFilteredInventario] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -74,15 +77,21 @@ const ListarInventario = () => {
   return (
     <>
       <Mecanico />
-      <div className="tabla_listar">
-        <div className="table_header">
-          <h1>Listado Inventario</h1>
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Listado de Inventario
+          </Typography>
           <div>
             <Box>
               <TextField
                 onChange={filtrarInventario}
                 type="text"
-                id="Buscar Usuario"
+                id="Buscar Inventario"
                 label="Buscar Inventario"
                 variant="outlined"
                 sx={{
@@ -91,21 +100,34 @@ const ListarInventario = () => {
                   marginTop: "10px",
                   right: "20px",
                 }}
+                className={isDarkMode ? "dark-mode" : ""}
               />
             </Box>
           </div>
         </div>
         <div className="table_section">
-          <TableContainer>
-            <Table>
+          <TableContainer className={isDarkMode ? "dark-mode" : ""}>
+            <Table className={isDarkMode ? "dark-mode" : ""}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Código Producto</TableCell>
-                  <TableCell>Nombre Producto</TableCell>
-                  <TableCell>Categoría</TableCell>
-                  <TableCell>Marca</TableCell>
-                  <TableCell>Cantidad</TableCell>
-                  <TableCell>Costo</TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Código Producto
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Nombre Producto
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Categoría
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Marca
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Cantidad
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    Costo
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -113,13 +135,26 @@ const ListarInventario = () => {
                   <TableRow
                     key={inventario.id}
                     style={getRowStyle(inventario.cantidad)}
+                    className={isDarkMode ? "dark-mode" : ""}
                   >
-                    <TableCell>{inventario.codigoProducto}</TableCell>
-                    <TableCell>{inventario.nombreProducto}</TableCell>
-                    <TableCell>{inventario.categoria}</TableCell>
-                    <TableCell>{inventario.marca}</TableCell>
-                    <TableCell>{inventario.cantidad}</TableCell>
-                    <TableCell>{inventario.costo}</TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                      {inventario.codigoProducto}
+                    </TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                      {inventario.nombreProducto}
+                    </TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                      {inventario.categoria}
+                    </TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                      {inventario.marca}
+                    </TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                      {inventario.cantidad}
+                    </TableCell>
+                    <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                      {inventario.costo}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
