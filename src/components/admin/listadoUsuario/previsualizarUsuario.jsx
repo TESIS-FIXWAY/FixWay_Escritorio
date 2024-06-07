@@ -33,7 +33,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
   };
 
   return (
-    <div className="fondo_no">
+    <div>
       <div className="editar" style={{ width: "560px" }}>
         {editing ? (
           <Paper elevation={3} style={{ width: "500px", padding: "20px" }}>
@@ -143,29 +143,65 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
           </Paper>
         ) : (
           <>
-            <Paper elevation={3} style={{ padding: "20px" }}>
-              <Typography variant="h6" gutterBottom>
+            <Paper
+              elevation={2}
+              style={{ padding: "20px" }}
+              className={isDarkMode ? "dark-mode" : ""}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 Previsualización de Usuario
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 <strong>Rol:</strong> {user.rol}
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 <strong>Nombre:</strong> {user.nombre} {user.apellido}
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 <strong>Teléfono:</strong> {user.telefono}
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 <strong>Correo Electrónico:</strong> {user.email}
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 <strong>Dirección:</strong> {user.direccion}
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 <strong>Sueldo:</strong> {user.salario}
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                gutterBottom
+                className={isDarkMode ? "dark-mode" : ""}
+              >
                 <strong>Fecha de Ingreso:</strong> {user.fechaIngreso}
               </Typography>
               <Box
@@ -178,7 +214,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                   onClick={handleEdit}
                   startIcon={<EditIcon />}
                   variant="outlined"
-                  sx={{ color: "white", backgroundColor: "blue" }}
+                  className={` ${isDarkMode ? "dark-mode blue" : ""}`}
                 >
                   Editar
                 </Button>
@@ -186,7 +222,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                   onClick={onCancel}
                   startIcon={<CloseIcon />}
                   variant="outlined"
-                  sx={{ color: "white", backgroundColor: "red" }}
+                  className={` ${isDarkMode ? "dark-mode red" : ""}`}
                 >
                   Cerrar
                 </Button>

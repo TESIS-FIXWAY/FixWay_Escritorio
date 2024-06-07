@@ -281,3 +281,48 @@ main.dark-mode {
 .button-dark-mode:hover {
   background-color: #999;
 }
+
+/* Previsualizar Usuario */
+
+.MuiPaper-root.dark-mode {
+  background-color: #444;
+  color: #fff;
+}
+
+.MuiTypography-root.dark-mode {
+  color: #fff;
+}
+
+.MuiButton-root.dark-mode {
+  border-color: #fff;
+  color: #fff;
+}
+
+.MuiButton-root.dark-mode.blue {
+  background-color: blue;
+}
+
+.MuiButton-root.dark-mode.red {
+  background-color: red;
+}
+
+/* Crear Cliente Factura */
+
+.MuiPaper-root.dark-mode {
+  background-color: #444;
+  color: #fff;
+}
+
+.MuiTextField-root.dark-mode .MuiOutlinedInput-root {
+  background-color: #555;
+  color: #fff;
+}
+
+.MuiButton-root.dark-mode {
+  border-color: #fff;
+  color: #fff;
+}
+
+.MuiTypography-root.dark-mode {
+  color: #fff;
+}

@@ -5,7 +5,6 @@ import Admin from "./admin";
 import { DarkModeContext } from "../../context/darkMode";
 import { storage } from "../../firebase";
 import { getDownloadURL, getMetadata, ref, listAll } from "firebase/storage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,6 +17,7 @@ import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import PreviewIcon from "@mui/icons-material/Preview";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ListadoMisFacturas = () => {
   const [facturas, setFacturas] = useState([]);
@@ -149,12 +149,11 @@ const ListadoMisFacturas = () => {
         >
           <div className={`preview_header ${isDarkMode ? "dark-mode" : ""}`}>
             <h2 className="tituloPrevisualizacion">Previsualización</h2>
-            <button
+            <Button
               className={`cerrar_btn ${isDarkMode ? "button-dark-mode" : ""}`}
               onClick={cerrarPrevisualizacion}
-            >
-              <FontAwesomeIcon icon="fa-solid fa-times" />
-            </button>
+              startIcon={<CloseIcon />}
+            ></Button>
           </div>
           <embed
             src={selectedFactura.url}

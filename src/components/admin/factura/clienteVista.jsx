@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { DarkModeContext } from "../../../context/darkMode";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -58,8 +59,10 @@ const ClienteVista = ({
     navigate("/crearClienteFactura");
   };
 
+  const { isDarkMode } = useContext(DarkModeContext);
+
   return (
-    <div className="fondo_no">
+    <div className={`fondo_no ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="editar" style={{ width: "1550px" }}>
         <p className="p_editar">Lista de Clientes</p>
         <input
@@ -67,32 +70,62 @@ const ClienteVista = ({
           placeholder="Buscar cliente..."
           onChange={filtrarCliente}
         />
-        <TableContainer component={Paper} style={{ maxHeight: "800px" }}>
+        <TableContainer
+          component={Paper}
+          style={{ maxHeight: "800px" }}
+          className={isDarkMode ? "dark-mode" : ""}
+        >
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Apellido</TableCell>
-                <TableCell>RUT</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Teléfono</TableCell>
-                <TableCell>Acciones</TableCell>
+                <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                  Nombre
+                </TableCell>
+                <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                  Apellido
+                </TableCell>
+                <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                  RUT
+                </TableCell>
+                <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                  Email
+                </TableCell>
+                <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                  Teléfono
+                </TableCell>
+                <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                  Acciones
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {clientesFiltrados.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell>{item.nombre}</TableCell>
-                  <TableCell>{item.apellido}</TableCell>
-                  <TableCell>{item.rut}</TableCell>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.telefono}</TableCell>
-                  <TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    {item.nombre}
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    {item.apellido}
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    {item.rut}
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    {item.email}
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
+                    {item.telefono}
+                  </TableCell>
+                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
                     <Button onClick={() => seleccionarCliente(item)}>
-                      <DoneIcon sx={{ color: "white" }} />
+                      <DoneIcon
+                        sx={{ color: isDarkMode ? "white" : "black" }}
+                      />
                     </Button>
                     <Button onClick={() => handleEliminarCliente(item.id)}>
-                      <DeleteIcon sx={{ color: "white" }} />
+                      <DeleteIcon
+                        sx={{ color: isDarkMode ? "white" : "black" }}
+                      />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -107,10 +140,18 @@ const ClienteVista = ({
             marginTop: "10px",
           }}
         >
-          <Button onClick={crearCliente} variant="outlined">
+          <Button
+            onClick={crearCliente}
+            variant="outlined"
+            className={isDarkMode ? "dark-mode" : ""}
+          >
             Crear Cliente
           </Button>
-          <Button onClick={toggleClienteVista} variant="outlined">
+          <Button
+            onClick={toggleClienteVista}
+            variant="outlined"
+            className={isDarkMode ? "dark-mode" : ""}
+          >
             Ocultar listado de clientes
           </Button>
         </div>
