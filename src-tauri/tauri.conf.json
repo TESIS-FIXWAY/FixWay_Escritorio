@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "Hans Motors",
+    "productName": "SETTORE",
     "version": "1.0.0"
   },
   "tauri": {
@@ -27,9 +27,7 @@
       "active": true,
       "targets": "all",
       "identifier": "com.motors.dev",
-      "icon": [
-        "icons/Logo.ico"
-      ]
+      "icon": ["icons/LogoSinFondo.ico"]
     },
     "security": {
       "csp": null
@@ -38,7 +36,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Hans Motors",
+        "title": "SETTORE",
         "minWidth": 1250,
         "minHeight": 900,
         "center": true
