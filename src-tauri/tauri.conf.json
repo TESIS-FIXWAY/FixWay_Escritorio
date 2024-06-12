@@ -27,7 +27,7 @@
       "active": true,
       "targets": "all",
       "identifier": "com.motors.dev",
-      "icon": ["icons/LogoSinFondo.ico"]
+      "icon": ["icons/AutoSinFondo.ico"]
     },
     "security": {
       "csp": null
