@@ -1,41 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, db } from "../../firebase";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 import { collection, onSnapshot } from "firebase/firestore";
 import { styled } from "@mui/system";
-
-const NotificationContainer = styled("div")({
-  maxWidth: "600px",
-  margin: "0 auto",
-  padding: "20px",
-  borderRadius: "8px",
-  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-  backgroundColor: "#f9f9f9",
-});
-
-const Notification = styled(Alert)({
-  display: "flex",
-  alignItems: "center",
-  marginBottom: "20px",
-  borderRadius: "8px",
-  padding: "10px 20px",
-  boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-});
-
-const NotificationTitle = styled("strong")({
-  fontWeight: "bold",
-  marginRight: "10px",
-});
-
-const NotificationBody = styled("p")({
-  margin: 0,
-});
+import { DarkModeContext } from "../../context/darkMode";
 
 const NotificacionMecanico = () => {
-  const [notification, setNotification] = useState(null);
-  const [severity, setSeverity] = useState("info");
+  const { isDarkMode } = useContext(DarkModeContext);
+
+  const NotificationContainer = styled("div")({
+    maxWidth: "600px",
+    margin: "0 auto",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    backgroundColor: isDarkMode ? "#333" : "#f9f9f9",
+  });
+
+  const NotificationList = styled("div")({
+    maxHeight: "400px",
+    overflowY: "auto",
+    paddingRight: "10px",
+  });
+
+  const Notification = styled(Alert)({
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "20px",
+    borderRadius: "8px",
+    padding: "10px 20px",
+    boxShadow: "0 0 5px rgba(0,0,0,0.1)",
+    backgroundColor: isDarkMode ? "#555" : "#fff",
+  });
+
+  const NotificationTitle = styled("strong")({
+    fontWeight: "bold",
+    marginRight: "10px",
+    color: isDarkMode ? "#fff" : "#b4b4b4",
+  });
+
+  const NotificationBody = styled("p")({
+    margin: 0,
+    color: isDarkMode ? "#ccc" : "#666",
+  });
+
+  // const [notification, setNotification] = useState(null);
+  // const [severity, setSeverity] = useState("info");
+  const [notifications, setNotifications] = useState([]);
+  const [isTrayVisible, setIsTrayVisible] = useState(true);
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -52,8 +66,14 @@ const NotificacionMecanico = () => {
 
     onMessage(messaging, (payload) => {
       console.log("Message received. ", payload);
-      setNotification(payload.notification);
-      setSeverity("info");
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        {
+          title: payload.notification.title,
+          body: payload.notification.body,
+          severity: "info",
+        },
+      ]);
     });
 
     const unsubFirestoreMantenciones = onSnapshot(
@@ -68,30 +88,42 @@ const NotificacionMecanico = () => {
           );
 
           if (change.type === "added") {
-            setNotification({
-              title: "Nueva mantención agregada",
-              body: `Se ha agregado una mantención con ID: ${change.doc.id}`,
-            });
-            setSeverity("info");
+            setNotifications((prevNotifications) => [
+              ...prevNotifications,
+              {
+                title: "Nueva mantención agregada",
+                body: `Se ha agregado una mantención con ID: ${change.doc.id}`,
+                severity: "info",
+              },
+            ]);
           } else if (change.type === "modified") {
             if (mantencion.estado === "en proceso") {
-              setNotification({
-                title: "Mantención en proceso",
-                body: `La mantención con ID ${change.doc.id} está en proceso.`,
-              });
-              setSeverity("info");
+              setNotifications((prevNotifications) => [
+                ...prevNotifications,
+                {
+                  title: "Mantención en proceso",
+                  body: `La mantención con ID ${change.doc.id} está en proceso.`,
+                  severity: "info",
+                },
+              ]);
             } else if (mantencion.estado === "terminado") {
-              setNotification({
-                title: "Mantención Terminada",
-                body: `Se ha finalizado la mantención con éxito: ${change.doc.id}`,
-              });
-              setSeverity("success");
+              setNotifications((prevNotifications) => [
+                ...prevNotifications,
+                {
+                  title: "Mantención Terminada",
+                  body: `Se ha finalizado la mantención con éxito: ${change.doc.id}`,
+                  severity: "success",
+                },
+              ]);
             } else {
-              setNotification({
-                title: "Estado de Mantención modificado",
-                body: `Se ha modificado el estado: ${mantencion.estado}`,
-              });
-              setSeverity("info");
+              setNotifications((prevNotifications) => [
+                ...prevNotifications,
+                {
+                  title: "Estado de Mantención modificado",
+                  body: `Se ha modificado el estado: ${mantencion.estado}`,
+                  severity: "info",
+                },
+              ]);
             }
           }
         });
@@ -110,24 +142,33 @@ const NotificacionMecanico = () => {
           );
 
           if (change.type === "modified") {
-            setNotification({
-              title: "Inventario modificado",
-              body: `Se ha modificado el inventario con ID: ${change.doc.id}`,
-            });
-            setSeverity("info");
+            setNotifications((prevNotifications) => [
+              ...prevNotifications,
+              {
+                title: "Inventario modificado",
+                body: `Se ha modificado el inventario con ID: ${change.doc.id}`,
+                severity: "info",
+              },
+            ]);
 
             if (inventario.stock === 0) {
-              setNotification({
-                title: "Producto sin stock",
-                body: `El producto con ID ${change.doc.id} no tiene stock.`,
-              });
-              setSeverity("error");
+              setNotifications((prevNotifications) => [
+                ...prevNotifications,
+                {
+                  title: "Producto sin stock",
+                  body: `El producto con ID ${change.doc.id} no tiene stock.`,
+                  severity: "error",
+                },
+              ]);
             } else if (inventario.stock < 10) {
-              setNotification({
-                title: "Stock bajo",
-                body: `El producto con ID ${change.doc.id} tiene menos de 10 unidades en stock.`,
-              });
-              setSeverity("warning");
+              setNotifications((prevNotifications) => [
+                ...prevNotifications,
+                {
+                  title: "Stock bajo",
+                  body: `El producto con ID ${change.doc.id} tiene menos de 10 unidades en stock.`,
+                  severity: "warning",
+                },
+              ]);
             }
           }
         });
@@ -146,23 +187,32 @@ const NotificacionMecanico = () => {
           );
 
           if (change.type === "added") {
-            setNotification({
-              title: "Nuevo automóvil agregado",
-              body: `Se ha agregado un nuevo automóvil: ${change.doc.id}`,
-            });
-            setSeverity("info");
+            setNotifications((prevNotifications) => [
+              ...prevNotifications,
+              {
+                title: "Nuevo automóvil agregado",
+                body: `Se ha agregado un nuevo automóvil: ${change.doc.id}`,
+                severity: "info",
+              },
+            ]);
           } else if (change.type === "modified") {
-            setNotification({
-              title: "Automóvil modificado",
-              body: `Se ha modificado el automóvil: ${change.doc.id}`,
-            });
-            setSeverity("info");
+            setNotifications((prevNotifications) => [
+              ...prevNotifications,
+              {
+                title: "Automóvil modificado",
+                body: `Se ha modificado el automóvil: ${change.doc.id}`,
+                severity: "info",
+              },
+            ]);
           } else if (change.type === "removed") {
-            setNotification({
-              title: "Automóvil eliminado",
-              body: `Se ha eliminado el automóvil: ${change.doc.id}`,
-            });
-            setSeverity("error");
+            setNotifications((prevNotifications) => [
+              ...prevNotifications,
+              {
+                title: "Automóvil eliminado",
+                body: `Se ha eliminado el automóvil: ${change.doc.id}`,
+                severity: "error",
+              },
+            ]);
           }
         });
       }
@@ -178,18 +228,29 @@ const NotificacionMecanico = () => {
   }, []);
 
   return (
-    <NotificationContainer>
-      {notification && (
-        <Notification
-          icon={<CheckIcon fontSize="inherit" />}
-          severity={severity}
-          onClose={() => setNotification(null)}
-        >
-          <NotificationTitle>{notification.title}</NotificationTitle>
-          <NotificationBody>{notification.body}</NotificationBody>
-        </Notification>
+    <>
+      {isTrayVisible && (
+        <NotificationContainer>
+          <NotificationList>
+            {notifications.map((notification, index) => (
+              <Notification
+                key={index}
+                icon={<CheckIcon fontSize="inherit" />}
+                severity={notification.severity}
+                onClose={() =>
+                  setNotifications((prevNotifications) =>
+                    prevNotifications.filter((_, i) => i !== index)
+                  )
+                }
+              >
+                <NotificationTitle>{notification.title}</NotificationTitle>
+                <NotificationBody>{notification.body}</NotificationBody>
+              </Notification>
+            ))}
+          </NotificationList>
+        </NotificationContainer>
       )}
-    </NotificationContainer>
+    </>
   );
 };
 

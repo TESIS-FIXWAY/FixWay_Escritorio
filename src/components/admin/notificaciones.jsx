@@ -3,7 +3,6 @@ import { getToken, onMessage } from "firebase/messaging";
 import { messaging, db } from "../../firebase";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
-import Button from "@mui/material/Button";
 import { collection, onSnapshot } from "firebase/firestore";
 import { styled } from "@mui/system";
 import { DarkModeContext } from "../../context/darkMode";

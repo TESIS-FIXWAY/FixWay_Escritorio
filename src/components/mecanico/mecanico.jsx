@@ -50,8 +50,7 @@ const Mecanico = () => {
   };
 
   const handleShowNotification = () => {
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 5000);
+    setShowNotification(!showNotification);
   };
 
   return (
@@ -115,11 +114,7 @@ const Mecanico = () => {
           >
             <NotificationsIcon />
           </button>
-          {showNotification && (
-            <div className="notification-container">
-              <NotificacionMecanico />
-            </div>
-          )}
+          {showNotification && <NotificacionMecanico />}
           <button
             onClick={toggleDarkMode}
             className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
