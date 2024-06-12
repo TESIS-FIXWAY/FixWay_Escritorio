@@ -13,7 +13,6 @@ import NightlightIcon from "@mui/icons-material/Nightlight";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-
 const Admin = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ const Admin = () => {
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState(true);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -63,21 +62,21 @@ const Admin = () => {
     setIsSubMenuOpen1(!isSubMenuOpen1);
     setIsSubMenuOpen2(false);
     setIsSubMenuOpen3(false);
-    setIsSettingsMenuOpen(false)
+    setIsSettingsMenuOpen(false);
   };
 
   const toggleSubMenu2 = () => {
     setIsSubMenuOpen2(!isSubMenuOpen2);
     setIsSubMenuOpen1(false);
     setIsSubMenuOpen3(false);
-    setIsSettingsMenuOpen(false)
+    setIsSettingsMenuOpen(false);
   };
 
   const toggleSubMenu3 = () => {
     setIsSubMenuOpen3(!isSubMenuOpen3);
     setIsSubMenuOpen1(false);
     setIsSubMenuOpen2(false);
-    setIsSettingsMenuOpen(false)
+    setIsSettingsMenuOpen(false);
   };
 
   const toggleSettingsMenu = () => {
@@ -88,8 +87,7 @@ const Admin = () => {
   };
 
   const handleShowNotification = () => {
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 5000);
+    setShowNotification(!showNotification); // Toggle the notification visibility
   };
 
   const handleRotate = () => {
@@ -97,9 +95,8 @@ const Admin = () => {
     botonConfig.classList.add("rotate");
     setTimeout(() => {
       botonConfig.classList.remove("rotate");
-    }, 300); // Ajusta el tiempo según la duración de la animación CSS
+    }, 300);
   };
-  
 
   return (
     <>
@@ -259,8 +256,6 @@ const Admin = () => {
               )}
             </li>
 
-
-
             <li onClick={toggleSubMenu3}>
               <Link
                 className={`links ${isDarkMode ? "dark-mode" : ""}${
@@ -304,72 +299,60 @@ const Admin = () => {
           </ul>
         </nav>
 
-
-
         <div>
-
           <button
             onClick={() => {
               toggleSettingsMenu();
               handleRotate();
-            }}            
+            }}
             className={`boton_config ${isDarkMode ? "dark-mode" : ""}`}
           >
             <SettingsIcon />
-          </button >
-          {isSettingsMenuOpen  && (
+          </button>
+          {isSettingsMenuOpen && (
             <div className={`settings-menu ${isDarkMode ? "dark-mode" : ""}`}>
+              <ul className="">
+                <li>
+                  <button
+                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+                    onClick={handleShowNotification}
+                  >
+                    <NotificationsIcon />
+                  </button>
+                  {showNotification && <Notificacion />}
+                  <span>Notificaciones</span>
+                </li>
 
-                <ul className="">
-                  <li>
-                    <button
-                      className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
-                      onClick={handleShowNotification}
-                    >
-                      <NotificationsIcon />
-                    </button>
-                    {showNotification && (
-                      <div className="notification-container">
-                        <Notificacion />
-                      </div>
+                <li>
+                  <button
+                    onClick={toggleDarkMode}
+                    className={`boton_darkMode ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                  >
+                    {isDarkMode ? (
+                      <WbSunnyIcon color="#B4B4B4" />
+                    ) : (
+                      <NightlightIcon color="#fff" />
                     )}
-                    <span className="">Notificaciones</span>
-                  </li>
+                  </button>
+                  <span>Modo Oscuro</span>
+                </li>
 
-                  <li>
-                    <button
-                      onClick={toggleDarkMode}
-                      className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}>
-                      {isDarkMode ? (
-                        <WbSunnyIcon color="#B4B4B4" />
-                      ) : (
-                        <NightlightIcon color="#fff" />
-                      )}
-                    </button>
-                    <span>Modo Oscuro</span>
-                  </li>
-
-                  <li>
-                    <button
-                      type="submit"
-                      onClick={handleLogout}
-                      className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
-                    >
-                      <Logout />
-                    </button>
-                    <span>cerrar sesion</span>
-                  </li>
-
-                </ul>
-
-            </div>              
-
-
+                <li>
+                  <button
+                    type="submit"
+                    onClick={handleLogout}
+                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+                  >
+                    <Logout />
+                  </button>
+                  <span>cerrar sesion</span>
+                </li>
+              </ul>
+            </div>
           )}
-
         </div>
-
-
 
         <div className="overlay">
           <label className="burger" htmlFor="burger">
