@@ -28,6 +28,8 @@ import GestionMantenciones from "./components/mecanico/gestionMantenciones";
 import ListarInventarioMecanico from "./components/mecanico/listarInventarioMecanico";
 import GenerarQR from "./components/mecanico/GenerarQR";
 import GenerarListadoMantencion from "./components/mecanico/generarListadoMantencion";
+import AgregarMantencion from "./components/mecanico/agregarMantencion";
+import AgregarAutomovil from "./components/mecanico/agregarAutomovil";
 
 import Error from "./components/404";
 
@@ -114,6 +116,8 @@ function App() {
               path="/generarListadoMantencion"
               element={<GenerarListadoMantencion />}
             />
+            <Route path="/agregarMantencion" element={<AgregarMantencion />} />
+            <Route path="/agregarAutomovil" element={<AgregarAutomovil />} />
             <Route path="*" element={<Error />} />
           </Routes>
         </AuthContextProvider>

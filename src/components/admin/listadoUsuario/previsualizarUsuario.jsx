@@ -171,7 +171,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
               className={isDarkMode ? "dark-mode" : ""}
             >
               <Typography
-                variant="h5"
+                variant="h4"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
               >
@@ -181,6 +181,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 variant="body1"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{ fontSize: "18px" }}
               >
                 <strong>Rol:</strong> {translateRol(user.rol)}
               </Typography>
@@ -188,6 +189,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 variant="body1"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{ fontSize: "18px" }}
               >
                 <strong>Nombre:</strong> {user.nombre} {user.apellido}
               </Typography>
@@ -195,6 +197,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 variant="body1"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{ fontSize: "18px" }}
               >
                 <strong>Teléfono:</strong> {user.telefono}
               </Typography>
@@ -202,6 +205,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 variant="body1"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{ fontSize: "18px" }}
               >
                 <strong>Correo Electrónico:</strong> {user.email}
               </Typography>
@@ -209,6 +213,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 variant="body1"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{ fontSize: "18px" }}
               >
                 <strong>Dirección:</strong> {user.direccion}
               </Typography>
@@ -216,6 +221,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 variant="body1"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{ fontSize: "18px" }}
               >
                 <strong>Sueldo:</strong> {user.salario}
               </Typography>
@@ -223,6 +229,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 variant="body1"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{ fontSize: "18px" }}
               >
                 <strong>Fecha de Ingreso:</strong> {user.fechaIngreso}
               </Typography>
@@ -236,6 +243,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                   onClick={handleEdit}
                   startIcon={<EditIcon />}
                   variant="outlined"
+                  sx={{ color: "white" }}
                   className={` ${isDarkMode ? "dark-mode blue" : ""}`}
                 >
                   Editar
@@ -244,6 +252,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                   onClick={onCancel}
                   startIcon={<CloseIcon />}
                   variant="outlined"
+                  sx={{ color: "white" }}
                   className={` ${isDarkMode ? "dark-mode red" : ""}`}
                 >
                   Cerrar

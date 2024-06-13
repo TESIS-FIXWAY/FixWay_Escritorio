@@ -122,11 +122,13 @@ const ClienteVista = ({
                   <TableCell className={isDarkMode ? "dark-mode" : ""}>
                     <Button onClick={() => seleccionarCliente(item)}>
                       <DoneIcon
+                        style={{ color: "white" }}
                         sx={{ color: isDarkMode ? "white" : "black" }}
                       />
                     </Button>
                     <Button onClick={() => handleEliminarCliente(item.id)}>
                       <DeleteIcon
+                        style={{ color: "white" }}
                         sx={{
                           color: isDarkMode ? "white" : "black",
                         }}

@@ -170,7 +170,7 @@ const HistorialMantencionAdmin = () => {
                 <TableRow>
                   <TableCell>Patente</TableCell>
                   <TableCell>Fecha</TableCell>
-                  <TableCell>Kilometraje de Mantención</TableCell>
+                  <TableCell>Kilometro de Mantención</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>

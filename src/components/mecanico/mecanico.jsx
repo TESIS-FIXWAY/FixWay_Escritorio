@@ -65,6 +65,26 @@ const Mecanico = () => {
           <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
             <li>
               <Link
+                to="/agregarAutomovil"
+                className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                  window.location.pathname === "" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Agregar Automóvil</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/agregarMantencion"
+                className={`links ${isDarkMode ? "dark-mode" : ""} ${
+                  window.location.pathname === "" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Agregar Mantención</span>
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/gestionMantenciones"
                 className={`links ${isDarkMode ? "dark-mode" : ""} ${
                   window.location.pathname === "" ? "active" : ""
