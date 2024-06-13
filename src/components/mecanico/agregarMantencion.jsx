@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import "../styles/agregarMantencion.css";
+import React, { useState, useEffect, useContext } from "react";
+import { DarkModeContext } from "../../context/darkMode";
 import {
   Container,
   Typography,
@@ -25,7 +27,6 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import Mecanico from "./mecanico";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
@@ -42,7 +43,7 @@ const AgregarMantencion = () => {
   const [isConfirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState("");
-  const navigate = useNavigate();
+  const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -134,8 +135,6 @@ const AgregarMantencion = () => {
       };
 
       setMantencionesPendientes([...mantencionesPendientes, mantencionData]);
-
-      alert("Mantención agregada a la lista de pendientes");
     } catch (error) {
       console.error("Error saving maintenance:", error.message);
       setErrorMessage("Error al guardar la mantención. Inténtelo de nuevo.");
@@ -170,7 +169,6 @@ const AgregarMantencion = () => {
       setErrorMessage("");
 
       setMantencionesPendientes([]);
-      alert("Mantenciones guardadas correctamente");
     } catch (error) {
       console.error("Error saving mantenciones:", error.message);
       setErrorMessage("Error al guardar las mantenciones. Inténtelo de nuevo.");
@@ -219,200 +217,224 @@ const AgregarMantencion = () => {
       <header>
         <Mecanico />
       </header>
-      <Container>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Agregar Mantención
-        </Typography>
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Patente del auto"
-          value={patente}
-          onChange={(e) => handleCheckPatente(e.target.value)}
-          variant="outlined"
-        />
-        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-        {successMessage && (
-          <Alert severity="success" icon={<CheckCircleIcon />}>
-            {successMessage}
-          </Alert>
-        )}
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <InputLabel variant="outlined">Tipo de Mantención</InputLabel>
-          <Select
-            value={tipoMantencion}
-            onChange={(e) => setTipoMantencion(e.target.value)}
-          >
-            <MenuItem value="">Todas las Categorías</MenuItem>
-            <MenuItem value="Sistema de Suspensión">
-              Sistema de Suspensión
-            </MenuItem>
-            <MenuItem value="Afinación del Motor">Afinación del Motor</MenuItem>
-            <MenuItem value="Sistema de Inyección Electrónica">
-              Sistema de Inyección Electrónica
-            </MenuItem>
-            <MenuItem value="Sistema de Escape">Sistema de Escape</MenuItem>
-            <MenuItem value="Sistema de Climatización">
-              Sistema de Climatización
-            </MenuItem>
-            <MenuItem value="Sistema de Lubricación">
-              Sistema de Lubricación
-            </MenuItem>
-            <MenuItem value="Sistema de Dirección">
-              Sistema de Dirección
-            </MenuItem>
-            <MenuItem value="Sistema de Frenos">Sistema de Frenos</MenuItem>
-            <MenuItem value="Sistema de Encendido">
-              Sistema de Encendido
-            </MenuItem>
-            <MenuItem value="Inspección de Carrocería y Pintura">
-              Inspección de Carrocería y Pintura
-            </MenuItem>
-            <MenuItem value="Sistema de Transmisión">
-              Sistema de Transmisión
-            </MenuItem>
-            <MenuItem value="Herramientas y Equipos">
-              Herramientas y Equipos
-            </MenuItem>
-            <MenuItem value="Sistema de Refrigeración">
-              Sistema de Refrigeración
-            </MenuItem>
-            <MenuItem value="Accesorios y Personalización">
-              Accesorios y Personalización
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <InputLabel variant="outlined">Producto</InputLabel>
-          <Select
-            value={productoSeleccionado}
-            onChange={(e) => setProductoSeleccionado(e.target.value)}
-          >
-            <MenuItem value="">Seleccione un Producto</MenuItem>
-            {productos.map((producto, index) => (
-              <MenuItem key={index} value={producto.nombreProducto}>
-                {producto.nombreProducto}
+      <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
+        <Container
+          className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
+        >
+          <Typography variant="h4" component="h1" gutterBottom>
+            Agregar Mantención
+          </Typography>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Patente del auto"
+            value={patente}
+            onChange={(e) => handleCheckPatente(e.target.value.toUpperCase())}
+            variant="outlined"
+          />
+
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+          {successMessage && (
+            <Alert severity="success" icon={<CheckCircleIcon />}>
+              {successMessage}
+            </Alert>
+          )}
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel variant="outlined">Tipo de Mantención</InputLabel>
+            <Select
+              value={tipoMantencion}
+              onChange={(e) => setTipoMantencion(e.target.value)}
+            >
+              <MenuItem value="">Todas las Categorías</MenuItem>
+              <MenuItem value="Sistema de Suspensión">
+                Sistema de Suspensión
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Descripción"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-          variant="outlined"
-        />
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <InputLabel variant="outlined">Estado</InputLabel>
-          <Select value={estado} onChange={(e) => setEstado(e.target.value)}>
-            <MenuItem value="atencion_especial">Atención Especial</MenuItem>
-            <MenuItem value="pendiente">Pendiente</MenuItem>
-            <MenuItem value="prioridad">Prioridad</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Kilometraje Mantención"
-          value={kilometrajeMantencion}
-          onChange={(e) => setKilometrajeMantencion(e.target.value)}
-          variant="outlined"
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddMantencion}
-        >
-          Agregar Mantención
-        </Button>
-        <Typography variant="h5" component="h2" gutterBottom>
-          Mantenciones Pendientes
-        </Typography>
-        <List>
-          {mantencionesPendientes.map((mantencion, index) => (
-            <ListItem key={index}>
-              <ListItemText
-                primary={`Mantención ${index + 1}`}
-                secondary={
-                  <>
-                    <strong>Patente:</strong> {mantencion.patente} <br />
-                    <strong>Tipo de Mantención:</strong>{" "}
-                    {mantencion.tipoMantencion} <br />
-                    <strong>Descripción:</strong> {mantencion.descripcion}{" "}
-                    <br />
-                    <strong>Fecha:</strong>{" "}
-                    {formatDate(new Date(mantencion.fecha))} <br />
-                    <strong>Estado:</strong>{" "}
-                    {translateEstado(mantencion.estado)} <br />
-                    <strong>Kilometraje:</strong>{" "}
-                    {formatoKilometraje(mantencion.kilometrajeMantencion)}{" "}
-                    <br />
-                    <strong>Producto:</strong>{" "}
-                    {mantencion.productos[0].nombreProducto}
-                  </>
-                }
-              />
-            </ListItem>
-          ))}
-        </List>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={showConfirmationModal}
-        >
-          Guardar todas las mantenciones
-        </Button>
-        <Modal
-          open={isConfirmationModalVisible}
-          onClose={hideConfirmationModal}
-          aria-labelledby="confirmation-modal-title"
-          aria-describedby="confirmation-modal-description"
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 400,
-              bgcolor: "background.paper",
-              boxShadow: 24,
-              p: 4,
-              outline: "none",
-            }}
+              <MenuItem value="Afinación del Motor">
+                Afinación del Motor
+              </MenuItem>
+              <MenuItem value="Sistema de Inyección Electrónica">
+                Sistema de Inyección Electrónica
+              </MenuItem>
+              <MenuItem value="Sistema de Escape">Sistema de Escape</MenuItem>
+              <MenuItem value="Sistema de Climatización">
+                Sistema de Climatización
+              </MenuItem>
+              <MenuItem value="Sistema de Lubricación">
+                Sistema de Lubricación
+              </MenuItem>
+              <MenuItem value="Sistema de Dirección">
+                Sistema de Dirección
+              </MenuItem>
+              <MenuItem value="Sistema de Frenos">Sistema de Frenos</MenuItem>
+              <MenuItem value="Sistema de Encendido">
+                Sistema de Encendido
+              </MenuItem>
+              <MenuItem value="Inspección de Carrocería y Pintura">
+                Inspección de Carrocería y Pintura
+              </MenuItem>
+              <MenuItem value="Sistema de Transmisión">
+                Sistema de Transmisión
+              </MenuItem>
+              <MenuItem value="Herramientas y Equipos">
+                Herramientas y Equipos
+              </MenuItem>
+              <MenuItem value="Sistema de Refrigeración">
+                Sistema de Refrigeración
+              </MenuItem>
+              <MenuItem value="Accesorios y Personalización">
+                Accesorios y Personalización
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel variant="outlined">Producto</InputLabel>
+            <Select
+              value={productoSeleccionado}
+              onChange={(e) => setProductoSeleccionado(e.target.value)}
+            >
+              <MenuItem value="">Seleccione un Producto</MenuItem>
+              {productos.map((producto, index) => (
+                <MenuItem key={index} value={producto.nombreProducto}>
+                  {producto.nombreProducto}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Descripción"
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+            variant="outlined"
+          />
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel variant="outlined">Estado</InputLabel>
+            <Select value={estado} onChange={(e) => setEstado(e.target.value)}>
+              <MenuItem value="atencion_especial">Atención Especial</MenuItem>
+              <MenuItem value="pendiente">Pendiente</MenuItem>
+              <MenuItem value="prioridad">Prioridad</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Kilometraje de Mantención"
+            value={kilometrajeMantencion}
+            onChange={(e) => setKilometrajeMantencion(e.target.value)}
+            variant="outlined"
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={handleAddMantencion}
+            className={`agregar-button ${isDarkMode ? "dark-mode" : ""}`}
           >
-            <Typography
-              id="confirmation-modal-title"
-              variant="h6"
-              component="h2"
-              gutterBottom
+            Agregar Mantención
+          </Button>
+          <div
+            className={`pendientes-container ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <List
+              className={`pendientes-list ${isDarkMode ? "dark-mode" : ""}`}
             >
-              Confirmación de guardado
-            </Typography>
-            <Typography id="confirmation-modal-description" sx={{ mb: 2 }}>
-              ¿Está seguro de que desea guardar todas las mantenciones
-              pendientes?
-            </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleConfirmationAndSave}
-              sx={{ mr: 2 }}
+              {mantencionesPendientes.map((mantencion, index) => (
+                <ListItem key={index} className={isDarkMode ? "dark-mode" : ""}>
+                  <ListItemText
+                    primary={`Mantención ${index + 1}`}
+                    secondary={
+                      <>
+                        <Typography component="span">
+                          <strong>Patente:</strong> {mantencion.patente}
+                        </Typography>
+                        <br />
+                        <Typography component="span">
+                          <strong>Tipo:</strong> {mantencion.tipoMantencion}
+                        </Typography>
+                        <br />
+                        <Typography component="span">
+                          <strong>Descripción:</strong> {mantencion.descripcion}
+                        </Typography>
+                        <br />
+                        <Typography component="span">
+                          <strong>Fecha:</strong>{" "}
+                          {formatDate(new Date(mantencion.fecha))}
+                        </Typography>
+                        <br />
+                        <Typography component="span">
+                          <strong>Estado:</strong>{" "}
+                          {translateEstado(mantencion.estado)}
+                        </Typography>
+                        <br />
+                        <Typography component="span">
+                          <strong>Kilometraje:</strong>{" "}
+                          {formatoKilometraje(mantencion.kilometrajeMantencion)}
+                        </Typography>
+                        <br />
+                        <Typography component="span">
+                          <strong>Productos:</strong>{" "}
+                          {mantencion.productos
+                            .map((producto) => producto.nombreProducto)
+                            .join(", ")}
+                        </Typography>
+                      </>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </div>
+          <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            onClick={showConfirmationModal}
+            className={`guardar-button ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Guardar Mantenciones
+          </Button>
+          <Modal
+            open={isConfirmationModalVisible}
+            onClose={hideConfirmationModal}
+          >
+            <Box
+              className={`modal-box ${isDarkMode ? "dark-mode" : ""}`}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+                width: "100vw",
+                margin: 0,
+                padding: 0,
+              }}
             >
-              Confirmar
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={hideConfirmationModal}
-            >
-              Cancelar
-            </Button>
-          </Box>
-        </Modal>
-      </Container>
+              <Typography variant="h6" component="h2">
+                Confirmación
+              </Typography>
+              <Typography>
+                ¿Estás seguro de que quieres guardar todas las mantenciones
+                pendientes?
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleConfirmationAndSave}
+              >
+                Confirmar
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={hideConfirmationModal}
+              >
+                Cancelar
+              </Button>
+            </Box>
+          </Modal>
+        </Container>
+      </div>
     </>
   );
 };

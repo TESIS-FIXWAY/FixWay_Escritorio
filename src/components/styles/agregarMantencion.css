@@ -1,0 +1,44 @@
+.pendientes-list {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.pendientes-list.dark-mode {
+  background-color: #333;
+}
+
+.pendientes-list .MuiListItem-root {
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pendientes-list .MuiListItem-root.dark-mode {
+  background-color: #444;
+}
+
+.pendientes-list .MuiListItem-root:last-child {
+  margin-bottom: 0;
+}
+
+.pendientes-container {
+  max-height: 400px; /* Ajusta esta altura según sea necesario */
+  overflow-y: auto;
+}
+
+.pendientes-list {
+  padding: 0;
+}
+
+.pendientes-container.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+.pendientes-list .dark-mode {
+  background-color: #444;
+}
