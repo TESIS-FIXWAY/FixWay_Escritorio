@@ -34,7 +34,18 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
 
   return (
     <div>
-      <div className="editar" style={{ width: "560px" }}>
+      <div
+        className={`fondo_no ${isDarkMode ? "dark-mode" : ""}`}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100vw",
+          margin: 0,
+          padding: 0,
+        }}
+      >
         {editing ? (
           <Paper elevation={3} style={{ width: "500px", padding: "20px" }}>
             <Typography
@@ -145,11 +156,11 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
           <>
             <Paper
               elevation={2}
-              style={{ padding: "20px" }}
+              style={{ padding: "20px", width: "500px", fontSize: "13px" }}
               className={isDarkMode ? "dark-mode" : ""}
             >
               <Typography
-                variant="h6"
+                variant="h5"
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
               >

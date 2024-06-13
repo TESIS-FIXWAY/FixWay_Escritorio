@@ -63,7 +63,10 @@ const ClienteVista = ({
 
   return (
     <div className={`fondo_no ${isDarkMode ? "dark-mode" : ""}`}>
-      <div className="editar" style={{ width: "1550px" }}>
+      <div
+        className={`editar ${isDarkMode ? "dark-mode" : ""}`}
+        style={{ width: "1570px" }}
+      >
         <p className="p_editar">Lista de Clientes</p>
         <input
           type="text"
@@ -124,7 +127,9 @@ const ClienteVista = ({
                     </Button>
                     <Button onClick={() => handleEliminarCliente(item.id)}>
                       <DeleteIcon
-                        sx={{ color: isDarkMode ? "white" : "black" }}
+                        sx={{
+                          color: isDarkMode ? "white" : "black",
+                        }}
                       />
                     </Button>
                   </TableCell>
