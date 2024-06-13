@@ -146,6 +146,17 @@ const ListarUsuario = () => {
     navigate("/agregarUsuario");
   };
 
+  const translateRol = (rol) => {
+    switch (rol) {
+      case "administrador":
+        return "Administrador";
+      case "mecanico":
+        return "Mecánico";
+      default:
+        return rol;
+    }
+  };
+
   return (
     <>
       <Admin />
@@ -208,7 +219,7 @@ const ListarUsuario = () => {
                   </TableCell>
                   <TableCell>{user.telefono}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.rol}</TableCell>
+                  <TableCell>{translateRol(user.rol)}</TableCell>
                   <TableCell>
                     {editingUserId === user.id ? (
                       <PrevisualizarUsuario

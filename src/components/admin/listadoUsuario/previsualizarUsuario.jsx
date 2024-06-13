@@ -32,6 +32,17 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
     toggleEdit();
   };
 
+  const translateRol = (rol) => {
+    switch (rol) {
+      case "administrador":
+        return "Administrador";
+      case "mecanico":
+        return "Mecánico";
+      default:
+        return rol;
+    }
+  };
+
   return (
     <div>
       <div
@@ -171,7 +182,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 gutterBottom
                 className={isDarkMode ? "dark-mode" : ""}
               >
-                <strong>Rol:</strong> {user.rol}
+                <strong>Rol:</strong> {translateRol(user.rol)}
               </Typography>
               <Typography
                 variant="body1"
