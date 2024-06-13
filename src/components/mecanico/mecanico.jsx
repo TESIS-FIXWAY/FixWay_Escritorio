@@ -11,6 +11,7 @@ import { Logout } from "@mui/icons-material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const Mecanico = () => {
   const { user, logout } = UserAuth();
@@ -18,6 +19,7 @@ const Mecanico = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(false);
+  const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -51,6 +53,21 @@ const Mecanico = () => {
 
   const handleShowNotification = () => {
     setShowNotification(!showNotification);
+  };
+
+  const toggleSettingsMenu = () => {
+    setIsSettingsMenuOpen(!isSettingsMenuOpen);
+    setIsSubMenuOpen1(false);
+    setIsSubMenuOpen2(false);
+    setIsSubMenuOpen3(false);
+  };
+
+  const handleRotate = () => {
+    const botonConfig = document.querySelector(".boton_config");
+    botonConfig.classList.add("rotate");
+    setTimeout(() => {
+      botonConfig.classList.remove("rotate");
+    }, 300);
   };
 
   return (
@@ -129,29 +146,57 @@ const Mecanico = () => {
         </nav>
         <div>
           <button
-            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
-            onClick={handleShowNotification}
+            onClick={() => {
+              toggleSettingsMenu();
+              handleRotate();
+            }}
+            className={`boton_config ${isDarkMode ? "dark-mode" : ""}`}
           >
-            <NotificationsIcon />
+            <SettingsIcon />
           </button>
-          {showNotification && <NotificacionMecanico />}
-          <button
-            onClick={toggleDarkMode}
-            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
-          >
-            {isDarkMode ? (
-              <WbSunnyIcon color="#B4B4B4" />
-            ) : (
-              <NightlightIcon color="secondary" />
-            )}
-          </button>
-          <button
-            type="submit"
-            onClick={handleLogout}
-            className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
-          >
-            <Logout />
-          </button>
+          {isSettingsMenuOpen && (
+            <div className={`settings-menu ${isDarkMode ? "dark-mode" : ""}`}>
+              <ul className="">
+                <li>
+                  <button
+                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+                    onClick={handleShowNotification}
+                  >
+                    <NotificationsIcon />
+                  </button>
+                  {showNotification && <NotificacionMecanico />}
+                  <span>Notificaciones</span>
+                </li>
+
+                <li>
+                  <button
+                    onClick={toggleDarkMode}
+                    className={`boton_darkMode ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                  >
+                    {isDarkMode ? (
+                      <WbSunnyIcon color="#B4B4B4" />
+                    ) : (
+                      <NightlightIcon color="#fff" />
+                    )}
+                  </button>
+                  <span>Modo Oscuro</span>
+                </li>
+
+                <li>
+                  <button
+                    type="submit"
+                    onClick={handleLogout}
+                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+                  >
+                    <Logout />
+                  </button>
+                  <span>cerrar sesion</span>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </header>
     </>

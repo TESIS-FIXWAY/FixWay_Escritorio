@@ -176,7 +176,7 @@ const GenerarListadoMantencion = () => {
                     Fecha
                   </TableCell>
                   <TableCell className={isDarkMode ? "dark-mode" : ""}>
-                    Kilometraje de Mantención
+                    Kilometro de Mantención
                   </TableCell>
                   <TableCell className={isDarkMode ? "dark-mode" : ""}>
                     Acciones
