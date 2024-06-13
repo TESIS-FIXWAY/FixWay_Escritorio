@@ -9,11 +9,23 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import Mecanico from "./mecanico";
 import { DarkModeContext } from "../../context/darkMode";
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2,
+};
 
 function AgregarAutomovil() {
   const [marca, setMarca] = useState("");
@@ -25,7 +37,6 @@ function AgregarAutomovil() {
   const [patente, setPatente] = useState("");
   const [isConfirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
-  const navigate = useNavigate();
   const { isDarkMode } = useContext(DarkModeContext);
 
   const handleChange = (event) => {
@@ -47,10 +58,10 @@ function AgregarAutomovil() {
         setKilometraje(value);
         break;
       case "numchasis":
-        setNumChasis(value);
+        setNumChasis(value.toUpperCase());
         break;
       case "patente":
-        setPatente(value);
+        setPatente(value.toUpperCase());
         break;
       default:
         break;
@@ -106,11 +117,16 @@ function AgregarAutomovil() {
       setNumChasis("");
       setPatente("");
       alert("Automovil agregado correctamente");
-      navigate("Agregar Mantencion");
     } catch (error) {
       console.error("Error adding/updating automovil: ", error);
     }
   };
+
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let year = 1950; year <= currentYear; year++) {
+    years.push(year);
+  }
 
   return (
     <>
@@ -163,6 +179,8 @@ function AgregarAutomovil() {
                     >
                       <MenuItem value={"Toyota"}>Toyota</MenuItem>
                       <MenuItem value={"Honda"}>Honda</MenuItem>
+                      <MenuItem value={"DS"}>DS</MenuItem>
+                      <MenuItem value={"Cupra"}>Cupra</MenuItem>
                       <MenuItem value={"Ford"}>Ford</MenuItem>
                       <MenuItem value={"Chevrolet"}>Chevrolet</MenuItem>
                       <MenuItem value={"Volkswagen"}>Volkswagen</MenuItem>
@@ -230,6 +248,23 @@ function AgregarAutomovil() {
                 <p>
                   <br />
                   <TextField
+                    label="Kilometro Automóvil"
+                    variant="outlined"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    id="kilometraje"
+                    required
+                    type="text"
+                    name="kilometraje"
+                    value={kilometraje}
+                    onChange={handleChange}
+                    placeholder="Kilometro Automóvil"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
                     label="Color"
                     variant="outlined"
                     className={`input_formulario ${
@@ -246,19 +281,42 @@ function AgregarAutomovil() {
                 </p>
                 <p>
                   <br />
+                  <FormControl
+                    sx={{ height: "30px", marginTop: "10px", width: "260px" }}
+                  >
+                    <InputLabel id="ano-label">Seleccione Año</InputLabel>
+                    <Select
+                      labelId="ano-label"
+                      id="ano"
+                      name="ano"
+                      value={ano}
+                      label="Seleccione Año"
+                      onChange={handleChange}
+                      required
+                    >
+                      {years.map((year) => (
+                        <MenuItem key={year} value={year}>
+                          {year}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </p>
+                <p>
+                  <br />
                   <TextField
-                    label="Año"
+                    label="Número  de Chasis"
                     variant="outlined"
                     className={`input_formulario ${
                       isDarkMode ? "dark-mode" : ""
                     }`}
-                    id="año"
+                    id="numchasis"
                     required
-                    type="number"
-                    name="año"
-                    value={ano}
+                    type="text"
+                    name="numchasis"
+                    value={numchasis}
                     onChange={handleChange}
-                    placeholder="Año"
+                    placeholder="Número  de Chasis"
                   />
                 </p>
               </form>
@@ -268,16 +326,29 @@ function AgregarAutomovil() {
               <Modal
                 open={isConfirmationModalVisible}
                 onClose={hideConfirmationModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
               >
-                <div>
-                  <Typography variant="h6">
+                <Box sx={modalStyle}>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
                     ¿Estás seguro de que deseas guardar este automóvil?
                   </Typography>
-                  <Button onClick={handleConfirmationAndSave}>
-                    Sí, Guardar
-                  </Button>
-                  <Button onClick={hideConfirmationModal}>Cancelar</Button>
-                </div>
+                  <Box mt={2} display="flex" justifyContent="space-between">
+                    <Button
+                      onClick={handleConfirmationAndSave}
+                      variant="contained"
+                    >
+                      Sí, Guardar
+                    </Button>
+                    <Button onClick={hideConfirmationModal} variant="outlined">
+                      Cancelar
+                    </Button>
+                  </Box>
+                </Box>
               </Modal>
             </div>
           </div>

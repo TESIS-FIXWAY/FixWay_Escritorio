@@ -1,4 +1,3 @@
-import "../styles/agregarMantencion.css";
 import React, { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../../context/darkMode";
 import {
@@ -43,7 +42,23 @@ const AgregarMantencion = () => {
   const [isConfirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState("");
+  const [cantidadProducto, setCantidadProducto] = useState("");
+  const [codigoProducto, setCodigoProducto] = useState("");
+  const [precioProducto, setPrecioProducto] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
+
+  const limpiarCampos = () => {
+    setTipoMantencion("");
+    setDescripcion("");
+    setEstado("");
+    setKilometrajeMantencion("");
+    setProductoSeleccionado("");
+    setCantidadProducto("");
+    setCodigoProducto("");
+    setPrecioProducto("");
+    setErrorMessage("");
+    setSuccessMessage("");
+  };
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -111,7 +126,10 @@ const AgregarMantencion = () => {
         !descripcion ||
         !estado ||
         !kilometrajeMantencion ||
-        !productoSeleccionado
+        !productoSeleccionado ||
+        !cantidadProducto ||
+        !precioProducto ||
+        !codigoProducto
       ) {
         setErrorMessage("Por favor, complete todos los campos.");
         return;
@@ -131,10 +149,18 @@ const AgregarMantencion = () => {
         fecha: new Date().toISOString(),
         estado: estado,
         kilometrajeMantencion: kilometrajeMantencion,
-        productos: [{ nombreProducto: productoSeleccionado }],
+        productos: [
+          {
+            nombreProducto: productoSeleccionado,
+            cantidad: cantidadProducto,
+            precio: precioProducto,
+            codigoProducto: codigoProducto,
+          },
+        ],
       };
 
       setMantencionesPendientes([...mantencionesPendientes, mantencionData]);
+      limpiarCampos();
     } catch (error) {
       console.error("Error saving maintenance:", error.message);
       setErrorMessage("Error al guardar la mantención. Inténtelo de nuevo.");
@@ -154,7 +180,15 @@ const AgregarMantencion = () => {
           "mantenciones",
           `${mantencion.patente}-${tareaId}`
         );
-        batch.set(mantencionDocRef, mantencion);
+
+        const costoTotal = mantencion.productos.reduce(
+          (total, producto) => total + producto.precio * producto.cantidad,
+          0
+        );
+
+        const mantencionConCosto = { ...mantencion, costoTotal };
+
+        batch.set(mantencionDocRef, mantencionConCosto);
         tareaCount++;
       }
 
@@ -166,6 +200,9 @@ const AgregarMantencion = () => {
       setEstado("");
       setKilometrajeMantencion("");
       setProductoSeleccionado("");
+      setPrecioProducto("");
+      setCantidadProducto("");
+      setCodigoProducto("");
       setErrorMessage("");
 
       setMantencionesPendientes([]);
@@ -173,6 +210,24 @@ const AgregarMantencion = () => {
       console.error("Error saving mantenciones:", error.message);
       setErrorMessage("Error al guardar las mantenciones. Inténtelo de nuevo.");
     }
+  };
+
+  const handleProductoSeleccionado = async (productoNombre) => {
+    const productoExistente = productos.find(
+      (p) => p.nombreProducto === productoNombre
+    );
+    if (productoExistente) {
+      setProductoSeleccionado(productoNombre);
+      setCantidadProducto(productoExistente.cantidad);
+      setPrecioProducto(productoExistente.costo);
+      setCodigoProducto(productoExistente.id);
+    } else {
+      console.error(
+        `El producto ${productoNombre} no existe en la lista de productos.`
+      );
+    }
+
+    console.log("Precio del producto seleccionado:", precioProducto);
   };
 
   const showConfirmationModal = () => {
@@ -232,7 +287,6 @@ const AgregarMantencion = () => {
             onChange={(e) => handleCheckPatente(e.target.value.toUpperCase())}
             variant="outlined"
           />
-
           {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
           {successMessage && (
             <Alert severity="success" icon={<CheckCircleIcon />}>
@@ -245,44 +299,43 @@ const AgregarMantencion = () => {
               value={tipoMantencion}
               onChange={(e) => setTipoMantencion(e.target.value)}
             >
-              <MenuItem value="">Todas las Categorías</MenuItem>
-              <MenuItem value="Sistema de Suspensión">
+              <MenuItem value={"Sistema de Suspensión"}>
                 Sistema de Suspensión
               </MenuItem>
-              <MenuItem value="Afinación del Motor">
+              <MenuItem value={"Afinación del Motor"}>
                 Afinación del Motor
               </MenuItem>
-              <MenuItem value="Sistema de Inyección Electrónica">
+              <MenuItem value={"Sistema de Inyección Electrónica"}>
                 Sistema de Inyección Electrónica
               </MenuItem>
-              <MenuItem value="Sistema de Escape">Sistema de Escape</MenuItem>
-              <MenuItem value="Sistema de Climatización">
+              <MenuItem value={"Sistema de Escape"}>Sistema de Escape</MenuItem>
+              <MenuItem value={"Sistema de Climatización"}>
                 Sistema de Climatización
               </MenuItem>
-              <MenuItem value="Sistema de Lubricación">
+              <MenuItem value={"Sistema de Lubricación"}>
                 Sistema de Lubricación
               </MenuItem>
-              <MenuItem value="Sistema de Dirección">
+              <MenuItem value={"Sistema de Dirección"}>
                 Sistema de Dirección
               </MenuItem>
-              <MenuItem value="Sistema de Frenos">Sistema de Frenos</MenuItem>
-              <MenuItem value="Sistema de Encendido">
+              <MenuItem value={"Sistema de Frenos"}>Sistema de Frenos</MenuItem>
+              <MenuItem value={"Sistema de Encendido"}>
                 Sistema de Encendido
               </MenuItem>
-              <MenuItem value="Inspección de Carrocería y Pintura">
+              <MenuItem value={"Inspección de Carrocería y Pintura"}>
                 Inspección de Carrocería y Pintura
               </MenuItem>
-              <MenuItem value="Sistema de Transmisión">
+              <MenuItem value={"Sistema de Transmisión"}>
                 Sistema de Transmisión
               </MenuItem>
-              <MenuItem value="Herramientas y Equipos">
-                Herramientas y Equipos
-              </MenuItem>
-              <MenuItem value="Sistema de Refrigeración">
+              <MenuItem value={"Sistema de Refrigeración"}>
                 Sistema de Refrigeración
               </MenuItem>
-              <MenuItem value="Accesorios y Personalización">
+              <MenuItem value={"Accesorios y Personalización"}>
                 Accesorios y Personalización
+              </MenuItem>
+              <MenuItem value={"Herramientas y Equipos"}>
+                Herramientas y Equipos
               </MenuItem>
             </Select>
           </FormControl>
@@ -290,7 +343,7 @@ const AgregarMantencion = () => {
             <InputLabel variant="outlined">Producto</InputLabel>
             <Select
               value={productoSeleccionado}
-              onChange={(e) => setProductoSeleccionado(e.target.value)}
+              onChange={(e) => handleProductoSeleccionado(e.target.value)}
             >
               <MenuItem value="">Seleccione un Producto</MenuItem>
               {productos.map((producto, index) => (
@@ -300,6 +353,12 @@ const AgregarMantencion = () => {
               ))}
             </Select>
           </FormControl>
+          {codigoProducto && (
+            <Typography>Codigo Producto: {codigoProducto}</Typography>
+          )}
+          {precioProducto && (
+            <Typography>Precio unitario: ${precioProducto}</Typography>
+          )}
           <TextField
             fullWidth
             margin="normal"
@@ -319,7 +378,7 @@ const AgregarMantencion = () => {
           <TextField
             fullWidth
             margin="normal"
-            label="Kilometraje de Mantención"
+            label="Kilometro de Mantención"
             value={kilometrajeMantencion}
             onChange={(e) => setKilometrajeMantencion(e.target.value)}
             variant="outlined"
@@ -394,7 +453,7 @@ const AgregarMantencion = () => {
           >
             Guardar Mantenciones
           </Button>
-          <Modal
+          {/* <Modal
             open={isConfirmationModalVisible}
             onClose={hideConfirmationModal}
           >
@@ -421,6 +480,51 @@ const AgregarMantencion = () => {
                 variant="contained"
                 color="primary"
                 onClick={handleConfirmationAndSave}
+              >
+                Confirmar
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={hideConfirmationModal}
+              >
+                Cancelar
+              </Button>
+            </Box>
+          </Modal> */}
+          <Modal
+            open={isConfirmationModalVisible}
+            onClose={hideConfirmationModal}
+          >
+            <Box
+              className={`modal-box ${isDarkMode ? "dark-mode" : ""}`}
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                backgroundColor: "white",
+                boxShadow: "0 3px 5px rgba(0, 0, 0, 0.2)",
+                borderRadius: "8px",
+                padding: "20px",
+                maxWidth: "90%",
+                maxHeight: "90%",
+                overflow: "auto",
+                textAlign: "center", // Centra los elementos dentro del Box
+              }}
+            >
+              <Typography variant="h6" component="h2">
+                Confirmación
+              </Typography>
+              <Typography>
+                ¿Estás seguro de que quieres guardar todas las mantenciones
+                pendientes?
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleConfirmationAndSave}
+                sx={{ marginRight: "40px" }} // Añade margen derecho al botón
               >
                 Confirmar
               </Button>
