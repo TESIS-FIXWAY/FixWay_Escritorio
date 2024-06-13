@@ -55,41 +55,87 @@ const HistorialMantencionAdmin = () => {
 
   const generarPDF = (mantencion, download = true) => {
     const pdf = new jsPDF();
+  
+    // Function to wrap text within a cell
+    const wrapText = (text, maxWidth) => {
+      const words = text.split(' ');
+      let lines = [];
+      let currentLine = '';
+  
+      words.forEach(word => {
+        let testLine = currentLine ? `${currentLine} ${word}` : word;
+        if (pdf.getStringUnitWidth(testLine) * pdf.internal.getFontSize() / pdf.internal.scaleFactor > maxWidth) {
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      });
+  
+      lines.push(currentLine);
+      return lines;
+    };
+  
+    // Logo
     const imgData = "../../images/LogoSinFondo.png";
     const imgWidth = 40;
     const imgHeight = 40;
     const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
     const imgY = 10;
-
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
+  
+    // Título
     pdf.setFontSize(24);
     pdf.setTextColor(40, 40, 40);
-    pdf.text("Historial de Mantenciones", pdf.internal.pageSize.getWidth() / 2, 20, { align: "center" });
+    pdf.text(
+      "Historial de Mantenciones",
+      pdf.internal.pageSize.getWidth() / 2,
+      20,
+      {
+        align: "center",
+      }
+    );
+  
+    // Línea separadora
+    const lineSeparatorY = 25;
     pdf.setLineWidth(0.5);
     pdf.setDrawColor(0, 0, 0);
-    pdf.line(5, 25, pdf.internal.pageSize.getWidth() - 5, 25);
-
+    pdf.line(
+      5,
+      lineSeparatorY,
+      pdf.internal.pageSize.getWidth() - 5,
+      lineSeparatorY
+    );
+  
+    // Fecha
     const today = new Date();
+    const dateString = today.toLocaleDateString();
     pdf.setFontSize(12);
     pdf.setTextColor(100, 100, 100);
-    pdf.text(`Fecha: ${today.toLocaleDateString()}`, pdf.internal.pageSize.getWidth() - 45, 35);
-
+    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 35);
+  
+    // Productos Utilizados
     pdf.setFontSize(14);
     pdf.setTextColor(40, 40, 40);
     pdf.text(`Productos Utilizados:`, 20, 115);
     pdf.setFontSize(12);
     const productos = mantencion.productos || [];
+  
+    // Tabla de Productos Utilizados
     const startX = 20;
     const startY = 125;
     const rowHeight = 10;
-    const colWidths = [80, 40, 40];
-    const headers = ["Producto", "Fecha Inicio", "Fecha Término"];
+    const colWidths = [50, 30, 30, 25, 25, 30];
+    const headers = ["Producto", "Fecha Inicio", "Fecha Término", "Cantidad", "Precio", "Código"];
     const data = productos.map((producto) => [
       producto.nombreProducto || "Desconocido",
       formatDate(new Date(mantencion.fecha)),
       formatDate(new Date(mantencion.fechaTerminado)),
+      (producto.cantidad || 0).toString(),
+      (producto.precio || 0).toString(),
+      producto.codigoProducto || "N/A"
     ]);
-
+  
     pdf.setFontSize(12);
     pdf.setFillColor(230, 230, 230);
     pdf.rect(startX, startY, colWidths.reduce((a, b) => a + b, 0), rowHeight, 'F');
@@ -97,76 +143,84 @@ const HistorialMantencionAdmin = () => {
     headers.forEach((header, index) => {
       pdf.text(header, startX + colWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2, startY + 7);
     });
-
+  
     let rowY = startY + rowHeight;
     data.forEach((row) => {
+      let cellHeight = rowHeight;
+  
       row.forEach((cell, index) => {
-        pdf.text(cell, startX + colWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2, rowY + 7);
+        const lines = wrapText(cell, colWidths[index]);
+        lines.forEach((line, lineIndex) => {
+          pdf.text(line, startX + colWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2, rowY + 7 + lineIndex * rowHeight);
+        });
+        cellHeight = Math.max(cellHeight, rowHeight * lines.length);
       });
-      pdf.line(startX, rowY, startX + colWidths.reduce((a, b) => a + b, 0), rowY);
-      rowY += rowHeight;
+  
+      pdf.line(startX, rowY, startX + colWidths.reduce((a, b) => a + b, 0), rowY); // Horizontal lines
+      rowY += cellHeight;
     });
-
-    // Líneas verticales
-    colWidths.reduce((acc, width, index) => {
-      if (index > 0) {
-        pdf.line(startX + acc, startY, startX + acc, rowY);
-      }
+  
+    // Vertical lines
+    colWidths.reduce((acc, width) => {
+      pdf.line(acc, startY, acc, rowY);
       return acc + width;
-    }, 0);
-
-    pdf.line(startX, startY, startX, rowY);
+    }, startX);
     pdf.line(startX + colWidths.reduce((a, b) => a + b, 0), startY, startX + colWidths.reduce((a, b) => a + b, 0), rowY);
-    pdf.line(startX, rowY, startX + colWidths.reduce((a, b) => a + b, 0), rowY);
-
+  
     // Detalles de la Mantención
     pdf.setFontSize(14);
     pdf.setTextColor(40, 40, 40);
     pdf.text(`Detalles de la Mantención:`, 20, rowY + 15);
+    pdf.setFontSize(12);
+    pdf.setTextColor(50, 50, 50);
     const detailsStartY = rowY + 25;
     const detailsRowHeight = 10;
-    const detailsColWidths = [60, 100];
-    const detailsHeaders = ["Campo", "Valor"];
+    const detailsColWidths = [80, 80];
+    const detailsHeaders = ["Descripción", ""];
     const detailsData = [
-      ["Patente", mantencion.patente],
-      ["Tipo de Mantención", mantencion.tipoMantencion],
-      ["Descripción", mantencion.descripcion],
+      ["Patente", mantencion.patente || "N/A"],
+      ["Tipo de Mantención", mantencion.tipoMantencion || "N/A"],
+      ["Descripción", mantencion.descripcion || "N/A"],
+      ["Kilometraje", formatoKilometraje(mantencion.kilometrajeMantencion || 0)],
+      ["Costo Total", (mantencion.costoTotal || 0).toString()]
     ];
-
-    pdf.setFontSize(12);
+  
+    // Detalles de la Mantención - Tabla
     pdf.setFillColor(230, 230, 230);
     pdf.rect(startX, detailsStartY, detailsColWidths.reduce((a, b) => a + b, 0), detailsRowHeight, 'F');
     pdf.setTextColor(0, 0, 0);
     detailsHeaders.forEach((header, index) => {
       pdf.text(header, startX + detailsColWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2, detailsStartY + 7);
     });
-
+  
     let detailsRowY = detailsStartY + detailsRowHeight;
     detailsData.forEach((row) => {
+      let cellHeight = detailsRowHeight;
+  
       row.forEach((cell, index) => {
-        pdf.text(cell, startX + detailsColWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2, detailsRowY + 7);
+        const lines = wrapText(cell, detailsColWidths[index]);
+        lines.forEach((line, lineIndex) => {
+          pdf.text(line, startX + detailsColWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2, detailsRowY + 7 + lineIndex * detailsRowHeight);
+        });
+        cellHeight = Math.max(cellHeight, detailsRowHeight * lines.length);
       });
-      pdf.line(startX, detailsRowY, startX + detailsColWidths.reduce((a, b) => a + b, 0), detailsRowY);
-      detailsRowY += detailsRowHeight;
+  
+      pdf.line(startX, detailsRowY, startX + detailsColWidths.reduce((a, b) => a + b, 0), detailsRowY); // Horizontal lines
+      detailsRowY += cellHeight;
     });
-
-    // Líneas verticales
-    detailsColWidths.reduce((acc, width, index) => {
-      if (index > 0) {
-        pdf.line(startX + acc, detailsStartY, startX + acc, detailsRowY);
-      }
+  
+    // Vertical lines for details
+    detailsColWidths.reduce((acc, width) => {
+      pdf.line(acc, detailsStartY, acc, detailsRowY);
       return acc + width;
-    }, 0);
-
-    pdf.line(startX, detailsStartY, startX, detailsRowY);
+    }, startX);
     pdf.line(startX + detailsColWidths.reduce((a, b) => a + b, 0), detailsStartY, startX + detailsColWidths.reduce((a, b) => a + b, 0), detailsRowY);
-    pdf.line(startX, detailsRowY, startX + detailsColWidths.reduce((a, b) => a + b, 0), detailsRowY);
-
+  
     if (download) {
       pdf.save(`${mantencion.id}.pdf`);
     } else {
       const url = pdf.output('bloburl');
-      window.open(url);
+      window.open(url, 'PDF', 'width=900,height=1200');
     }
   };
 
