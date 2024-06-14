@@ -7,10 +7,13 @@ import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 const Login = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [resetPasswordSent, setResetPasswordSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,18 +33,28 @@ const Login = () => {
   async function getRol(uid) {
     const docuRef = doc(db, `users/${uid}`);
     const docuCifrada = await getDoc(docuRef);
-    return docuCifrada.data().rol;
+    if (docuCifrada.exists()) {
+      return docuCifrada.data().rol;
+    } else {
+      throw new Error("El usuario no está registrado en la colección.");
+    }
   }
 
   function setUserWithFirebaseAndRol(usuarioFirebase) {
-    getRol(usuarioFirebase.uid).then((rol) => {
-      const userData = {
-        uid: usuarioFirebase.uid,
-        email: usuarioFirebase.email,
-        rol: rol,
-      };
-      setUser(userData);
-    });
+    getRol(usuarioFirebase.uid)
+      .then((rol) => {
+        const userData = {
+          uid: usuarioFirebase.uid,
+          email: usuarioFirebase.email,
+          rol: rol,
+        };
+        setUser(userData);
+      })
+      .catch((error) => {
+        console.error(error.message);
+        setError("Usuario no registrado.");
+        auth.signOut();
+      });
   }
 
   async function handleSumit(e) {
@@ -64,6 +77,10 @@ const Login = () => {
         : navigate("/indexMecanico");
     }
   }, [user, navigate]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -95,11 +112,15 @@ const Login = () => {
                 <label className="label-login">
                   <i className="bx bx-lock-alt"></i>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Contraseña"
                     id="password"
                   />
+                  <button type="button" onClick={togglePasswordVisibility}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </button>
                 </label>
+
                 <br />
                 <br />
                 <input
