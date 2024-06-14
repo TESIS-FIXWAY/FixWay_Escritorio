@@ -45,6 +45,7 @@ const AgregarMantencion = () => {
   const [cantidadProducto, setCantidadProducto] = useState("");
   const [codigoProducto, setCodigoProducto] = useState("");
   const [precioProducto, setPrecioProducto] = useState("");
+  const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
 
   const limpiarCampos = () => {
@@ -267,277 +268,280 @@ const AgregarMantencion = () => {
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
   };
 
+  const showPreviewModal = () => {
+    setPreviewModalVisible(true);
+  };
+
+  const hidePreviewModal = () => {
+    setPreviewModalVisible(false);
+  };
+
   return (
     <>
       <header>
         <Mecanico />
       </header>
       <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
-        <Container
-          className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
-        >
-          <Typography variant="h4" component="h1" gutterBottom>
-            Agregar Mantención
-          </Typography>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Patente del auto"
-            value={patente}
-            onChange={(e) => handleCheckPatente(e.target.value.toUpperCase())}
-            variant="outlined"
-          />
-          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-          {successMessage && (
-            <Alert severity="success" icon={<CheckCircleIcon />}>
-              {successMessage}
-            </Alert>
-          )}
-          <FormControl fullWidth margin="normal" variant="outlined">
-            <InputLabel variant="outlined">Tipo de Mantención</InputLabel>
-            <Select
-              value={tipoMantencion}
-              onChange={(e) => setTipoMantencion(e.target.value)}
-            >
-              <MenuItem value={"Sistema de Suspensión"}>
-                Sistema de Suspensión
-              </MenuItem>
-              <MenuItem value={"Afinación del Motor"}>
-                Afinación del Motor
-              </MenuItem>
-              <MenuItem value={"Sistema de Inyección Electrónica"}>
-                Sistema de Inyección Electrónica
-              </MenuItem>
-              <MenuItem value={"Sistema de Escape"}>Sistema de Escape</MenuItem>
-              <MenuItem value={"Sistema de Climatización"}>
-                Sistema de Climatización
-              </MenuItem>
-              <MenuItem value={"Sistema de Lubricación"}>
-                Sistema de Lubricación
-              </MenuItem>
-              <MenuItem value={"Sistema de Dirección"}>
-                Sistema de Dirección
-              </MenuItem>
-              <MenuItem value={"Sistema de Frenos"}>Sistema de Frenos</MenuItem>
-              <MenuItem value={"Sistema de Encendido"}>
-                Sistema de Encendido
-              </MenuItem>
-              <MenuItem value={"Inspección de Carrocería y Pintura"}>
-                Inspección de Carrocería y Pintura
-              </MenuItem>
-              <MenuItem value={"Sistema de Transmisión"}>
-                Sistema de Transmisión
-              </MenuItem>
-              <MenuItem value={"Sistema de Refrigeración"}>
-                Sistema de Refrigeración
-              </MenuItem>
-              <MenuItem value={"Accesorios y Personalización"}>
-                Accesorios y Personalización
-              </MenuItem>
-              <MenuItem value={"Herramientas y Equipos"}>
-                Herramientas y Equipos
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="normal" variant="outlined">
-            <InputLabel variant="outlined">Producto</InputLabel>
-            <Select
-              value={productoSeleccionado}
-              onChange={(e) => handleProductoSeleccionado(e.target.value)}
-            >
-              <MenuItem value="">Seleccione un Producto</MenuItem>
-              {productos.map((producto, index) => (
-                <MenuItem key={index} value={producto.nombreProducto}>
-                  {producto.nombreProducto}
+        <div className="formulario_content">
+          <Container
+            className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <Typography variant="h4" component="h1" gutterBottom>
+              Agregar Mantención
+            </Typography>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Patente del auto"
+              value={patente}
+              onChange={(e) => handleCheckPatente(e.target.value.toUpperCase())}
+              variant="outlined"
+            />
+            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+            {successMessage && (
+              <Alert severity="success" icon={<CheckCircleIcon />}>
+                {successMessage}
+              </Alert>
+            )}
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Tipo de Mantención</InputLabel>
+              <Select
+                value={tipoMantencion}
+                onChange={(e) => setTipoMantencion(e.target.value)}
+              >
+                <MenuItem value={"Sistema de Suspensión"}>
+                  Sistema de Suspensión
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {codigoProducto && (
-            <Typography>Codigo Producto: {codigoProducto}</Typography>
-          )}
-          {precioProducto && (
-            <Typography>Precio unitario: ${precioProducto}</Typography>
-          )}
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Descripción"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            variant="outlined"
-          />
-          <FormControl fullWidth margin="normal" variant="outlined">
-            <InputLabel variant="outlined">Estado</InputLabel>
-            <Select value={estado} onChange={(e) => setEstado(e.target.value)}>
-              <MenuItem value="atencion_especial">Atención Especial</MenuItem>
-              <MenuItem value="pendiente">Pendiente</MenuItem>
-              <MenuItem value="prioridad">Prioridad</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Kilometro de Mantención"
-            value={kilometrajeMantencion}
-            onChange={(e) => setKilometrajeMantencion(e.target.value)}
-            variant="outlined"
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleAddMantencion}
-            className={`agregar-button ${isDarkMode ? "dark-mode" : ""}`}
-          >
-            Agregar Mantención
-          </Button>
-          <div
-            className={`pendientes-container ${isDarkMode ? "dark-mode" : ""}`}
-          >
-            <List
-              className={`pendientes-list ${isDarkMode ? "dark-mode" : ""}`}
+                <MenuItem value={"Afinación del Motor"}>
+                  Afinación del Motor
+                </MenuItem>
+                <MenuItem value={"Sistema de Inyección Electrónica"}>
+                  Sistema de Inyección Electrónica
+                </MenuItem>
+                <MenuItem value={"Sistema de Escape"}>
+                  Sistema de Escape
+                </MenuItem>
+                <MenuItem value={"Sistema de Climatización"}>
+                  Sistema de Climatización
+                </MenuItem>
+                <MenuItem value={"Sistema de Lubricación"}>
+                  Sistema de Lubricación
+                </MenuItem>
+                <MenuItem value={"Sistema de Dirección"}>
+                  Sistema de Dirección
+                </MenuItem>
+                <MenuItem value={"Sistema de Frenos"}>
+                  Sistema de Frenos
+                </MenuItem>
+                <MenuItem value={"Sistema de Encendido"}>
+                  Sistema de Encendido
+                </MenuItem>
+                <MenuItem value={"Inspección de Carrocería y Pintura"}>
+                  Inspección de Carrocería y Pintura
+                </MenuItem>
+                <MenuItem value={"Sistema de Transmisión"}>
+                  Sistema de Transmisión
+                </MenuItem>
+                <MenuItem value={"Sistema de Refrigeración"}>
+                  Sistema de Refrigeración
+                </MenuItem>
+                <MenuItem value={"Accesorios y Personalización"}>
+                  Accesorios y Personalización
+                </MenuItem>
+                <MenuItem value={"Herramientas y Equipos"}>
+                  Herramientas y Equipos
+                </MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Producto</InputLabel>
+              <Select
+                value={productoSeleccionado}
+                onChange={(e) => handleProductoSeleccionado(e.target.value)}
+              >
+                {productos.map((producto) => (
+                  <MenuItem key={producto.id} value={producto.nombreProducto}>
+                    {producto.nombreProducto}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Código de Producto"
+              value={codigoProducto}
+              onChange={(e) => setCodigoProducto(e.target.value)}
+              variant="outlined"
+              disabled
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Precio del Producto"
+              value={precioProducto}
+              onChange={(e) => setPrecioProducto(e.target.value)}
+              variant="outlined"
+              disabled
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Descripción"
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+              variant="outlined"
+              multiline
+              rows={2}
+            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Estado</InputLabel>
+              <Select
+                value={estado}
+                onChange={(e) => setEstado(e.target.value)}
+              >
+                <MenuItem value="atencion_especial">Atención Especial</MenuItem>
+                <MenuItem value="pendiente">Pendiente</MenuItem>
+                <MenuItem value="prioridad">Prioridad</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Kilometraje de Mantención"
+              value={kilometrajeMantencion}
+              onChange={(e) => setKilometrajeMantencion(e.target.value)}
+              variant="outlined"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddMantencion}
             >
-              {mantencionesPendientes.map((mantencion, index) => (
-                <ListItem key={index} className={isDarkMode ? "dark-mode" : ""}>
-                  <ListItemText
-                    primary={`Mantención ${index + 1}`}
-                    secondary={
-                      <>
-                        <Typography component="span">
-                          <strong>Patente:</strong> {mantencion.patente}
-                        </Typography>
-                        <br />
-                        <Typography component="span">
-                          <strong>Tipo:</strong> {mantencion.tipoMantencion}
-                        </Typography>
-                        <br />
-                        <Typography component="span">
-                          <strong>Descripción:</strong> {mantencion.descripcion}
-                        </Typography>
-                        <br />
-                        <Typography component="span">
-                          <strong>Fecha:</strong>{" "}
-                          {formatDate(new Date(mantencion.fecha))}
-                        </Typography>
-                        <br />
-                        <Typography component="span">
-                          <strong>Estado:</strong>{" "}
-                          {translateEstado(mantencion.estado)}
-                        </Typography>
-                        <br />
-                        <Typography component="span">
-                          <strong>Kilometraje:</strong>{" "}
-                          {formatoKilometraje(mantencion.kilometrajeMantencion)}
-                        </Typography>
-                        <br />
-                        <Typography component="span">
-                          <strong>Productos:</strong>{" "}
-                          {mantencion.productos
-                            .map((producto) => producto.nombreProducto)
-                            .join(", ")}
-                        </Typography>
-                      </>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </div>
-          <Button
-            fullWidth
-            variant="contained"
-            color="secondary"
-            onClick={showConfirmationModal}
-            className={`guardar-button ${isDarkMode ? "dark-mode" : ""}`}
+              Agregar Mantención
+            </Button>
+          </Container>
+          <Container
+            className={`formulario_mantenciones_pendientes ${
+              isDarkMode ? "dark-mode" : ""
+            }`}
           >
-            Guardar Mantenciones
-          </Button>
-          {/* <Modal
-            open={isConfirmationModalVisible}
-            onClose={hideConfirmationModal}
-          >
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={showPreviewModal}
+              style={{ marginTop: "16px" }}
+            >
+              Vista Previa de Mantenciones
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={showConfirmationModal}
+              style={{ marginTop: "16px", left: "15px" }}
+            >
+              Confirmar y Guardar Mantenciones
+            </Button>
+          </Container>
+          <Modal open={isPreviewModalVisible} onClose={hidePreviewModal}>
             <Box
-              className={`modal-box ${isDarkMode ? "dark-mode" : ""}`}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-                width: "100vw",
-                margin: 0,
-                padding: 0,
+              p={4}
+              style={{
+                backgroundColor: "white",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "45%",
+                maxHeight: "80%",
+                overflowY: "auto",
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
               }}
             >
-              <Typography variant="h6" component="h2">
-                Confirmación
+              <Typography variant="h6" component="h2" gutterBottom>
+                Vista Previa de Mantenciones
               </Typography>
-              <Typography>
-                ¿Estás seguro de que quieres guardar todas las mantenciones
-                pendientes?
-              </Typography>
+              <List>
+                {mantencionesPendientes.map((mantencion, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={`Patente: ${mantencion.patente}, Tipo: ${
+                        mantencion.tipoMantencion
+                      }, Estado: ${translateEstado(
+                        mantencion.estado
+                      )}, Descripción: ${
+                        mantencion.descripcion
+                      }, Kilometraje: ${formatoKilometraje(
+                        mantencion.kilometrajeMantencion
+                      )}`}
+                      secondary={`Productos: ${mantencion.productos
+                        .map(
+                          (producto) =>
+                            `${producto.nombreProducto} (Código Producto: ${
+                              producto.codigoProducto
+                            }, Precio: $${producto.precio.toLocaleString(
+                              "es-CL"
+                            )})`
+                        )
+                        .join(", ")}`}
+                    />
+                  </ListItem>
+                ))}
+              </List>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleConfirmationAndSave}
+                onClick={hidePreviewModal}
               >
-                Confirmar
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={hideConfirmationModal}
-              >
-                Cancelar
+                Cerrar
               </Button>
             </Box>
-          </Modal> */}
+          </Modal>
           <Modal
             open={isConfirmationModalVisible}
             onClose={hideConfirmationModal}
           >
             <Box
-              className={`modal-box ${isDarkMode ? "dark-mode" : ""}`}
-              sx={{
+              p={4}
+              style={{
+                backgroundColor: "white",
                 position: "absolute",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                backgroundColor: "white",
-                boxShadow: "0 3px 5px rgba(0, 0, 0, 0.2)",
-                borderRadius: "8px",
-                padding: "20px",
-                maxWidth: "90%",
-                maxHeight: "90%",
-                overflow: "auto",
-                textAlign: "center", // Centra los elementos dentro del Box
+                width: 400,
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
               }}
             >
-              <Typography variant="h6" component="h2">
-                Confirmación
+              <Typography variant="h6" component="h2" gutterBottom>
+                Confirmar Guardado de Mantenciones
               </Typography>
-              <Typography>
-                ¿Estás seguro de que quieres guardar todas las mantenciones
+              <Typography variant="body1" gutterBottom>
+                ¿Está seguro de que desea guardar todas las mantenciones
                 pendientes?
               </Typography>
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleConfirmationAndSave}
-                sx={{ marginRight: "40px" }} // Añade margen derecho al botón
+                style={{ marginTop: "16px" }}
               >
-                Confirmar
+                Confirmar y Guardar
               </Button>
               <Button
                 variant="contained"
-                color="secondary"
                 onClick={hideConfirmationModal}
+                style={{ marginTop: "16px", left: "15px" }}
               >
                 Cancelar
               </Button>
             </Box>
           </Modal>
-        </Container>
+        </div>
       </div>
     </>
   );
