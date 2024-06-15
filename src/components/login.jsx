@@ -7,9 +7,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
 const Login = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
@@ -78,10 +75,6 @@ const Login = () => {
     }
   }, [user, navigate]);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <>
       <div className="body">
@@ -108,7 +101,6 @@ const Login = () => {
                   <input type="email" placeholder="Email" id="email" />
                 </label>
                 <br />
-                <br />
                 <label className="label-login">
                   <i className="bx bx-lock-alt"></i>
                   <input
@@ -116,12 +108,7 @@ const Login = () => {
                     placeholder="Contraseña"
                     id="password"
                   />
-                  <button type="button" onClick={togglePasswordVisibility}>
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </button>
                 </label>
-
-                <br />
                 <br />
                 <input
                   type="submit"
@@ -137,7 +124,6 @@ const Login = () => {
             </div>
           </div>
         </div>
-
         <footer className="footer_login">
           <div className="waves">
             <div className="wave" id="wave1"></div>
