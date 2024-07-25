@@ -90,7 +90,6 @@ const GraficoMisFacturas = () => {
         fontName: "Arial",
       },
     },
-    pointSize: 5,
     color: isDarkMode ? "#B4B4B4" : "#333",
     lineDashStyle: [false],
   };
