@@ -17,15 +17,13 @@
   padding: 1em;
 }
 
-
-
 .generarQR_titulo {
   text-align: center;
   font-size: 3em;
 }
 
 .formulario_form_generarQR {
-  margin: 50px ;
+  margin: 50px;
   padding: 1em;
   grid-template-columns: 1fr 1fr;
   background-color: #ffffff;

@@ -1,159 +1,147 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.tabla_listar{
-    width: 100%;
+.tabla_listar {
+  width: 100%;
 }
-.table_header{
-    display: flex;
-    justify-content: space-between;
-    padding: 110px 20px 10px 20px;
-    background-color: #f6f9fc;
-    overflow: auto;
+.table_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 110px 20px 10px 20px;
+  background-color: #f6f9fc;
+  overflow: auto;
 }
-.table_header p{
-    font-size: 20px;
+.table_header p {
+  font-size: 20px;
 }
-button{
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 8px;
-    color: #fff;
-    margin: 0px 5px; 
+button {
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 8px;
+  color: #fff;
+  margin: 0px 5px;
 }
-td button:nth-child(1){
-    background-color: #0298cf;
+td button:nth-child(1) {
+  background-color: #0298cf;
 }
-td button:nth-child(2){
-    background-color: #f80000;
-}
-
-.boton-ingreso{
-    padding: 8px 15px;
-    color: #fff;
-    background-color: #0298cf;
+td button:nth-child(2) {
+  background-color: #f80000;
 }
 
-input{
-    padding: 8px 15px;
-    margin: 0 5px;
-    outline: none;
-    border: 1px solid #0298cf;
-    border-radius: 5px;
-    color: #000;
+.boton-ingreso {
+  padding: 8px 15px;
+  color: #fff;
+  background-color: #0298cf;
 }
 
-
-.table_section{
-    height: 700px;
-    overflow: auto;
-}
-table{
-    table-layout: fixed;
-    min-width: 50%;
-    border-collapse: collapse;
-}
-thead th{
-    background-color: #f6f9fc;
-    color: #000;
-    font-size: 16px;
-}
-th, td{
-    border-bottom: 1px solid #ccc;
-    padding: 8px 15px;
-    word-break: break-all;
-    text-align: center;
-}
-table tr:hover td{
-    background-color: rgba(0,0,255,.1);
-     
-}
-table tbody td:hover{
-    background-color: rgba(0,0,255,.2);
+input {
+  padding: 8px 15px;
+  margin: 0 5px;
+  outline: none;
+  border: 1px solid #0298cf;
+  border-radius: 5px;
+  color: #000;
 }
 
-
-
-
-
-::placeholder{
-    color: #0298cf;
+.table_section {
+  height: 700px;
+  overflow: auto;
 }
-::-webkit-scrollbar{
-    height: 10px;
-    width: 10px;
+table {
+  table-layout: fixed;
+  min-width: 50%;
+  border-collapse: collapse;
 }
-::-webkit-scrollbar-track{
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+thead th {
+  background-color: #f6f9fc;
+  color: #000;
+  font-size: 16px;
 }
-::-webkit-scrollbar-thumb{
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+th,
+td {
+  border-bottom: 1px solid #ccc;
+  padding: 8px 15px;
+  word-break: break-all;
+  text-align: center;
 }
-
-
-
-
-
-.contenedor-tabla{
-    width: 90%;
-    max-width: 900px;
-    margin: auto;
-    padding-top: 200px;
+table tr:hover td {
+  background-color: rgba(0, 0, 255, 0.1);
 }
-
-.tabla{
-    width: 150%;
-    border: 1px solid #ccc;
-    border-collapse: collapse;
-    margin: -120px;
-    padding: 0;
-    table-layout: fixed;
+table tbody td:hover {
+  background-color: rgba(0, 0, 255, 0.2);
 }
 
-.tabla caption{
-    font-size: 2rem;
-    color: #333;
-    font-weight: 20bold;
-    margin: 50px ;
+::placeholder {
+  color: #0298cf;
+}
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.tabla tr{
-    background-color: #fff;
-    border: 0.1px solid #E8F5FF;
-}
-.tabla th{
-    font-size: 16px;
-    padding: 8px;
-    text-align: center;
-}
-.tabla td{
-    font-size: 16px;
-    padding: 8px;
-    text-align: center;
-}
-.tabla thead th{
-    text-transform: uppercase;
-    background-color: #7BD5F6;
-}
-tabla tbody tr:hover{
-    background-color: rgba(0,0,255,.2);
-}
-tabla tbody td:hover{
-    background-color: rgba(0,0,255,.3);
+.contenedor-tabla {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+  padding-top: 200px;
 }
 
+.tabla {
+  width: 150%;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: -120px;
+  padding: 0;
+  table-layout: fixed;
+}
 
+.tabla caption {
+  font-size: 2rem;
+  color: #333;
+  font-weight: 20bold;
+  margin: 50px;
+}
 
+.tabla tr {
+  background-color: #fff;
+  border: 0.1px solid #e8f5ff;
+}
+.tabla th {
+  font-size: 16px;
+  padding: 8px;
+  text-align: center;
+}
+.tabla td {
+  font-size: 16px;
+  padding: 8px;
+  text-align: center;
+}
+.tabla thead th {
+  text-transform: uppercase;
+  background-color: #7bd5f6;
+}
+tabla tbody tr:hover {
+  background-color: rgba(0, 0, 255, 0.2);
+}
+tabla tbody td:hover {
+  background-color: rgba(0, 0, 255, 0.3);
+}
 
 .p_editar select {
   border: none;
-  width: 398px; 
-  background-color: #fff; 
+  width: 398px;
+  background-color: #fff;
 
   border-bottom: 1px solid #ccc; /* Puedes ajustar el color según tus necesidades */
   padding: 8px 15px;
@@ -165,136 +153,120 @@ tabla tbody td:hover{
   appearance: none; /* Para quitar la apariencia predeterminada en navegadores modernos */
 }
 
-
-
-
-
-
 .fondo_no {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
-    z-index: 999; 
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 .editar {
-    position: absolute;
-    background-color: #fff; 
-    border: 1px solid #ccc; 
-    padding: 50px 50px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1; 
-    width: 500px; 
-    height: auto; 
-    left: 50%; 
-    top: 50%; 
-    transform: translate(-50%, -50%);
-  }
-  
-  .editar p {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .etiqueta_editar {
-    display: flex;
-    margin-bottom: 5px;
-    margin: 0px 0px 0px 20px;
-    font-weight: bold;
-  }
-  
-  .editar input {
-    border-radius: 0px;
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: none; 
-    border-bottom: 1px solid #ccc; 
-    outline: none; 
-  }
-  
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 50px 50px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  width: 500px;
+  height: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 
+.editar p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-  .editar button.guardar {
-    background-color: #3498db; 
-    color: white; 
-    padding: 10x 20px; 
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 5px;
-    width: 40%;
-    transition: background-color 0.3s ease; 
+.etiqueta_editar {
+  display: flex;
+  margin-bottom: 5px;
+  margin: 0px 0px 0px 20px;
+  font-weight: bold;
+}
 
-  }
-  
-  .editar button.cancelar {
-    background-color: #e74c3c; 
-    color: white; 
-    padding: 10px 20px; 
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 40%;
-    transition: background-color 0.3s ease; 
-  }
-  
-  .editar button.guardar:hover {
-    background-color: #2980b9; 
-  }
-  
-  .editar button.cancelar:hover {
-    background-color: #c0392b; 
-  }
-  
-  
+.editar input {
+  border-radius: 0px;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+}
 
+.editar button.guardar {
+  background-color: #3498db;
+  color: white;
+  padding: 10x 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  width: 40%;
+  transition: background-color 0.3s ease;
+}
 
+.editar button.cancelar {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 40%;
+  transition: background-color 0.3s ease;
+}
 
+.editar button.guardar:hover {
+  background-color: #2980b9;
+}
+
+.editar button.cancelar:hover {
+  background-color: #c0392b;
+}
 
 /* Estilos para pantallas más pequeñas */
 @media screen and (max-width: 650px) {
-    .tabla_listar {
-      border: 0px;
-    }
-  
-    .table_header {
-      padding: 130px 0px 0px 0px;
-    }
-  
-    .tabla tr {
-      margin-bottom: 8px;
-      border-bottom: 4px solid #ccc;
-      display: block;
-    }
-  
-    .tabla th,
-    .tabla td {
-      font-size: 12px;
-    }
-  
-    .tabla td {
-      display: block;
-      border-bottom: 1px solid #ccc;
-      text-align: right;
-      font-size: 12px;
-    }
-  
-    .tabla td:last-child {
-      border-bottom: 0px;
-    }
-  
-    .tabla td::before {
-      content: attr(data-label);
-      font-weight: bold;
-      text-transform: uppercase;
-      float: left;
-    }
+  .tabla_listar {
+    border: 0px;
   }
 
+  .table_header {
+    padding: 130px 0px 0px 0px;
+  }
 
+  .tabla tr {
+    margin-bottom: 8px;
+    border-bottom: 4px solid #ccc;
+    display: block;
+  }
 
+  .tabla th,
+  .tabla td {
+    font-size: 12px;
+  }
+
+  .tabla td {
+    display: block;
+    border-bottom: 1px solid #ccc;
+    text-align: right;
+    font-size: 12px;
+  }
+
+  .tabla td:last-child {
+    border-bottom: 0px;
+  }
+
+  .tabla td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: uppercase;
+    float: left;
+  }
+}

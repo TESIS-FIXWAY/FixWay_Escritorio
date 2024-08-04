@@ -1,24 +1,22 @@
-
 .layaout {
   display: grid;
   grid-template-rows: 100px auto auto 60px;
   grid-template-columns: 1fr;
-  grid-template-areas: 'header' 'sidebar' 'main' 'footer';
+  grid-template-areas: "header" "sidebar" "main" "footer";
   height: 100vh;
 }
-
 
 header {
   grid-area: header;
 }
 aside {
   grid-area: sidebar;
-  background-color: #F7F9FB;
+  background-color: #f7f9fb;
 }
 
 main {
   grid-area: main;
-  background-color: #F7F9FB;
+  background-color: #f7f9fb;
   display: grid;
   grid-template-columns: 1fr;
 }
@@ -28,7 +26,7 @@ footer {
   background-color: grey;
 }
 
-.informacion_widgets_index{
+.informacion_widgets_index {
   display: flex;
   max-width: 700px;
   margin-top: 10px;
@@ -37,11 +35,11 @@ footer {
 @media (min-width: 800px) {
   .layaout {
     display: grid;
-    grid-template-rows: 100px auto ;
+    grid-template-rows: 100px auto;
     grid-template-columns: 160px auto auto;
-    grid-template-areas: 
-    'header header header'
-    'sidebar sidebar main'
+    grid-template-areas:
+      "header header header"
+      "sidebar sidebar main";
   }
   aside {
     grid-area: sidebar;
@@ -55,4 +53,3 @@ footer {
     gap: 20px;
   }
 }
-

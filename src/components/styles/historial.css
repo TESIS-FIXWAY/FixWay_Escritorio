@@ -1,31 +1,26 @@
-
-
-
-text{
-    font-family: "Lato", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #ffff;
+text {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #ffff;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 900px;
-    max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 900px;
+  max-height: 400px;
 }
-  
 
-
-.fechas_selec{ 
+.fechas_selec {
   display: flex;
   align-items: center;
   width: 340px;
   margin: 20px;
-  }
+}
 
-.seleccionar{
+.seleccionar {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   width: 70%;
@@ -35,83 +30,80 @@ text{
   font-style: normal;
   border: none !important;
   font-size: 15px;
-  background-color: #F7F9FB;
+  background-color: #f7f9fb;
   flex: 1;
-  color: #AAAAAB;
+  color: #aaaaab;
 }
 .fecha_historial {
-  color: #AAAAAB;
+  color: #aaaaab;
   font-size: 15px;
   border: none;
   width: 70%;
   max-width: 400px;
   z-index: -1 !important;
-  background-color: #F7F9FB;
+  background-color: #f7f9fb;
 }
-  .subtitulos_historial{
-    font-family: "Lato", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #67748E;
-  }
-  .texto_total{
-    font-family: "Lato", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    color: #344767;
-  }
+.subtitulos_historial {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #67748e;
+}
+.texto_total {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #344767;
+}
 
+.informacion_widgets {
+  display: flex;
+  max-width: 700px;
+  margin-bottom: 40px;
+}
 
+.widgets_historial {
+  display: flex;
+  flex-wrap: wrap;
+  width: auto;
+}
 
-  .informacion_widgets{
-    display: flex;
-    max-width: 700px;
-    margin-bottom:40px;
-  }
-  
-  .widgets_historial{
-    display: flex;
-    flex-wrap: wrap;
-    width: auto;
-  }
-
-  .container_widgets {
-    display: flex; /* Usar flexbox */
-    flex-direction: column; /* Alinear los elementos en columna */
-    justify-content: center; /* Centrar verticalmente */
-    align-items: center; /* Centrar horizontalmente */
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra suave */
-    padding: 10px;
-    margin: 10px;
-    height: 70px;
-    width: 260px;
-    width: calc(260px ); /* El 20px es el espacio entre los elementos */
-  }
+.container_widgets {
+  display: flex; /* Usar flexbox */
+  flex-direction: column; /* Alinear los elementos en columna */
+  justify-content: center; /* Centrar verticalmente */
+  align-items: center; /* Centrar horizontalmente */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra suave */
+  padding: 10px;
+  margin: 10px;
+  height: 70px;
+  width: 260px;
+  width: calc(260px); /* El 20px es el espacio entre los elementos */
+}
 
 .chart_container {
   padding: 10px;
-  margin: 0px 10px 0px 10px ;
+  margin: 0px 10px 0px 10px;
   height: 100%;
-  width: 350px; 
+  width: 350px;
   /* background-color: #FFFFFF;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);  */
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .datepicker-open .react-datepicker {
-    animation: slideIn 1.5s ease;
-  }
+.datepicker-open .react-datepicker {
+  animation: slideIn 1.5s ease;
+}
