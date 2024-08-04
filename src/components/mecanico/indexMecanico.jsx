@@ -2,40 +2,13 @@ import "../styles/indexAdmin.css";
 import "../styles/darkMode.css";
 import { DarkModeContext } from "../../context/darkMode";
 import React, { useState, useEffect, useContext } from "react";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { useNavigate } from "react-router-dom";
 import { db, auth } from "../../firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 import Mecanico from "./mecanico";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faUsersGear,
-  faReceipt,
-  faBoxesStacked,
-  faCartFlatbed,
-  faClipboardList,
-  faUserPlus,
-  faUsersLine,
-  faFileCirclePlus,
-  faFileLines,
-} from "@fortawesome/free-solid-svg-icons";
-
-library.add(
-  faUsersGear,
-  faReceipt,
-  faBoxesStacked,
-  faCartFlatbed,
-  faClipboardList,
-  faUserPlus,
-  faUsersLine,
-  faFileCirclePlus,
-  faFileLines
-);
+import ProductoMasVendido from "./Graficos/productoVendido";
 
 const IndexMecanico = () => {
-  const navigate = useNavigate();
   const [processCount, setInProcessCount] = useState(0);
   const [pendingCount, setInPendingCount] = useState(0);
   const [deliveredCount, setInDeliveredCount] = useState(0);
@@ -94,80 +67,36 @@ const IndexMecanico = () => {
         <header>
           <Mecanico />
         </header>
-        <div className="tabla_listar">
-          <div className="card_admin_encabezado">
-            <div className="perfil_usuario">
-              <h1 className="perfil_usuario_h1">Perfil de Usuario</h1>
-              {user && (
-                <div className="perfil_usuario_lista">
-                  <p className="perfil_usuario_lista_p">
-                    {" "}
-                    <FontAwesomeIcon icon="fa-solid fa-user" />
-                    Nombre de Usuario:
-                  </p>
-                  <p className="perfil_usuario_lista_p">
-                    {user.nombre} {user.apellido}
-                  </p>
-                  <p className="perfil_usuario_lista_p">
-                    {" "}
-                    <FontAwesomeIcon icon="fa-solid fa-id-card" />
-                    RUT de Usuario:{" "}
-                  </p>
-                  <p className="perfil_usuario_lista_p">{user.rut}</p>
-                  <p className="perfil_usuario_lista_p">
-                    {" "}
-                    <FontAwesomeIcon icon="fa-solid fa-envelope" />
-                    Correo Electrónico:
-                  </p>
-                  <p className="perfil_usuario_lista_p">{user.email}</p>
-                  <p className="perfil_usuario_lista_p">
-                    {" "}
-                    <FontAwesomeIcon icon="fa-solid fa-location-dot" />
-                    Dirección de Usuario:
-                  </p>
-                  <p className="perfil_usuario_lista_p">{user.direccion}</p>
-                  <p className="perfil_usuario_lista_p">
-                    {" "}
-                    <FontAwesomeIcon icon="fa-solid fa-phone" />
-                    Teléfono de Usuario:
-                  </p>
-                  <p className="perfil_usuario_lista_p">{user.telefono}</p>
-                </div>
-              )}
-            </div>
-          </div>
-          <aside className={`aside ${isDarkMode ? "dark-mode" : ""}`}>
-            <h1 className="titulo-Grafico ">Información General</h1>
-            <div className="informacion_widgets_index">
-              <div className="widgets_historial">
-                <div
-                  className={`container_widgets ${
-                    isDarkMode ? "dark-mode" : ""
-                  }`}
-                >
-                  <p>Mantenciones Pendientes:</p>
-                  <p>{pendingCount}</p>
-                </div>
-                <div
-                  className={`container_widgets ${
-                    isDarkMode ? "dark-mode" : ""
-                  }`}
-                >
-                  <p>Mantenciones En Proceso:</p>
-                  <p>{processCount}</p>
-                </div>
-                <div
-                  className={`container_widgets ${
-                    isDarkMode ? "dark-mode" : ""
-                  }`}
-                >
-                  <p>Mantenciones Entregadas:</p>
-                  <p>{deliveredCount}</p>
-                </div>
+        <aside className={`aside ${isDarkMode ? "dark-mode" : ""}`}>
+          <h1 className="titulo-Grafico ">Información General</h1>
+          <div className="informacion_widgets_index">
+            <div className="widgets_historial">
+              <div
+                className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}
+              >
+                <p>Mantenciones Pendientes:</p>
+                <p>{pendingCount}</p>
+              </div>
+              <div
+                className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}
+              >
+                <p>Mantenciones En Proceso:</p>
+                <p>{processCount}</p>
+              </div>
+              <div
+                className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}
+              >
+                <p>Mantenciones Entregadas:</p>
+                <p>{deliveredCount}</p>
               </div>
             </div>
-          </aside>
-        </div>
+          </div>
+        </aside>
+        <main className={`main ${isDarkMode ? "dark-mode" : ""}`}>
+          <div>
+            <ProductoMasVendido />
+          </div>
+        </main>
       </div>
     </>
   );

@@ -7,9 +7,6 @@ import { db, auth } from "../../firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 import { DarkModeContext } from "../../context/darkMode";
 
-// import Tierra from "./tierra";
-// import CarModel from "./auto";
-
 import GraficoMisBoletas from "./graficos/graficoMisBoletas";
 import GraficoMisFacturas from "./graficos/graficoMisFacturas";
 import HistorialVentas from "./historial/historial";
