@@ -286,7 +286,7 @@ const AgregarMantencion = () => {
           <Container
             className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
           >
-            <Typography variant="h1" component="h1" gutterBottom>
+            <Typography variant="h5" component="h5" gutterBottom>
               Agregar Mantención
             </Typography>
             <TextField

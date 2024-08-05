@@ -7,6 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { Alert } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -41,7 +44,10 @@ const styleReset = {
 
 const AgregarUsuario = () => {
   const [mensaje, setMensaje] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [mensajeRut, setMensajeRut] = useState(null);
+  const [mensajeRutError, setMensajeRutError] = useState(null);
   const [mensajeValidacion, setMensajeValidacion] = useState(null);
   const [rolValue, setRolValue] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
@@ -124,7 +130,7 @@ const AgregarUsuario = () => {
         fechaIngreso,
       });
 
-      setMensaje("Usuario añadido Correctamente");
+      setSuccessMessage("Usuario añadido correctamente");
       await logoutAndReauthenticate();
       clearFormFields();
       setMensajeValidacion(null);
@@ -133,7 +139,7 @@ const AgregarUsuario = () => {
       console.error("Error durante el registro del usuario:", error);
     } finally {
       setTimeout(() => {
-        setMensaje(null);
+        setSuccessMessage(null);
       }, 2000);
     }
   };
@@ -144,14 +150,16 @@ const AgregarUsuario = () => {
     if (validador.esValido) {
       document.getElementById("rut").value = validador.formateado();
       setMensajeRut("RUT válido");
+      setTimeout(() => setMensajeRut(""), 2000);
     } else {
-      setMensajeRut("RUT inválido");
+      setMensajeRutError("RUT inválido");
+      setTimeout(() => setMensajeRutError(""), 8000);
     }
   };
 
   const validarCampos = () => {
     if (mensajeRut !== "RUT válido") {
-      setMensajeValidacion("El Rut no es válido");
+      setMensajeValidacion("El RUT ya esta registrado");
       return false;
     }
     return true;
@@ -293,7 +301,16 @@ const AgregarUsuario = () => {
                 placeholder="Rut (11.111.111-1)"
                 onChange={validarRutOnChange}
               />
-              <p className="mensaje_rut">{mensajeRut}</p>
+              {mensajeRut && (
+                <Alert severity="success" icon={<CheckCircleIcon />}>
+                  {mensajeRut}
+                </Alert>
+              )}
+              {mensajeRutError && (
+                <Alert severity="error" icon={<CloseIcon />}>
+                  {mensajeRutError}
+                </Alert>
+              )}
             </p>
             <p>
               <br />
@@ -422,13 +439,26 @@ const AgregarUsuario = () => {
               />
             </p>
             <p className="block_boton">
-              <p className="mensaje">{mensaje}</p>
+              {successMessage && (
+                <Alert severity="success" icon={<CheckCircleIcon />}>
+                  {successMessage}
+                </Alert>
+              )}
+              {errorMessage && (
+                <Alert severity="error" icon={<CloseIcon />}>
+                  {errorMessage}
+                </Alert>
+              )}
               <p className="mensaje_validacion">{mensajeValidacion}</p>
               <Button
                 variant="outlined"
                 type="submit"
                 size="large"
-                style={{ width: "250px", fontSize: "20px" }}
+                style={{
+                  width: "250px",
+                  fontSize: "20px",
+                  marginTop: "12px",
+                }}
               >
                 Agregar Usuario
               </Button>

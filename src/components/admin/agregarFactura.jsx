@@ -8,13 +8,17 @@ import "../styles/agregarUsuario.css";
 import "../styles/darkMode.css";
 import { DarkModeContext } from "../../context/darkMode";
 import TextField from "@mui/material/TextField";
+import { Alert } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AgregarFactura = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [mensaje, setMensaje] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [state, setState] = useState({
     fecha: "",
     proveedor: "",
@@ -81,7 +85,8 @@ const AgregarFactura = () => {
     e.preventDefault();
     const { fecha, proveedor, detalle } = state;
     if (!fecha || !proveedor || !detalle) {
-      setMensaje("Datos incompletos");
+      // setMensaje("Datos incompletos");
+      setErrorMessage("Datos incompletos");
       return;
     }
 
@@ -89,7 +94,7 @@ const AgregarFactura = () => {
       setUploading(true);
       const downloadURL = await handleUpload();
       if (!downloadURL) {
-        setMensaje("Error al subir el archivo");
+        setErrorMessage("Error al subir el archivo");
         return;
       }
 
@@ -103,13 +108,13 @@ const AgregarFactura = () => {
       });
 
       console.log("Documento escrito con ID:", docRef.id);
-      setMensaje("Se ha guardado correctamente");
+      setSuccessMessage("Se ha guardado correctamente");
       setState({ fecha: "", proveedor: "", detalle: "" });
       setFile(null);
       setFilePreview(null);
     } catch (error) {
       console.error("Error al agregar el documento:", error);
-      setMensaje("Ha ocurrido un error al guardar");
+      setErrorMessage("ha ocurrido un error al guardar la factura");
     } finally {
       setUploading(false);
     }
@@ -194,12 +199,13 @@ const AgregarFactura = () => {
                     className={`input_formulario ${
                       isDarkMode ? "dark-mode" : ""
                     }`}
-                    style={{ display: "none" }}
+                    style={{ display: "none", marginTop: "12px" }}
                     id="upload-input"
                   />
                   <label htmlFor="upload-input">
                     <Button
                       variant="contained"
+                      sx={{ marginTop: "10px" }}
                       component="span"
                       className={`input_formulario ${
                         isDarkMode ? "dark-mode" : ""
@@ -223,10 +229,15 @@ const AgregarFactura = () => {
                     )}
                   </Box>
                 )}
-                {mensaje && (
-                  <Typography className="mensaje" color="error">
-                    {mensaje}
-                  </Typography>
+                {successMessage && (
+                  <Alert severity="success" icon={<CheckCircleIcon />}>
+                    {successMessage}
+                  </Alert>
+                )}
+                {errorMessage && (
+                  <Alert severity="error" icon={<CloseIcon />}>
+                    {errorMessage}
+                  </Alert>
                 )}
                 <p className="block_boton">
                   <Button
@@ -237,7 +248,7 @@ const AgregarFactura = () => {
                     style={{
                       width: "300px",
                       fontSize: "16px",
-                      marginBottom: "10px",
+                      marginTop: "15px",
                     }}
                   >
                     Agregar Factura Proveedor
