@@ -8,7 +8,10 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Alert,
 } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -35,6 +38,8 @@ function AgregarAutomovil() {
   const [kilometraje, setKilometraje] = useState("");
   const [numchasis, setNumChasis] = useState("");
   const [patente, setPatente] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isConfirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
@@ -82,6 +87,19 @@ function AgregarAutomovil() {
   };
 
   const agregarAutomovil = async () => {
+    if (
+      !marca ||
+      !modelo ||
+      !ano ||
+      !color ||
+      !kilometraje ||
+      !numchasis ||
+      !patente
+    ) {
+      setErrorMessage("Por favor, completa todos los campos antes de guardar.");
+      return;
+    }
+
     try {
       const automovilRef = doc(db, "automoviles", patente);
       const automovilDoc = await getDoc(automovilRef);
@@ -116,9 +134,11 @@ function AgregarAutomovil() {
       setKilometraje("");
       setNumChasis("");
       setPatente("");
-      alert("Automovil agregado correctamente");
+      setSuccessMessage("Automóvil agregado correctamente");
+      setErrorMessage("");
     } catch (error) {
       console.error("Error adding/updating automovil: ", error);
+      setErrorMessage("Error al agregar el automóvil. Inténtalo de nuevo.");
     }
   };
 
@@ -319,6 +339,16 @@ function AgregarAutomovil() {
                     placeholder="Número  de Chasis"
                   />
                 </p>
+                {successMessage && (
+                  <Alert severity="success" icon={<CheckCircleIcon />}>
+                    {successMessage}
+                  </Alert>
+                )}
+                {errorMessage && (
+                  <Alert severity="error" icon={<CloseIcon />}>
+                    {errorMessage}
+                  </Alert>
+                )}
               </form>
               <Button variant="contained" onClick={showConfirmationModal}>
                 Agregar Automóvil

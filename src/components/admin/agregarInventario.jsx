@@ -10,6 +10,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Alert } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AgregarInventario = () => {
   const [formData, setFormData] = useState({
@@ -21,8 +24,8 @@ const AgregarInventario = () => {
     categoria: "",
     marca: "",
   });
-
-  const [mensajeExito, setMensajeExito] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
 
   const submitHandler = async (e) => {
@@ -49,18 +52,19 @@ const AgregarInventario = () => {
         categoria: "",
         marca: "",
       });
-      setMensajeExito("Inventario agregado exitosamente");
+      setSuccessMessage("Producto agregado correctamente");
       setTimeout(() => {
-        setMensajeExito("");
+        setSuccessMessage("");
       }, 3000);
     } catch (error) {
       console.error("Error al agregar el inventario: ", error);
+      setErrorMessage("Error al agregar el producto. Inténtalo de nuevo.");
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "cantidad") {
+    if (name === "costo") {
       const cantidadFormateada = value
         .replace(/[^0-9]/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -84,8 +88,15 @@ const AgregarInventario = () => {
               >
                 Agregar Inventario
               </h1>
-              {mensajeExito && (
-                <div className="mensaje_exito">{mensajeExito}</div>
+              {successMessage && (
+                <Alert severity="success" icon={<CheckCircleIcon />}>
+                  {successMessage}
+                </Alert>
+              )}
+              {errorMessage && (
+                <Alert severity="error" icon={<CloseIcon />}>
+                  {errorMessage}
+                </Alert>
               )}
               <form
                 className={`formulario_form ${isDarkMode ? "dark-mode" : ""}`}

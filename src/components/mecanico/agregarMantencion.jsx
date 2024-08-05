@@ -286,7 +286,7 @@ const AgregarMantencion = () => {
           <Container
             className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
           >
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography variant="h1" component="h1" gutterBottom>
               Agregar Mantención
             </Typography>
             <TextField
@@ -408,7 +408,7 @@ const AgregarMantencion = () => {
             <TextField
               fullWidth
               margin="normal"
-              label="Kilometraje de Mantención"
+              label="Kilometro de Mantención"
               value={kilometrajeMantencion}
               onChange={(e) => setKilometrajeMantencion(e.target.value)}
               variant="outlined"

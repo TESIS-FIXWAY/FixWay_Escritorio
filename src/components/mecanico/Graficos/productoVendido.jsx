@@ -59,14 +59,18 @@ export default function ProductoMasVendido() {
 
   return (
     <>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        className="titulo-Grafico "
+      >
         Productos Más Vendidos
       </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Código Producto</TableCell>
               <TableCell>Producto</TableCell>
               <TableCell>Precio</TableCell>
             </TableRow>
@@ -74,7 +78,6 @@ export default function ProductoMasVendido() {
           <TableBody>
             {productSales.map((product, index) => (
               <TableRow key={index}>
-                <TableCell>{product.codigoProducto}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.precio}</TableCell>
               </TableRow>

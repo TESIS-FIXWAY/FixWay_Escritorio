@@ -68,7 +68,7 @@ const IndexMecanico = () => {
           <Mecanico />
         </header>
         <aside className={`aside ${isDarkMode ? "dark-mode" : ""}`}>
-          <h1 className="titulo-Grafico ">Información General</h1>
+          <h1 className="titulo-Grafico">Información General</h1>
           <div className="informacion_widgets_index">
             <div className="widgets_historial">
               <div

@@ -1109,8 +1109,7 @@ const GenerarFactura = () => {
                   <TableCell>Seleccionar</TableCell>
                   <TableCell>Código Producto</TableCell>
                   <TableCell>Nombre del Producto</TableCell>
-                  <TableCell>Descripción</TableCell>
-                  <TableCell>Costo</TableCell>
+                  <TableCell>Precio</TableCell>
                   <TableCell>Cantidad</TableCell>
                   <TableCell>Cantidad Seleccionada</TableCell>
                 </TableRow>
@@ -1129,7 +1128,6 @@ const GenerarFactura = () => {
                     </TableCell>
                     <TableCell>{item.codigoProducto}</TableCell>
                     <TableCell>{item.nombreProducto}</TableCell>
-                    <TableCell>{item.descripcion}</TableCell>
                     <TableCell>{item.costo}</TableCell>
                     <TableCell>{item.cantidad}</TableCell>
                     <TableCell>

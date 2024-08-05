@@ -210,7 +210,7 @@ const ListarInventario = () => {
                   <TableCell>Categoría</TableCell>
                   <TableCell>Marca</TableCell>
                   <TableCell>Cantidad</TableCell>
-                  <TableCell>Costo</TableCell>
+                  <TableCell>Precio</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
