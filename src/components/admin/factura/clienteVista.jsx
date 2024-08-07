@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from "@mui/icons-material/Delete";
+import "../../styles/ClienteVista.css";
 
 const ClienteVista = ({
   clientes,
@@ -63,10 +64,7 @@ const ClienteVista = ({
 
   return (
     <div className={`fondo_no ${isDarkMode ? "dark-mode" : ""}`}>
-      <div
-        className={`editar ${isDarkMode ? "dark-mode" : ""}`}
-        style={{ width: "1570px" }}
-      >
+      <div className={`editar ${isDarkMode ? "dark-mode" : ""}`}>
         <p className="p_editar">Lista de Clientes</p>
         <input
           type="text"
@@ -83,9 +81,6 @@ const ClienteVista = ({
               <TableRow>
                 <TableCell className={isDarkMode ? "dark-mode" : ""}>
                   Nombre
-                </TableCell>
-                <TableCell className={isDarkMode ? "dark-mode" : ""}>
-                  Apellido
                 </TableCell>
                 <TableCell className={isDarkMode ? "dark-mode" : ""}>
                   RUT
@@ -105,10 +100,7 @@ const ClienteVista = ({
               {clientesFiltrados.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell className={isDarkMode ? "dark-mode" : ""}>
-                    {item.nombre}
-                  </TableCell>
-                  <TableCell className={isDarkMode ? "dark-mode" : ""}>
-                    {item.apellido}
+                    {item.nombre} {item.apellido}
                   </TableCell>
                   <TableCell className={isDarkMode ? "dark-mode" : ""}>
                     {item.rut}
@@ -122,16 +114,12 @@ const ClienteVista = ({
                   <TableCell className={isDarkMode ? "dark-mode" : ""}>
                     <Button onClick={() => seleccionarCliente(item)}>
                       <DoneIcon
-                        style={{ color: "white" }}
                         sx={{ color: isDarkMode ? "white" : "black" }}
                       />
                     </Button>
                     <Button onClick={() => handleEliminarCliente(item.id)}>
                       <DeleteIcon
-                        style={{ color: "white" }}
-                        sx={{
-                          color: isDarkMode ? "white" : "black",
-                        }}
+                        sx={{ color: isDarkMode ? "white" : "black" }}
                       />
                     </Button>
                   </TableCell>

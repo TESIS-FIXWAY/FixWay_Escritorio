@@ -188,9 +188,6 @@ const AgregarFactura = () => {
                   />
                 </p>
                 <p>
-                  <label className="label_formulario">
-                    Seleccionar Archivo
-                  </label>
                   <br />
                   <input
                     type="file"

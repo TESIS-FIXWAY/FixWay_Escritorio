@@ -189,7 +189,7 @@ const AgregarInventario = () => {
                 </p>
                 <p>
                   <FormControl
-                    sx={{ height: "30px", marginTop: "10px", width: "260px" }}
+                    sx={{ height: "30px", marginTop: "20px", width: "225px" }}
                   >
                     <InputLabel id="categoria-label">
                       Seleccione Categoría
@@ -270,6 +270,9 @@ const AgregarInventario = () => {
                     variant="outlined"
                     className="boton_formulario"
                     type="submit"
+                    sx={{
+                      marginTop: "15px",
+                    }}
                   >
                     Agregar Inventario
                   </Button>

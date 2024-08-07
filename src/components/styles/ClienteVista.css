@@ -1,0 +1,29 @@
+.editar {
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .editar {
+    width: 90%;
+  }
+}
+
+@media (max-width: 992px) {
+  .editar {
+    width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .editar {
+    width: 70%;
+  }
+}
+
+@media (max-width: 576px) {
+  .editar {
+    width: 95%;
+  }
+}
