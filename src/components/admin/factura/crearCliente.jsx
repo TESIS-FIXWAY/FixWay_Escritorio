@@ -9,6 +9,9 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { Alert } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
 
 const CrearClienteFactura = () => {
   const [clienteNombre, setClienteNombre] = useState("");
@@ -16,8 +19,9 @@ const CrearClienteFactura = () => {
   const [clienteRut, setClienteRut] = useState("");
   const [clienteEmail, setClienteEmail] = useState("");
   const [clienteTelefono, setClienteTelefono] = useState("");
-  const [mensajeRut, setMensajeRut] = useState("");
   const [errorMensaje, setErrorMensaje] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [mensajeEmail, setMensajeEmail] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
@@ -27,9 +31,11 @@ const CrearClienteFactura = () => {
     const validador = new validadorRUT(rut);
     if (validador.esValido) {
       document.getElementById("rut").value = validador.formateado();
-      setMensajeRut("Rut válido");
+      setTimeout(() => setSuccessMessage(""), 8000);
+      setSuccessMessage("Rut válido");
     } else {
-      setMensajeRut("Rut inválido");
+      setErrorMessage("Rut inválido");
+      setTimeout(() => setErrorMessage(""), 5000);
     }
   };
 
@@ -70,7 +76,7 @@ const CrearClienteFactura = () => {
       setClienteRut("");
       setClienteEmail("");
       setClienteTelefono("");
-      setMensajeRut("");
+
       setErrorMensaje("");
       setMensajeEmail("");
       alert("Cliente agregado exitosamente!");
@@ -86,7 +92,6 @@ const CrearClienteFactura = () => {
     setClienteRut("");
     setClienteEmail("");
     setClienteTelefono("");
-    setMensajeRut("");
     setErrorMensaje("");
     setMensajeEmail("");
     navigate("/generarFactura");
@@ -141,7 +146,16 @@ const CrearClienteFactura = () => {
             color="textSecondary"
             className={isDarkMode ? "dark-mode" : ""}
           >
-            {mensajeRut}
+            {successMessage && (
+              <Alert severity="success" icon={<CheckCircleIcon />}>
+                {successMessage}
+              </Alert>
+            )}
+            {errorMessage && (
+              <Alert severity="error" icon={<CloseIcon />}>
+                {errorMessage}
+              </Alert>
+            )}
           </Typography>
           <TextField
             label="Email"

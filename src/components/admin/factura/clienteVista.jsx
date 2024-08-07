@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../../../context/darkMode";
 import Table from "@mui/material/Table";
@@ -7,20 +7,15 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from "@mui/icons-material/Delete";
+import TextField from "@mui/material/TextField";
 import "../../styles/ClienteVista.css";
 
 const ClienteVista = ({
-  clientes,
-  setClientes,
-  setClienteNombre,
-  setClienteApellido,
-  setClienteRut,
-  setClienteEmail,
-  setClienteTelefono,
   clientesFiltrados,
   toggleClienteVista,
   seleccionarCliente,
@@ -28,28 +23,18 @@ const ClienteVista = ({
   filtrarCliente,
 }) => {
   const navigate = useNavigate();
-  const agregarCliente = () => {
-    const nuevoCliente = {
-      nombre: setClienteNombre,
-      apellido: setClienteApellido,
-      rut: setClienteRut,
-      email: setClienteEmail,
-      telefono: setClienteTelefono,
-    };
+  const { isDarkMode } = useContext(DarkModeContext);
 
-    if (nuevoCliente.nombre && nuevoCliente.apellido && nuevoCliente.rut) {
-      setClientes([...clientes, nuevoCliente]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
 
-      setClienteNombre("");
-      setClienteApellido("");
-      setClienteRut("");
-      setClienteEmail("");
-      setClienteTelefono("");
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-      toggleClienteVista();
-    } else {
-      alert("Por favor, complete al menos nombre, apellido y rut del cliente.");
-    }
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   const handleEliminarCliente = (clienteId) => {
@@ -60,20 +45,24 @@ const ClienteVista = ({
     navigate("/crearClienteFactura");
   };
 
-  const { isDarkMode } = useContext(DarkModeContext);
-
   return (
     <div className={`fondo_no ${isDarkMode ? "dark-mode" : ""}`}>
       <div className={`editar ${isDarkMode ? "dark-mode" : ""}`}>
         <p className="p_editar">Lista de Clientes</p>
-        <input
+        <TextField
           type="text"
           placeholder="Buscar cliente..."
           onChange={filtrarCliente}
+          variant="outlined"
+          label="Buscar cliente.."
+          sx={{
+            marginTop: "12px",
+            padding: "8px",
+          }}
         />
         <TableContainer
           component={Paper}
-          style={{ maxHeight: "800px" }}
+          style={{ maxHeight: "800px", marginTop: "12px" }}
           className={isDarkMode ? "dark-mode" : ""}
         >
           <Table stickyHeader>
@@ -97,7 +86,13 @@ const ClienteVista = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {clientesFiltrados.map((item, index) => (
+              {(rowsPerPage > 0
+                ? clientesFiltrados.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : clientesFiltrados
+              ).map((item, index) => (
                 <TableRow key={index}>
                   <TableCell className={isDarkMode ? "dark-mode" : ""}>
                     {item.nombre} {item.apellido}
@@ -128,6 +123,17 @@ const ClienteVista = ({
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[4, 8, 12]}
+          component="div"
+          count={clientesFiltrados.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Filas por página"
+          className={isDarkMode ? "dark-mode" : ""}
+        />
         <div
           style={{
             display: "flex",

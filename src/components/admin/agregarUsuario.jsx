@@ -43,7 +43,6 @@ const styleReset = {
 };
 
 const AgregarUsuario = () => {
-  const [mensaje, setMensaje] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [mensajeRut, setMensajeRut] = useState(null);
