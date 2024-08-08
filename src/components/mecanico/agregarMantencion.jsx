@@ -171,57 +171,57 @@ const AgregarMantencion = () => {
   const handleConfirmationAndSave = async () => {
     hideConfirmationModal();
     try {
-        const batch = writeBatch(db);
+      const batch = writeBatch(db);
 
-        for (const mantencion of mantencionesPendientes) {
-            const mantencionRef = collection(db, "mantenciones");
-            const q = query(
-                mantencionRef,
-                where("patente", "==", mantencion.patente)
-            );
+      for (const mantencion of mantencionesPendientes) {
+        const mantencionRef = collection(db, "mantenciones");
+        const q = query(
+          mantencionRef,
+          where("patente", "==", mantencion.patente)
+        );
 
-            const mantencionesSnapshot = await getDocs(q);
-            const tareaIds = mantencionesSnapshot.docs.map((doc) =>
-                doc.id.split("-").pop()
-            );
+        const mantencionesSnapshot = await getDocs(q);
+        const tareaIds = mantencionesSnapshot.docs.map((doc) =>
+          doc.id.split("-").pop()
+        );
 
-            const highestTareaId = Math.max(...tareaIds.map(Number), 0);
-            const nextTareaId = highestTareaId + 1;
+        const highestTareaId = Math.max(...tareaIds.map(Number), 0);
+        const nextTareaId = highestTareaId + 1;
 
-            const tareaId = `Tarea-${nextTareaId}`;
-            const mantencionDocRef = doc(
-                db,
-                "mantenciones",
-                `${mantencion.patente}-${tareaId}`
-            );
+        const tareaId = `Tarea-${nextTareaId}`;
+        const mantencionDocRef = doc(
+          db,
+          "mantenciones",
+          `${mantencion.patente}-${tareaId}`
+        );
 
-            const costoTotal = mantencion.productos.reduce(
-                (total, producto) => total + producto.precio * producto.cantidad,
-                0
-            );
+        const costoTotal = mantencion.productos.reduce(
+          (total, producto) => total + producto.precio * producto.cantidad,
+          0
+        );
 
-            const mantencionConCosto = { ...mantencion, costoTotal };
+        const mantencionConCosto = { ...mantencion, costoTotal };
 
-            batch.set(mantencionDocRef, mantencionConCosto);
-        }
+        batch.set(mantencionDocRef, mantencionConCosto);
+      }
 
-        await batch.commit();
+      await batch.commit();
 
-        setPatente("");
-        setTipoMantencion("");
-        setDescripcion("");
-        setEstado("");
-        setKilometrajeMantencion("");
-        setProductoSeleccionado("");
-        setPrecioProducto("");
-        setCantidadProducto("");
-        setCodigoProducto("");
-        setErrorMessage("");
+      setPatente("");
+      setTipoMantencion("");
+      setDescripcion("");
+      setEstado("");
+      setKilometrajeMantencion("");
+      setProductoSeleccionado("");
+      setPrecioProducto("");
+      setCantidadProducto("");
+      setCodigoProducto("");
+      setErrorMessage("");
 
-        setMantencionesPendientes([]);
+      setMantencionesPendientes([]);
     } catch (error) {
-        console.error("Error saving mantenciones:", error.message);
-        setErrorMessage("Error al guardar las mantenciones. Inténtelo de nuevo.");
+      console.error("Error saving mantenciones:", error.message);
+      setErrorMessage("Error al guardar las mantenciones. Inténtelo de nuevo.");
     }
   };
 
@@ -378,15 +378,6 @@ const AgregarMantencion = () => {
                 ))}
               </Select>
             </FormControl>
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Código de Producto"
-              value={codigoProducto}
-              onChange={(e) => setCodigoProducto(e.target.value)}
-              variant="outlined"
-              disabled
-            />
             <TextField
               fullWidth
               margin="normal"

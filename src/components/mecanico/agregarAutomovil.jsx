@@ -184,9 +184,7 @@ function AgregarAutomovil() {
                 </p>
                 <p>
                   <br />
-                  <FormControl
-                    sx={{ height: "30px", marginTop: "10px", width: "260px" }}
-                  >
+                  <FormControl sx={{ height: "31px", width: "220px" }}>
                     <InputLabel id="marca-label">Seleccione Marca</InputLabel>
                     <Select
                       labelId="marca-label"
@@ -302,7 +300,7 @@ function AgregarAutomovil() {
                 <p>
                   <br />
                   <FormControl
-                    sx={{ height: "30px", marginTop: "10px", width: "260px" }}
+                    sx={{ height: "31px", marginTop: "2px", width: "220px" }}
                   >
                     <InputLabel id="ano-label">Seleccione Año</InputLabel>
                     <Select
@@ -350,7 +348,11 @@ function AgregarAutomovil() {
                   </Alert>
                 )}
               </form>
-              <Button variant="contained" onClick={showConfirmationModal}>
+              <Button
+                sx={{ fontSize: "20px" }}
+                variant="contained"
+                onClick={showConfirmationModal}
+              >
                 Agregar Automóvil
               </Button>
               <Modal

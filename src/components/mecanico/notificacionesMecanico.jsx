@@ -7,7 +7,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { styled } from "@mui/system";
 import { DarkModeContext } from "../../context/darkMode";
 
-const NotificacionMecanico = () => {
+const Notificacion = () => {
   const { isDarkMode } = useContext(DarkModeContext);
 
   const NotificationContainer = styled("div")({
@@ -46,12 +46,24 @@ const NotificacionMecanico = () => {
     color: isDarkMode ? "#ccc" : "#666",
   });
 
-  // const [notification, setNotification] = useState(null);
-  // const [severity, setSeverity] = useState("info");
   const [notifications, setNotifications] = useState([]);
   const [isTrayVisible, setIsTrayVisible] = useState(true);
 
+  const MAX_NOTIFICATIONS = 5;
+
   useEffect(() => {
+    const addNotification = (newNotification) => {
+      setNotifications((prevNotifications) => {
+        const updatedNotifications = [newNotification, ...prevNotifications];
+
+        if (updatedNotifications.length > MAX_NOTIFICATIONS) {
+          updatedNotifications.pop();
+        }
+
+        return updatedNotifications;
+      });
+    };
+
     const requestPermission = async () => {
       try {
         const token = await getToken(messaging, {
@@ -65,15 +77,11 @@ const NotificacionMecanico = () => {
     };
 
     onMessage(messaging, (payload) => {
-      console.log("Message received. ", payload);
-      setNotifications((prevNotifications) => [
-        ...prevNotifications,
-        {
-          title: payload.notification.title,
-          body: payload.notification.body,
-          severity: "info",
-        },
-      ]);
+      addNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+        severity: "info",
+      });
     });
 
     const unsubFirestoreMantenciones = onSnapshot(
@@ -227,6 +235,26 @@ const NotificacionMecanico = () => {
     };
   }, []);
 
+  const formatoDinero = (amount) => {
+    if (amount === undefined || amount === null) {
+      return "0";
+    }
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
+  const translateEstado = (tipoPago) => {
+    switch (tipoPago) {
+      case "credito":
+        return "Crédito";
+      case "contado":
+        return "Contado";
+      case "debito":
+        return "Débito";
+      default:
+        return tipoPago;
+    }
+  };
+
   return (
     <>
       {isTrayVisible && (
@@ -254,4 +282,4 @@ const NotificacionMecanico = () => {
   );
 };
 
-export default NotificacionMecanico;
+export default Notificacion;
