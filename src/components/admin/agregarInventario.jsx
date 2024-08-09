@@ -271,7 +271,8 @@ const AgregarInventario = () => {
                     className="boton_formulario"
                     type="submit"
                     sx={{
-                      marginTop: "15px",
+                      marginTop: "20px",
+                      fontSize: "20px",
                     }}
                   >
                     Agregar Inventario

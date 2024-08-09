@@ -251,7 +251,7 @@ const AgregarFactura = () => {
                     Agregar Factura Proveedor
                   </Button>
                   {uploading && (
-                    <div style={{ marginTop: "10px" }}>
+                    <div style={{ marginTop: "17px", fontSize: "30px" }}>
                       <CircularProgress />
                       <Typography>Subiendo Archivo</Typography>
                     </div>

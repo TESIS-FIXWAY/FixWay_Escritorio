@@ -349,8 +349,8 @@ function AgregarAutomovil() {
                 )}
               </form>
               <Button
-                sx={{ fontSize: "20px" }}
-                variant="contained"
+                sx={{ fontSize: "20px", width: "350px" }}
+                variant="outlined"
                 onClick={showConfirmationModal}
               >
                 Agregar Automóvil

@@ -417,7 +417,7 @@ const AgregarMantencion = () => {
               variant="outlined"
             />
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               onClick={handleAddMantencion}
             >
@@ -430,7 +430,7 @@ const AgregarMantencion = () => {
             }`}
           >
             <Button
-              variant="contained"
+              variant="outlined"
               color="secondary"
               onClick={showPreviewModal}
               style={{ marginTop: "16px" }}
@@ -438,10 +438,10 @@ const AgregarMantencion = () => {
               Vista Previa de Mantenciones
             </Button>
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               onClick={showConfirmationModal}
-              style={{ marginTop: "16px", left: "15px" }}
+              style={{ marginTop: "16px", left: "15px", color: "green" }}
             >
               Confirmar y Guardar Mantenciones
             </Button>

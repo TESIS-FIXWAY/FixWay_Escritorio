@@ -456,7 +456,7 @@ const AgregarUsuario = () => {
                 style={{
                   width: "250px",
                   fontSize: "20px",
-                  marginTop: "12px",
+                  marginTop: "20px",
                 }}
               >
                 Agregar Usuario

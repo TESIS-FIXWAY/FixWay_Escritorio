@@ -12,7 +12,6 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import EditarUsuarioModalFactura from "./editarUsuarioModalFactura";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -192,7 +191,7 @@ const ListadoFacturas = () => {
               sx={{ width: "220px", mr: 2 }}
             />
             <Button
-              variant="contained"
+              variant="outlined"
               onClick={agregarFactura}
               className={`${isDarkMode ? "dark-mode" : ""}`}
               sx={{ height: "55px" }}
