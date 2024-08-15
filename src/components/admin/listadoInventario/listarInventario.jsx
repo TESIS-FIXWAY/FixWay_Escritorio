@@ -110,41 +110,49 @@ const ListarInventario = () => {
     }
   };
 
+  
+
   const filtrarInventario = (e) => {
     const texto = e.target.value.toLowerCase();
-
+  
     if (texto === "") {
-      setInventarioFiltrado(inventario);
+      setInventarioFiltrado(inventario); // Muestra todo el inventario si el campo de búsqueda está vacío
     } else {
       const inventarioFiltrados = inventario.filter((item) => {
         const {
+          anoProductoUsoFin,
+          anoProductoUsoInicio,
           codigoProducto,
           nombreProducto,
+          descripcion,
+          marcaAutomovil,
           categoria,
-          marca,
+          marcaProducto,
+          origen,
           cantidad,
           costo,
         } = item;
-
-        const codigoProductoLower = codigoProducto.toLowerCase();
-        const nombreProductoLower = nombreProducto.toLowerCase();
-        const categoriaLower = categoria.toLowerCase();
-        const marcaLower = marca.toLowerCase();
-        const cantidadLower = cantidad.toString().toLowerCase();
-        const costoLower = costo.toString().toLowerCase();
-
+  
         return (
-          codigoProductoLower.includes(texto) ||
-          nombreProductoLower.includes(texto) ||
-          categoriaLower.includes(texto) ||
-          marcaLower.includes(texto) ||
-          cantidadLower.includes(texto) ||
-          costoLower.includes(texto)
+          (codigoProducto && codigoProducto.toLowerCase().includes(texto)) ||
+          (nombreProducto && nombreProducto.toLowerCase().includes(texto)) ||
+          (descripcion && descripcion.toLowerCase().includes(texto)) ||
+          (marcaAutomovil && marcaAutomovil.toLowerCase().includes(texto)) ||
+          (categoria && categoria.toLowerCase().includes(texto)) ||
+          (marcaProducto && marcaProducto.toLowerCase().includes(texto)) ||
+          (origen && origen.toLowerCase().includes(texto)) ||
+          (anoProductoUsoInicio && anoProductoUsoInicio.toString().includes(texto)) ||
+          (anoProductoUsoFin && anoProductoUsoFin.toString().includes(texto)) ||
+          (cantidad && cantidad.toString().includes(texto)) ||
+          (costo && costo.toString().includes(texto))
         );
       });
       setInventarioFiltrado(inventarioFiltrados);
     }
   };
+  
+  
+  
 
   const handleInputChange = (inventarioId, name, value) => {
     const updatedInventario = inventario.map((inventario) =>
@@ -209,10 +217,13 @@ const ListarInventario = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Código Producto</TableCell>
-                  <TableCell>Nombre Producto</TableCell>
+                <TableCell>Año</TableCell>
+                  <TableCell>Código</TableCell>
+                  <TableCell>Producto</TableCell>
                   <TableCell>Categoría</TableCell>
+                  <TableCell>Vehículo</TableCell>
                   <TableCell>Marca</TableCell>
+                  <TableCell>Origen</TableCell>
                   <TableCell>Cantidad</TableCell>
                   <TableCell>Precio</TableCell>
                   <TableCell>Acciones</TableCell>
@@ -224,10 +235,13 @@ const ListarInventario = () => {
                     key={inventario.id}
                     style={getRowStyle(inventario.cantidad)}
                   >
+                    <TableCell>{inventario.anoProductoUsoInicio}-{inventario.anoProductoUsoFin}</TableCell>
                     <TableCell>{inventario.codigoProducto}</TableCell>
                     <TableCell>{inventario.nombreProducto}</TableCell>
                     <TableCell>{inventario.categoria}</TableCell>
+                    <TableCell>{inventario.marcaAutomovil}</TableCell>
                     <TableCell>{inventario.marcaProducto}</TableCell>
+                    <TableCell>{inventario.origen}</TableCell>
                     <TableCell>{inventario.cantidad}</TableCell>
                     <TableCell>{formatoDinero(inventario.costo)}</TableCell>
                     <TableCell>
