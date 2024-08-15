@@ -186,31 +186,20 @@ const ListarInventario = () => {
             textAlign="center"
             className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
           >
-            Listado Inventario
+            Inventario
           </Typography>
-          <div>
-            <Box>
-              <TextField
-                onChange={filtrarInventario}
-                id="Buscar Usuario"
-                label="Buscar Inventario"
-                variant="outlined"
-                sx={{
-                  width: "220px",
-                  height: "55px",
-                  marginTop: "10px",
-                  right: "20px",
-                }}
-              />
-              <Button
-                variant="outlined"
-                onClick={agregarInventario}
-                sx={{ width: "250px", height: "55px", marginTop: "10px" }}
-              >
-                Ingresar Nuevo Inventario
-              </Button>
-            </Box>
+          <div className="container-input">
+            <input type="text" placeholder="Buscar producto" name="text" className="input" onChange={filtrarInventario}/>
+            <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+              <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fillRule="evenodd"></path>
+            </svg>
           </div>
+          
+          <button type="button" class="button_agregar" onClick={agregarInventario}>
+            <span class="button__text">Agregar Producto</span>
+            <span class="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
+          </button>
+        
         </div>
         <div className="table_section">
           <TableContainer>

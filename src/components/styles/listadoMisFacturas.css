@@ -52,3 +52,106 @@
 .cerrar_btn:hover {
   background-color: #636668;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container-input {
+  position: relative;
+  top: 0rem;
+}
+
+.input {
+  width: 200px;
+  padding: 10px 0px 10px 40px;
+  border-radius: 5px;
+  border: solid 1px #333;
+  transition: all .2s ease-in-out;
+  outline: none;
+  opacity: 0.8;
+}
+
+.container-input svg {
+  position: absolute;
+  top: 40%;
+  left: 10px;
+  transform: translate(0, -50%);
+}
+
+.input:focus {
+  opacity: 1;
+  width: 250px;
+}
+
+
+
+.button_agregar {
+  top: 0rem;
+  right: 3rem;
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid #34974d;
+  background-color: #3aa856;
+}
+
+.button_agregar, .button__icon, .button__text {
+  transition: all 0.3s;
+}
+
+.button_agregar .button__text {
+  transform: translateX(3px);
+  color: #fff;
+  font-weight: 600;
+}
+
+.button_agregar .button__icon {
+  position: absolute;
+  transform: translateX(109px);
+  height: 40px;
+  width: 39px;
+  left: 2.3rem;
+  background-color: #34974d;
+  display: flex;
+  border-radius: 0px 5px 5px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.button_agregar .svg {
+  width: 30px;
+  stroke: #fff;
+}
+
+.button_agregar:hover {
+  background: #34974d;
+}
+
+.button_agregar:hover .button__text {
+  color: transparent;
+}
+
+.button_agregar:hover .button__icon {
+  width: 148px;
+  transform: translateX(0);
+}
+
+.button_agregar:active .button__icon {
+  background-color: #2e8644;
+}
+
+.button_agregar:active {
+  border: 1px solid #2e8644;
+}

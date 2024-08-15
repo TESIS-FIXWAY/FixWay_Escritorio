@@ -10,13 +10,15 @@
 .table_header {
   display: flex;
   justify-content: space-between;
-  padding: 110px 20px 10px 20px;
+  padding: 8rem 20px 10px 20px;
   background-color: #f6f9fc;
   overflow: auto;
 }
 .table_header p {
   font-size: 20px;
 }
+
+
 button {
   outline: none;
   border: none;
@@ -232,13 +234,13 @@ tabla tbody td:hover {
 }
 
 /* Estilos para pantallas más pequeñas */
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 887px) {
   .tabla_listar {
     border: 0px;
   }
 
   .table_header {
-    padding: 130px 0px 0px 0px;
+    padding:  130px 10px 10px 10px;
   }
 
   .tabla tr {
