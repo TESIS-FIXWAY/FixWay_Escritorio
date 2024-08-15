@@ -164,6 +164,10 @@ const ListarInventario = () => {
     return cantidad <= 10 ? { backgroundColor: "#ffcccc" } : {};
   };
 
+  const formatoDinero = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
   return (
     <>
       <Admin />
@@ -223,9 +227,9 @@ const ListarInventario = () => {
                     <TableCell>{inventario.codigoProducto}</TableCell>
                     <TableCell>{inventario.nombreProducto}</TableCell>
                     <TableCell>{inventario.categoria}</TableCell>
-                    <TableCell>{inventario.marca}</TableCell>
+                    <TableCell>{inventario.marcaProducto}</TableCell>
                     <TableCell>{inventario.cantidad}</TableCell>
-                    <TableCell>{inventario.costo}</TableCell>
+                    <TableCell>{formatoDinero(inventario.costo)}</TableCell>
                     <TableCell>
                       {editingInventarioId === inventario.id ? (
                         <div
@@ -353,7 +357,7 @@ const ListarInventario = () => {
                             </FormControl>
                             <TextField
                               label="Marca"
-                              value={inventario.marca}
+                              value={inventario.marcaProducto}
                               onChange={(e) =>
                                 handleInputChange(
                                   inventario.id,

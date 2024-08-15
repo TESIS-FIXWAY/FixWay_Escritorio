@@ -21,8 +21,12 @@ const AgregarInventario = () => {
     descripcion: "",
     cantidad: "",
     costo: "",
+    origen: "",
     categoria: "",
-    marca: "",
+    marcaAutomovil: "",
+    anoProductoUsoInicio: "",
+    anoProductoUsoFin: "",
+    marcaProducto: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -30,8 +34,9 @@ const AgregarInventario = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     const cantidad = formData.cantidad.replace(/[^0-9]/g, "");
-    const costo = Number(formData.costo).toLocaleString("es-CL");
+    const costo = parseInt(formData.costo.replace(/\./g, ""), 10);
     const id = formData.codigoProducto;
 
     const data = {
@@ -49,8 +54,12 @@ const AgregarInventario = () => {
         descripcion: "",
         cantidad: "",
         costo: "",
+        origen: "",
         categoria: "",
-        marca: "",
+        marcaAutomovil: "",
+        anoProductoUsoInicio: "",
+        anoProductoUsoFin: "",
+        marcaProducto: "",
       });
       setSuccessMessage("Producto agregado correctamente");
       setTimeout(() => {
@@ -154,6 +163,74 @@ const AgregarInventario = () => {
                   />
                 </p>
                 <p>
+                  <FormControl
+                    sx={{ height: "30px", marginTop: "20px", width: "225px" }}
+                  >
+                    <InputLabel id="marcaAutomovil-label">
+                      Seleccione Marca Automóvil
+                    </InputLabel>
+                    <Select
+                      labelId="marcaAutomovil-label"
+                      id="marcaAutomovil"
+                      name="marcaAutomovil"
+                      value={formData.marcaAutomovil}
+                      label="Seleccione Marca Automóvil"
+                      onChange={handleChange}
+                      required
+                    >
+                      <MenuItem value={"Todas las marcas"}>
+                        Todas las marcas
+                      </MenuItem>
+                      <MenuItem value={"Toyota"}>Toyota</MenuItem>
+                      <MenuItem value={"Honda"}>Honda</MenuItem>
+                      <MenuItem value={"Ford"}>Ford</MenuItem>
+                      <MenuItem value={"Chevrolet"}>Chevrolet</MenuItem>
+                      <MenuItem value={"Volkswagen"}>Volkswagen</MenuItem>
+                      <MenuItem value={"Nissan"}>Nissan</MenuItem>
+                      <MenuItem value={"Hyundai"}>Hyundai</MenuItem>
+                      <MenuItem value={"Suzuki"}>Suzuki</MenuItem>
+                      <MenuItem value={"Kia"}>Kia</MenuItem>
+                      <MenuItem value={"Mazda"}>Mazda</MenuItem>
+                      <MenuItem value={"Mitsubishi"}>Mitsubishi</MenuItem>
+                      <MenuItem value={"Subaru"}>Subaru</MenuItem>
+                      <MenuItem value={"Citroën"}>Citroën</MenuItem>
+                      <MenuItem value={"Peugeot"}>Peugeot</MenuItem>
+                      <MenuItem value={"Audi"}>Audi</MenuItem>
+                      <MenuItem value={"BMW"}>BMW</MenuItem>
+                      <MenuItem value={"Mercedes-Benz"}>Mercedes-Benz</MenuItem>
+                      <MenuItem value={"Fiat"}>Fiat</MenuItem>
+                      <MenuItem value={"Chery"}>Chery</MenuItem>
+                      <MenuItem value={"Dodge"}>Dodge</MenuItem>
+                      <MenuItem value={"Geely"}>Geely</MenuItem>
+                      <MenuItem value={"JAC"}>JAC</MenuItem>
+                      <MenuItem value={"Jeep"}>Jeep</MenuItem>
+                      <MenuItem value={"MG"}>MG</MenuItem>
+                      <MenuItem value={"Mini"}>Mini</MenuItem>
+                      <MenuItem value={"Ram"}>Ram</MenuItem>
+                      <MenuItem value={"SsangYong"}>SsangYong</MenuItem>
+                      <MenuItem value={"BYD"}>BYD</MenuItem>
+                      <MenuItem value={"Changan"}>Changan</MenuItem>
+                      <MenuItem value={"Chrysler"}>Chrysler</MenuItem>
+                      <MenuItem value={"Dongfeng"}>Dongfeng</MenuItem>
+                      <MenuItem value={"Foton"}>Foton</MenuItem>
+                      <MenuItem value={"GAC"}>GAC</MenuItem>
+                      <MenuItem value={"Great Wall"}>Great Wall</MenuItem>
+                      <MenuItem value={"Haval"}>Haval</MenuItem>
+                      <MenuItem value={"JMC"}>JMC</MenuItem>
+                      <MenuItem value={"Lifan"}>Lifan</MenuItem>
+                      <MenuItem value={"Mahindra"}>Mahindra</MenuItem>
+                      <MenuItem value={"Opel"}>Opel</MenuItem>
+                      <MenuItem value={"Renault"}>Renault</MenuItem>
+                      <MenuItem value={"Skoda"}>Skoda</MenuItem>
+                      <MenuItem value={"Tata"}>Tata</MenuItem>
+                      <MenuItem value={"Volvo"}>Volvo</MenuItem>
+                      <MenuItem value={"Alfa Romeo"}>Alfa Romeo</MenuItem>
+                      <MenuItem value={"BAIC"}>BAIC</MenuItem>
+                      <MenuItem value={"Brilliance"}>Brilliance</MenuItem>
+                    </Select>
+                  </FormControl>
+                </p>
+                <p>
                   <br />
                   <TextField
                     label="Cantidad"
@@ -185,6 +262,23 @@ const AgregarInventario = () => {
                     value={formData.costo}
                     onChange={handleChange}
                     placeholder="Ejemplo: 10000"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Origen"
+                    variant="outlined"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    id="origen"
+                    required
+                    type="text"
+                    name="origen"
+                    value={formData.origen}
+                    onChange={handleChange}
+                    placeholder="Origen"
                   />
                 </p>
                 <p>
@@ -251,18 +345,52 @@ const AgregarInventario = () => {
                 <p>
                   <br />
                   <TextField
-                    label="Marca"
+                    label="Año de Uso Inicio"
                     variant="outlined"
                     className={`input_formulario ${
                       isDarkMode ? "dark-mode" : ""
                     }`}
-                    id="marca"
+                    id="anoProductoUsoInicio"
                     required
                     type="text"
-                    name="marca"
-                    value={formData.marca}
+                    name="anoProductoUsoInicio"
+                    value={formData.anoProductoUsoInicio}
                     onChange={handleChange}
-                    placeholder="Marca"
+                    placeholder="Año de Uso Inicio"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Año de Uso Fin"
+                    variant="outlined"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    id="anoProductoUsoFin"
+                    required
+                    type="text"
+                    name="anoProductoUsoFin"
+                    value={formData.anoProductoUsoFin}
+                    onChange={handleChange}
+                    placeholder="Año de Uso Fin"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Marca Producto"
+                    variant="outlined"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    id="marcaProducto"
+                    required
+                    type="text"
+                    name="marcaProducto"
+                    value={formData.marcaProducto}
+                    onChange={handleChange}
+                    placeholder="Marca Producto"
                   />
                 </p>
                 <p className="block_boton">
