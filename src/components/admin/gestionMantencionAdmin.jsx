@@ -3,20 +3,26 @@ import Admin from "./admin";
 import { db } from "../../firebase";
 import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
 import { DarkModeContext } from "../../context/darkMode";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import { Typography } from "@mui/material";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "../styles/gestionMantenciones.css";
 import "../styles/darkMode.css";
 
 const GestionMantencionesAdmin = () => {
-  const [beginTask, setBeginTask] = useState([]);
-  const [inProgressTasks, setInProgressTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [expandedTasks, setExpandedTasks] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("todos");
+  const [filterPeriod, setFilterPeriod] = useState("today");
+  const [currentDate, setCurrentDate] = useState(new Date());
   const { isDarkMode } = useContext(DarkModeContext);
-
-  const calculateContainerHeight = (tasks) => {
-    return tasks.length === 0 ? "200px" : `${tasks.length * 40}px`;
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,26 +42,10 @@ const GestionMantencionesAdmin = () => {
             allTasksData.push(task);
           });
 
-          const sortedTasks = {
-            pendiente: [],
-            prioridad: [],
-            atencion_especial: [],
-            "en proceso": [],
-            terminado: [],
-          };
-
-          allTasksData.forEach((task) => {
-            sortedTasks[task.estado].push(task);
-          });
-
-          const combinedPendingTasks = [
-            ...sortedTasks["pendiente"],
-            ...sortedTasks["prioridad"],
-            ...sortedTasks["atencion_especial"],
-          ];
-          setBeginTask(combinedPendingTasks);
-          setInProgressTasks(sortedTasks["en proceso"]);
-          setCompletedTasks(sortedTasks["terminado"]);
+          // Ordenar tareas de la fecha más actual a la menos actual
+          allTasksData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+          
+          setTasks(allTasksData);
         });
 
         const usersCollection = collection(db, "users");
@@ -76,16 +66,6 @@ const GestionMantencionesAdmin = () => {
     fetchData();
   }, []);
 
-  const handleTaskExpand = (taskId) => {
-    setExpandedTasks((prevExpandedTasks) => {
-      if (prevExpandedTasks.includes(taskId)) {
-        return prevExpandedTasks.filter((id) => id !== taskId);
-      } else {
-        return [...prevExpandedTasks, taskId];
-      }
-    });
-  };
-
   const getUserName = (userId) => {
     const user = users[userId];
     return user ? `${user.nombre} ${user.apellido}` : "Desconocido";
@@ -94,7 +74,7 @@ const GestionMantencionesAdmin = () => {
   const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2);
+    const year = date.getFullYear();
 
     return `${day}/${month}/${year}`;
   };
@@ -120,211 +100,156 @@ const GestionMantencionesAdmin = () => {
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
   };
 
+  // Función para obtener el rango de fechas basado en el periodo seleccionado
+  const getDateRange = (period) => {
+    const startDate = new Date(currentDate);
+    const endDate = new Date(currentDate);
+
+    switch (period) {
+      case "today":
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case "week":
+        const dayOfWeek = startDate.getDay();
+        const startOfWeek = new Date(startDate);
+        startOfWeek.setDate(startDate.getDate() - dayOfWeek);
+        startOfWeek.setHours(0, 0, 0, 0);
+        const endOfWeek = new Date(startDate);
+        endOfWeek.setDate(startDate.getDate() + (6 - dayOfWeek));
+        endOfWeek.setHours(23, 59, 59, 999);
+        return { start: startOfWeek, end: endOfWeek };
+      case "month":
+        startDate.setDate(1);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setMonth(endDate.getMonth() + 1);
+        endDate.setDate(0);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case "year":
+        startDate.setMonth(0, 1);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setMonth(12, 0);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      default:
+        return { start: startDate, end: endDate };
+    }
+
+    return { start: startDate, end: endDate };
+  };
+
+  const filterTasksByDate = (task) => {
+    const taskDate = new Date(task.fecha);
+    const { start, end } = getDateRange(filterPeriod);
+    return taskDate >= start && taskDate <= end;
+  };
+
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearchTerm =
+      task.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      task.estado.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getUserName(task.personaTomadora)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      formatoKilometraje(task.kilometrajeMantencion)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      task.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      task.productos.some((producto) =>
+        producto.nombreProducto.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    const matchesStatus =
+      filterStatus === "todos" || task.estado === filterStatus;
+    const matchesDate = filterTasksByDate(task);
+    return matchesSearchTerm && matchesStatus && matchesDate;
+  });
+
   return (
     <>
-      <div className={`grid ${isDarkMode ? "dark-mode" : ""}`}>
-        <header>
-          {" "}
-          <Admin />{" "}
-        </header>
-        <aside className={`sidebar_left ${isDarkMode ? "dark-mode" : ""}`}>
-          <div
-            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+      <Admin />
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
           >
-            <div
-              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
-            >
-              {" "}
-              Pendientes{" "}
-            </div>
-            <div className={`mantencion ${isDarkMode ? "dark-mode" : ""}`}>
-              <ul className="lista_mantencion">
-                {beginTask.map((task) => (
-                  <div
-                    key={task.id}
-                    className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${expandedTasks.includes(task.id) ? "expanded" : ""}`}
-                    onClick={() => handleTaskExpand(task.id)}
-                  >
-                    <ul
-                      className={`lista_titular ${
-                        isDarkMode ? "dark-mode" : ""
-                      }`}
-                    >
-                      <li
-                        className={`contenido_lista ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
-                      >
-                        Patente: {task.id}
-                      </li>
-                      <li
-                        className={`contenido_lista ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
-                      >
-                        Estado: {translateEstado(task.estado)}
-                      </li>
-                    </ul>
-
-                    {expandedTasks.includes(task.id) && (
-                      <>
-                        <ul
-                          className={`descripcion_lista ${
-                            isDarkMode ? "dark-mode" : ""
-                          }`}
-                        >
-                          <li>Descripción: {task.descripcion}</li>
-                          <li>
-                            Kilometro de Mantención:{" "}
-                            {formatoKilometraje(task.kilometrajeMantencion)}
-                          </li>
-                          <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                          <li>
-                            Producto:{" "}
-                            {task.productos.map((producto, index) => (
-                              <p key={index}> - {producto.nombreProducto}</p>
-                            ))}
-                          </li>
-                        </ul>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </aside>
-        <aside className={`sidebar_centro ${isDarkMode ? "dark-mode" : ""}`}>
-          <div
-            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+            Tareas
+          </Typography>
+          <input
+            type="text"
+            placeholder="Buscar producto"
+            name="text"
+            className="input"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <select
+            className="input"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
           >
-            <div
-              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
-            >
-              En Proceso{" "}
-            </div>
-
-            <div className="mantencion">
-              <ul className="lista_mantencion">
-                {inProgressTasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${expandedTasks.includes(task.id) ? "expanded" : ""}`}
-                    onClick={() => handleTaskExpand(task.id)}
-                  >
-                    <ul
-                      className={`lista_titular ${
-                        isDarkMode ? "dark-mode" : ""
-                      }`}
-                    >
-                      <li
-                        className={`contenido_lista ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
-                      >
-                        Patente: {task.id}
-                      </li>
-                      <li
-                        className={`contenido_lista ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
-                      >
-                        Persona a Cargo: {getUserName(task.personaTomadora)}
-                      </li>
-                    </ul>
-
-                    {expandedTasks.includes(task.id) && (
-                      <>
-                        <ul
-                          className={`descripcion_lista ${
-                            isDarkMode ? "dark-mode" : ""
-                          }`}
-                        >
-                          <li>Descripción: {task.descripcion}</li>
-                          <li>
-                            Kilometro de Mantención:{" "}
-                            {formatoKilometraje(task.kilometrajeMantencion)}
-                          </li>
-                          <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                          <li>
-                            Producto:{" "}
-                            {task.productos.map((producto, index) => (
-                              <p key={index}> - {producto.nombreProducto}</p>
-                            ))}
-                          </li>
-                        </ul>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </ul>
-            </div>
+            <option value="todos">Estado</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="en proceso">En Proceso</option>
+            <option value="terminado">Terminado</option>
+          </select>
+          <div className="datepicker-container">
+            <DatePicker
+              selected={currentDate}
+              onChange={(date) => setCurrentDate(date)}
+              placeholderText="Fecha Actual"
+              className="input"
+              dateFormat="dd/MM/yyyy"
+            />
           </div>
-        </aside>
-        <aside className={`sidebar_rigth ${isDarkMode ? "dark-mode" : ""}`}>
-          <div
-            className={`contenedor_mantencion ${isDarkMode ? "dark-mode" : ""}`}
+          <select
+            className="input"
+            value={filterPeriod}
+            onChange={(e) => setFilterPeriod(e.target.value)}
           >
-            <div
-              className={`titulo_mantencion ${isDarkMode ? "dark-mode" : ""}`}
-            >
-              {" "}
-              Terminadas{" "}
-            </div>
-
-            <div className="mantencion">
-              <ul className="lista_mantencion">
-                {completedTasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${expandedTasks.includes(task.id) ? "expanded" : ""}`}
-                    onClick={() => handleTaskExpand(task.id)}
-                  >
-                    <ul
-                      className={`lista_titular ${
-                        isDarkMode ? "dark-mode" : ""
-                      }`}
-                    >
-                      <li
-                        className={`contenido_lista ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
-                      >
-                        Patente: {task.id}
-                      </li>
-                    </ul>
-
-                    {expandedTasks.includes(task.id) && (
-                      <>
-                        <ul
-                          className={`descripcion_lista ${
-                            isDarkMode ? "dark-mode" : ""
-                          }`}
-                        >
-                          <li>Descripción: {task.descripcion}</li>
-                          <li>
-                            Kilometro de Mantención:{" "}
-                            {formatoKilometraje(task.kilometrajeMantencion)}
-                          </li>
-                          <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                          <li>
-                            Producto:{" "}
-                            {task.productos.map((producto, index) => (
-                              <p key={index}> - {producto.nombreProducto}</p>
-                            ))}
-                          </li>
-                        </ul>
-                      </>
-                    )}
-                  </div>
+            <option value="today">Hoy</option>
+            <option value="week">Semana Actual</option>
+            <option value="month">Mes Actual</option>
+            <option value="year">Año Actual</option>
+          </select>
+        </div>
+        <div className="table_section">
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Patente</TableCell>
+                  <TableCell>Estado</TableCell>
+                  <TableCell>Persona a Cargo</TableCell>
+                  <TableCell>Kilometraje</TableCell>
+                  <TableCell>Fecha</TableCell>
+                  <TableCell>Descripción</TableCell>
+                  <TableCell>Productos</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filteredTasks.map((task) => (
+                  <TableRow key={task.id}>
+                    <TableCell>{task.id}</TableCell>
+                    <TableCell>{translateEstado(task.estado)}</TableCell>
+                    <TableCell>{getUserName(task.personaTomadora)}</TableCell>
+                    <TableCell>{formatoKilometraje(task.kilometrajeMantencion)}</TableCell>
+                    <TableCell>{formatDate(new Date(task.fecha))}</TableCell>
+                    <TableCell>{task.descripcion}</TableCell>
+                    <TableCell>
+                      {task.productos.map((producto) => (
+                        <div key={producto.id}>
+                          {producto.nombreProducto} - {producto.cantidad}
+                        </div>
+                      ))}
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </ul>
-            </div>
-          </div>
-        </aside>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
     </>
   );
