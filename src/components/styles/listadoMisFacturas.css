@@ -141,7 +141,7 @@
 
 .button_agregar:hover .button__text {
   color: transparent;
-}
+}    
 
 .button_agregar:hover .button__icon {
   width: 148px;

@@ -45,7 +45,7 @@ const ListarInventario = () => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [deleteInventarioId, setDeleteInventarioId] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const { isDarkMode } = useContext(DarkModeContext);
+  const {isDarkMode} = useContext(DarkModeContext);
   const navigate = useNavigate();
 
   useEffect(() => {

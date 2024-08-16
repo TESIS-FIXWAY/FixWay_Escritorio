@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-//componets (vistas)
+// Componets (vistas)
 import Login from "./components/login";
 import RecuperarContrasena from "./components/RecuperarContrasena";
 import LoadingScreen from "./components/loadingScreen";
 
-//admin
+// Admin
 import Admin from "./components/admin/admin";
 import IndexAdmin from "./components/admin/indexAdmin";
 import AgregarUsuario from "./components/admin/agregarUsuario";
@@ -20,8 +20,9 @@ import ListadoFacturas from "./components/admin/listadoFacturas/listadoFacturas"
 import CrearClienteFactura from "./components/admin/factura/crearCliente";
 import GenerarQRADmin from "./components/admin/generarCodigoQR";
 import HistorialMantencionAdmin from "./components/admin/historialMantencion";
+import ListarCliente from "./components/admin/factura/listarCliente";
 
-//mecanico
+// Mecanico
 import Mecanico from "./components/mecanico/mecanico";
 import IndexMecanico from "./components/mecanico/indexMecanico";
 import GestionMantenciones from "./components/mecanico/gestionMantenciones";
@@ -93,6 +94,7 @@ function App() {
               path="/crearClienteFactura"
               element={<CrearClienteFactura />}
             />
+            <Route path="/listarCliente" element={<ListarCliente />} /> 
 
             <Route
               path="/mecanico"

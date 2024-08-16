@@ -22,7 +22,7 @@ const Admin = () => {
   const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
-  const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const {isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(true);
 
   useEffect(() => {
@@ -253,6 +253,7 @@ const Admin = () => {
                     </Link>
                   </li>
                 </ul>
+                
               )}
             </li>
 
@@ -295,6 +296,18 @@ const Admin = () => {
                   </li>
                 </ul>
               )}
+            </li>
+            <li>
+              <Link
+                to="/listarCliente"
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
+                  window.location.pathname === "/listarCliente"
+                    ? "active"
+                    : ""
+                }`}
+              >
+                <span className="link_name">clientes</span>
+              </Link>
             </li>
           </ul>
         </nav>
