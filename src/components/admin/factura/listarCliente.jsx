@@ -166,7 +166,7 @@ const ListarCliente = () => {
                 </div>
 
                 <div className={isDarkMode ? "dark-mode" : "light-mode"}>
-                    <TableContainer component={Paper}>
+                    <TableContainer>
                         <Table>
                             <TableHead>
                                 <TableRow>

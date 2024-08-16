@@ -28,7 +28,7 @@
 .progress-indicator {
   width: 0;
   height: 100%;
-  background-color: #3498db;
+  background-color: #011432;
   animation: progress 2s ease-out forwards;
 }
 
@@ -38,8 +38,11 @@
 
 .animated-text span {
   opacity: 0;
-  color: #3498db;
+  font-weight: 700; /* Ajusta este valor para hacer la letra más gruesa */
+  font-size: 80PX;
+  color: #011432;
   transform: translateY(10px);
+  font-family: sans-serif;
   animation: appear 0.5s ease-out forwards;
 }
 

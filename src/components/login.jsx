@@ -1,5 +1,5 @@
 import "./styles/login.css";
-import Car from "../images/AutoSinFondo2.png";
+import Car from "../images/logoSinfondo.png";
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../firebase";
 import { Link } from "react-router-dom";
@@ -82,13 +82,9 @@ const Login = () => {
           <div className="informacion">
             <div className="info">
               <h2>Bienvenido</h2>
-              <br />
-              <br />
               <img src={Car} alt="logo" className="imagen" />
-              <br />
-              <br />
               <p>
-                Taller Mecánico <br /> Settore
+                Taller Mecánico
               </p>
             </div>
           </div>
