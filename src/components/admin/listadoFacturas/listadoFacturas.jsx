@@ -53,8 +53,12 @@ const ListadoFacturas = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        setFacturas(facturasData);
-        setFacturaFiltrada(facturasData);
+
+        // Ordenar las facturas por fecha de más reciente a menos reciente
+        const sortedFacturas = facturasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+        setFacturas(sortedFacturas);
+        setFacturaFiltrada(sortedFacturas);
       }
     );
 
@@ -208,6 +212,9 @@ const ListadoFacturas = () => {
             <TableHead>
               <TableRow>
                 <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                  ID Producto
+                </TableCell>
+                <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
                   Proveedor
                 </TableCell>
                 <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
@@ -217,6 +224,9 @@ const ListadoFacturas = () => {
                   Detalle
                 </TableCell>
                 <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                  Cantidad
+                </TableCell>
+                <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
                   Acciones
                 </TableCell>
               </TableRow>
@@ -224,6 +234,9 @@ const ListadoFacturas = () => {
             <TableBody>
               {facturaFiltrada.map((factura) => (
                 <TableRow key={factura.id}>
+                  <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                    {factura.productoId}
+                  </TableCell>
                   <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
                     {editingFacturaId === factura.id ? (
                       <TextField
@@ -242,7 +255,6 @@ const ListadoFacturas = () => {
                   <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
                     {editingFacturaId === factura.id ? (
                       <TextField
-                        type="date"
                         value={factura.fecha}
                         onChange={(e) =>
                           onInputChange(factura.id, "fecha", e.target.value)
@@ -272,50 +284,54 @@ const ListadoFacturas = () => {
                   </TableCell>
                   <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
                     {editingFacturaId === factura.id ? (
+                      <TextField
+                        value={factura.cantidad}
+                        onChange={(e) =>
+                          onInputChange(factura.id, "cantidad", e.target.value)
+                        }
+                        className={`input_formulario ${
+                          isDarkMode ? "dark-mode" : ""
+                        }`}
+                      />
+                    ) : (
+                      factura.cantidad
+                    )}
+                  </TableCell>
+                  <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                    {editingFacturaId === factura.id ? (
                       <>
                         <IconButton
-                          sx={{ color: "white" }}
                           onClick={() =>
                             saveEdit(factura.id, {
                               proveedor: factura.proveedor,
                               fecha: factura.fecha,
                               detalle: factura.detalle,
+                              cantidad: factura.cantidad,
                             })
                           }
-                          className={`${isDarkMode ? "dark-mode" : ""}`}
                         >
                           <CheckIcon />
                         </IconButton>
-                        <IconButton
-                          sx={{ color: "white" }}
-                          onClick={cancelEditing}
-                          className={`${isDarkMode ? "dark-mode" : ""}`}
-                        >
+                        <IconButton onClick={cancelEditing}>
                           <CloseIcon />
                         </IconButton>
                       </>
                     ) : (
                       <>
                         <IconButton
-                          sx={{ color: "white" }}
                           onClick={() => startEditing(factura.id)}
-                          className={`${isDarkMode ? "dark-mode" : ""}`}
                         >
                           <EditIcon />
                         </IconButton>
                         <IconButton
-                          sx={{ color: "white" }}
-                          onClick={() => startDelete(factura.id)}
-                          className={`${isDarkMode ? "dark-mode" : ""}`}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          sx={{ color: "black", background: "green" }}
                           onClick={() => downloadPDF(factura.url)}
-                          className={`${isDarkMode ? "dark-mode" : ""}`}
                         >
                           <DownloadIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => startDelete(factura.id)}
+                        >
+                          <DeleteIcon />
                         </IconButton>
                       </>
                     )}
@@ -325,29 +341,30 @@ const ListadoFacturas = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <Dialog
+          open={openDeleteDialog}
+          onClose={cancelDelete}
+          aria-labelledby="delete-dialog-title"
+          aria-describedby="delete-dialog-description"
+        >
+          <DialogTitle id="delete-dialog-title">
+            Confirmar Eliminación
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="delete-dialog-description">
+              ¿Estás seguro de que deseas eliminar esta factura? Esta acción es
+              irreversible.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={cancelDelete}>Cancelar</Button>
+            <Button onClick={deleteFactura} color="error">
+              Eliminar
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
-      <Dialog
-        open={openDeleteDialog}
-        onClose={cancelDelete}
-        className={`${isDarkMode ? "dark-mode" : ""}`}
-      >
-        <DialogTitle className={`${isDarkMode ? "dark-mode" : ""}`}>
-          Confirmar Eliminación
-        </DialogTitle>
-        <DialogContent className={`${isDarkMode ? "dark-mode" : ""}`}>
-          <DialogContentText className={`${isDarkMode ? "dark-mode" : ""}`}>
-            ¿Estás seguro de que deseas eliminar esta factura?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions className={`${isDarkMode ? "dark-mode" : ""}`}>
-          <Button onClick={cancelDelete} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={deleteFactura} color="secondary">
-            Eliminar
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { storage, db } from "../../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, getDoc, doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Admin from "../admin/admin";
 import { Button, CircularProgress, Typography, Box } from "@mui/material";
@@ -24,6 +24,8 @@ const AgregarFactura = () => {
     proveedor: "",
     detalle: "",
     url: "",
+    productoId: "",
+    cantidad: 0
   });
 
   const handleChangeText = (name, value) => {
@@ -81,15 +83,35 @@ const AgregarFactura = () => {
     }
   };
 
+  const updateProductQuantity = async (productId, quantityToAdd) => {
+    try {
+      const productRef = doc(db, "inventario", productId);
+      const productSnap = await getDoc(productRef);
+
+      if (productSnap.exists()) {
+        const productData = productSnap.data();
+        const updatedQuantity = productData.cantidad + quantityToAdd;
+
+        await updateDoc(productRef, { cantidad: updatedQuantity });
+        console.log("Cantidad actualizada exitosamente.");
+      } else {
+        console.error("Producto no encontrado.");
+        setErrorMessage("Producto no encontrado.");
+      }
+    } catch (error) {
+      console.error("Error al actualizar la cantidad del producto:", error);
+      setErrorMessage("Error al actualizar la cantidad del producto.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { fecha, proveedor, detalle } = state;
-    if (!fecha || !proveedor || !detalle) {
-      // setMensaje("Datos incompletos");
-      setErrorMessage("Datos incompletos");
+    const { fecha, proveedor, detalle, productoId, cantidad } = state;
+    if (!fecha || !proveedor || !detalle || !productoId || cantidad <= 0) {
+      setErrorMessage("Datos incompletos o cantidad inválida.");
       return;
     }
-
+  
     try {
       setUploading(true);
       const downloadURL = await handleUpload();
@@ -97,7 +119,7 @@ const AgregarFactura = () => {
         setErrorMessage("Error al subir el archivo");
         return;
       }
-
+  
       const timestampNow = serverTimestamp();
       const docRef = await addDoc(collection(db, "facturas"), {
         fecha,
@@ -105,21 +127,28 @@ const AgregarFactura = () => {
         detalle,
         timestamp: timestampNow,
         url: downloadURL,
+        productoId, // Añadido
+        cantidad,   // Añadido
       });
-
+  
       console.log("Documento escrito con ID:", docRef.id);
-      setSuccessMessage("Se ha guardado correctamente");
-      setState({ fecha: "", proveedor: "", detalle: "" });
+      setSuccessMessage("Factura guardada correctamente");
+      
+      // Actualizar la cantidad del producto
+      await updateProductQuantity(productoId, cantidad);
+  
+      setState({ fecha: "", proveedor: "", detalle: "", productoId: "", cantidad: 0 });
       setFile(null);
       setFilePreview(null);
     } catch (error) {
       console.error("Error al agregar el documento:", error);
-      setErrorMessage("ha ocurrido un error al guardar la factura");
+      setErrorMessage("Ha ocurrido un error al guardar la factura");
     } finally {
       setUploading(false);
     }
   };
 
+  
   return (
     <>
       <header>
@@ -185,6 +214,41 @@ const AgregarFactura = () => {
                       handleChangeText("detalle", e.target.value)
                     }
                     value={state.detalle}
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="ID del Producto"
+                    required
+                    type="text"
+                    name="productoId"
+                    id="productoId"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    onChange={(e) =>
+                      handleChangeText("productoId", e.target.value)
+                    }
+                    value={state.productoId}
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Cantidad"
+                    required
+                    type="number"
+                    name="cantidad"
+                    id="cantidad"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    onChange={(e) =>
+                      handleChangeText("cantidad", parseInt(e.target.value))
+                    }
+                    value={state.cantidad}
+                    inputProps={{ min: 1 }}
                   />
                 </p>
                 <p>
