@@ -23,7 +23,7 @@ const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -42,6 +42,7 @@ function AgregarAutomovil() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isConfirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
+  const [isVerificarModalVisible, setVerificarModalVisible] = useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
 
   const handleChange = (event) => {
@@ -79,6 +80,14 @@ function AgregarAutomovil() {
 
   const hideConfirmationModal = () => {
     setConfirmationModalVisible(false);
+  };
+
+  const showVerificarModal = () => {
+    setVerificarModalVisible(true);
+  };
+
+  const hideVerificarModal = () => {
+    setVerificarModalVisible(false);
   };
 
   const handleConfirmationAndSave = () => {
@@ -336,7 +345,48 @@ function AgregarAutomovil() {
                     onChange={handleChange}
                     placeholder="Número  de Chasis"
                   />
-                </p>
+                </p>{" "}
+                <Button
+                  onClick={showVerificarModal}
+                  variant="outlined"
+                  sx={{
+                    fontSize: "15px",
+                    width: "220px",
+                    height: "55px",
+                    marginTop: "20px",
+                    left: "33px",
+                  }}
+                >
+                  Verificar Automóvil
+                </Button>
+                <Modal
+                  open={isVerificarModalVisible}
+                  onClose={hideVerificarModal}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={modalStyle}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                    >
+                      Verificar Automóvil
+                    </Typography>
+                    <iframe
+                      src="https://www.patentechile.com/"
+                      width="100%"
+                      height="400px"
+                      title="Verificar Automóvil"
+                      style={{ border: "none", marginTop: "20px" }}
+                    />
+                    <Box mt={2} display="flex" justifyContent="flex-end">
+                      <Button onClick={hideVerificarModal} variant="outlined">
+                        Cerrar
+                      </Button>
+                    </Box>
+                  </Box>
+                </Modal>
                 {successMessage && (
                   <Alert severity="success" icon={<CheckCircleIcon />}>
                     {successMessage}
@@ -347,41 +397,51 @@ function AgregarAutomovil() {
                     {errorMessage}
                   </Alert>
                 )}
-              </form>
-              <Button
-                sx={{ fontSize: "20px", width: "350px" }}
-                variant="outlined"
-                onClick={showConfirmationModal}
-              >
-                Agregar Automóvil
-              </Button>
-              <Modal
-                open={isConfirmationModalVisible}
-                onClose={hideConfirmationModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={modalStyle}>
-                  <Typography
-                    id="modal-modal-title"
-                    variant="h6"
-                    component="h2"
-                  >
-                    ¿Estás seguro de que deseas guardar este automóvil?
-                  </Typography>
-                  <Box mt={2} display="flex" justifyContent="space-between">
-                    <Button
-                      onClick={handleConfirmationAndSave}
-                      variant="contained"
+                <Button
+                  sx={{
+                    fontSize: "20px",
+                    width: "350px",
+                    marginTop: "19px",
+                    alignContent: "center",
+                    textAlign: "center",
+                    left: "150px",
+                  }}
+                  variant="outlined"
+                  onClick={showConfirmationModal}
+                >
+                  Agregar Automóvil
+                </Button>
+                <Modal
+                  open={isConfirmationModalVisible}
+                  onClose={hideConfirmationModal}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={modalStyle}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
                     >
-                      Sí, Guardar
-                    </Button>
-                    <Button onClick={hideConfirmationModal} variant="outlined">
-                      Cancelar
-                    </Button>
+                      ¿Estás seguro de que deseas guardar este automóvil?
+                    </Typography>
+                    <Box mt={2} display="flex" justifyContent="space-between">
+                      <Button
+                        onClick={handleConfirmationAndSave}
+                        variant="contained"
+                      >
+                        Sí, Guardar
+                      </Button>
+                      <Button
+                        onClick={hideConfirmationModal}
+                        variant="outlined"
+                      >
+                        Cancelar
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              </Modal>
+                </Modal>
+              </form>
             </div>
           </div>
         </div>

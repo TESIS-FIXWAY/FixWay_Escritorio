@@ -74,6 +74,10 @@ const ListarInventario = () => {
     return cantidad <= 10 ? { backgroundColor: "#ffcccc" } : {};
   };
 
+  const formatoDinero = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
   return (
     <>
       <Mecanico />
@@ -153,7 +157,7 @@ const ListarInventario = () => {
                       {inventario.cantidad}
                     </TableCell>
                     <TableCell className={isDarkMode ? "dark-mode" : ""}>
-                      {inventario.costo}
+                      $ {formatoDinero(inventario.costo)}
                     </TableCell>
                   </TableRow>
                 ))}
