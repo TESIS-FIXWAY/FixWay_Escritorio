@@ -400,7 +400,7 @@ const GenerarFactura = () => {
       pdf.text(producto.cantidad.toString(), tableX + 45, currentY - 10);
 
       const costoNumerico = parseFloat(
-        producto.costo.replace(/\./g, "").replace(",", ".")
+        producto.costo.toString().replace(/\./g, "").replace(",", ".")
       );
 
       pdf.text(
@@ -716,7 +716,7 @@ const GenerarFactura = () => {
       pdf.text(producto.cantidad.toString(), tableX + 28, currentY);
 
       const costoNumerico = parseFloat(
-        producto.costo.replace(/\./g, "").replace(",", ".")
+        producto.costo.toString().replace(/\./g, "").replace(",", ".")
       );
 
       pdf.text(
