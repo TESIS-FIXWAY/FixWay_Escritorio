@@ -243,6 +243,18 @@ const Admin = () => {
                       </span>
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      to="/historialBoleta&Factura"
+                      className={`link ${
+                        window.location.pathname === "/historialBoleta&Factura"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <span className="link_name">Historial Ventas</span>
+                    </Link>
+                  </li>
                 </ul>
               )}
             </li>

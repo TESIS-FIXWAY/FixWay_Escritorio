@@ -22,6 +22,7 @@ import GenerarQRADmin from "./components/admin/generarCodigoQR";
 import HistorialMantencionAdmin from "./components/admin/historialMantencion";
 import ListarCliente from "./components/admin/listaCliente/listarCliente";
 import CrearCliente from "./components/admin/agregarCliente";
+import HistorialBoletasYFacturas from "./components/admin/historial/historialBoletaFactura";
 
 // Mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -78,6 +79,10 @@ function App() {
             <Route path="/listarInventario" element={<ListarInventario />} />
             <Route path="/generarFactura" element={<GenerarFactura />} />
             <Route path="/generarqrAdmin" element={<GenerarQRADmin />} />
+            <Route
+              path="/historialBoleta&Factura"
+              element={<HistorialBoletasYFacturas />}
+            />
             <Route
               path="/historialmantencion"
               element={<HistorialMantencionAdmin />}
