@@ -3,6 +3,7 @@ import Admin from "../admin";
 import "../../styles/darkMode.css";
 import { DarkModeContext } from "../../../context/darkMode";
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 import { db, auth, storage } from "../../../firebase";
 import {
   collection,
@@ -60,6 +61,7 @@ const GenerarFactura = () => {
   const [rut, setRut] = useState("");
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [ordenTransaccion, setOrdenTransaccion] = useState(null);
   const [actualizacion, setActualizacion] = useState(0);
   const { isDarkMode } = useContext(DarkModeContext);
 
@@ -91,8 +93,15 @@ const GenerarFactura = () => {
     }
 
     if (!tipoPago) {
-      alert("Debe selecionar un tipo de pago");
+      alert("Debe seleccionar un tipo de pago");
       return;
+    }
+
+    if (tipoPago === "debito" || tipoPago === "credito") {
+      if (!ordenTransaccion) {
+        alert("La orden de transacción es obligatoria para Débito o Crédito.");
+        return;
+      }
     }
 
     let facturasCollection;
@@ -141,6 +150,10 @@ const GenerarFactura = () => {
         time: time,
         timestamp: timestamp,
         tipoPago: tipoPago,
+        ordenTransaccion:
+          tipoPago === "debito" || tipoPago === "credito"
+            ? ordenTransaccion
+            : null,
       };
 
       const nuevaFacturaRef = await addDoc(facturasCollection, nuevaFactura);
@@ -157,8 +170,13 @@ const GenerarFactura = () => {
         fecha: fecha,
         time: time,
         tipoPago: tipoPago,
+        ordenTransaccion:
+          tipoPago === "debito" || tipoPago === "credito"
+            ? ordenTransaccion
+            : null,
       });
 
+      setOrdenTransaccion("");
       setProductosSeleccionados([]);
       setDescuentoMenuValue("");
       setShowProductList(false);
@@ -190,7 +208,7 @@ const GenerarFactura = () => {
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
 
     pdf.setFontSize(24);
-    pdf.text("Factura Settore", pdf.internal.pageSize.getWidth() / 2, 15, {
+    pdf.text("Factura FixWay", pdf.internal.pageSize.getWidth() / 2, 15, {
       align: "center",
     });
 
@@ -220,6 +238,14 @@ const GenerarFactura = () => {
     const tipoPagoX = 165;
     const tipoPagoY = imgY + imgHeight + 0;
     pdf.text(tipoPagoText, tipoPagoX, tipoPagoY);
+
+    if (tipoPago === "Débito" || tipoPago === "Crédito") {
+      pdf.setFontSize(10);
+      const ordenTransaccionText = `Orden de Transacción: ${ordenTransaccion}`;
+      const ordenTransaccionX = 165;
+      const ordenTransaccionY = imgY + imgHeight + 10;
+      pdf.text(ordenTransaccionText, ordenTransaccionX, ordenTransaccionY);
+    }
 
     pdf.setFontSize(10);
     const invoiceNumberText = `N° Factura: ${invoiceNumber}`;
@@ -528,6 +554,13 @@ const GenerarFactura = () => {
     let boletasCollection;
     let nuevaBoleta;
 
+    if (tipoPago === "debito" || tipoPago === "credito") {
+      if (!ordenTransaccion) {
+        alert("La orden de transacción es obligatoria para Débito o Crédito.");
+        return;
+      }
+    }
+
     try {
       boletasCollection = collection(db, "misBoletas");
       const batch = writeBatch(db);
@@ -571,6 +604,10 @@ const GenerarFactura = () => {
         time: time,
         timestamp: timestamp,
         tipoPago: tipoPago,
+        ordenTransaccion:
+          tipoPago === "debito" || tipoPago === "credito"
+            ? ordenTransaccion
+            : null,
       };
 
       const nuevaBoletaRef = await addDoc(boletasCollection, nuevaBoleta);
@@ -587,6 +624,10 @@ const GenerarFactura = () => {
         fecha: fecha,
         time: time,
         tipoPago: tipoPago,
+        ordenTransaccion:
+          tipoPago === "debito" || tipoPago === "credito"
+            ? ordenTransaccion
+            : null,
       });
 
       generarBoletaPDF(productosSeleccionados);
@@ -609,7 +650,7 @@ const GenerarFactura = () => {
       format: [80, 210],
     });
 
-    const imgData = "../../../images/AutoSinFondo.png";
+    const imgData = "../../../images/LogoSinFondo.png";
     const imgWidth = 20;
     const imgHeight = 20;
     const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
@@ -617,7 +658,7 @@ const GenerarFactura = () => {
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
 
     pdf.setFontSize(14);
-    pdf.text("Boleta Settore", pdf.internal.pageSize.getWidth() / 2, 15, {
+    pdf.text("Boleta FixWay", pdf.internal.pageSize.getWidth() / 2, 15, {
       align: "center",
     });
 
@@ -1081,13 +1122,31 @@ const GenerarFactura = () => {
                 id="Tipo de Pago"
                 value={tipoPago}
                 label="Tipo de Pago"
-                onChange={(e) => setTipoPago(e.target.value)}
+                onChange={(e) => {
+                  setTipoPago(e.target.value);
+                  if (
+                    e.target.value !== "debito" &&
+                    e.target.value !== "credito"
+                  ) {
+                    setOrdenTransaccion("");
+                  }
+                }}
               >
                 <MenuItem value={"contado"}>Contado</MenuItem>
                 <MenuItem value={"credito"}>Crédito</MenuItem>
                 <MenuItem value={"debito"}>Débito</MenuItem>
               </Select>
             </FormControl>
+            {tipoPago === "debito" || tipoPago === "credito" ? (
+              <TextField
+                onChange={(e) => setOrdenTransaccion(e.target.value)}
+                value={ordenTransaccion}
+                sx={{ height: "45px", marginTop: "10px" }}
+                id="Orden de Transacción"
+                label="Orden de Transacción"
+                variant="outlined"
+              />
+            ) : null}
             <TextField
               onChange={buscadorProducto}
               sx={{ height: "45px", marginTop: "10px" }}
