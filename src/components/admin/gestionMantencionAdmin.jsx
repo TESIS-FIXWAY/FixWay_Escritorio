@@ -42,9 +42,8 @@ const GestionMantencionesAdmin = () => {
             allTasksData.push(task);
           });
 
-          // Ordenar tareas de la fecha más actual a la menos actual
           allTasksData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-          
+
           setTasks(allTasksData);
         });
 
@@ -100,7 +99,6 @@ const GestionMantencionesAdmin = () => {
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
   };
 
-  // Función para obtener el rango de fechas basado en el periodo seleccionado
   const getDateRange = (period) => {
     const startDate = new Date(currentDate);
     const endDate = new Date(currentDate);
@@ -234,7 +232,9 @@ const GestionMantencionesAdmin = () => {
                     <TableCell>{task.id}</TableCell>
                     <TableCell>{translateEstado(task.estado)}</TableCell>
                     <TableCell>{getUserName(task.personaTomadora)}</TableCell>
-                    <TableCell>{formatoKilometraje(task.kilometrajeMantencion)}</TableCell>
+                    <TableCell>
+                      {formatoKilometraje(task.kilometrajeMantencion)}
+                    </TableCell>
                     <TableCell>{formatDate(new Date(task.fecha))}</TableCell>
                     <TableCell>{task.descripcion}</TableCell>
                     <TableCell>
