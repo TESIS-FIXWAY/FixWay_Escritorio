@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
@@ -16,32 +16,14 @@ import SettingsIcon from "@mui/icons-material/Settings";
 const Admin = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
   const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
   const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
+  const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
-  const {isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(true);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  const formatTime = (time) => {
-    const options = {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      hour12: false,
-      timeZone: "America/Santiago",
-    };
-    return time.toLocaleTimeString("en-US", options);
-  };
 
   const handleLogout = async () => {
     try {
@@ -79,15 +61,24 @@ const Admin = () => {
     setIsSettingsMenuOpen(false);
   };
 
+  const toggleSubMenu4 = () => {
+    setIsSubMenuOpen3(!isSubMenuOpen4);
+    setIsSubMenuOpen1(false);
+    setIsSubMenuOpen2(false);
+    setIsSubMenuOpen3(false);
+    setIsSettingsMenuOpen(false);
+  };
+
   const toggleSettingsMenu = () => {
     setIsSettingsMenuOpen(!isSettingsMenuOpen);
     setIsSubMenuOpen1(false);
     setIsSubMenuOpen2(false);
     setIsSubMenuOpen3(false);
+    setIsSubMenuOpen4(false);
   };
 
   const handleShowNotification = () => {
-    setShowNotification(!showNotification); // Toggle the notification visibility
+    setShowNotification(!showNotification);
   };
 
   const handleRotate = () => {
@@ -253,7 +244,6 @@ const Admin = () => {
                     </Link>
                   </li>
                 </ul>
-                
               )}
             </li>
 
@@ -297,18 +287,57 @@ const Admin = () => {
                 </ul>
               )}
             </li>
-            <li>
+
+            <li onClick={toggleSubMenu4}>
               <Link
-                to="/listarCliente"
                 className={`links ${isDarkMode ? "dark-mode" : ""}${
+                  window.location.pathname === "/agregarCliente" ||
                   window.location.pathname === "/listarCliente"
                     ? "active"
                     : ""
                 }`}
               >
-                <span className="link_name">clientes</span>
+                <span className="link_name">Cliente</span>
               </Link>
+              {isSubMenuOpen4 && (
+                <ul className="sub-menu">
+                  <li>
+                    <Link
+                      to="/agregarCliente"
+                      className={`link ${
+                        window.location.pathname === "/agregarCliente"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <span className="link_name">Agregar Cliente</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/listarCliente"
+                      className={`link ${
+                        window.location.pathname === "/listarCliente"
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      <span className="link_name">Listar Cliente</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
+            {/* <li>
+              <Link
+                to="/listarCliente"
+                className={`links ${isDarkMode ? "dark-mode" : ""}${
+                  window.location.pathname === "/listarCliente" ? "active" : ""
+                }`}
+              >
+                <span className="link_name">Cliente</span>
+              </Link>
+            </li> */}
           </ul>
         </nav>
 

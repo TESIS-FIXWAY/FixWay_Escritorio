@@ -3,7 +3,6 @@ import Admin from "../admin";
 import "../../styles/darkMode.css";
 import { DarkModeContext } from "../../../context/darkMode";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
 import { db, auth, storage } from "../../../firebase";
 import {
   collection,
@@ -250,7 +249,7 @@ const GenerarFactura = () => {
     pdf.setFontSize(10);
     const invoiceNumberText = `N° Factura: ${invoiceNumber}`;
     const invoiceNumberX = 165;
-    const invoiceNumberY = imgY + imgHeight + 5;
+    const invoiceNumberY = imgY + imgHeight + 4;
     pdf.text(invoiceNumberText, invoiceNumberX, invoiceNumberY);
 
     pdf.setFontSize(10);
@@ -341,12 +340,12 @@ const GenerarFactura = () => {
     const tableX = 10;
     const tableY = lineY + 12;
 
-    pdf.text(headers[0], tableX + 10, tableY);
-    pdf.text(headers[1], tableX + 41, tableY);
-    pdf.text(headers[2], tableX + 80, tableY);
-    pdf.text(headers[3], tableX + 140, tableY);
-    pdf.text(headers[4], tableX + 170, tableY);
-    pdf.text(headers[5], tableX + 250, tableY);
+    pdf.text(headers[0], tableX + 10, tableY); //producto
+    pdf.text(headers[1], tableX + 41, tableY); //cantidad
+    pdf.text(headers[2], tableX + 80, tableY); //descripcion
+    pdf.text(headers[3], tableX + 140, tableY); //precio u
+    pdf.text(headers[4], tableX + 170, tableY); //total
+    pdf.text(headers[5], tableX + 250, tableY); //total producto
 
     const tableLineY = tableY - 5;
     pdf.line(5, tableLineY, pdf.internal.pageSize.getWidth() - 5, tableLineY);

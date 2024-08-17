@@ -20,7 +20,8 @@ import ListadoFacturas from "./components/admin/listadoFacturas/listadoFacturas"
 import CrearClienteFactura from "./components/admin/factura/crearCliente";
 import GenerarQRADmin from "./components/admin/generarCodigoQR";
 import HistorialMantencionAdmin from "./components/admin/historialMantencion";
-import ListarCliente from "./components/admin/factura/listarCliente";
+import ListarCliente from "./components/admin/listaCliente/listarCliente";
+import CrearCliente from "./components/admin/agregarCliente";
 
 // Mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -94,8 +95,8 @@ function App() {
               path="/crearClienteFactura"
               element={<CrearClienteFactura />}
             />
-            <Route path="/listarCliente" element={<ListarCliente />} /> 
-
+            <Route path="/listarCliente" element={<ListarCliente />} />
+            <Route path="/agregarCliente" element={<CrearCliente />} />
             <Route
               path="/mecanico"
               element={
