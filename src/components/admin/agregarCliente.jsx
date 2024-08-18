@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
+import "../styles/agregarUsuario.css";
 import { db } from "../../firebase";
 import { DarkModeContext } from "../../context/darkMode";
 import { collection, addDoc } from "firebase/firestore";
 import validadorRUT from "./validadorRUT";
-import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -24,7 +24,6 @@ const CrearCliente = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [mensajeEmail, setMensajeEmail] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
-  const navigate = useNavigate();
 
   const validarRutOnChange = () => {
     const rut = document.getElementById("rut").value;
@@ -96,29 +95,38 @@ const CrearCliente = () => {
             Agregar Cliente
           </h1>
           <form className={`formulario_form ${isDarkMode ? "dark-mode" : ""}`}>
-            <TextField
-              label="Nombre"
-              variant="outlined"
-              value={clienteNombre}
-              onChange={(e) => setClienteNombre(e.target.value)}
-              className={isDarkMode ? "dark-mode" : ""}
-            />
-            <TextField
-              label="Apellido"
-              variant="outlined"
-              value={clienteApellido}
-              onChange={(e) => setClienteApellido(e.target.value)}
-              className={isDarkMode ? "dark-mode" : ""}
-            />
-            <TextField
-              label="Rut (11.111.111-1)"
-              variant="outlined"
-              value={clienteRut}
-              id="rut"
-              onChange={(e) => setClienteRut(e.target.value)}
-              onBlur={validarRutOnChange}
-              className={isDarkMode ? "dark-mode" : ""}
-            />
+            <p>
+              <br />
+              <TextField
+                label="Nombre"
+                variant="outlined"
+                value={clienteNombre}
+                onChange={(e) => setClienteNombre(e.target.value)}
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Apellido"
+                variant="outlined"
+                value={clienteApellido}
+                onChange={(e) => setClienteApellido(e.target.value)}
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+              />
+            </p>
+            <p>
+              <br />
+              <TextField
+                label="Rut (11.111.111-1)"
+                variant="outlined"
+                value={clienteRut}
+                id="rut"
+                onChange={(e) => setClienteRut(e.target.value)}
+                onBlur={validarRutOnChange}
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+              />
+            </p>
             <Typography
               variant="body2"
               color="textSecondary"
@@ -135,13 +143,16 @@ const CrearCliente = () => {
                 </Alert>
               )}
             </Typography>
-            <TextField
-              label="Email"
-              variant="outlined"
-              value={clienteEmail}
-              onChange={(e) => setClienteEmail(e.target.value)}
-              className={isDarkMode ? "dark-mode" : ""}
-            />
+            <p>
+              <br />
+              <TextField
+                label="Email"
+                variant="outlined"
+                value={clienteEmail}
+                onChange={(e) => setClienteEmail(e.target.value)}
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+              />
+            </p>
             <Typography
               variant="body2"
               color="error"
@@ -149,14 +160,17 @@ const CrearCliente = () => {
             >
               {mensajeEmail}
             </Typography>
-            <TextField
-              label="Teléfono (Ejemplo: +56 9 12345678)"
-              variant="outlined"
-              value={clienteTelefono}
-              onChange={(e) => setClienteTelefono(e.target.value)}
-              inputProps={{ pattern: "[+]56 [0-9]{1} [0-9]{8}" }}
-              className={isDarkMode ? "dark-mode" : ""}
-            />
+            <p>
+              <br />
+              <TextField
+                label="Teléfono (Ejemplo: +56 9 12345678)"
+                variant="outlined"
+                value={clienteTelefono}
+                onChange={(e) => setClienteTelefono(e.target.value)}
+                inputProps={{ pattern: "[+]56 [0-9]{1} [0-9]{8}" }}
+                className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+              />
+            </p>
             {errorMensaje && (
               <Typography
                 variant="body2"
@@ -169,9 +183,13 @@ const CrearCliente = () => {
             <Box display="flex" justifyContent="space-between">
               <Button
                 onClick={agregarCliente}
-                variant="contained"
-                color="success"
+                variant="outlined"
                 className={isDarkMode ? "dark-mode" : ""}
+                sx={{
+                  marginTop: "110px",
+                  fontSize: "18px",
+                  right: "100px",
+                }}
               >
                 Agregar Cliente
               </Button>

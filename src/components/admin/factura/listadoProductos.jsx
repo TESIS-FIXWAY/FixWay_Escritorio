@@ -80,8 +80,8 @@ export default function ListadoProductos({
               Vaciar Lista
             </Button>
             <Button
-              style={{ background: "#1DC258", color: "#fff" }}
               variant="contained"
+              color="inherit"
               onClick={toggleProductList}
             >
               Ocultar listado de productos

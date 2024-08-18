@@ -210,13 +210,13 @@ const ListarCliente = () => {
                           color="primary"
                           onClick={() => handleClickOpenEdit(cliente)}
                         >
-                          <EditIcon />
+                          <EditIcon sx={{ color: "black" }} />
                         </Button>
                         <Button
                           color="secondary"
                           onClick={() => handleClickOpenDelete(cliente.id)}
                         >
-                          <DeleteIcon />
+                          <DeleteIcon sx={{ color: "black" }} />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -313,10 +313,10 @@ const ListarCliente = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEdit} color="primary">
+          <Button onClick={handleCloseEdit} color="error" variant="contained">
             Cancelar
           </Button>
-          <Button onClick={handleUpdate} color="primary">
+          <Button onClick={handleUpdate} color="success" variant="contained">
             Actualizar
           </Button>
         </DialogActions>

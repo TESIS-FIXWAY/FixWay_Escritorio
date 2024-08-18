@@ -143,14 +143,16 @@ const ClienteVista = ({
         >
           <Button
             onClick={crearCliente}
-            variant="outlined"
+            variant="contained"
+            color="success"
             className={isDarkMode ? "dark-mode" : ""}
           >
             Crear Cliente
           </Button>
           <Button
             onClick={toggleClienteVista}
-            variant="outlined"
+            variant="contained"
+            color="inherit"
             className={isDarkMode ? "dark-mode" : ""}
           >
             Ocultar listado de clientes
