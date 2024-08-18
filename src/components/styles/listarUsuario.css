@@ -5,7 +5,8 @@
 }
 
 .tabla_listar {
-  width: 100%;
+  width: calc(100% - 250px); /* Ocupa el resto del ancho de la pantalla */
+  margin-left: 250px;
 }
 .table_header {
   display: flex;
@@ -237,6 +238,8 @@ tabla tbody td:hover {
 @media screen and (max-width: 887px) {
   .tabla_listar {
     border: 0px;
+    width: 100%;
+    margin-left: 0px;
   }
 
   .table_header {

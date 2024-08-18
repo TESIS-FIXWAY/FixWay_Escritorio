@@ -69,6 +69,57 @@
   position: relative;
 }
 
+
+
+
+
+.menu_lateral {
+  position: absolute;
+  top: 100px; /* Cambia top a 0 para ajustar la barra lateral a la parte superior de la pantalla */
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: #e9ecef;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente los elementos en la barra lateral */
+  justify-content: flex-start; /* Ajusta a flex-start para mantener el contenido al principio de la barra lateral */
+  transition: all 0.5s ease 0s;
+}
+
+/* admin.css */
+.menuArbol {
+  display: flex;
+  flex-direction: column; 
+}
+
+.tree-link {
+  padding: 10px;
+  margin: 0px 0px 0px 10px;
+  font-size: 17px;
+  text-decoration: none; 
+  color: inherit; 
+}
+.tree-p {
+  padding: 10px;
+  margin: 0px 0px 0px 10px;
+  font-size: 17px;
+  text-decoration: none; 
+  color: inherit; 
+}
+.tree-link:hover{
+  background-color: #F6F9FC;
+  border-radius: 10px 0px 0px 10px;
+}
+
+
+.iconos-navb{
+  margin: 0px 5px;
+  color: #67748e;
+}
+
+
+
 .sub-menu {
   display: none;
   position: absolute;
@@ -185,6 +236,11 @@
   z-index: 1000;
 }
 
+
+
+
+
+
 .burger {
   position: relative;
   width: 30px;
@@ -237,14 +293,22 @@
   left: 5px;
 }
 
-@media (max-width: 887px) {
-  .encabezado .arbol {
+
+
+
+
+@media (max-width: 800px) {
+  .menu_lateral{
+    display: none;
+  }
+
+  .arbol {
     display: none;
     position: absolute;
     top: 100px;
     left: 0;
     height: 100vh;
-    width: 250px;
+    min-width: 250px;
     background-color: #e9ecef;
     flex-direction: column;
     align-items: flex-start;

@@ -167,7 +167,7 @@ const ListarUsuario = () => {
             textAlign="center"
             className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
           >
-            Listado de Usuarios
+            Usuarios
           </Typography>
           <div>
             <Box>
@@ -195,11 +195,8 @@ const ListarUsuario = () => {
             </Box>
           </div>
         </div>
-        <TableContainer
-          component={Paper}
-          className={isDarkMode ? "dark-mode" : ""}
-        >
-          <Table>
+        <TableContainer className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}>
+        <Table>
             <TableHead>
               <TableRow>
                 <TableCell>RUT</TableCell>

@@ -101,10 +101,10 @@ const IndexAdmin = () => {
       </aside>
       <main className={`main ${isDarkMode ? "dark-mode" : ""}`}>
         <div>
-          <GraficoMisFacturas />
+          <GraficoMisBoletas />
         </div>
         <div>
-          <GraficoMisBoletas />
+          <GraficoMisFacturas />
         </div>
       </main>
     </div>

@@ -110,6 +110,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            
             <Route path="/indexMecanico" element={<IndexMecanico />} />
             <Route
               path="/gestionMantenciones"

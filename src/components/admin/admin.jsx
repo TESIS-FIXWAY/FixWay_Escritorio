@@ -1,26 +1,31 @@
+import { SimpleTreeView } from '@mui/x-tree-view';
+import { TreeItem } from '@mui/x-tree-view';
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
 import { DarkModeContext } from "../../context/darkMode";
-import { Logout } from "@mui/icons-material";
+import Logout from "@mui/icons-material/Logout";
+import DeleteIcon from '@mui/icons-material/Delete';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ListIcon from '@mui/icons-material/List';
+import TaskIcon from '@mui/icons-material/Task';
+import QRCodeIcon from '@mui/icons-material/QRCode';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import "../styles/admin.css";
 import "../styles/darkMode.css";
 import Notificacion from "./notificaciones";
-
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
+import Box from '@mui/material/Box';
 
 const Admin = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSubMenuOpen1, setIsSubMenuOpen1] = useState(false);
-  const [isSubMenuOpen2, setIsSubMenuOpen2] = useState(false);
-  const [isSubMenuOpen3, setIsSubMenuOpen3] = useState(false);
-  const [isSubMenuOpen4, setIsSubMenuOpen4] = useState(false);
+  const [openSubMenu, setOpenSubMenu] = useState(null);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(true);
@@ -29,65 +34,26 @@ const Admin = () => {
     try {
       await logout();
       navigate("/");
-      console.log(user);
       alert("Se ha cerrado la sesión");
     } catch (error) {
       console.log(error);
+      alert("Error al cerrar sesión. Inténtalo de nuevo.");
     }
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const toggleSubMenu1 = () => {
-    setIsSubMenuOpen1(!isSubMenuOpen1);
-    setIsSubMenuOpen2(false);
-    setIsSubMenuOpen3(false);
-    setIsSettingsMenuOpen(false);
-  };
-
-  const toggleSubMenu2 = () => {
-    setIsSubMenuOpen2(!isSubMenuOpen2);
-    setIsSubMenuOpen1(false);
-    setIsSubMenuOpen3(false);
-    setIsSettingsMenuOpen(false);
-  };
-
-  const toggleSubMenu3 = () => {
-    setIsSubMenuOpen3(!isSubMenuOpen3);
-    setIsSubMenuOpen1(false);
-    setIsSubMenuOpen2(false);
-    setIsSettingsMenuOpen(false);
-  };
-
-  const toggleSubMenu4 = () => {
-    setIsSubMenuOpen3(!isSubMenuOpen4);
-    setIsSubMenuOpen1(false);
-    setIsSubMenuOpen2(false);
-    setIsSubMenuOpen3(false);
+  const toggleSubMenu = (menu) => {
+    setOpenSubMenu(openSubMenu === menu ? null : menu);
     setIsSettingsMenuOpen(false);
   };
 
   const toggleSettingsMenu = () => {
     setIsSettingsMenuOpen(!isSettingsMenuOpen);
-    setIsSubMenuOpen1(false);
-    setIsSubMenuOpen2(false);
-    setIsSubMenuOpen3(false);
-    setIsSubMenuOpen4(false);
+    setOpenSubMenu(null);
   };
 
-  const handleShowNotification = () => {
-    setShowNotification(!showNotification);
-  };
-
-  const handleRotate = () => {
-    const botonConfig = document.querySelector(".boton_config");
-    botonConfig.classList.add("rotate");
-    setTimeout(() => {
-      botonConfig.classList.remove("rotate");
-    }, 300);
-  };
+  const handleShowNotification = () => setShowNotification(!showNotification);
 
   return (
     <>
@@ -97,275 +63,113 @@ const Admin = () => {
             <img src={Logo} alt="logo" />
           </Link>
         </div>
-        <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
-          <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
-            <li onClick={toggleSubMenu1}>
-              <Link
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/agregarUsuario" ||
-                  window.location.pathname === "/listarUsuario"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <span className="link_name">Usuarios</span>
-              </Link>
-              {isSubMenuOpen1 && (
-                <ul className="sub-menu">
-                  <li>
-                    <Link
-                      itemId="pickers-community"
-                      to="/agregarUsuario"
-                      className={`link ${
-                        window.location.pathname === "/agregarUsuario"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Crear Usuarios</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/listarUsuario"
-                      className={`link ${
-                        window.location.pathname === "/listarUsuario"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Listar Usuarios</span>
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </li>
-            <li>
-              <Link
-                to="/gestionMantencionesAdmin"
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/gestionMantencionesAdmin"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <span className="link_name">Tablero de Tareas</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/generarqrAdmin"
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/generarqrAdmin" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">Generar QR</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/historialmantencion"
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/historialmantencion"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <span className="link_name">Historial de Mantecion</span>
-              </Link>
-            </li>
-            <li onClick={toggleSubMenu2}>
-              <Link
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/generarFactura" ||
-                  window.location.pathname === "/agregarFactura" ||
-                  window.location.pathname === "/listadoFacturas" ||
-                  window.location.pathname === "/listadoMisFacturas"
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <span className="link_name">Facturas</span>
-              </Link>
-              {isSubMenuOpen2 && (
-                <ul className="sub-menu">
-                  <li>
-                    <Link
-                      to="/generarFactura"
-                      className={`link ${
-                        window.location.pathname === "/generarFactura"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Generar Factura</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/agregarFactura"
-                      className={`link ${
-                        window.location.pathname === "/agregarFactura"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">
-                        Agregar Factura de Proveedor
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/listadoFacturas"
-                      className={`link ${
-                        window.location.pathname === "/listadoFacturas"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">
-                        Listar Facturas de Proveedores
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/listadoMisFacturas"
-                      className={`link ${
-                        window.location.pathname === "/listadoMisFacturas"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">
-                        Listar Mis Facturas/Boletas
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/historialBoleta&Factura"
-                      className={`link ${
-                        window.location.pathname === "/historialBoleta&Factura"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Historial Ventas</span>
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </li>
 
-            <li onClick={toggleSubMenu3}>
-              <Link
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/agregarInventario" ||
-                  window.location.pathname === "/listarInventario"
-                    ? "active"
-                    : ""
-                }`}
+        <div className="menu_lateral">
+          <Box sx={{ minWidth: 250 }}>
+            <SimpleTreeView>
+              
+              <TreeItem 
+                itemId="grid2" 
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <QRCodeIcon className='iconos-navb'/>
+                    <p className='tree-p'>Ventas</p>
+                  </div>
+                }
               >
-                <span className="link_name">Inventario</span>
-              </Link>
-              {isSubMenuOpen3 && (
-                <ul className="sub-menu">
-                  <li>
-                    <Link
-                      to="/agregarInventario"
-                      className={`link ${
-                        window.location.pathname === "/agregarInventario"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Agregar Inventario</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/listarInventario"
-                      className={`link ${
-                        window.location.pathname === "/listarInventario"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Listar Inventario</span>
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </li>
+                <div className='menuArbol'>
+                  <Link to="/generarFactura" className="tree-link">
+                    <TaskIcon className='iconos-navb' />
+                    Realizar Factura
+                  </Link>
+                  <Link to="/historialBoleta&Factura" className="tree-link">Historial de Ventas</Link>
+                  <Link to="/listadoMisFacturas" className="tree-link">Mis Facturas</Link>
+                </div>
+              </TreeItem>
 
-            <li onClick={toggleSubMenu4}>
-              <Link
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/agregarCliente" ||
-                  window.location.pathname === "/listarCliente"
-                    ? "active"
-                    : ""
-                }`}
+              <TreeItem 
+                itemId="grid" 
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <DeleteIcon className='iconos-navb'/>
+                    <p className='tree-p'>Usuarios</p>
+                  </div>
+                }
               >
-                <span className="link_name">Cliente</span>
-              </Link>
-              {isSubMenuOpen4 && (
-                <ul className="sub-menu">
-                  <li>
-                    <Link
-                      to="/agregarCliente"
-                      className={`link ${
-                        window.location.pathname === "/agregarCliente"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Agregar Cliente</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/listarCliente"
-                      className={`link ${
-                        window.location.pathname === "/listarCliente"
-                          ? "active"
-                          : ""
-                      }`}
-                    >
-                      <span className="link_name">Listar Cliente</span>
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </li>
-            {/* <li>
-              <Link
-                to="/listarCliente"
-                className={`links ${isDarkMode ? "dark-mode" : ""}${
-                  window.location.pathname === "/listarCliente" ? "active" : ""
-                }`}
+                <div className='menuArbol'>
+                  <Link to="/agregarUsuario" className="tree-link">Crear Usuario</Link>
+                  <Link to="/listarUsuario" className="tree-link">Listar Usuarios</Link>
+                </div>
+              </TreeItem>
+
+              <div className='menuArbol'>
+                <Link to="/gestionMantencionesAdmin" className="tree-link">Tareas</Link>
+                <Link to="/generarqrAdmin" className="tree-link">
+                  <QRCodeIcon className='iconos-navb'/>
+                  Generar QR
+                </Link>
+                <Link to="/historialmantencion" className="tree-link">Historial</Link>
+              </div>
+
+              <TreeItem 
+                itemId="grid1" 
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <TaskIcon className='iconos-navb' />
+                    <p className='tree-p'>Proveedor</p>
+                  </div>
+                }
               >
-                <span className="link_name">Cliente</span>
-              </Link>
-            </li> */}
-          </ul>
-        </nav>
+                <div className='menuArbol'>
+                  <Link to="/listadoFacturas" className="tree-link">Historial facturas de proveedor</Link>
+                  <Link to="/agregarFactura" className="tree-link">Agregar Factura Proveedor</Link>
+                </div>
+              </TreeItem>
+
+              <TreeItem 
+                itemId="grid3" 
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <ViewListIcon className='iconos-navb'/>
+                    <p className='tree-p'>Inventario</p>
+                  </div>
+                }
+              >
+                <div className='menuArbol'>
+                  <Link to="/listarInventario" className="tree-link">Listar Inventario</Link>
+                  <Link to="/agregarInventario" className="tree-link">Agregar Producto</Link>
+                </div>
+              </TreeItem>
+
+              <TreeItem 
+                itemId="grid4" 
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <DeleteIcon className='iconos-navb' />
+                    <p className='tree-p'>Cliente</p>
+                  </div>
+                }
+              >
+                <div className='menuArbol'>
+                  <Link to="/ListarCliente" className="tree-link">Listar Clientes</Link>
+                  <Link to="/agregarCliente" className="tree-link">Crear Clientes</Link>
+                </div>
+              </TreeItem>
+
+            </SimpleTreeView>
+          </Box>
+        </div>
 
         <div>
           <button
-            onClick={() => {
-              toggleSettingsMenu();
-              handleRotate();
-            }}
+            onClick={toggleSettingsMenu}
             className={`boton_config ${isDarkMode ? "dark-mode" : ""}`}
           >
-            <SettingsIcon />
+            <SettingsIcon fontSize="large" />
           </button>
           {isSettingsMenuOpen && (
             <div className={`settings-menu ${isDarkMode ? "dark-mode" : ""}`}>
-              <ul className="">
+              <ul>
                 <li>
                   <button
                     className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
@@ -380,9 +184,7 @@ const Admin = () => {
                 <li>
                   <button
                     onClick={toggleDarkMode}
-                    className={`boton_darkMode ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
+                    className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
                   >
                     {isDarkMode ? (
                       <WbSunnyIcon color="#B4B4B4" />
@@ -401,7 +203,7 @@ const Admin = () => {
                   >
                     <Logout />
                   </button>
-                  <span>cerrar sesion</span>
+                  <span>Cerrar sesión</span>
                 </li>
               </ul>
             </div>
@@ -416,14 +218,13 @@ const Admin = () => {
               checked={isMenuOpen}
               onChange={toggleMenu}
             />
-
             <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
             <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
             <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
           </label>
+
           <div className={`arbol ${isMenuOpen ? "open" : ""}`}>
-            <Link
-              itemId="pickers-community"
+            {/* <Link
               to="/agregarUsuario"
               className={`link ${
                 window.location.pathname === "/agregarUsuario" ? "active" : ""
@@ -439,62 +240,9 @@ const Admin = () => {
             >
               <span className="link_name">Listar Usuarios</span>
             </Link>
-            <hr />
-            <Link
-              to="/generarFactura"
-              className={`link ${
-                window.location.pathname === "/generarFactura" ? "active" : ""
-              }`}
-            >
-              <span className="link_name">Generar Factura</span>
-            </Link>
-            <Link
-              to="/agregarFactura"
-              className={`link ${
-                window.location.pathname === "/agregarFactura" ? "active" : ""
-              }`}
-            >
-              <span className="link_name">Agregar Factura de Proveedor</span>
-            </Link>
-            <hr />
-            <Link
-              to="/listadoFacturas"
-              className={`link ${
-                window.location.pathname === "/listadoFacturas" ? "active" : ""
-              }`}
-            >
-              <span className="link_name">Listar Facturas de Proveedores</span>
-            </Link>
-            <Link
-              to="/listadoMisFacturas"
-              className={`link ${
-                window.location.pathname === "/listadoMisFacturas"
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <span className="link_name">Listar Mis Facturas/Boletas</span>
-            </Link>
-            <hr />
-            <Link
-              to="/agregarInventario"
-              className={`link ${
-                window.location.pathname === "/agregarInventario"
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <span className="link_name">Agregar Inventario</span>
-            </Link>
-            <Link
-              to="/listarInventario"
-              className={`link ${
-                window.location.pathname === "/listarInventario" ? "active" : ""
-              }`}
-            >
-              <span className="link_name">Listar Inventario</span>
-            </Link>
+            <hr /> */}
           </div>
+
         </div>
       </header>
     </>

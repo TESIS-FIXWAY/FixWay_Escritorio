@@ -11,10 +11,12 @@ header {
 }
 aside {
   grid-area: sidebar;
+  margin-top: -10px;
   background-color: #f7f9fb;
+  margin-left: 0px;
 }
 
-main {
+.main {
   grid-area: main;
   background-color: #f7f9fb;
   display: grid;
@@ -25,6 +27,8 @@ footer {
   grid-area: footer;
   background-color: grey;
 }
+
+
 
 .informacion_widgets_index {
   display: flex;
@@ -45,6 +49,7 @@ footer {
     grid-area: sidebar;
     display: flex;
     flex-direction: column;
+    margin-left: 250px;
   }
 
   main {
