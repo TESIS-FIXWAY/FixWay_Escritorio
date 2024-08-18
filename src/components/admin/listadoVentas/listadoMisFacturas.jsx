@@ -1,5 +1,5 @@
-import "../styles/listadoMisFacturas.css";
-import "../styles/darkMode.css";
+import "../../styles/listadoMisFacturas.css";
+import "../../styles/darkMode.css";
 import React, { useState, useEffect, useContext } from "react";
 import Admin from "../admin";
 import { DarkModeContext } from "../../../context/darkMode";

@@ -15,7 +15,7 @@ import ListarInventario from "./components/admin/listadoInventario/listarInventa
 import GenerarFactura from "./components/admin/factura/generarFactura";
 import GestionMantencionesAdmin from "./components/admin/gestionMantencionAdmin";
 import ClienteVista from "./components/admin/factura/clienteVista";
-import ListadoMisFacturas from "./components/admin/listadoMisFacturas";
+import ListadoMisFacturas from "./components/admin/listadoVentas/listadoMisFacturas";
 import ListadoFacturas from "./components/admin/listadoFacturas/listadoFacturas";
 import CrearClienteFactura from "./components/admin/factura/crearCliente";
 import GenerarQRADmin from "./components/admin/generarCodigoQR";
@@ -110,7 +110,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route path="/indexMecanico" element={<IndexMecanico />} />
             <Route
               path="/gestionMantenciones"
