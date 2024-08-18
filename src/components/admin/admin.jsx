@@ -1,25 +1,36 @@
-import { SimpleTreeView } from '@mui/x-tree-view';
-import { TreeItem } from '@mui/x-tree-view';
+import "../styles/admin.css";
+import "../styles/darkMode.css";
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
 import { DarkModeContext } from "../../context/darkMode";
 import Logout from "@mui/icons-material/Logout";
-import DeleteIcon from '@mui/icons-material/Delete';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import ListIcon from '@mui/icons-material/List';
-import TaskIcon from '@mui/icons-material/Task';
-import QRCodeIcon from '@mui/icons-material/QRCode';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import "../styles/admin.css";
-import "../styles/darkMode.css";
+import { SimpleTreeView } from "@mui/x-tree-view";
+import { TreeItem } from "@mui/x-tree-view";
+import DescriptionIcon from "@mui/icons-material/Description";
+import GroupIcon from "@mui/icons-material/Group";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import RestoreIcon from "@mui/icons-material/Restore";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import TaskIcon from "@mui/icons-material/Task";
+import StoreIcon from "@mui/icons-material/Store";
+import QRCodeIcon from "@mui/icons-material/QRCode";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import Groups2Icon from "@mui/icons-material/Groups2";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import GroupsIcon from "@mui/icons-material/Groups";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import Notificacion from "./notificaciones";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
 const Admin = () => {
   const { user, logout } = UserAuth();
@@ -63,99 +74,127 @@ const Admin = () => {
             <img src={Logo} alt="logo" />
           </Link>
         </div>
-
         <div className="menu_lateral">
           <Box sx={{ minWidth: 250 }}>
             <SimpleTreeView>
-              
-              <TreeItem 
-                itemId="grid2" 
+              <TreeItem
+                itemId="grid2"
                 label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <QRCodeIcon className='iconos-navb'/>
-                    <p className='tree-p'>Ventas</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <StoreIcon className="iconos-navb" />
+                    <p className="tree-p">Ventas</p>
                   </div>
                 }
               >
-                <div className='menuArbol'>
+                <div className="menuArbol">
                   <Link to="/generarFactura" className="tree-link">
-                    <TaskIcon className='iconos-navb' />
-                    Realizar Factura
+                    <ShoppingBagIcon className="iconos-navb" />
+                    Realizar Venta
                   </Link>
-                  <Link to="/historialBoleta&Factura" className="tree-link">Historial de Ventas</Link>
-                  <Link to="/listadoMisFacturas" className="tree-link">Mis Facturas</Link>
+                  <Link to="/historialBoleta&Factura" className="tree-link">
+                    <RestoreIcon className="iconos-navb" />
+                    Historial de Ventas
+                  </Link>
+                  <Link to="/listadoMisFacturas" className="tree-link">
+                    <DescriptionIcon className="iconos-navb" />
+                    Mis Ventas
+                  </Link>
                 </div>
               </TreeItem>
-
-              <TreeItem 
-                itemId="grid" 
+              <TreeItem
+                itemId="grid"
                 label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <DeleteIcon className='iconos-navb'/>
-                    <p className='tree-p'>Usuarios</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <GroupIcon className="iconos-navb" />
+                    <p className="tree-p">Usuarios</p>
                   </div>
                 }
               >
-                <div className='menuArbol'>
-                  <Link to="/agregarUsuario" className="tree-link">Crear Usuario</Link>
-                  <Link to="/listarUsuario" className="tree-link">Listar Usuarios</Link>
+                <div className="menuArbol">
+                  <Link to="/agregarUsuario" className="tree-link">
+                    <PersonAddIcon className="iconos-navb" />
+                    Crear Usuario
+                  </Link>
+                  <Link to="/listarUsuario" className="tree-link">
+                    <GroupsIcon className="iconos-navb" />
+                    Listar Usuarios
+                  </Link>
                 </div>
               </TreeItem>
-
-              <div className='menuArbol'>
-                <Link to="/gestionMantencionesAdmin" className="tree-link">Tareas</Link>
+              <TreeItem
+                itemId="grid1"
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <TaskIcon className="iconos-navb" />
+                    <p className="tree-p">Proveedor</p>
+                  </div>
+                }
+              >
+                <div className="menuArbol">
+                  <Link to="/agregarFactura" className="tree-link">
+                    <AttachFileIcon className="iconos-navb" />
+                    Agregar Factura
+                  </Link>
+                  <Link to="/listadoFacturas" className="tree-link">
+                    <RestoreIcon className="iconos-navb" />
+                    Historial facturas
+                  </Link>
+                </div>
+              </TreeItem>
+              <TreeItem
+                itemId="grid3"
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <InventoryIcon className="iconos-navb" />
+                    <p className="tree-p">Inventario</p>
+                  </div>
+                }
+              >
+                <div className="menuArbol">
+                  <Link to="/agregarInventario" className="tree-link">
+                    <PostAddIcon className="iconos-navb" />
+                    Agregar Producto
+                  </Link>
+                  <Link to="/listarInventario" className="tree-link">
+                    <ViewListIcon className="iconos-navb" />
+                    Listar Inventario
+                  </Link>
+                </div>
+              </TreeItem>
+              <TreeItem
+                itemId="grid4"
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <EmojiPeopleIcon className="iconos-navb" />
+                    <p className="tree-p">Cliente</p>
+                  </div>
+                }
+              >
+                <div className="menuArbol">
+                  <Link to="/ListarCliente" className="tree-link">
+                    <Groups2Icon className="iconos-navb" />
+                    Listar Clientes
+                  </Link>
+                  <Link to="/agregarCliente" className="tree-link">
+                    <PersonAddIcon className="iconos-navb" />
+                    Crear Clientes
+                  </Link>
+                </div>
+              </TreeItem>
+              <div className="menuArbol">
+                <Link to="/gestionMantencionesAdmin" className="tree-link">
+                  <AssignmentIcon className="iconos-navb" />
+                  Tareas
+                </Link>
                 <Link to="/generarqrAdmin" className="tree-link">
-                  <QRCodeIcon className='iconos-navb'/>
+                  <QRCodeIcon className="iconos-navb" />
                   Generar QR
                 </Link>
-                <Link to="/historialmantencion" className="tree-link">Historial</Link>
+                <Link to="/historialmantencion" className="tree-link">
+                  <WorkHistoryIcon className="iconos-navb" />
+                  Historial
+                </Link>
               </div>
-
-              <TreeItem 
-                itemId="grid1" 
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <TaskIcon className='iconos-navb' />
-                    <p className='tree-p'>Proveedor</p>
-                  </div>
-                }
-              >
-                <div className='menuArbol'>
-                  <Link to="/listadoFacturas" className="tree-link">Historial facturas de proveedor</Link>
-                  <Link to="/agregarFactura" className="tree-link">Agregar Factura Proveedor</Link>
-                </div>
-              </TreeItem>
-
-              <TreeItem 
-                itemId="grid3" 
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <ViewListIcon className='iconos-navb'/>
-                    <p className='tree-p'>Inventario</p>
-                  </div>
-                }
-              >
-                <div className='menuArbol'>
-                  <Link to="/listarInventario" className="tree-link">Listar Inventario</Link>
-                  <Link to="/agregarInventario" className="tree-link">Agregar Producto</Link>
-                </div>
-              </TreeItem>
-
-              <TreeItem 
-                itemId="grid4" 
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <DeleteIcon className='iconos-navb' />
-                    <p className='tree-p'>Cliente</p>
-                  </div>
-                }
-              >
-                <div className='menuArbol'>
-                  <Link to="/ListarCliente" className="tree-link">Listar Clientes</Link>
-                  <Link to="/agregarCliente" className="tree-link">Crear Clientes</Link>
-                </div>
-              </TreeItem>
-
             </SimpleTreeView>
           </Box>
         </div>
@@ -184,7 +223,9 @@ const Admin = () => {
                 <li>
                   <button
                     onClick={toggleDarkMode}
-                    className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
+                    className={`boton_darkMode ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
                   >
                     {isDarkMode ? (
                       <WbSunnyIcon color="#B4B4B4" />
@@ -242,7 +283,6 @@ const Admin = () => {
             </Link>
             <hr /> */}
           </div>
-
         </div>
       </header>
     </>

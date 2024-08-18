@@ -1,9 +1,9 @@
 import "../styles/listadoMisFacturas.css";
 import "../styles/darkMode.css";
 import React, { useState, useEffect, useContext } from "react";
-import Admin from "./admin";
-import { DarkModeContext } from "../../context/darkMode";
-import { storage } from "../../firebase";
+import Admin from "../admin";
+import { DarkModeContext } from "../../../context/darkMode";
+import { storage } from "../../../firebase";
 import { getDownloadURL, getMetadata, ref, listAll } from "firebase/storage";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -90,7 +90,7 @@ const ListadoMisFacturas = () => {
             textAlign="center"
             className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
           >
-            Listado de Mis Facturas / Boletas
+            Listado de Ventas
           </Typography>
           <div>
             <TextField

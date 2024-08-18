@@ -1069,7 +1069,7 @@ const GenerarFactura = () => {
             justifyContent="space-between"
             className={`${isDarkMode ? "dark-mode" : ""}`}
           >
-            Generar Factura
+            Venta
           </Typography>
           <Stack spacing={2} direction="row">
             <Button
