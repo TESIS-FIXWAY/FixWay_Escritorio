@@ -13,6 +13,8 @@ import Button from "@mui/material/Button";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TextField from "@mui/material/TextField";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import "../../styles/ClienteVista.css";
 
 const ClienteVista = ({
@@ -146,6 +148,7 @@ const ClienteVista = ({
             variant="contained"
             color="success"
             className={isDarkMode ? "dark-mode" : ""}
+            startIcon={<PersonAddIcon />}
           >
             Crear Cliente
           </Button>
@@ -154,6 +157,7 @@ const ClienteVista = ({
             variant="contained"
             color="inherit"
             className={isDarkMode ? "dark-mode" : ""}
+            startIcon={<VisibilityOffIcon />}
           >
             Ocultar listado de clientes
           </Button>

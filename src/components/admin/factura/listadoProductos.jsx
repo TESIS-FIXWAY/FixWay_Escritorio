@@ -8,6 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export default function ListadoProductos({
   showProductList,
@@ -76,6 +78,7 @@ export default function ListadoProductos({
               style={{ background: "#E74C3C", color: "#fff" }}
               variant="contained"
               onClick={() => setProductosSeleccionados([])}
+              startIcon={<DeleteForeverIcon />}
             >
               Vaciar Lista
             </Button>
@@ -83,6 +86,7 @@ export default function ListadoProductos({
               variant="contained"
               color="inherit"
               onClick={toggleProductList}
+              startIcon={<VisibilityOffIcon />}
             >
               Ocultar listado de productos
             </Button>
