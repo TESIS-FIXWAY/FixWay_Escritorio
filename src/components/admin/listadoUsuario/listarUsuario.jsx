@@ -195,8 +195,10 @@ const ListarUsuario = () => {
             </Box>
           </div>
         </div>
-        <TableContainer className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}>
-        <Table>
+        <TableContainer
+          className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}
+        >
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>RUT</TableCell>
@@ -233,9 +235,7 @@ const ListarUsuario = () => {
                           startIcon={<EditIcon />}
                           variant="outlined"
                           sx={{ color: "white" }}
-                        >
-                          Editar
-                        </Button>
+                        ></Button>
                       </>
                     )}
                     {deleteUserId === user.id ? (
@@ -278,9 +278,7 @@ const ListarUsuario = () => {
                         className={isDarkMode ? "dark-mode" : ""}
                         startIcon={<DeleteIcon />}
                         sx={{ color: "white", left: "12px" }}
-                      >
-                        Eliminar
-                      </Button>
+                      ></Button>
                     )}
                   </TableCell>
                 </TableRow>
