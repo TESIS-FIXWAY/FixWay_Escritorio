@@ -175,6 +175,8 @@ const GenerarFactura = () => {
             : null,
       });
 
+      setTipoPago("");
+      setClienteSeleccionado("");
       setOrdenTransaccion("");
       setProductosSeleccionados([]);
       setDescuentoMenuValue("");
@@ -629,6 +631,8 @@ const GenerarFactura = () => {
             : null,
       });
 
+      setTipoPago("");
+      setOrdenTransaccion("");
       generarBoletaPDF(productosSeleccionados);
       setProductosSeleccionados([]);
       setActualizacion((prevActualizacion) => prevActualizacion + 1);
