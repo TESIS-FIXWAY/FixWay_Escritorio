@@ -3,10 +3,17 @@ import * as tf from "@tensorflow/tfjs";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { DarkModeContext } from "../../../context/darkMode";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 const HistorialVentasIA = () => {
   const { isDarkMode } = useContext(DarkModeContext);
-  const [ventasMensuales, setVentasMensuales] = useState([]);
   const [prediccionesPago, setPrediccionesPago] = useState([]);
 
   useEffect(() => {
@@ -84,7 +91,25 @@ const HistorialVentasIA = () => {
 
       await model.fit(inputTensor, targetTensor, { epochs: 10 });
 
-      const futureMeses = tf.tensor2d([[8], [9], [10], [11], [12]]);
+      const futureMeses = tf.tensor2d([
+        [8],
+        [9],
+        [10],
+        [11],
+        [12],
+        [1],
+        [2],
+        [3],
+        [4],
+        [5],
+        [6],
+        [7],
+        [8],
+        [9],
+        [10],
+        [11],
+        [12],
+      ]);
       const predictions = model.predict(futureMeses).arraySync();
 
       setPrediccionesPago(predictions);
@@ -93,29 +118,51 @@ const HistorialVentasIA = () => {
     }
   };
 
+  const obtenerMeses = () => {
+    const meses = [];
+    let año = 24; // Comenzamos en el año 2024
+    for (let i = 8; i <= 12; i++) {
+      meses.push(`${i}/${año}`);
+    }
+    año = 25; // Cambiamos al año 2025
+    for (let i = 1; i <= 12; i++) {
+      meses.push(`${i}/${año}`);
+    }
+    return meses;
+  };
+
   return (
     <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
-      <h2>Predicción del Tipo de Pago por Mes</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Mes</th>
-            <th>Predicción Crédito</th>
-            <th>Predicción Contado</th>
-            <th>Predicción Débito</th>
-          </tr>
-        </thead>
-        <tbody>
-          {prediccionesPago.map((pred, index) => (
-            <tr key={index}>
-              <td>{index + 8}/24</td> <td>{pred[0].toFixed(2)}</td>{" "}
-              {/* Probabilidad de Crédito */}
-              <td>{pred[1].toFixed(2)}</td> {/* Probabilidad de Contado */}
-              <td>{pred[2].toFixed(2)}</td> {/* Probabilidad de Débito */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+        <h2>Predicción del Tipo de Pago por Mes</h2>
+      </div>
+      <TableContainer
+        className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Mes</TableCell>
+              <TableCell>Predicción Crédito</TableCell>
+              <TableCell>Predicción Contado</TableCell>
+              <TableCell>Predicción Débito</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {prediccionesPago.map((pred, index) => (
+              <TableRow key={index}>
+                <TableCell>{obtenerMeses()[index]}</TableCell>{" "}
+                <TableCell>{(pred[0] * 100).toFixed(2)}%</TableCell>{" "}
+                {/* Probabilidad de Crédito */}
+                <TableCell>{(pred[1] * 100).toFixed(2)}%</TableCell>{" "}
+                {/* Probabilidad de Contado */}
+                <TableCell>{(pred[2] * 100).toFixed(2)}%</TableCell>{" "}
+                {/* Probabilidad de Débito */}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
