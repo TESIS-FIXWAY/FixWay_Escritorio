@@ -205,6 +205,10 @@ const Admin = () => {
               </TreeItem>
 
               <div className="menuArbol">
+                <Link to="/tensorflow" className="tree-link">
+                  <AssignmentIcon className="iconos-navb" />
+                  Tensor IA
+                </Link>
                 <Link to="/gestionMantencionesAdmin" className="tree-link">
                   <AssignmentIcon className="iconos-navb" />
                   Tareas
