@@ -6,8 +6,7 @@ import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
 import { DarkModeContext } from "../../context/darkMode";
 import Logout from "@mui/icons-material/Logout";
-import { SimpleTreeView } from "@mui/x-tree-view";
-import { TreeItem } from "@mui/x-tree-view";
+import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import DescriptionIcon from "@mui/icons-material/Description";
 import GroupIcon from "@mui/icons-material/Group";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
@@ -25,6 +24,9 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
+import NoCrashIcon from "@mui/icons-material/NoCrash";
+import GarageIcon from "@mui/icons-material/Garage";
 import Notificacion from "./notificaciones";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
@@ -71,14 +73,14 @@ const Admin = () => {
       <header className={`encabezado ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="logo">
           <Link to="/indexAdmin">
-            <img src={Logo} alt="logo" />
+            <img src={Logo} alt="Logo de la aplicación" />
           </Link>
         </div>
         <div className="menu_lateral">
           <Box sx={{ minWidth: 250 }}>
             <SimpleTreeView>
               <TreeItem
-                itemId="grid2"
+                itemId="ventas"
                 label={
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <StoreIcon className="iconos-navb" />
@@ -102,7 +104,7 @@ const Admin = () => {
                 </div>
               </TreeItem>
               <TreeItem
-                itemId="grid"
+                itemId="usuarios"
                 label={
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <GroupIcon className="iconos-navb" />
@@ -122,7 +124,7 @@ const Admin = () => {
                 </div>
               </TreeItem>
               <TreeItem
-                itemId="grid1"
+                itemId="proveedor"
                 label={
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <TaskIcon className="iconos-navb" />
@@ -142,7 +144,7 @@ const Admin = () => {
                 </div>
               </TreeItem>
               <TreeItem
-                itemId="grid3"
+                itemId="inventario"
                 label={
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <InventoryIcon className="iconos-navb" />
@@ -162,7 +164,7 @@ const Admin = () => {
                 </div>
               </TreeItem>
               <TreeItem
-                itemId="grid4"
+                itemId="cliente"
                 label={
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <EmojiPeopleIcon className="iconos-navb" />
@@ -171,16 +173,37 @@ const Admin = () => {
                 }
               >
                 <div className="menuArbol">
-                  <Link to="/ListarCliente" className="tree-link">
-                    <Groups2Icon className="iconos-navb" />
-                    Listar Clientes
-                  </Link>
                   <Link to="/agregarCliente" className="tree-link">
                     <PersonAddIcon className="iconos-navb" />
                     Crear Clientes
                   </Link>
+                  <Link to="/ListarCliente" className="tree-link">
+                    <Groups2Icon className="iconos-navb" />
+                    Listar Clientes
+                  </Link>
                 </div>
               </TreeItem>
+              <TreeItem
+                itemId="automovil"
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <TimeToLeaveIcon className="iconos-navb" />
+                    <p className="tree-p">Automóvil</p>
+                  </div>
+                }
+              >
+                <div className="menuArbol">
+                  <Link to="/agregarAutomovilAdmin" className="tree-link">
+                    <NoCrashIcon className="iconos-navb" />
+                    Agregar Automóvil
+                  </Link>
+                  <Link to="/listadoAutomovil" className="tree-link">
+                    <GarageIcon className="iconos-navb" />
+                    Listar Automóvil
+                  </Link>
+                </div>
+              </TreeItem>
+
               <div className="menuArbol">
                 <Link to="/gestionMantencionesAdmin" className="tree-link">
                   <AssignmentIcon className="iconos-navb" />
@@ -238,7 +261,6 @@ const Admin = () => {
 
                 <li>
                   <button
-                    type="submit"
                     onClick={handleLogout}
                     className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
                   >
@@ -249,40 +271,6 @@ const Admin = () => {
               </ul>
             </div>
           )}
-        </div>
-
-        <div className="overlay">
-          <label className="burger" htmlFor="burger">
-            <input
-              type="checkbox"
-              id="burger"
-              checked={isMenuOpen}
-              onChange={toggleMenu}
-            />
-            <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
-            <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
-            <span className={`span ${isDarkMode ? "dark-mode" : ""}`}></span>
-          </label>
-
-          <div className={`arbol ${isMenuOpen ? "open" : ""}`}>
-            {/* <Link
-              to="/agregarUsuario"
-              className={`link ${
-                window.location.pathname === "/agregarUsuario" ? "active" : ""
-              }`}
-            >
-              <span className="link_name">Crear Usuarios</span>
-            </Link>
-            <Link
-              to="/listarUsuario"
-              className={`link ${
-                window.location.pathname === "/listarUsuario" ? "active" : ""
-              }`}
-            >
-              <span className="link_name">Listar Usuarios</span>
-            </Link>
-            <hr /> */}
-          </div>
         </div>
       </header>
     </>

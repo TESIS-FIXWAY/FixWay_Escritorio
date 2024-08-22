@@ -15,7 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
-import Mecanico from "./mecanico";
+import Admin from "../admin/admin";
 import { DarkModeContext } from "../../context/darkMode";
 import ValidadorPatente from "../../hooks/validadorPatente";
 
@@ -31,7 +31,7 @@ const modalStyle = {
   borderRadius: 2,
 };
 
-function AgregarAutomovil() {
+export default function AgregarAutomovilAdmin() {
   const [marca, setMarca] = useState("");
   const [modelo, setModelo] = useState("");
   const [ano, setAno] = useState("");
@@ -181,7 +181,7 @@ function AgregarAutomovil() {
   return (
     <>
       <header>
-        <Mecanico />
+        <Admin />
       </header>
       <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="formulario_content">
@@ -482,5 +482,3 @@ function AgregarAutomovil() {
     </>
   );
 }
-
-export default AgregarAutomovil;

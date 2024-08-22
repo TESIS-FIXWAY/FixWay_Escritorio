@@ -43,6 +43,10 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
     }
   };
 
+  const formatoDinero = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
   return (
     <div>
       <div
@@ -223,7 +227,7 @@ const PrevisualizarUsuario = ({ user, onSave, onCancel, onInputChange }) => {
                 className={isDarkMode ? "dark-mode" : ""}
                 sx={{ fontSize: "18px" }}
               >
-                <strong>Sueldo:</strong> {user.salario}
+                <strong>Sueldo:</strong> $ {formatoDinero(user.salario)}
               </Typography>
               <Typography
                 variant="body1"

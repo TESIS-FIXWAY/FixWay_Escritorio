@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { db } from "../../../firebase";
 import { DarkModeContext } from "../../../context/darkMode";
 import { collection, addDoc } from "firebase/firestore";
-import validadorRUT from "../validadorRUT";
+import validadorRUT from "../../../hooks/validadorRUT";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";

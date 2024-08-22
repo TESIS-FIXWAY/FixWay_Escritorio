@@ -26,7 +26,7 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import Admin from "./admin";
-import validadorRUT from "./validadorRUT";
+import validadorRUT from "../../hooks/validadorRUT";
 import "../styles/agregarUsuario.css";
 import "../styles/darkMode.css";
 import { DarkModeContext } from "../../context/darkMode";

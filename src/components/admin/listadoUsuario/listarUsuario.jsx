@@ -20,7 +20,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -42,10 +41,6 @@ const ListarUsuario = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
-
-  const formatSalario = (value) => {
-    return parseInt(value, 10).toLocaleString("es-CL");
-  };
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
