@@ -27,6 +27,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import NoCrashIcon from "@mui/icons-material/NoCrash";
 import GarageIcon from "@mui/icons-material/Garage";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Notificacion from "./notificaciones";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
@@ -206,8 +207,8 @@ const Admin = () => {
 
               <div className="menuArbol">
                 <Link to="/tensorflow" className="tree-link">
-                  <AssignmentIcon className="iconos-navb" />
-                  Tensor IA
+                  <AutoAwesomeIcon className="iconos-navb" />
+                  TensorFlow IA
                 </Link>
                 <Link to="/gestionMantencionesAdmin" className="tree-link">
                   <AssignmentIcon className="iconos-navb" />

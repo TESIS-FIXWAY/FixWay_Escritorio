@@ -25,7 +25,7 @@ import CrearCliente from "./components/admin/agregarCliente";
 import HistorialBoletasYFacturas from "./components/admin/historial/historialBoletaFactura";
 import AgregarAutomovilAdmin from "./components/admin/agregarAutomnovil";
 import ListadoAutomovil from "./components/admin/listadoAutomovil/listadoAutomovil";
-import Tensorflow from "./hooks/tensorFlowModel"
+import VistaIA from "./components/admin/IA/inteligenciaArtificial";
 
 // Mecanico
 import Mecanico from "./components/mecanico/mecanico";
@@ -82,7 +82,7 @@ function App() {
             <Route path="/listarInventario" element={<ListarInventario />} />
             <Route path="/generarFactura" element={<GenerarFactura />} />
             <Route path="/generarqrAdmin" element={<GenerarQRADmin />} />
-            <Route path="/tensorflow" element={<Tensorflow />} />
+            <Route path="/tensorflow" element={<VistaIA />} />
 
             <Route
               path="/agregarAutomovilAdmin"
