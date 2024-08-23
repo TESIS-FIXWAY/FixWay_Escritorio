@@ -18,6 +18,7 @@ import { db } from "../../firebase";
 import Admin from "../admin/admin";
 import { DarkModeContext } from "../../context/darkMode";
 import ValidadorPatente from "../../hooks/validadorPatente";
+import ValidadorVIN from "../../hooks/validadorVIN";
 
 const modalStyle = {
   position: "absolute",
@@ -39,6 +40,8 @@ export default function AgregarAutomovilAdmin() {
   const [kilometraje, setKilometraje] = useState("");
   const [mensajePatente, setMensajePatente] = useState(null);
   const [mensajePatenteError, setMensajePatenteError] = useState(null);
+  const [mensajeVin, setMensajeVin] = useState(null);
+  const [mensajeVinError, setMensajeVinError] = useState(null);
   const [numchasis, setNumChasis] = useState("");
   const [patente, setPatente] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -171,6 +174,23 @@ export default function AgregarAutomovilAdmin() {
       setTimeout(() => setMensajePatenteError(""), 8000);
     }
   };
+
+  const validarVinOnBlur = () => {
+    const vin = numchasis.trim();
+    const validador = new ValidadorVIN(vin);
+    const { esValido, mensajeError } = validador.validarVIN();
+
+    if (esValido) {
+      setMensajeVin("VIN correcto");
+      setMensajeVinError("");
+      setTimeout(() => setMensajeVin(""), 2000);
+    } else {
+      setMensajeVinError(mensajeError);
+      setMensajeVin("");
+      setTimeout(() => setMensajeVinError(""), 8000);
+    }
+  };
+  
 
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -376,9 +396,20 @@ export default function AgregarAutomovilAdmin() {
                     name="numchasis"
                     value={numchasis}
                     onChange={handleChange}
+                    onBlur={validarVinOnBlur}
                     placeholder="Número  de Chasis"
                   />
                 </p>{" "}
+                {mensajeVin && (
+                  <Alert severity="success" icon={<CheckCircleIcon />}>
+                    {mensajeVin}
+                  </Alert>
+                )}
+                {mensajeVinError && (
+                  <Alert severity="error" icon={<CloseIcon />}>
+                    {mensajeVinError}
+                  </Alert>
+                )}
                 <Button
                   onClick={showVerificarModal}
                   variant="outlined"
