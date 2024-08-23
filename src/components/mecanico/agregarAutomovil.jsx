@@ -18,7 +18,7 @@ import { db } from "../../firebase";
 import Mecanico from "./mecanico";
 import { DarkModeContext } from "../../context/darkMode";
 import ValidadorPatente from "../../hooks/validadorPatente";
-import ValidadorVIN from "../../hooks/validadorVIn";
+import ValidadorVIN from "../../hooks/validadorVIN";
 
 const modalStyle = {
   position: "absolute",

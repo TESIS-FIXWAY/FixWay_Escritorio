@@ -45,7 +45,7 @@ export default class ValidadorVIN {
     let suma = 0;
     for (let i = 0; i < this.vin.length; i++) {
       const caracter = this.vin[i];
-      suma += mapaValores[caracter] * pesos[i];
+      suma += (mapaValores[caracter] || 0) * pesos[i];
     }
 
     const resto = suma % 11;
