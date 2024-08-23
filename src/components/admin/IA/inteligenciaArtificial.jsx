@@ -1,13 +1,15 @@
 import Admin from "../admin";
-import TensorflowModel from "./tensorFlowModel";
+import InventarioIA from "./tensorFlowModelInventario";
 import HistorialVentasIA from "./tensorFlowModelHistorialVentas";
+import MantenimientoPredictor from "./tensorFlowModelMantenciones";
 
 export default function VistaIA() {
   return (
     <>
       <Admin />
-      <TensorflowModel />
+      <InventarioIA />
       <HistorialVentasIA />
+      <MantenimientoPredictor />
     </>
   );
 }

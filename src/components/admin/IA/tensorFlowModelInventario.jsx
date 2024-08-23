@@ -12,11 +12,13 @@ import {
   TableRow,
 } from "@mui/material";
 
-const TensorflowModel = () => {
+const InventarioIA = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [inventario, setInventario] = useState([]);
   const [productoMasVendido, setProductoMasVendido] = useState(null);
   const [diasParaReponer, setDiasParaReponer] = useState(null);
+  const [productosObsoletos, setProductosObsoletos] = useState([]);
+  const [clasificaciones, setClasificaciones] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -28,7 +30,12 @@ const TensorflowModel = () => {
         }));
         setInventario(inventarioData);
 
-        encontrarProductoMasVendido(inventarioData);
+        const masVendido = encontrarProductoMasVendido(inventarioData);
+        setProductoMasVendido(masVendido);
+
+        predecirDiasParaReponer(masVendido);
+        detectarProductosObsoletos(inventarioData);
+        clasificarProductos(inventarioData);
       },
       (error) => {
         console.error("Error fetching inventory data:", error);
@@ -47,7 +54,6 @@ const TensorflowModel = () => {
 
   const predecirDiasParaReponer = async (producto) => {
     try {
-      // Verificar y limpiar los datos
       const data = inventario
         .map((item) => ({
           cantidadVendida: parseFloat(item.cantidadVendida),
@@ -66,7 +72,6 @@ const TensorflowModel = () => {
         return;
       }
 
-      // Normalizar los datos (opcional pero recomendado)
       const maxCantidadVendida = Math.max(
         ...data.map((item) => item.cantidadVendida)
       );
@@ -79,7 +84,6 @@ const TensorflowModel = () => {
         diasEnStock: item.diasEnStock / maxDiasEnStock,
       }));
 
-      // Creación del tensor de entrada con forma explícita [número de filas, número de características]
       const inputTensor = tf.tensor2d(
         normalizedData.map((item) => [
           item.cantidadVendida,
@@ -104,14 +108,12 @@ const TensorflowModel = () => {
 
       await model.fit(inputTensor, targetTensor, { epochs: 10 });
 
-      // Normalizar los valores del producto más vendido para predecir
       const normalizedProduct = {
         cantidadVendida: producto.cantidadVendida / maxCantidadVendida,
         cantidad: producto.cantidad / maxCantidad,
         diasEnStock: producto.diasEnStock / maxDiasEnStock,
       };
 
-      // Hacer predicción con el producto más vendido
       const prediction = model
         .predict(
           tf.tensor2d(
@@ -127,12 +129,32 @@ const TensorflowModel = () => {
         )
         .dataSync();
 
-      // Desnormalizar la predicción si es necesario
       const diasEstimados = prediction[0] * maxDiasEnStock;
       setDiasParaReponer(diasEstimados);
     } catch (error) {
       console.error("Error processing data with TensorFlow:", error);
     }
+  };
+
+  const detectarProductosObsoletos = (inventario) => {
+    const obsoletos = inventario.filter(
+      (item) => item.cantidadVendida === 0 && item.diasEnStock > 30
+    );
+    setProductosObsoletos(obsoletos);
+  };
+
+  const clasificarProductos = (inventario) => {
+    const clasificaciones = inventario.map((item) => {
+      const { cantidadVendida, diasEnStock } = item;
+      if (cantidadVendida / diasEnStock > 1) {
+        return { ...item, categoria: "Fast-Moving" };
+      } else if (cantidadVendida / diasEnStock > 0.5) {
+        return { ...item, categoria: "Slow-Moving" };
+      } else {
+        return { ...item, categoria: "Obsoleto" };
+      }
+    });
+    setClasificaciones(clasificaciones);
   };
 
   return (
@@ -176,8 +198,82 @@ const TensorflowModel = () => {
           </Table>
         </TableContainer>
       </div>
+
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <h2>Productos Obsoletos</h2>
+        </div>
+        <TableContainer
+          className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Producto</TableCell>
+                <TableCell>Cantidad Actual</TableCell>
+                <TableCell>Días en Stock</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {productosObsoletos.length > 0 ? (
+                productosObsoletos.map((producto) => (
+                  <TableRow key={producto.id}>
+                    <TableCell>{producto.nombreProducto}</TableCell>
+                    <TableCell>{producto.cantidad}</TableCell>
+                    <TableCell>{producto.diasEnStock}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3} align="center">
+                    No hay productos obsoletos
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <h2>Clasificación de Productos</h2>
+        </div>
+        <TableContainer
+          className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Producto</TableCell>
+                <TableCell>Cantidad Actual</TableCell>
+                <TableCell>Cantidad Vendida</TableCell>
+                <TableCell>Categoría</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clasificaciones.length > 0 ? (
+                clasificaciones.map((producto) => (
+                  <TableRow key={producto.id}>
+                    <TableCell>{producto.nombreProducto}</TableCell>
+                    <TableCell>{producto.cantidad}</TableCell>
+                    <TableCell>{producto.cantidadVendida}</TableCell>
+                    <TableCell>{producto.categoria}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    No hay productos clasificados
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </>
   );
 };
 
-export default TensorflowModel;
+export default InventarioIA;
