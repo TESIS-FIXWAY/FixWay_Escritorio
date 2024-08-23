@@ -18,6 +18,7 @@ import { db } from "../../firebase";
 import Mecanico from "./mecanico";
 import { DarkModeContext } from "../../context/darkMode";
 import ValidadorPatente from "../../hooks/validadorPatente";
+import ValidadorVIN from "../../hooks/validadorVIn";
 
 const modalStyle = {
   position: "absolute",
@@ -31,7 +32,7 @@ const modalStyle = {
   borderRadius: 2,
 };
 
-function AgregarAutomovil() {
+export default function AgregarAutomovil() {
   const [marca, setMarca] = useState("");
   const [modelo, setModelo] = useState("");
   const [ano, setAno] = useState("");
@@ -39,6 +40,8 @@ function AgregarAutomovil() {
   const [kilometraje, setKilometraje] = useState("");
   const [mensajePatente, setMensajePatente] = useState(null);
   const [mensajePatenteError, setMensajePatenteError] = useState(null);
+  const [mensajeVin, setMensajeVin] = useState(null);
+  const [mensajeVinError, setMensajeVinError] = useState(null);
   const [numchasis, setNumChasis] = useState("");
   const [patente, setPatente] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -169,6 +172,21 @@ function AgregarAutomovil() {
       setMensajePatenteError("Patente inválida");
       setMensajePatente("");
       setTimeout(() => setMensajePatenteError(""), 8000);
+    }
+  };
+
+  const validadarVinOnBlur = () => {
+    const vin = numchasis.trim();
+    const validador = new ValidadorVIN(vin);
+
+    if (validador.esValido) {
+      setMensajeVin("VIN correcto");
+      setMensajeVinError("");
+      setTimeout(() => setMensajeVin(""), 2000);
+    } else {
+      setMensajeVinError("VIN incorrecto");
+      setMensajeVin("");
+      setTimeout(() => setMensajeVinError(""), 8000);
     }
   };
 
@@ -376,9 +394,20 @@ function AgregarAutomovil() {
                     name="numchasis"
                     value={numchasis}
                     onChange={handleChange}
+                    onBlur={validadarVinOnBlur}
                     placeholder="Número  de Chasis"
                   />
                 </p>{" "}
+                {mensajeVin && (
+                  <Alert severity="success" icon={<CheckCircleIcon />}>
+                    {mensajeVin}
+                  </Alert>
+                )}
+                {mensajeVinError && (
+                  <Alert severity="error" icon={<CloseIcon />}>
+                    {mensajeVinError}
+                  </Alert>
+                )}
                 <Button
                   onClick={showVerificarModal}
                   variant="outlined"
@@ -482,5 +511,3 @@ function AgregarAutomovil() {
     </>
   );
 }
-
-export default AgregarAutomovil;
