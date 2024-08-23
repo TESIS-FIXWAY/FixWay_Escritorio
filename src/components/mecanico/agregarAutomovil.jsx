@@ -175,20 +175,22 @@ export default function AgregarAutomovil() {
     }
   };
 
-  const validadarVinOnBlur = () => {
+  const validarVinOnBlur = () => {
     const vin = numchasis.trim();
     const validador = new ValidadorVIN(vin);
+    const { esValido, mensajeError } = validador.validarVIN();
 
-    if (validador.esValido) {
+    if (esValido) {
       setMensajeVin("VIN correcto");
       setMensajeVinError("");
       setTimeout(() => setMensajeVin(""), 2000);
     } else {
-      setMensajeVinError("VIN incorrecto");
+      setMensajeVinError(mensajeError);
       setMensajeVin("");
       setTimeout(() => setMensajeVinError(""), 8000);
     }
   };
+  
 
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -394,7 +396,7 @@ export default function AgregarAutomovil() {
                     name="numchasis"
                     value={numchasis}
                     onChange={handleChange}
-                    onBlur={validadarVinOnBlur}
+                    onBlur={validarVinOnBlur}
                     placeholder="Número  de Chasis"
                   />
                 </p>{" "}

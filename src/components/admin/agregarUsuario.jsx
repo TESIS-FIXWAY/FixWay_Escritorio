@@ -157,12 +157,28 @@ const AgregarUsuario = () => {
   };
 
   const validarCampos = () => {
-    if (mensajeRut !== "RUT válido") {
-      setMensajeValidacion("El RUT ya esta registrado");
-      return false;
-    }
-    return true;
-  };
+  const rutInput = document.getElementById("rut").value;
+  const validador = new validadorRUT(rutInput);
+
+  if (!validador.esValido) {
+    setMensajeValidacion("El RUT ingresado es inválido.");
+    return false;
+  }
+
+  if (mensajeRutError) {
+    setMensajeValidacion("Corrija el RUT antes de continuar.");
+    return false;
+  }
+
+  if (!rutInput) {
+    setMensajeValidacion("Debe ingresar un RUT.");
+    return false;
+  }
+
+  setMensajeValidacion(null);  // Limpia cualquier mensaje de validación previo
+  return true;
+};
+
 
   const formatSalaryInput = (input) => {
     const value = input.value.replace(/[^0-9]/g, "");
