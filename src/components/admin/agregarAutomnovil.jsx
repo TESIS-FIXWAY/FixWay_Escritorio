@@ -10,7 +10,7 @@ import {
   InputLabel,
   Alert,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import VerifiedIcon from "@mui/icons-material/Verified";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -190,7 +190,6 @@ export default function AgregarAutomovilAdmin() {
       setTimeout(() => setMensajeVinError(""), 8000);
     }
   };
-  
 
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -233,17 +232,17 @@ export default function AgregarAutomovilAdmin() {
                     onBlur={validarPatenteOnChange}
                     inputProps={{ maxLength: 6 }}
                   />
+                  {mensajePatente && (
+                    <Alert severity="success" icon={<VerifiedIcon />}>
+                      {mensajePatente}
+                    </Alert>
+                  )}
+                  {mensajePatenteError && (
+                    <Alert severity="error" icon={<CloseIcon />}>
+                      {mensajePatenteError}
+                    </Alert>
+                  )}
                 </p>
-                {mensajePatente && (
-                  <Alert severity="success" icon={<CheckCircleIcon />}>
-                    {mensajePatente}
-                  </Alert>
-                )}
-                {mensajePatenteError && (
-                  <Alert severity="error" icon={<CloseIcon />}>
-                    {mensajePatenteError}
-                  </Alert>
-                )}
                 <p>
                   <br />
                   <FormControl sx={{ height: "31px", width: "220px" }}>
@@ -399,17 +398,17 @@ export default function AgregarAutomovilAdmin() {
                     onBlur={validarVinOnBlur}
                     placeholder="Número  de Chasis"
                   />
+                  {mensajeVin && (
+                    <Alert severity="success" icon={<VerifiedIcon />}>
+                      {mensajeVin}
+                    </Alert>
+                  )}
+                  {mensajeVinError && (
+                    <Alert severity="error" icon={<CloseIcon />}>
+                      {mensajeVinError}
+                    </Alert>
+                  )}
                 </p>{" "}
-                {mensajeVin && (
-                  <Alert severity="success" icon={<CheckCircleIcon />}>
-                    {mensajeVin}
-                  </Alert>
-                )}
-                {mensajeVinError && (
-                  <Alert severity="error" icon={<CloseIcon />}>
-                    {mensajeVinError}
-                  </Alert>
-                )}
                 <Button
                   onClick={showVerificarModal}
                   variant="outlined"
