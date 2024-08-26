@@ -1,6 +1,6 @@
 .grid {
   display: grid;
-  height: 100vh; /* Asegura que el grid ocupe toda la altura del viewport */
+  height: 100vh;
   grid-template-areas:
     "header header header"
     "sidebar_left sidebar_centro sidebar_rigth";
@@ -108,7 +108,7 @@ header {
       "sidebar_left"
       "sidebar_centro"
       "sidebar_rigth";
-    grid-template-rows: 100px auto; /* Cambiado para permitir altura automática */
+    grid-template-rows: 100px auto;
     grid-template-columns: 1fr;
   }
   .sidebar_left,
@@ -117,80 +117,3 @@ header {
     height: 100%;
   }
 }
-
-/* 
-.container_mantencion_titulo{
-  display: flex;
-  justify-content: space-between;
-  padding: 130px 20px 10px 20px;
-  background-color: #f6f9fc;
-}
-
-.container_mantencion {
-  height: 700px;
-  overflow-y: auto; 
-  display: flex;
-  justify-content: space-around; 
-}
-
-.container_mantencion_tareas {
-  background-color: rgba(52, 152, 219, 0.2); 
-  margin: 20px;
-  width: 25%;
-  min-height: 100px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 3, 0.5);
-  transition: background-color 0.3s ease, max-height 0.3s ease; 
-  overflow: hidden;
-}
-
-.container_mantencion_tareas_titulos {
-  text-align: center; 
-  margin-bottom: 20px; 
-  padding: 20px;
-  border-radius: 8px;
-  color: white;
-  background: #389CFC;
-}
-
-.container_mantencion_tareas_titulos h2 {
-  margin: 0; 
-}
-
-.container_mantencion_tareas ul {
-  list-style-type: none; 
-  padding: 0; 
-  margin: 0; 
-}
-
-.task-container {
-  background-color: #ecf0f1;
-  border: 1px solid #bdc3c7;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  padding: 8px;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  transition: background-color 0.3s ease, max-height 0.3s ease; 
-  overflow: hidden;
-}
-.task-container:hover {
-  background-color: #d5dbdb;
-}
-.task-container.expanded {
-  max-height: 500px; 
-}
-
-.container_mantencion_tareas ul {
-  list-style-type: none;
-  padding: 0;
-}
-.container_mantencion_tareas li {
-  margin-bottom: 5px;
-}
-.expanded button {
-  background-color: #1dc258;
-}
- */

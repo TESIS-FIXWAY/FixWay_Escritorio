@@ -167,8 +167,6 @@
   transform: translateY(-300%);
 }
 
-/* RESPONSIVE */
-
 @media screen and (max-width: 750px) {
   html {
     font-size: 12px;

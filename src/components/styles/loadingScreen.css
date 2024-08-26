@@ -38,8 +38,8 @@
 
 .animated-text span {
   opacity: 0;
-  font-weight: 700; /* Ajusta este valor para hacer la letra más gruesa */
-  font-size: 80PX;
+  font-weight: 700;
+  font-size: 80px;
   color: #011432;
   transform: translateY(10px);
   font-family: sans-serif;

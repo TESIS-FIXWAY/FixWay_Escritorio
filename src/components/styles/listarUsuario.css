@@ -5,7 +5,7 @@
 }
 
 .tabla_listar {
-  width: calc(100% - 250px); /* Ocupa el resto del ancho de la pantalla */
+  width: calc(100% - 250px);
   margin-left: 250px;
 }
 .table_header {
@@ -18,7 +18,6 @@
 .table_header p {
   font-size: 20px;
 }
-
 
 button {
   outline: none;
@@ -146,14 +145,14 @@ tabla tbody td:hover {
   width: 398px;
   background-color: #fff;
 
-  border-bottom: 1px solid #ccc; /* Puedes ajustar el color según tus necesidades */
+  border-bottom: 1px solid #ccc;
   padding: 8px 15px;
   margin: 0 5px;
   outline: none;
-  background-color: transparent; /* Para que el fondo del select sea transparente */
-  -webkit-appearance: none; /* Para quitar la apariencia predeterminada en Chrome y Safari */
-  -moz-appearance: none; /* Para quitar la apariencia predeterminada en Firefox */
-  appearance: none; /* Para quitar la apariencia predeterminada en navegadores modernos */
+  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .fondo_no {
@@ -234,7 +233,6 @@ tabla tbody td:hover {
   background-color: #c0392b;
 }
 
-/* Estilos para pantallas más pequeñas */
 @media screen and (max-width: 887px) {
   .tabla_listar {
     border: 0px;
@@ -243,7 +241,7 @@ tabla tbody td:hover {
   }
 
   .table_header {
-    padding:  130px 10px 10px 10px;
+    padding: 130px 10px 10px 10px;
   }
 
   .tabla tr {

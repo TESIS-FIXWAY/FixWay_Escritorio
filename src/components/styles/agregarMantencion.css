@@ -26,7 +26,7 @@
 }
 
 .pendientes-container {
-  max-height: 400px; /* Ajusta esta altura según sea necesario */
+  max-height: 400px;
   overflow-y: auto;
 }
 

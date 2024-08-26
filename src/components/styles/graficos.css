@@ -51,6 +51,6 @@
   .graficoM,
   .graficoMTipoPago {
     width: 90%;
-    margin: 10px auto; /* Centro los elementos horizontalmente */
+    margin: 10px auto;
   }
 }

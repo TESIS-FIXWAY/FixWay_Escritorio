@@ -1,6 +1,3 @@
-/* admin.css */
-
-/* Importación de fuentes */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap");
 
 * {
@@ -69,57 +66,49 @@
   position: relative;
 }
 
-
-
-
-
 .menu_lateral {
   position: absolute;
-  top: 100px; /* Cambia top a 0 para ajustar la barra lateral a la parte superior de la pantalla */
+  top: 100px;
   left: 0;
   height: 100vh;
   width: 250px;
   background-color: #e9ecef;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra horizontalmente los elementos en la barra lateral */
-  justify-content: flex-start; /* Ajusta a flex-start para mantener el contenido al principio de la barra lateral */
+  align-items: center;
+  justify-content: flex-start;
   transition: all 0.5s ease 0s;
   overflow-y: auto;
 }
 
-/* admin.css */
 .menuArbol {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 }
 
 .tree-link {
   padding: 10px;
   margin: 0px 0px 0px 10px;
   font-size: 17px;
-  text-decoration: none; 
-  color: inherit; 
+  text-decoration: none;
+  color: inherit;
 }
 .tree-p {
   padding: 10px;
   margin: 0px 0px 0px 10px;
   font-size: 17px;
-  text-decoration: none; 
-  color: inherit; 
+  text-decoration: none;
+  color: inherit;
 }
-.tree-link:hover{
-  background-color: #F6F9FC;
+.tree-link:hover {
+  background-color: #f6f9fc;
   border-radius: 10px 0px 0px 10px;
 }
 
-
-.iconos-navb{
+.iconos-navb {
   margin: 0px 5px;
   color: #67748e;
 }
-
-
 
 .sub-menu {
   display: none;
@@ -165,8 +154,6 @@
   padding: 20px;
 }
 
-/* Mostrar el sub-menú cuando el elemento padre está activo */
-
 .sub-menu li a {
   display: block;
   padding: 10px 10px;
@@ -181,7 +168,6 @@
   color: #000;
 }
 
-/* Ajustamos el estilo de los enlaces en el menú principal */
 .encabezado .arbol .links {
   padding: 0px 1px;
   color: #67748e;
@@ -189,10 +175,9 @@
   transition: border-bottom 400ms ease, color 400ms ease;
   position: relative;
   cursor: pointer;
-  border-bottom: none; /* Elimina el subrayado de los elementos <li> */
+  border-bottom: none;
 }
 
-/* Estilos para hover y elemento activo */
 .encabezado .arbol .links:hover,
 .encabezado .arbol .links.active {
   color: #000;
@@ -222,7 +207,7 @@
 }
 
 .menu_ico {
-  font-size: 40px; /* Ajusta el tamaño del icono aquí */
+  font-size: 40px;
 }
 
 .overlay {
@@ -236,11 +221,6 @@
   right: 1px;
   z-index: 1000;
 }
-
-
-
-
-
 
 .burger {
   position: relative;
@@ -294,12 +274,8 @@
   left: 5px;
 }
 
-
-
-
-
 @media (max-width: 800px) {
-  .menu_lateral{
+  .menu_lateral {
     display: none;
   }
 
@@ -317,16 +293,16 @@
   }
 
   .encabezado .arbol .link {
-    padding: 15px 20px; /* Ajusta el padding según tu preferencia */
+    padding: 15px 20px;
     color: #67748e;
     text-decoration: none;
     transition: border-left 400ms ease, color 400ms ease;
     position: relative;
     cursor: pointer;
-    width: 100%; /* Ajusta el ancho de los elementos al 100% */
-    box-sizing: border-box; /* Incluye el padding en el ancho total */
-    display: flex; /* Permite que los elementos ocupen toda la anchura disponible */
-    align-items: center; /* Centra verticalmente el contenido */
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
   }
 
   .encabezado .arbol .link .MuiSvgIcon-root {
