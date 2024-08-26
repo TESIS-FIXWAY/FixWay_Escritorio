@@ -94,16 +94,14 @@ export default function HistorialBoletasYFacturas() {
           >
             Historial de Ventas
           </Typography>
-        </div>
-
-        <div>
+          <div>
           <TextField
             select
             label="Tipo de Pago"
             value={tipoPagoFilter}
             onChange={(e) => setTipoPagoFilter(e.target.value)}
             className="filter_field"
-            sx={{ width: "220px", marginTop: "10px", left: "1100px" }}
+            sx={{ width: "220px", marginTop: "10px", margin: "0 2rem" }}
           >
             <MenuItem value="">Todos</MenuItem>
             <MenuItem value="credito">Crédito</MenuItem>
@@ -114,7 +112,7 @@ export default function HistorialBoletasYFacturas() {
             label="Fecha"
             type="date"
             value={fechaFilter}
-            sx={{ width: "220px", marginTop: "10px", left: "1150px" }}
+            sx={{ width: "220px", marginTop: "10px", margin: "0 2rem" }}
             onChange={(e) => setFechaFilter(e.target.value)}
             className="filter_field"
             InputLabelProps={{
@@ -122,6 +120,9 @@ export default function HistorialBoletasYFacturas() {
             }}
           />
         </div>
+        </div>
+
+
 
         <div className="table_section">
           <TableContainer
