@@ -1,7 +1,7 @@
 import Admin from "../admin";
 import InventarioIA from "./tensorFlowModelInventario";
 import HistorialVentasIA from "./tensorFlowModelHistorialVentas";
-import MantenimientoPredictor from "./tensorFlowModelMantenciones";
+import BoletasFacturasIA from "./tensorFlowBoletaFactura";
 
 export default function VistaIA() {
   return (
@@ -9,7 +9,7 @@ export default function VistaIA() {
       <Admin />
       <InventarioIA />
       <HistorialVentasIA />
-      <MantenimientoPredictor />
+      <BoletasFacturasIA />
     </>
   );
 }
