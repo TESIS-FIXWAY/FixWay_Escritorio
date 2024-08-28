@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../../context/darkMode";
 import Mecanico from "./mecanico";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

@@ -2,7 +2,7 @@ import "../styles/darkMode.css";
 import React, { useState, useEffect, useContext } from "react";
 import Admin from "./admin";
 import { DarkModeContext } from "../../context/darkMode";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import jsPDF from "jspdf";
 import Table from "@mui/material/Table";

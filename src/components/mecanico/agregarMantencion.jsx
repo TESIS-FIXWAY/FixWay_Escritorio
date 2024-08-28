@@ -16,7 +16,7 @@ import {
   Modal,
   Box,
 } from "@mui/material";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import {
   doc,
   getDoc,

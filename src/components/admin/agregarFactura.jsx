@@ -1,6 +1,13 @@
 import React, { useState, useContext } from "react";
-import { storage, db } from "../../firebase";
-import { collection, addDoc, serverTimestamp, getDoc, doc, updateDoc } from "firebase/firestore";
+import { storage, db } from "../../dataBase/firebase";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Admin from "../admin/admin";
 import { Button, CircularProgress, Typography, Box } from "@mui/material";
@@ -25,7 +32,7 @@ const AgregarFactura = () => {
     detalle: "",
     url: "",
     productoId: "",
-    cantidad: 0
+    cantidad: 0,
   });
 
   const handleChangeText = (name, value) => {
@@ -111,7 +118,7 @@ const AgregarFactura = () => {
       setErrorMessage("Datos incompletos o cantidad inválida.");
       return;
     }
-  
+
     try {
       setUploading(true);
       const downloadURL = await handleUpload();
@@ -119,7 +126,7 @@ const AgregarFactura = () => {
         setErrorMessage("Error al subir el archivo");
         return;
       }
-  
+
       const timestampNow = serverTimestamp();
       const docRef = await addDoc(collection(db, "facturas"), {
         fecha,
@@ -128,16 +135,22 @@ const AgregarFactura = () => {
         timestamp: timestampNow,
         url: downloadURL,
         productoId, // Añadido
-        cantidad,   // Añadido
+        cantidad, // Añadido
       });
-  
+
       console.log("Documento escrito con ID:", docRef.id);
       setSuccessMessage("Factura guardada correctamente");
-      
+
       // Actualizar la cantidad del producto
       await updateProductQuantity(productoId, cantidad);
-  
-      setState({ fecha: "", proveedor: "", detalle: "", productoId: "", cantidad: 0 });
+
+      setState({
+        fecha: "",
+        proveedor: "",
+        detalle: "",
+        productoId: "",
+        cantidad: 0,
+      });
       setFile(null);
       setFilePreview(null);
     } catch (error) {
@@ -148,7 +161,6 @@ const AgregarFactura = () => {
     }
   };
 
-  
   return (
     <>
       <header>

@@ -3,7 +3,7 @@ import "../../styles/darkMode.css";
 import React, { useState, useEffect, useContext } from "react";
 import Admin from "../admin";
 import { DarkModeContext } from "../../../context/darkMode";
-import { storage } from "../../../firebase";
+import { storage } from "../../../dataBase/firebase";
 import { getDownloadURL, getMetadata, ref, listAll } from "firebase/storage";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

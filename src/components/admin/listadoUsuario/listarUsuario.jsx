@@ -3,7 +3,7 @@ import "../../styles/darkMode.css";
 import React, { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../../../context/darkMode";
 import Admin from "../admin";
-import { db } from "../../../firebase";
+import { db } from "../../../dataBase/firebase";
 import {
   collection,
   onSnapshot,

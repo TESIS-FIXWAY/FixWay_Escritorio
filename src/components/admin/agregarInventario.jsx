@@ -2,7 +2,7 @@ import "../styles/darkMode.css";
 import React, { useState, useContext } from "react";
 import Admin from "./admin";
 import { DarkModeContext } from "../../context/darkMode";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";

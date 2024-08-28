@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../../styles/darkMode.css";
 import Admin from "../admin";
-import { db, storage } from "../../../firebase";
+import { db, storage } from "../../../dataBase/firebase";
 import {
   collection,
   onSnapshot,
@@ -55,7 +55,9 @@ const ListadoFacturas = () => {
         }));
 
         // Ordenar las facturas por fecha de más reciente a menos reciente
-        const sortedFacturas = facturasData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        const sortedFacturas = facturasData.sort(
+          (a, b) => new Date(b.fecha) - new Date(a.fecha)
+        );
 
         setFacturas(sortedFacturas);
         setFacturaFiltrada(sortedFacturas);
@@ -318,19 +320,13 @@ const ListadoFacturas = () => {
                       </>
                     ) : (
                       <>
-                        <IconButton
-                          onClick={() => startEditing(factura.id)}
-                        >
+                        <IconButton onClick={() => startEditing(factura.id)}>
                           <EditIcon />
                         </IconButton>
-                        <IconButton
-                          onClick={() => downloadPDF(factura.url)}
-                        >
+                        <IconButton onClick={() => downloadPDF(factura.url)}>
                           <DownloadIcon />
                         </IconButton>
-                        <IconButton
-                          onClick={() => startDelete(factura.id)}
-                        >
+                        <IconButton onClick={() => startDelete(factura.id)}>
                           <DeleteIcon />
                         </IconButton>
                       </>

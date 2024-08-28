@@ -1,7 +1,7 @@
 import "../../styles/darkMode.css";
 import React, { useEffect, useState, useContext } from "react";
 import Admin from "../admin";
-import { db } from "../../../firebase";
+import { db } from "../../../dataBase/firebase";
 import { DarkModeContext } from "../../../context/darkMode";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

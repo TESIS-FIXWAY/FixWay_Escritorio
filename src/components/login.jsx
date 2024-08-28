@@ -1,7 +1,7 @@
 import "./styles/login.css";
 import Car from "../images/logoSinfondo.png";
 import React, { useState, useEffect } from "react";
-import { db, auth } from "../firebase";
+import { db, auth } from "../dataBase/firebase";
 import { Link } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -83,9 +83,7 @@ const Login = () => {
             <div className="info">
               <h2>Bienvenido</h2>
               <img src={Car} alt="logo" className="imagen" />
-              <p>
-                Taller Mecánico
-              </p>
+              <p>Taller Mecánico</p>
             </div>
           </div>
           <div className="form-informacion">

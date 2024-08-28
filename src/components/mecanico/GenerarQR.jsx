@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Mecanico from "./mecanico";
 import QRCode from "qrcode.react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import {
   TextField,
   Button,

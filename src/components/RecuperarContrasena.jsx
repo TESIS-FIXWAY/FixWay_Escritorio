@@ -1,11 +1,9 @@
 import "../components/styles/recuperarContrasena.css";
 import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../firebase";
-import { useNavigate, Link} from "react-router-dom";
+import { auth } from "../dataBase/firebase";
+import { useNavigate, Link } from "react-router-dom";
 import Car from "../images/logoSinfondo.png";
-
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 const RecuperarContrasena = () => {
@@ -33,7 +31,6 @@ const RecuperarContrasena = () => {
     <>
       <div className="body">
         <div className="container_form">
-
           <div className="informacion">
             <div className="info">
               <h2>Recupera tu contraseña</h2>
@@ -42,10 +39,10 @@ const RecuperarContrasena = () => {
           </div>
 
           <div className="form-informacion">
-          {emailSent ? (
+            {emailSent ? (
               <p>
-                Se ha enviado un correo electrónico con instrucciones para restablecer
-                tu contraseña.
+                Se ha enviado un correo electrónico con instrucciones para
+                restablecer tu contraseña.
               </p>
             ) : (
               <>
@@ -77,9 +74,7 @@ const RecuperarContrasena = () => {
                 {error && <p style={{ color: "red" }}>{error}</p>}
               </>
             )}
-            
           </div>
-          
         </div>
         <footer className="footer_login">
           <div className="waves">
@@ -119,10 +114,8 @@ const RecuperarContrasena = () => {
           </ul>
           <p>©2024 Instituto Inacap | Programadores </p>
         </footer>
-        </div>
-
+      </div>
     </>
-
   );
 };
 

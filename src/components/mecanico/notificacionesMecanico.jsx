@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { getToken, onMessage } from "firebase/messaging";
-import { messaging, db } from "../../firebase";
+import { messaging, db } from "../../dataBase/firebase";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 import { collection, onSnapshot } from "firebase/firestore";

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "../styles/agregarUsuario.css";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import { DarkModeContext } from "../../context/darkMode";
 import { collection, addDoc } from "firebase/firestore";
 import validadorRUT from "../../hooks/validadorRUT";

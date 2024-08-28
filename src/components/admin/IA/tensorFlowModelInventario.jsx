@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import * as tf from "@tensorflow/tfjs";
 import { DarkModeContext } from "../../../context/darkMode";
 import { collection, onSnapshot, query } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { db } from "../../../dataBase/firebase";
 import {
   Table,
   TableBody,

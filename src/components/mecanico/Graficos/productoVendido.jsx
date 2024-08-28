@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../../../firebase";
+import { db } from "../../../dataBase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

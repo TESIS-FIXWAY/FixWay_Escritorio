@@ -14,7 +14,7 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import Mecanico from "./mecanico";
 import { DarkModeContext } from "../../context/darkMode";
 import ValidadorPatente from "../../hooks/validadorPatente";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { db } from "../../../dataBase/firebase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Doughnut } from "react-chartjs-2";

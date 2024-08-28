@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../../context/darkMode";
 import Mecanico from "./mecanico";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import jsPDF from "jspdf";
 import Table from "@mui/material/Table";
@@ -53,7 +53,6 @@ const GenerarListadoMantencion = () => {
   const generarPDF = (mantencion, download = true) => {
     const pdf = new jsPDF();
 
-    // Function to wrap text within a cell
     const wrapText = (text, maxWidth) => {
       const words = text.split(" ");
       let lines = [];

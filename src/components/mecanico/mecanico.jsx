@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
@@ -16,29 +16,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 const Mecanico = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
-  const [currentTime, setCurrentTime] = useState(new Date());
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  const formatTime = (time) => {
-    const options = {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      hour12: false,
-      timeZone: "America/Santiago",
-    };
-    return time.toLocaleTimeString("en-US", options);
-  };
 
   const handleLogout = async () => {
     try {

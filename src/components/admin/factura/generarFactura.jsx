@@ -3,7 +3,7 @@ import Admin from "../admin";
 import "../../styles/darkMode.css";
 import { DarkModeContext } from "../../../context/darkMode";
 import jsPDF from "jspdf";
-import { db, auth, storage } from "../../../firebase";
+import { db, auth, storage } from "../../../dataBase/firebase";
 import {
   collection,
   addDoc,

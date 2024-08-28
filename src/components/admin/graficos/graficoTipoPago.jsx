@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { db } from "../../../firebase";
+import { db } from "../../../dataBase/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";

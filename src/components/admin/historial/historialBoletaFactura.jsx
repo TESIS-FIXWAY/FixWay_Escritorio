@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Admin from "../admin";
-import { db } from "../../../firebase";
+import { db } from "../../../dataBase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -95,34 +95,32 @@ export default function HistorialBoletasYFacturas() {
             Historial de Ventas
           </Typography>
           <div>
-          <TextField
-            select
-            label="Tipo de Pago"
-            value={tipoPagoFilter}
-            onChange={(e) => setTipoPagoFilter(e.target.value)}
-            className="filter_field"
-            sx={{ width: "220px", marginTop: "10px", margin: "0 2rem" }}
-          >
-            <MenuItem value="">Todos</MenuItem>
-            <MenuItem value="credito">Crédito</MenuItem>
-            <MenuItem value="contado">Contado</MenuItem>
-            <MenuItem value="debito">Débito</MenuItem>
-          </TextField>
-          <TextField
-            label="Fecha"
-            type="date"
-            value={fechaFilter}
-            sx={{ width: "220px", marginTop: "10px", margin: "0 2rem" }}
-            onChange={(e) => setFechaFilter(e.target.value)}
-            className="filter_field"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+            <TextField
+              select
+              label="Tipo de Pago"
+              value={tipoPagoFilter}
+              onChange={(e) => setTipoPagoFilter(e.target.value)}
+              className="filter_field"
+              sx={{ width: "220px", marginTop: "10px", margin: "0 2rem" }}
+            >
+              <MenuItem value="">Todos</MenuItem>
+              <MenuItem value="credito">Crédito</MenuItem>
+              <MenuItem value="contado">Contado</MenuItem>
+              <MenuItem value="debito">Débito</MenuItem>
+            </TextField>
+            <TextField
+              label="Fecha"
+              type="date"
+              value={fechaFilter}
+              sx={{ width: "220px", marginTop: "10px", margin: "0 2rem" }}
+              onChange={(e) => setFechaFilter(e.target.value)}
+              className="filter_field"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </div>
         </div>
-        </div>
-
-
 
         <div className="table_section">
           <TableContainer

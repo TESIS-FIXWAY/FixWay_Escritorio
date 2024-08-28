@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Admin from "./admin";
-import { db } from "../../firebase";
+import { db } from "../../dataBase/firebase";
 import { collection, onSnapshot, query, getDocs } from "firebase/firestore";
 import { DarkModeContext } from "../../context/darkMode";
 import TableContainer from "@mui/material/TableContainer";

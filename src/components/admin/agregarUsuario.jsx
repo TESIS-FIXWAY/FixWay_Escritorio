@@ -24,7 +24,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db, auth } from "../../firebase";
+import { db, auth } from "../../dataBase/firebase";
 import Admin from "./admin";
 import validadorRUT from "../../hooks/validadorRUT";
 import "../styles/agregarUsuario.css";
@@ -157,28 +157,27 @@ const AgregarUsuario = () => {
   };
 
   const validarCampos = () => {
-  const rutInput = document.getElementById("rut").value;
-  const validador = new validadorRUT(rutInput);
+    const rutInput = document.getElementById("rut").value;
+    const validador = new validadorRUT(rutInput);
 
-  if (!validador.esValido) {
-    setMensajeValidacion("El RUT ingresado es inválido.");
-    return false;
-  }
+    if (!validador.esValido) {
+      setMensajeValidacion("El RUT ingresado es inválido.");
+      return false;
+    }
 
-  if (mensajeRutError) {
-    setMensajeValidacion("Corrija el RUT antes de continuar.");
-    return false;
-  }
+    if (mensajeRutError) {
+      setMensajeValidacion("Corrija el RUT antes de continuar.");
+      return false;
+    }
 
-  if (!rutInput) {
-    setMensajeValidacion("Debe ingresar un RUT.");
-    return false;
-  }
+    if (!rutInput) {
+      setMensajeValidacion("Debe ingresar un RUT.");
+      return false;
+    }
 
-  setMensajeValidacion(null);  // Limpia cualquier mensaje de validación previo
-  return true;
-};
-
+    setMensajeValidacion(null); // Limpia cualquier mensaje de validación previo
+    return true;
+  };
 
   const formatSalaryInput = (input) => {
     const value = input.value.replace(/[^0-9]/g, "");
