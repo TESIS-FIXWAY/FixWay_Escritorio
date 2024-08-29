@@ -147,6 +147,8 @@ const ListarUsuario = () => {
         return "Administrador";
       case "mecanico":
         return "Mecánico";
+      case "vendedor":
+        return "Vendedor";
       default:
         return rol;
     }
