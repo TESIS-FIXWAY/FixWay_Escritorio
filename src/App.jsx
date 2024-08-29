@@ -37,6 +37,10 @@ import GenerarListadoMantencion from "./components/mecanico/generarListadoManten
 import AgregarMantencion from "./components/mecanico/agregarMantencion";
 import AgregarAutomovil from "./components/mecanico/agregarAutomovil";
 
+//Vendedor
+import Vendedor from "./components/vendedor/vendedor";
+import IndexVendedor from "./components/vendedor/indexVendedor";
+
 import Error from "./components/404";
 
 import { Routes, Route } from "react-router-dom";
@@ -120,7 +124,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
             <Route path="/indexMecanico" element={<IndexMecanico />} />
             <Route
               path="/gestionMantenciones"
@@ -138,6 +141,15 @@ function App() {
             <Route path="/agregarMantencion" element={<AgregarMantencion />} />
             <Route path="/agregarAutomovil" element={<AgregarAutomovil />} />
             <Route path="*" element={<Error />} />
+            <Route
+              path="/vendedor"
+              element={
+                <ProtectedRoute>
+                  <Vendedor />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/indexVendedor" element={<IndexVendedor />} />
           </Routes>
         </AuthContextProvider>
       )}

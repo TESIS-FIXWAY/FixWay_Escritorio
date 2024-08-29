@@ -175,7 +175,7 @@ const AgregarUsuario = () => {
       return false;
     }
 
-    setMensajeValidacion(null); // Limpia cualquier mensaje de validación previo
+    setMensajeValidacion(null);
     return true;
   };
 
@@ -343,6 +343,7 @@ const AgregarUsuario = () => {
                 >
                   <MenuItem value="administrador">Administrador</MenuItem>
                   <MenuItem value="mecanico">Mecánico</MenuItem>
+                  <MenuItem value="vendedor">Vendedor</MenuItem>
                 </Select>
               </FormControl>
             </p>
@@ -463,7 +464,11 @@ const AgregarUsuario = () => {
                   {errorMessage}
                 </Alert>
               )}
-              <p className="mensaje_validacion">{mensajeValidacion}</p>
+              {mensajeValidacion && (
+                <Alert severity="error" icon={<CloseIcon />}>
+                  {mensajeValidacion}
+                </Alert>
+              )}
               <Button
                 variant="outlined"
                 type="submit"

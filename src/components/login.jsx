@@ -69,9 +69,13 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      user.rol === "administrador"
-        ? navigate("/indexAdmin")
-        : navigate("/indexMecanico");
+      if (user.rol === "administrador") {
+        navigate("/indexAdmin");
+      } else if (user.rol === "mecanico") {
+        navigate("/indexMecanico");
+      } else if (user.rol === "vendedor") {
+        navigate("/indexVendedor");
+      }
     }
   }, [user, navigate]);
 
