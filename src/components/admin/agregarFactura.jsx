@@ -1,13 +1,6 @@
 import React, { useState, useContext } from "react";
 import { storage, db } from "../../dataBase/firebase";
-import {
-  collection,
-  addDoc,
-  serverTimestamp,
-  getDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Admin from "../admin/admin";
 import { Button, CircularProgress, Typography, Box } from "@mui/material";
@@ -90,27 +83,6 @@ const AgregarFactura = () => {
     }
   };
 
-  const updateProductQuantity = async (productId, quantityToAdd) => {
-    try {
-      const productRef = doc(db, "inventario", productId);
-      const productSnap = await getDoc(productRef);
-
-      if (productSnap.exists()) {
-        const productData = productSnap.data();
-        const updatedQuantity = productData.cantidad + quantityToAdd;
-
-        await updateDoc(productRef, { cantidad: updatedQuantity });
-        console.log("Cantidad actualizada exitosamente.");
-      } else {
-        console.error("Producto no encontrado.");
-        setErrorMessage("Producto no encontrado.");
-      }
-    } catch (error) {
-      console.error("Error al actualizar la cantidad del producto:", error);
-      setErrorMessage("Error al actualizar la cantidad del producto.");
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { fecha, proveedor, detalle, productoId, cantidad } = state;
@@ -134,15 +106,12 @@ const AgregarFactura = () => {
         detalle,
         timestamp: timestampNow,
         url: downloadURL,
-        productoId, // Añadido
-        cantidad, // Añadido
+        productoId,
+        cantidad,
       });
 
       console.log("Documento escrito con ID:", docRef.id);
       setSuccessMessage("Factura guardada correctamente");
-
-      // Actualizar la cantidad del producto
-      await updateProductQuantity(productoId, cantidad);
 
       setState({
         fecha: "",
@@ -302,17 +271,17 @@ const AgregarFactura = () => {
                     )}
                   </Box>
                 )}
-                {successMessage && (
-                  <Alert severity="success" icon={<CheckCircleIcon />}>
-                    {successMessage}
-                  </Alert>
-                )}
-                {errorMessage && (
-                  <Alert severity="error" icon={<CloseIcon />}>
-                    {errorMessage}
-                  </Alert>
-                )}
                 <p className="block_boton">
+                  {successMessage && (
+                    <Alert severity="success" icon={<CheckCircleIcon />}>
+                      {successMessage}
+                    </Alert>
+                  )}
+                  {errorMessage && (
+                    <Alert severity="error" icon={<CloseIcon />}>
+                      {errorMessage}
+                    </Alert>
+                  )}
                   <Button
                     variant="outlined"
                     type="submit"

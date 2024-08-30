@@ -23,10 +23,11 @@ const HistorialVentas = () => {
   const fetchData = async () => {
     const historialCollection = collection(db, "historialVentas");
     let startDate, endDate;
+
     switch (selectedOption) {
       case "dia":
-        startDate = selectedDate;
-        endDate = selectedDate;
+        startDate = new Date(selectedDate);
+        endDate = new Date(selectedDate);
         break;
       case "semana":
         startDate = new Date(selectedDate);
@@ -35,21 +36,34 @@ const HistorialVentas = () => {
         endDate.setDate(selectedDate.getDate() + (6 - selectedDate.getDay()));
         break;
       case "mes":
-        startDate = new Date(selectedDate);
-        startDate.setDate(
-          selectedDate.getDate() - (selectedDate.getDate() - 1)
+        startDate = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          1
         );
-        endDate = new Date(selectedDate);
-        endDate.setDate(selectedDate.getDate() + (28 + selectedDate.getDay()));
+        endDate = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth() + 1,
+          0
+        );
         break;
       case "trimestre":
-        const trimestre = getTrimestre(selectedDate.getMonth() / 3);
+        const trimestre = getTrimestre(selectedDate.getMonth());
         startDate = new Date(selectedDate.getFullYear(), trimestre * 3, 1);
         endDate = new Date(selectedDate.getFullYear(), trimestre * 3 + 3, 0);
         break;
+      case "semestre":
+        const semestre = getSemestre(selectedDate.getMonth());
+        startDate = new Date(selectedDate.getFullYear(), semestre * 6, 1);
+        endDate = new Date(selectedDate.getFullYear(), semestre * 6 + 6, 0);
+        break;
+      case "año":
+        startDate = new Date(selectedDate.getFullYear(), 0, 1);
+        endDate = new Date(selectedDate.getFullYear(), 11, 31);
+        break;
       default:
-        startDate = selectedDate;
-        endDate = selectedDate;
+        startDate = new Date(selectedDate);
+        endDate = new Date(selectedDate);
         break;
     }
 
@@ -94,6 +108,10 @@ const HistorialVentas = () => {
 
   const getTrimestre = (month) => {
     return Math.floor(month / 3);
+  };
+
+  const getSemestre = (month) => {
+    return Math.floor(month / 6);
   };
 
   const data = {
@@ -153,7 +171,7 @@ const HistorialVentas = () => {
   return (
     <div className={`container ${isDarkMode ? "dark-mode" : ""}`}>
       <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');`}
+        {`@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap');`}
       </style>
       <div className="fechas_selec">
         <select
@@ -165,6 +183,8 @@ const HistorialVentas = () => {
           <option value="semana">Semana</option>
           <option value="mes">Mes</option>
           <option value="trimestre">Trimestre</option>
+          <option value="semestre">Semestre</option>
+          <option value="año">Año</option>
         </select>
         <DatePicker
           selected={selectedDate}
