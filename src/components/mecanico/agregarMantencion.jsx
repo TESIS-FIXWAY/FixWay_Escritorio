@@ -30,6 +30,24 @@ import Mecanico from "./mecanico";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const AgregarMantencion = () => {
+  // const [patente, setPatente] = useState("");
+  // const [tipoMantencion, setTipoMantencion] = useState("");
+  // const [descripcion, setDescripcion] = useState("");
+  // const [estado, setEstado] = useState("");
+  // const [kilometrajeMantencion, setKilometrajeMantencion] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
+  // const [successMessage, setSuccessMessage] = useState("");
+  // const [productos, setProductos] = useState([]);
+  // const [mantencionesPendientes, setMantencionesPendientes] = useState([]);
+  // const [isConfirmationModalVisible, setConfirmationModalVisible] =
+  //   useState(false);
+  // const [productoSeleccionado, setProductoSeleccionado] = useState("");
+  // const [cantidadProducto, setCantidadProducto] = useState("");
+  // const [codigoProducto, setCodigoProducto] = useState("");
+  // const [precioProducto, setPrecioProducto] = useState("");
+  // const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
+  // const { isDarkMode } = useContext(DarkModeContext);
+
   const [patente, setPatente] = useState("");
   const [tipoMantencion, setTipoMantencion] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -39,6 +57,8 @@ const AgregarMantencion = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [productos, setProductos] = useState([]);
   const [mantencionesPendientes, setMantencionesPendientes] = useState([]);
+  const [descripcionSugerida, setDescripcionSugerida] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [isConfirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState("");
@@ -60,6 +80,43 @@ const AgregarMantencion = () => {
     setErrorMessage("");
     setSuccessMessage("");
   };
+
+  useEffect(() => {
+    if (tipoMantencion) {
+      const generateDescription = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetch(
+            "https://api.openai.com/v1/completions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `org-oSOJGBLLWgwm6pEcsF2zNeLL`, // Replace with your OpenAI API key
+              },
+              body: JSON.stringify({
+                model: "text-davinci-003",
+                prompt: `Escribe una descripción detallada de una mantención de tipo ${tipoMantencion} para un vehículo. Incluye información sobre los componentes a revisar, posibles problemas a detectar y recomendaciones para prevenir futuros problemas.`,
+                max_tokens: 200,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Error al comunicarse con OpenAI");
+          }
+
+          const data = await response.json();
+          setDescripcionSugerida(data.choices[0].text.trim());
+        } catch (error) {
+          console.error("Error al generar la descripción:", error.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      generateDescription();
+    }
+  }, [tipoMantencion]);
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -365,6 +422,16 @@ const AgregarMantencion = () => {
                 </MenuItem>
               </Select>
             </FormControl>
+            {descripcionSugerida && (
+              <FormControl fullWidth margin="normal">
+                <Typography variant="body1" sx={{ color: "gray" }}>
+                  Sugerencia de descripción:
+                </Typography>
+                <Typography variant="body2" sx={{ color: "gray" }}>
+                  {descripcionSugerida}
+                </Typography>
+              </FormControl>
+            )}
             <FormControl fullWidth margin="normal">
               <InputLabel>Producto</InputLabel>
               <Select
