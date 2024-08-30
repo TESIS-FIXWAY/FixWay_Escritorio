@@ -143,9 +143,9 @@ const Mecanico = () => {
                     onClick={handleShowNotification}
                   >
                     <NotificationsIcon />
+                    <span style={{ marginLeft: "10px" }}>Notificaciones</span>
                   </button>
                   {showNotification && <NotificacionMecanico />}
-                  <span>Notificaciones</span>
                 </li>
 
                 <li>
@@ -160,8 +160,8 @@ const Mecanico = () => {
                     ) : (
                       <NightlightIcon color="#fff" />
                     )}
+                    <span style={{ marginLeft: "10px" }}>Modo oscuro</span>
                   </button>
-                  <span>Modo Oscuro</span>
                 </li>
 
                 <li>
@@ -171,8 +171,8 @@ const Mecanico = () => {
                     className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
                   >
                     <Logout />
+                    <span style={{ marginLeft: "10px" }}>Cerrar sesion</span>
                   </button>
-                  <span>cerrar sesion</span>
                 </li>
               </ul>
             </div>

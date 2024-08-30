@@ -197,6 +197,10 @@
   color: black;
 }
 
+.boton_salir:hover {
+  color: black;
+}
+
 .menu-toggle {
   display: none;
   background: none;

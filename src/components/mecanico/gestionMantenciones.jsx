@@ -7,6 +7,8 @@ import {
   updateDoc,
   setDoc,
   getDocs,
+  increment,
+  runTransaction,
 } from "firebase/firestore";
 import Mecanico from "./mecanico";
 import { DarkModeContext } from "../../context/darkMode";
@@ -84,6 +86,42 @@ const GestionMantenciones = () => {
     fetchData();
   }, [currentUser]);
 
+  const addMaintenanceTask = async (licensePlate, taskData) => {
+    try {
+      // Referencia al documento de la patente
+      const licensePlateDocRef = doc(db, "historialMantencion", licensePlate);
+      // Referencia a la subcolección de tareas bajo el documento de la patente
+      const tasksCollectionRef = collection(licensePlateDocRef, "tareas");
+  
+      await runTransaction(db, async (transaction) => {
+        const licensePlateDoc = await transaction.get(licensePlateDocRef);
+        
+        let newTaskNumber = 1;
+        if (licensePlateDoc.exists()) {
+          const licensePlateData = licensePlateDoc.data();
+          newTaskNumber = (licensePlateData.taskCounter || 0) + 1;
+          transaction.update(licensePlateDocRef, { taskCounter: increment(1) });
+        } else {
+          transaction.set(licensePlateDocRef, { taskCounter: 1 });
+        }
+  
+        const newTaskId = `Causa-${newTaskNumber}`;
+        const newTaskDocRef = doc(tasksCollectionRef, newTaskId);
+        
+        transaction.set(newTaskDocRef, {
+          taskId: newTaskId,
+          ...taskData,
+          createdAt: new Date(),
+        });
+      });
+  
+      console.log(`Causa ${newTaskId} agregada correctamente para la patente ${licensePlate}`);
+    } catch (error) {
+      console.error("Error al agregar la tarea: ", error);
+    }
+  };
+  
+
   const updateTaskStatus = async (task, newStatus) => {
     if (!currentUser) {
       console.error("User not authenticated");
@@ -109,7 +147,7 @@ const GestionMantenciones = () => {
           );
           break;
         case "terminado":
-          await setDoc(doc(db, "historialMantencion", task.patente), {
+          await addMaintenanceTask(task.patente, {
             ...task,
             estado: newStatus,
           });

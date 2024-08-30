@@ -243,9 +243,9 @@ const Admin = () => {
                     onClick={handleShowNotification}
                   >
                     <NotificationsIcon />
+                    <span style={{ marginLeft: "10px" }}>Notificaciones</span>
                   </button>
                   {showNotification && <Notificacion />}
-                  <span>Notificaciones</span>
                 </li>
 
                 <li>
@@ -260,8 +260,8 @@ const Admin = () => {
                     ) : (
                       <NightlightIcon color="#fff" />
                     )}
+                    <span style={{ marginLeft: "10px" }}>Modo Oscuro</span>
                   </button>
-                  <span>Modo Oscuro</span>
                 </li>
 
                 <li>
@@ -270,8 +270,8 @@ const Admin = () => {
                     className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
                   >
                     <Logout />
+                    <span style={{ marginLeft: "10px" }}>Cerrar sesión</span>
                   </button>
-                  <span>Cerrar sesión</span>
                 </li>
               </ul>
             </div>
