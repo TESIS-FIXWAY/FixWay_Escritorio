@@ -284,6 +284,9 @@ const HistorialMantencionAdmin = () => {
   };
 
   const formatoKilometraje = (amount) => {
+    if (amount === undefined || amount === null) {
+      return "N/A";
+    }
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
   };
 
