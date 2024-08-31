@@ -28,6 +28,7 @@ import {
 } from "firebase/firestore";
 import Mecanico from "./mecanico";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 const AgregarMantencion = () => {
   const [patente, setPatente] = useState("");
@@ -46,6 +47,9 @@ const AgregarMantencion = () => {
   const [codigoProducto, setCodigoProducto] = useState("");
   const [precioProducto, setPrecioProducto] = useState("");
   const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
+  const genAI = new GoogleGenerativeAI(
+    "AIzaSyDxk1AIyWngyaSkGiYlYC6Kqu--AhdXGws"
+  );
   const { isDarkMode } = useContext(DarkModeContext);
 
   const limpiarCampos = () => {
@@ -91,6 +95,43 @@ const AgregarMantencion = () => {
 
     cargarProductos();
   }, [tipoMantencion]);
+
+  const aiSugerencia = async () => {
+    try {
+      // Inicializa el modelo generativo
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+      // Define el prompt o contexto para la generación de texto
+      const prompt = `
+        Sugiere una descripción detallada para una mantención de automóvil.
+        Tipo de Mantención: ${tipoMantencion}
+        Descripción actual: ${descripcion}
+        Estado: ${estado}
+        Kilometraje de Mantención: ${kilometrajeMantencion}
+        Productos seleccionados: ${productoSeleccionado}
+        Cantidad: ${cantidadProducto}
+        Precio: ${precioProducto}
+        Código del Producto: ${codigoProducto}
+      `;
+
+      // Solicita sugerencias al modelo
+      const response = await model.startChat({
+        prompt,
+        maxTokens: 100, // Ajusta el número de tokens según tus necesidades
+        temperature: 0.7, // Ajusta la temperatura según la creatividad deseada
+      });
+
+      // Extrae y usa la sugerencia generada
+      const suggestion = response.data.choices[0].text.trim();
+      setDescripcion(suggestion); // Actualiza la descripción con la sugerencia
+
+      // Opcional: Muestra la sugerencia al usuario
+      console.log("Sugerencia AI:", suggestion);
+    } catch (error) {
+      console.error("Error al obtener la sugerencia de AI:", error.message);
+      setErrorMessage("Error al obtener la sugerencia. Inténtelo de nuevo.");
+    }
+  };
 
   const handleCheckPatente = async (text) => {
     try {
@@ -417,6 +458,15 @@ const AgregarMantencion = () => {
               onChange={(e) => setKilometrajeMantencion(e.target.value)}
               variant="outlined"
             />
+
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={aiSugerencia}
+              sx={{ borderRadius: "30px" }}
+            >
+              Sugerencia IA
+            </Button>
             <Button
               variant="outlined"
               color="primary"
