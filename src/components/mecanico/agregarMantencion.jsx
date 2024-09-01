@@ -47,6 +47,9 @@ const AgregarMantencion = () => {
   const [codigoProducto, setCodigoProducto] = useState("");
   const [precioProducto, setPrecioProducto] = useState("");
   const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
+  const [isAISuggestionModalVisible, setAISuggestionModalVisible] =
+    useState(false);
+  const [aiSuggestion, setAISuggestion] = useState("");
   const genAI = new GoogleGenerativeAI(
     "AIzaSyDxk1AIyWngyaSkGiYlYC6Kqu--AhdXGws"
   );
@@ -99,7 +102,6 @@ const AgregarMantencion = () => {
 
   const aiSugerencia = async () => {
     try {
-      // Define el prompt o contexto para la generación de texto
       const prompt = `
         Sugiere una descripción detallada para una mantención de automóvil.
         Tipo de Mantención: ${tipoMantencion}
@@ -107,29 +109,21 @@ const AgregarMantencion = () => {
         Estado: ${estado}
         Kilometraje de Mantención: ${kilometrajeMantencion}
         Productos seleccionados: ${productoSeleccionado}
-        Cantidad: ${cantidadProducto}
-        Precio: ${precioProducto}
-        Código del Producto: ${codigoProducto}
       `;
 
-      // Solicita la generación de contenido en streaming
       const result = await model.generateContentStream(prompt);
 
-      // Variable para acumular el texto generado
       let fullText = "";
 
-      // Imprime el texto a medida que llega
       for await (const chunk of result.stream) {
         const chunkText = await chunk.text();
         fullText += chunkText;
-        // Opcional: Muestra el texto en la consola en tiempo real
         console.log(chunkText);
       }
 
-      // Usa el texto completo generado
       if (fullText.trim()) {
-        setDescripcion(fullText.trim()); // Actualiza la descripción con la sugerencia
-        console.log("Sugerencia AI:", fullText.trim());
+        setAISuggestion(fullText.trim());
+        setAISuggestionModalVisible(true);
       } else {
         console.error(
           "Error: La respuesta del modelo no contiene sugerencias."
@@ -301,14 +295,6 @@ const AgregarMantencion = () => {
     setConfirmationModalVisible(false);
   };
 
-  const formatDate = (date) => {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2);
-
-    return `${day}/${month}/${year}`;
-  };
-
   const translateEstado = (estado) => {
     switch (estado) {
       case "atencion_especial":
@@ -337,6 +323,9 @@ const AgregarMantencion = () => {
   const hidePreviewModal = () => {
     setPreviewModalVisible(false);
   };
+
+  const handleOpenAISuggestionModal = () => setAISuggestionModalVisible(true);
+  const handleCloseAISuggestionModal = () => setAISuggestionModalVisible(false);
 
   return (
     <>
@@ -467,14 +456,13 @@ const AgregarMantencion = () => {
               onChange={(e) => setKilometrajeMantencion(e.target.value)}
               variant="outlined"
             />
-
             <Button
               variant="outlined"
               color="primary"
+              sx={{ right: "12px" }}
               onClick={aiSugerencia}
-              sx={{ borderRadius: "30px" }}
             >
-              Sugerencia IA
+              Obtener Sugerencia de IA
             </Button>
             <Button
               variant="outlined"
@@ -602,6 +590,28 @@ const AgregarMantencion = () => {
               >
                 Cancelar
               </Button>
+            </Box>
+          </Modal>
+          <Modal
+            open={isAISuggestionModalVisible}
+            onClose={handleCloseAISuggestionModal}
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 1000,
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Typography variant="h6">Sugerencia de IA</Typography>
+              <Typography>{aiSuggestion}</Typography>
+              <Button onClick={handleCloseAISuggestionModal}>Cerrar</Button>
             </Box>
           </Modal>
         </div>
