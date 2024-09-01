@@ -50,6 +50,7 @@ const AgregarMantencion = () => {
   const genAI = new GoogleGenerativeAI(
     "AIzaSyDxk1AIyWngyaSkGiYlYC6Kqu--AhdXGws"
   );
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const { isDarkMode } = useContext(DarkModeContext);
 
   const limpiarCampos = () => {
@@ -98,9 +99,6 @@ const AgregarMantencion = () => {
 
   const aiSugerencia = async () => {
     try {
-      // Inicializa el modelo generativo
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
       // Define el prompt o contexto para la generación de texto
       const prompt = `
         Sugiere una descripción detallada para una mantención de automóvil.
@@ -114,19 +112,30 @@ const AgregarMantencion = () => {
         Código del Producto: ${codigoProducto}
       `;
 
-      // Solicita sugerencias al modelo
-      const response = await model.startChat({
-        prompt,
-        maxTokens: 100, // Ajusta el número de tokens según tus necesidades
-        temperature: 0.7, // Ajusta la temperatura según la creatividad deseada
-      });
+      // Solicita la generación de contenido en streaming
+      const result = await model.generateContentStream(prompt);
 
-      // Extrae y usa la sugerencia generada
-      const suggestion = response.data.choices[0].text.trim();
-      setDescripcion(suggestion); // Actualiza la descripción con la sugerencia
+      // Variable para acumular el texto generado
+      let fullText = "";
 
-      // Opcional: Muestra la sugerencia al usuario
-      console.log("Sugerencia AI:", suggestion);
+      // Imprime el texto a medida que llega
+      for await (const chunk of result.stream) {
+        const chunkText = await chunk.text();
+        fullText += chunkText;
+        // Opcional: Muestra el texto en la consola en tiempo real
+        console.log(chunkText);
+      }
+
+      // Usa el texto completo generado
+      if (fullText.trim()) {
+        setDescripcion(fullText.trim()); // Actualiza la descripción con la sugerencia
+        console.log("Sugerencia AI:", fullText.trim());
+      } else {
+        console.error(
+          "Error: La respuesta del modelo no contiene sugerencias."
+        );
+        setErrorMessage("Error al obtener la sugerencia. Inténtelo de nuevo.");
+      }
     } catch (error) {
       console.error("Error al obtener la sugerencia de AI:", error.message);
       setErrorMessage("Error al obtener la sugerencia. Inténtelo de nuevo.");
