@@ -103,10 +103,8 @@ const AgregarMantencion = () => {
   const aiSugerencia = async () => {
     try {
       const prompt = `
-        Sugiere una descripción detallada para una mantención de automóvil.
+        Sugiere una recomendacion a largo plazo.
         Tipo de Mantención: ${tipoMantencion}
-        Descripción actual: ${descripcion}
-        Estado: ${estado}
         Kilometraje de Mantención: ${kilometrajeMantencion}
         Productos seleccionados: ${productoSeleccionado}
       `;
@@ -609,7 +607,7 @@ const AgregarMantencion = () => {
                 p: 4,
               }}
             >
-              <Typography variant="h6">Sugerencia de IA</Typography>
+              <Typography variant="h6">Sugerencia de Gemini IA</Typography>
               <Typography>{aiSuggestion}</Typography>
               <Button onClick={handleCloseAISuggestionModal}>Cerrar</Button>
             </Box>
