@@ -7,10 +7,10 @@ import { db, auth } from "../../dataBase/firebase";
 import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 import { DarkModeContext } from "../../context/darkMode";
 
-import GraficoMisBoletas from "../admin/graficos/graficoMisBoletas";
-import GraficoMisFacturas from "../admin/graficos/graficoMisFacturas";
+import GraficosMisBoletasVendedor from "./Graficos/graficosMisBoletasVendedor";
+import GraficoMisFacturasVendedor from "./Graficos/graficosMisFacturasVendedor";
 import HistorialVentas from "../admin/historial/historial";
-import GraficoTipoPago from "../admin/graficos/graficoTipoPago";
+import GraficoTipoPagoVendedor from "./Graficos/graficoTipoPagoVendedor";
 
 const IndexVendedor = () => {
   const [user, setUser] = useState(null);
@@ -94,17 +94,17 @@ const IndexVendedor = () => {
           <div className={`chart_container ${isDarkMode ? "dark-mode" : ""}`}>
             <div>
               <h1 className="titulo-Grafico ">Tipo de Pago</h1>
-              <GraficoTipoPago />
+              <GraficoTipoPagoVendedor />
             </div>
           </div>
         </div>
       </aside>
       <main className={`main ${isDarkMode ? "dark-mode" : ""}`}>
         <div>
-          <GraficoMisBoletas />
+          <GraficosMisBoletasVendedor />
         </div>
         <div>
-          <GraficoMisFacturas />
+          <GraficoMisFacturasVendedor />
         </div>
       </main>
     </div>
