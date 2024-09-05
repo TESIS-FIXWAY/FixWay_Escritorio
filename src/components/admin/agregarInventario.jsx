@@ -27,6 +27,7 @@ const AgregarInventario = () => {
     anoProductoUsoInicio: "",
     anoProductoUsoFin: "",
     marcaProducto: "",
+    precioDetalle: "", // Nuevo campo
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,6 +61,7 @@ const AgregarInventario = () => {
         anoProductoUsoInicio: "",
         anoProductoUsoFin: "",
         marcaProducto: "",
+        precioDetalle: "", // Reiniciar el nuevo campo
       });
       setSuccessMessage("Producto agregado correctamente");
       setTimeout(() => {
@@ -97,16 +99,7 @@ const AgregarInventario = () => {
               >
                 Agregar Inventario
               </h1>
-              {successMessage && (
-                <Alert severity="success" icon={<CheckCircleIcon />}>
-                  {successMessage}
-                </Alert>
-              )}
-              {errorMessage && (
-                <Alert severity="error" icon={<CloseIcon />}>
-                  {errorMessage}
-                </Alert>
-              )}
+
               <form
                 className={`formulario_form ${isDarkMode ? "dark-mode" : ""}`}
                 onSubmit={submitHandler}
@@ -167,7 +160,7 @@ const AgregarInventario = () => {
                     sx={{ height: "30px", marginTop: "20px", width: "225px" }}
                   >
                     <InputLabel id="marcaAutomovil-label">
-                      Seleccione Marca Automóvil
+                      Marca Automóvil
                     </InputLabel>
                     <Select
                       labelId="marcaAutomovil-label"
@@ -178,57 +171,92 @@ const AgregarInventario = () => {
                       onChange={handleChange}
                       required
                     >
-                      <MenuItem value={"Todas las marcas"}>
-                        Todas las marcas
-                      </MenuItem>
-                      <MenuItem value={"Toyota"}>Toyota</MenuItem>
-                      <MenuItem value={"Honda"}>Honda</MenuItem>
-                      <MenuItem value={"Ford"}>Ford</MenuItem>
-                      <MenuItem value={"Chevrolet"}>Chevrolet</MenuItem>
-                      <MenuItem value={"Volkswagen"}>Volkswagen</MenuItem>
-                      <MenuItem value={"Nissan"}>Nissan</MenuItem>
-                      <MenuItem value={"Hyundai"}>Hyundai</MenuItem>
-                      <MenuItem value={"Suzuki"}>Suzuki</MenuItem>
-                      <MenuItem value={"Kia"}>Kia</MenuItem>
-                      <MenuItem value={"Mazda"}>Mazda</MenuItem>
-                      <MenuItem value={"Mitsubishi"}>Mitsubishi</MenuItem>
-                      <MenuItem value={"Subaru"}>Subaru</MenuItem>
-                      <MenuItem value={"Citroën"}>Citroën</MenuItem>
-                      <MenuItem value={"Peugeot"}>Peugeot</MenuItem>
-                      <MenuItem value={"Audi"}>Audi</MenuItem>
-                      <MenuItem value={"BMW"}>BMW</MenuItem>
-                      <MenuItem value={"Mercedes-Benz"}>Mercedes-Benz</MenuItem>
-                      <MenuItem value={"Fiat"}>Fiat</MenuItem>
-                      <MenuItem value={"Chery"}>Chery</MenuItem>
-                      <MenuItem value={"Dodge"}>Dodge</MenuItem>
-                      <MenuItem value={"Geely"}>Geely</MenuItem>
-                      <MenuItem value={"JAC"}>JAC</MenuItem>
-                      <MenuItem value={"Jeep"}>Jeep</MenuItem>
-                      <MenuItem value={"MG"}>MG</MenuItem>
-                      <MenuItem value={"Mini"}>Mini</MenuItem>
-                      <MenuItem value={"Ram"}>Ram</MenuItem>
-                      <MenuItem value={"SsangYong"}>SsangYong</MenuItem>
-                      <MenuItem value={"BYD"}>BYD</MenuItem>
-                      <MenuItem value={"Changan"}>Changan</MenuItem>
-                      <MenuItem value={"Chrysler"}>Chrysler</MenuItem>
-                      <MenuItem value={"Dongfeng"}>Dongfeng</MenuItem>
-                      <MenuItem value={"Foton"}>Foton</MenuItem>
-                      <MenuItem value={"GAC"}>GAC</MenuItem>
-                      <MenuItem value={"Great Wall"}>Great Wall</MenuItem>
-                      <MenuItem value={"Haval"}>Haval</MenuItem>
-                      <MenuItem value={"JMC"}>JMC</MenuItem>
-                      <MenuItem value={"Lifan"}>Lifan</MenuItem>
-                      <MenuItem value={"Mahindra"}>Mahindra</MenuItem>
-                      <MenuItem value={"Opel"}>Opel</MenuItem>
-                      <MenuItem value={"Renault"}>Renault</MenuItem>
-                      <MenuItem value={"Skoda"}>Skoda</MenuItem>
-                      <MenuItem value={"Tata"}>Tata</MenuItem>
-                      <MenuItem value={"Volvo"}>Volvo</MenuItem>
-                      <MenuItem value={"Alfa Romeo"}>Alfa Romeo</MenuItem>
-                      <MenuItem value={"BAIC"}>BAIC</MenuItem>
-                      <MenuItem value={"Brilliance"}>Brilliance</MenuItem>
+                      {[
+                        "Alfa Romeo",
+                        "Audi",
+                        "BAIC",
+                        "BMW",
+                        "BYD",
+                        "Changan",
+                        "Chevrolet",
+                        "Chery",
+                        "Chrysler",
+                        "Citroën",
+                        "Dodge",
+                        "Dongfeng",
+                        "Fiat",
+                        "Foton",
+                        "Ford",
+                        "Geely",
+                        "GAC",
+                        "Great Wall",
+                        "Haval",
+                        "Honda",
+                        "Hyundai",
+                        "JAC",
+                        "JMC",
+                        "Jeep",
+                        "Kia",
+                        "Lifan",
+                        "Mahindra",
+                        "Mazda",
+                        "Mercedes-Benz",
+                        "MG",
+                        "Mini",
+                        "Mitsubishi",
+                        "Nissan",
+                        "Opel",
+                        "Peugeot",
+                        "Ram",
+                        "Renault",
+                        "Skoda",
+                        "SsangYong",
+                        "Subaru",
+                        "Suzuki",
+                        "Tata",
+                        "Toyota",
+                        "Volkswagen",
+                        "Volvo",
+                      ].sort().map((marca) => (
+                        <MenuItem key={marca} value={marca}>
+                          {marca}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Precio Venta"
+                    variant="outlined"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    id="costo"
+                    required
+                    type="text"
+                    name="costo"
+                    value={formData.costo}
+                    onChange={handleChange}
+                    placeholder="Ejemplo: 10000"
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Precio Detalle"
+                    variant="outlined"
+                    className={`input_formulario ${
+                      isDarkMode ? "dark-mode" : ""
+                    }`}
+                    id="precioDetalle"
+                    type="text"
+                    name="precioDetalle"
+                    value={formData.precioDetalle}
+                    onChange={handleChange}
+                    placeholder="Ejemplo: 15000"
+                  />
                 </p>
                 <p>
                   <br />
@@ -245,23 +273,6 @@ const AgregarInventario = () => {
                     value={formData.cantidad}
                     onChange={handleChange}
                     placeholder="Cantidad"
-                  />
-                </p>
-                <p>
-                  <br />
-                  <TextField
-                    label="Costo"
-                    variant="outlined"
-                    className={`input_formulario ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
-                    id="costo"
-                    required
-                    type="text"
-                    name="costo"
-                    value={formData.costo}
-                    onChange={handleChange}
-                    placeholder="Ejemplo: 10000"
                   />
                 </p>
                 <p>
@@ -393,6 +404,22 @@ const AgregarInventario = () => {
                     placeholder="Marca Producto"
                   />
                 </p>
+                
+                <p className="block_boton">
+                  {successMessage && (
+                  <Alert severity="success" icon={<CheckCircleIcon />}>
+                      {successMessage}
+                    </Alert>
+                  )}
+                  {errorMessage && (
+                    <Alert severity="error" icon={<CloseIcon />}>
+                      {errorMessage}
+                    </Alert>
+                  )}
+                </p>
+
+
+
                 <p className="block_boton">
                   <Button
                     variant="outlined"

@@ -47,6 +47,8 @@ const ListarInventario = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
+  const [totalInventario, setTotalInventario] = useState(0); 
+  const [totalDetalle, setTotalDetalle] = useState(0); 
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -58,9 +60,10 @@ const ListarInventario = () => {
         }));
         setInventario(inventarioData);
         setInventarioFiltrado(inventarioData);
+        calcularTotalInventario(inventarioData);
+        calcularTotalDetalle(inventarioData);
       }
     );
-
     return () => unsubscribe();
   }, []);
 
@@ -85,7 +88,7 @@ const ListarInventario = () => {
       );
       console.log("Producto eliminado correctamente.");
     } catch (error) {
-      console.error("Error al eliminar la factura:", error);
+      console.error("Error al eliminar el producto:", error);
     }
   };
 
@@ -104,7 +107,7 @@ const ListarInventario = () => {
       await updateDoc(doc(db, "inventario", inventarioId), updatedData);
       setEditingInventarioId(null);
       setIsEditingModalOpen(false);
-      console.log("producto actualizado correctamente.");
+      console.log("Producto actualizado correctamente.");
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
     }
@@ -129,6 +132,7 @@ const ListarInventario = () => {
           origen,
           cantidad,
           costo,
+          precioDetalle, 
         } = item;
 
         return (
@@ -139,11 +143,9 @@ const ListarInventario = () => {
           (categoria && categoria.toLowerCase().includes(texto)) ||
           (marcaProducto && marcaProducto.toLowerCase().includes(texto)) ||
           (origen && origen.toLowerCase().includes(texto)) ||
-          (anoProductoUsoInicio &&
-            anoProductoUsoInicio.toString().includes(texto)) ||
-          (anoProductoUsoFin && anoProductoUsoFin.toString().includes(texto)) ||
           (cantidad && cantidad.toString().includes(texto)) ||
-          (costo && costo.toString().includes(texto))
+          (costo && costo.toString().includes(texto)) ||
+          (precioDetalle && precioDetalle.toString().includes(texto))
         );
       });
       setInventarioFiltrado(inventarioFiltrados);
@@ -168,6 +170,22 @@ const ListarInventario = () => {
     return cantidad <= 10 ? { backgroundColor: "#ffcccc" } : {};
   };
 
+  const calcularTotalInventario = (inventarioData) => {
+    const total = inventarioData.reduce((acc, item) => {
+      return acc + item.cantidad * item.costo; 
+    }, 0);
+    setTotalInventario(total); 
+  };
+
+  const calcularTotalDetalle = (inventarioData) => {
+    const total = inventarioData.reduce((acc, item) => {
+      const precioDetalle = parseFloat(item.precioDetalle) || 0; // Asegúrate de que sea un número
+      return acc + (item.cantidad * precioDetalle); 
+    }, 0);
+    setTotalDetalle(total); 
+  };
+  
+
   const formatoDinero = (amount) => {
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
   };
@@ -184,6 +202,13 @@ const ListarInventario = () => {
           >
             Inventario
           </Typography>
+          <Typography variant="h6" textAlign="center" className="total-inventario">
+            Total Inventario: $ {formatoDinero(totalInventario)}
+          </Typography>
+          <Typography variant="h6" textAlign="center" className="total-inventario">
+            Total Detalle: $ {formatoDinero(totalDetalle)}
+          </Typography>
+
           <div className="container-input">
             <input
               type="text"
@@ -231,6 +256,7 @@ const ListarInventario = () => {
             </span>
           </button>
         </div>
+
         <div className="table_section">
           <TableContainer>
             <Table>
@@ -244,7 +270,8 @@ const ListarInventario = () => {
                   <TableCell>Marca</TableCell>
                   <TableCell>Origen</TableCell>
                   <TableCell>Cantidad</TableCell>
-                  <TableCell>Precio</TableCell>
+                  <TableCell>Precio Detalle</TableCell> 
+                  <TableCell>Precio Venta</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
@@ -255,8 +282,7 @@ const ListarInventario = () => {
                     style={getRowStyle(inventario.cantidad)}
                   >
                     <TableCell>
-                      {inventario.anoProductoUsoInicio}-
-                      {inventario.anoProductoUsoFin}
+                      {inventario.anoProductoUsoInicio}-{inventario.anoProductoUsoFin}
                     </TableCell>
                     <TableCell>{inventario.codigoProducto}</TableCell>
                     <TableCell>{inventario.nombreProducto}</TableCell>
@@ -265,6 +291,7 @@ const ListarInventario = () => {
                     <TableCell>{inventario.marcaProducto}</TableCell>
                     <TableCell>{inventario.origen}</TableCell>
                     <TableCell>{inventario.cantidad}</TableCell>
+                    <TableCell>$ {formatoDinero(inventario.precioDetalle)}</TableCell>
                     <TableCell>$ {formatoDinero(inventario.costo)}</TableCell>
                     <TableCell>
                       {editingInventarioId === inventario.id ? (

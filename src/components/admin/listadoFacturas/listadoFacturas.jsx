@@ -229,10 +229,14 @@ const ListadoFacturas = () => {
                   Cantidad
                 </TableCell>
                 <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                  Precio Detalle
+                </TableCell>
+                <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
                   Acciones
                 </TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {facturaFiltrada.map((factura) => (
                 <TableRow key={factura.id}>
@@ -246,9 +250,7 @@ const ListadoFacturas = () => {
                         onChange={(e) =>
                           onInputChange(factura.id, "proveedor", e.target.value)
                         }
-                        className={`input_formulario ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
+                        className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                       />
                     ) : (
                       factura.proveedor
@@ -261,9 +263,7 @@ const ListadoFacturas = () => {
                         onChange={(e) =>
                           onInputChange(factura.id, "fecha", e.target.value)
                         }
-                        className={`input_formulario ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
+                        className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                       />
                     ) : (
                       factura.fecha
@@ -276,9 +276,7 @@ const ListadoFacturas = () => {
                         onChange={(e) =>
                           onInputChange(factura.id, "detalle", e.target.value)
                         }
-                        className={`input_formulario ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
+                        className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                       />
                     ) : (
                       factura.detalle
@@ -291,13 +289,14 @@ const ListadoFacturas = () => {
                         onChange={(e) =>
                           onInputChange(factura.id, "cantidad", e.target.value)
                         }
-                        className={`input_formulario ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
+                        className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                       />
                     ) : (
                       factura.cantidad
                     )}
+                  </TableCell>
+                  <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
+                    {factura.precioDetalle}
                   </TableCell>
                   <TableCell className={`${isDarkMode ? "dark-mode" : ""}`}>
                     {editingFacturaId === factura.id ? (
@@ -309,6 +308,7 @@ const ListadoFacturas = () => {
                               fecha: factura.fecha,
                               detalle: factura.detalle,
                               cantidad: factura.cantidad,
+                              precioDetalle: factura.precioDetalle,
                             })
                           }
                         >
@@ -335,6 +335,7 @@ const ListadoFacturas = () => {
                 </TableRow>
               ))}
             </TableBody>
+
           </Table>
         </TableContainer>
 

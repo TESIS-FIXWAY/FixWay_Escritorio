@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { storage, db } from "../../dataBase/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc, updateDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Admin from "../admin/admin";
 import { Button, CircularProgress, Typography, Box } from "@mui/material";
@@ -26,6 +26,7 @@ const AgregarFactura = () => {
     url: "",
     productoId: "",
     cantidad: 0,
+    precioDetalle: 0, // Añadido el campo precio al detalle
   });
 
   const handleChangeText = (name, value) => {
@@ -85,22 +86,46 @@ const AgregarFactura = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { fecha, proveedor, detalle, productoId, cantidad } = state;
-    if (!fecha || !proveedor || !detalle || !productoId || cantidad <= 0) {
-      setErrorMessage("Datos incompletos o cantidad inválida.");
+    const { fecha, proveedor, detalle, productoId, cantidad, precioDetalle } = state;
+    if (!fecha || !proveedor || !detalle || !productoId || cantidad <= 0 || precioDetalle <= 0) {
+      setErrorMessage("Datos incompletos o cantidad/precio inválidos.");
       return;
     }
-
+  
     try {
-      setUploading(true);
+      // Buscar el producto en la tabla de inventario
+      const productoRef = doc(db, "inventario", productoId);
+      const productoSnap = await getDoc(productoRef);
+  
+      if (!productoSnap.exists()) {
+        setErrorMessage("Producto no encontrado en el inventario.");
+        return;
+      }
+  
+      const productoData = productoSnap.data();
+      const cantidadAnterior = Number(productoData.cantidad) || 0;
+      const precioDetalleAnterior = Number(productoData.precioDetalle) || 0;
+  
+      // Calcular el nuevo precio promedio ponderado
+      const nuevaCantidad = cantidadAnterior + Number(cantidad);
+      const nuevoPrecioPromedio = (precioDetalleAnterior * cantidadAnterior + precioDetalle * Number(cantidad)) / nuevaCantidad;
+  
+      // Subir la factura
       const downloadURL = await handleUpload();
       if (!downloadURL) {
         setErrorMessage("Error al subir el archivo");
         return;
       }
-
+  
+      // Actualizar la cantidad y el precioDetalle del producto en Firestore
+      await updateDoc(productoRef, { 
+        cantidad: nuevaCantidad,
+        precioDetalle: nuevoPrecioPromedio // Promedio ponderado del precio
+      });
+  
+      // Registrar la factura en la base de datos
       const timestampNow = serverTimestamp();
-      const docRef = await addDoc(collection(db, "facturas"), {
+      await addDoc(collection(db, "facturas"), {
         fecha,
         proveedor,
         detalle,
@@ -108,41 +133,39 @@ const AgregarFactura = () => {
         url: downloadURL,
         productoId,
         cantidad,
+        precioDetalle, // Guardar el precio al detalle
       });
-
-      console.log("Documento escrito con ID:", docRef.id);
-      setSuccessMessage("Factura guardada correctamente");
-
+  
+      setSuccessMessage("Factura guardada y cantidad actualizada correctamente");
       setState({
         fecha: "",
         proveedor: "",
         detalle: "",
         productoId: "",
         cantidad: 0,
+        precioDetalle: 0, // Resetear precio al detalle
       });
       setFile(null);
       setFilePreview(null);
     } catch (error) {
-      console.error("Error al agregar el documento:", error);
+      console.error("Error al procesar la factura:", error);
       setErrorMessage("Ha ocurrido un error al guardar la factura");
     } finally {
       setUploading(false);
     }
   };
+  
 
   return (
     <>
       <header>
-        {" "}
-        <Admin />{" "}
+        <Admin />
       </header>
       <div>
         <div className={`body_formulario ${isDarkMode ? "dark-mode" : ""}`}>
           <div className="formulario_content">
             <div className="formulario_contact">
-              <h1
-                className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}
-              >
+              <h1 className={`formulario_titulo ${isDarkMode ? "dark-mode" : ""}`}>
                 Agregar Factura Proveedor
               </h1>
               <form
@@ -155,9 +178,7 @@ const AgregarFactura = () => {
                     type="date"
                     id="fecha"
                     name="fecha"
-                    className={`input_formulario ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                     required
                     onChange={(e) => handleChangeText("fecha", e.target.value)}
                     value={state.fecha}
@@ -170,13 +191,9 @@ const AgregarFactura = () => {
                     id="proveedor"
                     type="text"
                     name="proveedor"
-                    className={`input_formulario ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                     required
-                    onChange={(e) =>
-                      handleChangeText("proveedor", e.target.value)
-                    }
+                    onChange={(e) => handleChangeText("proveedor", e.target.value)}
                     value={state.proveedor}
                   />
                 </p>
@@ -188,12 +205,8 @@ const AgregarFactura = () => {
                     type="text"
                     name="detalle"
                     id="detalle"
-                    className={`input_formulario ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
-                    onChange={(e) =>
-                      handleChangeText("detalle", e.target.value)
-                    }
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+                    onChange={(e) => handleChangeText("detalle", e.target.value)}
                     value={state.detalle}
                   />
                 </p>
@@ -205,12 +218,8 @@ const AgregarFactura = () => {
                     type="text"
                     name="productoId"
                     id="productoId"
-                    className={`input_formulario ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
-                    onChange={(e) =>
-                      handleChangeText("productoId", e.target.value)
-                    }
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+                    onChange={(e) => handleChangeText("productoId", e.target.value)}
                     value={state.productoId}
                   />
                 </p>
@@ -222,14 +231,24 @@ const AgregarFactura = () => {
                     type="number"
                     name="cantidad"
                     id="cantidad"
-                    className={`input_formulario ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
-                    onChange={(e) =>
-                      handleChangeText("cantidad", parseInt(e.target.value))
-                    }
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+                    onChange={(e) => handleChangeText("cantidad", parseInt(e.target.value))}
                     value={state.cantidad}
                     inputProps={{ min: 1 }}
+                  />
+                </p>
+                <p>
+                  <br />
+                  <TextField
+                    label="Precio al Detalle"
+                    required
+                    type="number"
+                    name="precioDetalle"
+                    id="precioDetalle"
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+                    onChange={(e) => handleChangeText("precioDetalle", parseFloat(e.target.value))}
+                    value={state.precioDetalle}
+                    inputProps={{ min: 0.01, step: 0.01 }}
                   />
                 </p>
                 <p>
@@ -238,9 +257,7 @@ const AgregarFactura = () => {
                     type="file"
                     onChange={handleFileChange}
                     required
-                    className={`input_formulario ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                     style={{ display: "none", marginTop: "12px" }}
                     id="upload-input"
                   />
@@ -249,9 +266,7 @@ const AgregarFactura = () => {
                       variant="contained"
                       sx={{ marginTop: "10px" }}
                       component="span"
-                      className={`input_formulario ${
-                        isDarkMode ? "dark-mode" : ""
-                      }`}
+                      className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
                     >
                       Seleccionar Archivo
                     </Button>
@@ -265,44 +280,47 @@ const AgregarFactura = () => {
                     {filePreview && (
                       <img
                         src={filePreview}
-                        alt="Previsualización"
-                        style={{ width: "100px", marginTop: "10px" }}
+                        alt="Vista previa"
+                        style={{ maxWidth: "300px", marginTop: "10px" }}
                       />
                     )}
                   </Box>
                 )}
-                <p className="block_boton">
-                  {successMessage && (
-                    <Alert severity="success" icon={<CheckCircleIcon />}>
-                      {successMessage}
-                    </Alert>
-                  )}
-                  {errorMessage && (
-                    <Alert severity="error" icon={<CloseIcon />}>
-                      {errorMessage}
-                    </Alert>
-                  )}
+                {uploading ? (
+                  <Box mt={2}>
+                    <CircularProgress />
+                  </Box>
+                ) : (
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     type="submit"
-                    size="large"
-                    disabled={uploading}
-                    style={{
-                      width: "300px",
-                      fontSize: "16px",
-                      marginTop: "15px",
-                    }}
+                    className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
+                    sx={{ marginTop: "10px" }}
                   >
-                    Agregar Factura Proveedor
+                    Agregar Factura
                   </Button>
-                  {uploading && (
-                    <div style={{ marginTop: "17px", fontSize: "30px" }}>
-                      <CircularProgress />
-                      <Typography>Subiendo Archivo</Typography>
-                    </div>
-                  )}
-                </p>
+                )}
               </form>
+
+              {errorMessage && (
+                <Alert
+                  severity="error"
+                  sx={{ marginTop: "10px" }}
+                  icon={<CloseIcon />}
+                >
+                  {errorMessage}
+                </Alert>
+              )}
+
+              {successMessage && (
+                <Alert
+                  severity="success"
+                  sx={{ marginTop: "10px" }}
+                  icon={<CheckCircleIcon />}
+                >
+                  {successMessage}
+                </Alert>
+              )}
             </div>
           </div>
         </div>
