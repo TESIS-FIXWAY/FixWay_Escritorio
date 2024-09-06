@@ -201,7 +201,7 @@ const GenerarFactura = () => {
     descuentoAplicado
   ) => {
     const pdf = new jsPDF();
-    const imgData = "../../../images/AutoSinFondo.png";
+    const imgData = "../../../images/LogoSinFondo.png";
     const imgWidth = 40;
     const imgHeight = 40;
     const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
@@ -653,7 +653,7 @@ const GenerarFactura = () => {
       format: [80, 210],
     });
 
-    const imgData = "../../../images/LogoSinFondo.png";
+    const imgData = "../../../images/LogoSinFondo.svg";
     const imgWidth = 20;
     const imgHeight = 20;
     const imgX = pdf.internal.pageSize.getWidth() - imgWidth - 10;
