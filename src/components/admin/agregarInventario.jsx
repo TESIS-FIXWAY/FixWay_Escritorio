@@ -2,8 +2,9 @@ import "../styles/darkMode.css";
 import React, { useState, useContext } from "react";
 import Admin from "./admin";
 import { DarkModeContext } from "../../context/darkMode";
-import { db } from "../../dataBase/firebase";
+import { db, storage } from "../../dataBase/firebase"; // Asegúrate de exportar `storage` desde tu archivo de configuración de Firebase
 import { doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
@@ -27,26 +28,49 @@ const AgregarInventario = () => {
     anoProductoUsoInicio: "",
     anoProductoUsoFin: "",
     marcaProducto: "",
-    precioDetalle: "", // Nuevo campo
+    precioDetalle: "", 
+    imagenURL: "" 
   });
+  const [imageFile, setImageFile] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
-
+  
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+  
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     const cantidad = formData.cantidad.replace(/[^0-9]/g, "");
     const costo = parseInt(formData.costo.replace(/\./g, ""), 10);
     const id = formData.codigoProducto;
-
+  
+    let imagenURL = ""; // Definir imagenURL antes de usarlo
+  
+    if (imageFile) {
+      const imageRef = ref(storage, `images/${imageFile.name}`);
+      try {
+        await uploadBytes(imageRef, imageFile);
+        imagenURL = await getDownloadURL(imageRef);
+      } catch (error) {
+        console.error("Error al subir la imagen: ", error);
+        setErrorMessage("Error al subir la imagen. Inténtalo de nuevo.");
+        return;
+      }
+    }
+  
     const data = {
       ...formData,
       cantidad,
       costo,
       id,
+      imagenURL, // Utiliza imagenURL aquí
     };
-
+  
     try {
       await setDoc(doc(db, "inventario", id), data);
       setFormData({
@@ -61,8 +85,10 @@ const AgregarInventario = () => {
         anoProductoUsoInicio: "",
         anoProductoUsoFin: "",
         marcaProducto: "",
-        precioDetalle: "", // Reiniciar el nuevo campo
+        precioDetalle: "",
+        imagenURL: "", // Reiniciar el nuevo campo
       });
+      setImageFile(null);
       setSuccessMessage("Producto agregado correctamente");
       setTimeout(() => {
         setSuccessMessage("");
@@ -84,6 +110,7 @@ const AgregarInventario = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
+
 
   return (
     <>
@@ -405,6 +432,28 @@ const AgregarInventario = () => {
                   />
                 </p>
                 
+                <p>
+                  <br />
+                  <input
+                    accept="image/*"
+                    type="file"
+                    id="imagen"
+                    onChange={handleImageChange}
+                  />
+                </p>
+                <p className="block_boton">
+                  {successMessage && (
+                    <Alert severity="success" icon={<CheckCircleIcon />}>
+                      {successMessage}
+                    </Alert>
+                  )}
+                  {errorMessage && (
+                    <Alert severity="error" icon={<CloseIcon />}>
+                      {errorMessage}
+                    </Alert>
+                  )}
+                </p>
+                
                 <p className="block_boton">
                   {successMessage && (
                   <Alert severity="success" icon={<CheckCircleIcon />}>
@@ -417,9 +466,6 @@ const AgregarInventario = () => {
                     </Alert>
                   )}
                 </p>
-
-
-
                 <p className="block_boton">
                   <Button
                     variant="outlined"
