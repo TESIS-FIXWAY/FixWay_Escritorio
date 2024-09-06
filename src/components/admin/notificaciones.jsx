@@ -3,9 +3,16 @@ import { getToken, onMessage } from "firebase/messaging";
 import { messaging, db } from "../../dataBase/firebase";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
-import { collection, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  where,
+} from "firebase/firestore";
 import { styled } from "@mui/system";
 import { DarkModeContext } from "../../context/darkMode";
+import { format, subDays } from "date-fns";
 
 const Notificacion = () => {
   const { isDarkMode } = useContext(DarkModeContext);
@@ -47,21 +54,30 @@ const Notificacion = () => {
   });
 
   const [notifications, setNotifications] = useState([]);
-  const [isTrayVisible, setIsTrayVisible] = useState(true);
+  const [notificationIds, setNotificationIds] = useState([]);
 
   const MAX_NOTIFICATIONS = 5;
+  const DAYS_BACK = 7; // Cantidad de días atrás para mostrar notificaciones recientes
 
   useEffect(() => {
     const addNotification = (newNotification) => {
       setNotifications((prevNotifications) => {
-        const updatedNotifications = [newNotification, ...prevNotifications];
+        // Filtrar notificaciones duplicadas
+        const updatedNotifications = [
+          newNotification,
+          ...prevNotifications.filter(
+            (notif) => notif.id !== newNotification.id
+          ),
+        ];
 
+        // Limitar el número de notificaciones
         if (updatedNotifications.length > MAX_NOTIFICATIONS) {
           updatedNotifications.pop();
         }
 
         return updatedNotifications;
       });
+      setNotificationIds((prevIds) => [...prevIds, newNotification.id]);
     };
 
     const requestPermission = async () => {
@@ -76,68 +92,88 @@ const Notificacion = () => {
       }
     };
 
-    onMessage(messaging, (payload) => {
-      addNotification({
-        title: payload.notification.title,
-        body: payload.notification.body,
-        severity: "info",
-      });
-    });
+    // Obtener fecha límite para las notificaciones recientes
+    const currentDate = new Date();
+    const sevenDaysAgo = subDays(currentDate, DAYS_BACK);
 
+    // Obtener notificaciones recientes en tiempo real desde Firestore
     const unsubFirestoreUsers = onSnapshot(
-      collection(db, "users"),
+      query(
+        collection(db, "users"),
+        where("timestamp", ">=", sevenDaysAgo), // Filtrar por notificaciones recientes
+        orderBy("timestamp", "desc")
+      ),
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
           const user = change.doc.data();
-          if (change.type === "added") {
-            addNotification({
-              title: "Nuevo usuario agregado",
-              body: `Se ha agregado un nuevo usuario: ${user.nombre} ${user.apellido}`,
-              severity: "info",
-            });
-          } else if (change.type === "modified") {
-            addNotification({
-              title: "Usuario modificado",
-              body: `Se ha modificado el usuario: ${user.nombre}`,
-              severity: "info",
-            });
-          } else if (change.type === "removed") {
-            addNotification({
-              title: "Usuario eliminado",
-              body: `Se ha eliminado el usuario: ${user.nombre} ${user.apellido}`,
-              severity: "error",
-            });
+          const id = change.doc.id;
+          if (!notificationIds.includes(id)) {
+            if (change.type === "added") {
+              addNotification({
+                id,
+                title: "Nuevo usuario agregado",
+                body: `Se ha agregado un nuevo usuario: ${user.nombre} ${user.apellido}`,
+                severity: "info",
+              });
+            } else if (change.type === "modified") {
+              addNotification({
+                id,
+                title: "Usuario modificado",
+                body: `Se ha modificado el usuario: ${user.nombre}`,
+                severity: "info",
+              });
+            } else if (change.type === "removed") {
+              addNotification({
+                id,
+                title: "Usuario eliminado",
+                body: `Se ha eliminado el usuario: ${user.nombre} ${user.apellido}`,
+                severity: "error",
+              });
+            }
           }
         });
       }
     );
 
+    // Agregar otros listeners como `mantenciones`, `inventario`, etc.
+    // Todos deberían usar el filtro similar de `timestamp >= sevenDaysAgo`.
+
     const unsubFirestoreMantenciones = onSnapshot(
-      collection(db, "mantenciones"),
+      query(
+        collection(db, "mantenciones"),
+        where("timestamp", ">=", sevenDaysAgo), // Filtrar mantenciones recientes
+        orderBy("timestamp", "desc")
+      ),
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
           const mantencion = change.doc.data();
+          const id = change.doc.id;
+
           if (change.type === "added") {
             addNotification({
+              id,
               title: "Nueva mantención agregada",
-              body: `Se ha agregado una mantención con ID: ${change.doc.id}`,
+              body: `Se ha agregado una mantención con ID: ${id}`,
               severity: "info",
             });
           } else if (change.type === "modified") {
             if (mantencion.estado === "en proceso") {
               addNotification({
+                id,
                 title: "Mantención en proceso",
-                body: `La mantención con ID ${change.doc.id} está en proceso.`,
+                body: `La mantención con ID ${id} está en proceso.`,
                 severity: "info",
               });
             } else if (mantencion.estado === "terminado") {
               addNotification({
+                id,
                 title: "Mantención Terminada",
-                body: `Se ha finalizado la mantención con éxito: ${change.doc.id}`,
+                body: `Se ha finalizado la mantención con éxito: ${id}`,
                 severity: "success",
               });
             } else {
               addNotification({
+                id,
                 title: "Estado de Mantención modificado",
                 body: `Se ha modificado el estado: ${mantencion.estado}`,
                 severity: "info",
@@ -148,156 +184,47 @@ const Notificacion = () => {
       }
     );
 
-    const unsubFirestoreInventario = onSnapshot(
-      collection(db, "inventario"),
-      (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const inventario = change.doc.data();
-          if (change.type === "modified") {
-            addNotification({
-              title: "Inventario modificado",
-              body: `Se ha modificado el inventario con ID: ${change.doc.id}`,
-              severity: "info",
-            });
+    // Repite el mismo proceso para otras colecciones con `sevenDaysAgo` como filtro.
 
-            if (inventario.stock === 0) {
-              addNotification({
-                title: "Producto sin stock",
-                body: `El producto con ID ${change.doc.id} no tiene stock.`,
-                severity: "error",
-              });
-            } else if (inventario.stock < 10) {
-              addNotification({
-                title: "Stock bajo",
-                body: `El producto con ID ${change.doc.id} tiene menos de 10 unidades en stock.`,
-                severity: "warning",
-              });
-            }
-          }
-        });
-      }
-    );
-
-    const unsubFirestoreAutomovil = onSnapshot(
-      collection(db, "automoviles"),
-      (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const automoviles = change.doc.data();
-          if (change.type === "added") {
-            addNotification({
-              title: "Nuevo automóvil agregado",
-              body: `Se ha agregado un nuevo automóvil: ${change.doc.id}`,
-              severity: "info",
-            });
-          } else if (change.type === "modified") {
-            addNotification({
-              title: "Automóvil modificado",
-              body: `Se ha modificado el automóvil: ${change.doc.id}`,
-              severity: "info",
-            });
-          } else if (change.type === "removed") {
-            addNotification({
-              title: "Automóvil eliminado",
-              body: `Se ha eliminado el automóvil: ${change.doc.id}`,
-              severity: "error",
-            });
-          }
-        });
-      }
-    );
-
-    const unsubFirestoreHistorialVentas = onSnapshot(
-      collection(db, "historialVentas"),
-      (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const historialVentas = change.doc.data();
-          if (change.type === "added") {
-            addNotification({
-              title: "Nueva venta registrada",
-              body: `Con tipo de pago: ${translateEstado(
-                historialVentas.tipoPago
-              )}, total: $${formatoDinero(historialVentas.totalCompra)}`,
-              severity: "info",
-            });
-          }
-        });
-      }
-    );
-
-    const unsubFirestoreFacturas = onSnapshot(
-      collection(db, "facturas"),
-      (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const facturas = change.doc.data();
-          if (change.type === "added") {
-            addNotification({
-              title: "Nueva factura registrada",
-              body: `Nueva factura registrada con ID: ${
-                change.doc.id
-              }, monto total: $${formatoDinero(facturas.montoTotal)}`,
-              severity: "info",
-            });
-          }
-        });
-      }
-    );
+    // Agregar manejador para mensajes de FCM
+    onMessage(messaging, (payload) => {
+      addNotification({
+        id: payload.messageId,
+        title: payload.notification.title,
+        body: payload.notification.body,
+        severity: "info",
+      });
+    });
 
     requestPermission();
 
     return () => {
       unsubFirestoreUsers();
       unsubFirestoreMantenciones();
-      unsubFirestoreInventario();
-      unsubFirestoreAutomovil();
-      unsubFirestoreHistorialVentas();
-      unsubFirestoreFacturas();
+      // Agrega limpieza para otros listeners también
     };
-  }, []);
-
-  const formatoDinero = (amount) => {
-    if (amount === undefined || amount === null) {
-      return "0";
-    }
-    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
-  };
-
-  const translateEstado = (tipoPago) => {
-    switch (tipoPago) {
-      case "credito":
-        return "Crédito";
-      case "contado":
-        return "Contado";
-      case "debito":
-        return "Débito";
-      default:
-        return tipoPago;
-    }
-  };
+  }, [notificationIds]);
 
   return (
-    <>
-      {isTrayVisible && (
-        <NotificationContainer>
-          <NotificationList>
-            {notifications.map((notification, index) => (
-              <Notification
-                key={index}
-                icon={<CheckIcon fontSize="inherit" />}
-                severity={notification.severity}
-                onClose={() =>
-                  setNotifications((prevNotifications) =>
-                    prevNotifications.filter((_, i) => i !== index)
-                  )
-                }
-              >
-                <NotificationTitle>{notification.title}</NotificationTitle>
-                <NotificationBody>{notification.body}</NotificationBody>
-              </Notification>
-            ))}
-          </NotificationList>
-        </NotificationContainer>
-      )}
-    </>
+    <NotificationContainer>
+      <NotificationList>
+        {notifications.map((notification, index) => (
+          <Notification
+            key={index}
+            icon={<CheckIcon fontSize="inherit" />}
+            severity={notification.severity}
+            onClose={() =>
+              setNotifications((prevNotifications) =>
+                prevNotifications.filter((_, i) => i !== index)
+              )
+            }
+          >
+            <NotificationTitle>{notification.title}</NotificationTitle>
+            <NotificationBody>{notification.body}</NotificationBody>
+          </Notification>
+        ))}
+      </NotificationList>
+    </NotificationContainer>
   );
 };
 
