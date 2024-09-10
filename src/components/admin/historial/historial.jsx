@@ -26,8 +26,8 @@ const HistorialVentas = () => {
 
     switch (selectedOption) {
       case "dia":
-        startDate = new Date(selectedDate);
-        endDate = new Date(selectedDate);
+        startDate = formatDate(new Date(selectedDate));
+        endDate = formatDate(new Date(selectedDate));
         break;
       case "semana":
         startDate = new Date(selectedDate);
@@ -94,7 +94,7 @@ const HistorialVentas = () => {
   const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2);
+    const year = date.getFullYear().toString().slice(-2); // 'AA'
     return `${day}/${month}/${year}`;
   };
 
