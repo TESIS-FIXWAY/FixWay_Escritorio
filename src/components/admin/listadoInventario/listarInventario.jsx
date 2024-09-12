@@ -47,8 +47,8 @@ const ListarInventario = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
-  const [totalInventario, setTotalInventario] = useState(0); 
-  const [totalDetalle, setTotalDetalle] = useState(0); 
+  const [totalInventario, setTotalInventario] = useState(0);
+  const [totalDetalle, setTotalDetalle] = useState(0);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -132,7 +132,7 @@ const ListarInventario = () => {
           origen,
           cantidad,
           costo,
-          precioDetalle, 
+          precioDetalle,
         } = item;
 
         return (
@@ -172,19 +172,18 @@ const ListarInventario = () => {
 
   const calcularTotalInventario = (inventarioData) => {
     const total = inventarioData.reduce((acc, item) => {
-      return acc + item.cantidad * item.costo; 
+      return acc + item.cantidad * item.costo;
     }, 0);
-    setTotalInventario(total); 
+    setTotalInventario(total);
   };
 
   const calcularTotalDetalle = (inventarioData) => {
     const total = inventarioData.reduce((acc, item) => {
-      const precioDetalle = parseFloat(item.precioDetalle) || 0; // Asegúrate de que sea un número
-      return acc + (item.cantidad * precioDetalle); 
+      const precioDetalle = parseFloat(item.precioDetalle) || 0;
+      return acc + item.cantidad * precioDetalle;
     }, 0);
-    setTotalDetalle(total); 
+    setTotalDetalle(total);
   };
-  
 
   const formatoDinero = (amount) => {
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
@@ -202,10 +201,18 @@ const ListarInventario = () => {
           >
             Inventario
           </Typography>
-          <Typography variant="h6" textAlign="center" className="total-inventario">
+          <Typography
+            variant="h6"
+            textAlign="center"
+            className="total-inventario"
+          >
             Total Inventario: $ {formatoDinero(totalInventario)}
           </Typography>
-          <Typography variant="h6" textAlign="center" className="total-inventario">
+          <Typography
+            variant="h6"
+            textAlign="center"
+            className="total-inventario"
+          >
             Total Detalle: $ {formatoDinero(totalDetalle)}
           </Typography>
 
@@ -267,10 +274,9 @@ const ListarInventario = () => {
                   <TableCell>Producto</TableCell>
                   <TableCell>Categoría</TableCell>
                   <TableCell>Vehículo</TableCell>
-                  <TableCell>Marca</TableCell>
-                  <TableCell>Origen</TableCell>
+                  <TableCell>Marca | Origen</TableCell>
                   <TableCell>Cantidad</TableCell>
-                  <TableCell>Precio Detalle</TableCell> 
+                  <TableCell>Precio Detalle</TableCell>
                   <TableCell>Precio Venta</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
@@ -282,16 +288,20 @@ const ListarInventario = () => {
                     style={getRowStyle(inventario.cantidad)}
                   >
                     <TableCell>
-                      {inventario.anoProductoUsoInicio}-{inventario.anoProductoUsoFin}
+                      {inventario.anoProductoUsoInicio}-
+                      {inventario.anoProductoUsoFin}
                     </TableCell>
                     <TableCell>{inventario.codigoProducto}</TableCell>
                     <TableCell>{inventario.nombreProducto}</TableCell>
                     <TableCell>{inventario.categoria}</TableCell>
                     <TableCell>{inventario.marcaAutomovil}</TableCell>
-                    <TableCell>{inventario.marcaProducto}</TableCell>
-                    <TableCell>{inventario.origen}</TableCell>
+                    <TableCell>
+                      {inventario.marcaProducto} | {inventario.origen}
+                    </TableCell>
                     <TableCell>{inventario.cantidad}</TableCell>
-                    <TableCell>$ {formatoDinero(inventario.precioDetalle)}</TableCell>
+                    <TableCell>
+                      $ {formatoDinero(inventario.precioDetalle)}
+                    </TableCell>
                     <TableCell>$ {formatoDinero(inventario.costo)}</TableCell>
                     <TableCell>
                       {editingInventarioId === inventario.id ? (

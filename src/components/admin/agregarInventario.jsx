@@ -2,7 +2,7 @@ import "../styles/darkMode.css";
 import React, { useState, useContext } from "react";
 import Admin from "./admin";
 import { DarkModeContext } from "../../context/darkMode";
-import { db, storage } from "../../dataBase/firebase"; // Asegúrate de exportar `storage` desde tu archivo de configuración de Firebase
+import { db, storage } from "../../dataBase/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TextField from "@mui/material/TextField";
@@ -28,33 +28,45 @@ const AgregarInventario = () => {
     anoProductoUsoInicio: "",
     anoProductoUsoFin: "",
     marcaProducto: "",
-    precioDetalle: "", 
-    imagenURL: "" 
+    precioDetalle: "",
+    imagenURL: "",
   });
   const [imageFile, setImageFile] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
-  
+
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImageFile(e.target.files[0]);
     }
   };
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
-  
+
     const cantidad = formData.cantidad.replace(/[^0-9]/g, "");
     const costo = parseInt(formData.costo.replace(/\./g, ""), 10);
+    const precioDetalle = parseInt(
+      formData.precioDetalle.replace(/\./g, ""),
+      10
+    );
     const id = formData.codigoProducto;
-  
-    let imagenURL = ""; // Definir imagenURL antes de usarlo
-  
+
+    let imagenURL = "";
+
     if (imageFile) {
       const imageRef = ref(storage, `images/${imageFile.name}`);
+
+      const metadata = {
+        customMetadata: {
+          nombreProducto: formData.nombreProducto,
+          marcaProducto: formData.marcaProducto,
+        },
+      };
+
       try {
-        await uploadBytes(imageRef, imageFile);
+        await uploadBytes(imageRef, imageFile, metadata);
         imagenURL = await getDownloadURL(imageRef);
       } catch (error) {
         console.error("Error al subir la imagen: ", error);
@@ -62,15 +74,16 @@ const AgregarInventario = () => {
         return;
       }
     }
-  
+
     const data = {
       ...formData,
       cantidad,
       costo,
+      precioDetalle,
       id,
-      imagenURL, // Utiliza imagenURL aquí
+      imagenURL,
     };
-  
+
     try {
       await setDoc(doc(db, "inventario", id), data);
       setFormData({
@@ -86,7 +99,7 @@ const AgregarInventario = () => {
         anoProductoUsoFin: "",
         marcaProducto: "",
         precioDetalle: "",
-        imagenURL: "", // Reiniciar el nuevo campo
+        imagenURL: "",
       });
       setImageFile(null);
       setSuccessMessage("Producto agregado correctamente");
@@ -101,7 +114,7 @@ const AgregarInventario = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "costo") {
+    if (name === "costo" || name === "precioDetalle") {
       const cantidadFormateada = value
         .replace(/[^0-9]/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -110,7 +123,6 @@ const AgregarInventario = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
-
 
   return (
     <>
@@ -244,11 +256,13 @@ const AgregarInventario = () => {
                         "Toyota",
                         "Volkswagen",
                         "Volvo",
-                      ].sort().map((marca) => (
-                        <MenuItem key={marca} value={marca}>
-                          {marca}
-                        </MenuItem>
-                      ))}
+                      ]
+                        .sort()
+                        .map((marca) => (
+                          <MenuItem key={marca} value={marca}>
+                            {marca}
+                          </MenuItem>
+                        ))}
                     </Select>
                   </FormControl>
                 </p>
@@ -262,7 +276,7 @@ const AgregarInventario = () => {
                     }`}
                     id="costo"
                     required
-                    type="text"
+                    type="number"
                     name="costo"
                     value={formData.costo}
                     onChange={handleChange}
@@ -278,7 +292,7 @@ const AgregarInventario = () => {
                       isDarkMode ? "dark-mode" : ""
                     }`}
                     id="precioDetalle"
-                    type="text"
+                    type="number"
                     name="precioDetalle"
                     value={formData.precioDetalle}
                     onChange={handleChange}
@@ -321,7 +335,7 @@ const AgregarInventario = () => {
                 </p>
                 <p>
                   <FormControl
-                    sx={{ height: "30px", marginTop: "20px", width: "225px" }}
+                    sx={{ height: "30px", marginTop: "20px", width: "259px" }}
                   >
                     <InputLabel id="categoria-label">
                       Seleccione Categoría
@@ -431,7 +445,6 @@ const AgregarInventario = () => {
                     placeholder="Marca Producto"
                   />
                 </p>
-                
                 <p>
                   <br />
                   <input
@@ -444,19 +457,6 @@ const AgregarInventario = () => {
                 <p className="block_boton">
                   {successMessage && (
                     <Alert severity="success" icon={<CheckCircleIcon />}>
-                      {successMessage}
-                    </Alert>
-                  )}
-                  {errorMessage && (
-                    <Alert severity="error" icon={<CloseIcon />}>
-                      {errorMessage}
-                    </Alert>
-                  )}
-                </p>
-                
-                <p className="block_boton">
-                  {successMessage && (
-                  <Alert severity="success" icon={<CheckCircleIcon />}>
                       {successMessage}
                     </Alert>
                   )}
