@@ -32,6 +32,7 @@ const AgregarInventario = () => {
     imagenURL: "",
   });
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
@@ -39,6 +40,13 @@ const AgregarInventario = () => {
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImageFile(e.target.files[0]);
+
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -56,7 +64,11 @@ const AgregarInventario = () => {
     let imagenURL = "";
 
     if (imageFile) {
-      const imageRef = ref(storage, `images/${imageFile.name}`);
+      const fileName = `${formData.nombreProducto}-${
+        formData.marcaProducto
+      }-${Date.now()}.${imageFile.name.split(".").pop()}`;
+
+      const imageRef = ref(storage, `images/${fileName}`);
 
       const metadata = {
         customMetadata: {
@@ -102,6 +114,7 @@ const AgregarInventario = () => {
         imagenURL: "",
       });
       setImageFile(null);
+      setImagePreview(null);
       setSuccessMessage("Producto agregado correctamente");
       setTimeout(() => {
         setSuccessMessage("");
@@ -385,9 +398,13 @@ const AgregarInventario = () => {
                       <MenuItem value={"Sistema de Refrigeración"}>
                         Sistema de Refrigeración
                       </MenuItem>
+                      <MenuItem value={"Iluminación y Electricidad"}>
+                        Iluminación y Electricidad
+                      </MenuItem>
                       <MenuItem value={"Accesorios y Personalización"}>
                         Accesorios y Personalización
                       </MenuItem>
+                      <MenuItem value={"Neumáticos"}>Neumáticos</MenuItem>
                       <MenuItem value={"Herramientas y Equipos"}>
                         Herramientas y Equipos
                       </MenuItem>
@@ -404,7 +421,7 @@ const AgregarInventario = () => {
                     }`}
                     id="anoProductoUsoInicio"
                     required
-                    type="text"
+                    type="number"
                     name="anoProductoUsoInicio"
                     value={formData.anoProductoUsoInicio}
                     onChange={handleChange}
@@ -421,7 +438,7 @@ const AgregarInventario = () => {
                     }`}
                     id="anoProductoUsoFin"
                     required
-                    type="text"
+                    type="number"
                     name="anoProductoUsoFin"
                     value={formData.anoProductoUsoFin}
                     onChange={handleChange}
@@ -453,6 +470,15 @@ const AgregarInventario = () => {
                     id="imagen"
                     onChange={handleImageChange}
                   />
+                  {imagePreview && (
+                    <div>
+                      <img
+                        src={imagePreview}
+                        alt="Vista previa"
+                        style={{ width: "100px", height: "auto" }}
+                      />
+                    </div>
+                  )}
                 </p>
                 <p className="block_boton">
                   {successMessage && (
