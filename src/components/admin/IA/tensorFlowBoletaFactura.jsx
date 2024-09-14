@@ -18,21 +18,43 @@ const BoletasFacturasIA = () => {
   const [futurePredictions, setFuturePredictions] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
+    const unsubscribeBoletas = onSnapshot(
       query(collection(db, "misBoletas")),
       (querySnapshot) => {
         const boletasData = querySnapshot.docs.map((doc) => ({
           fecha: doc.data().fecha,
           tipoPago: doc.data().tipoPago,
-          totalCompra: parseFloat(doc.data().total) || 0,
+          totalCompra: Math.max(parseFloat(doc.data().total) || 0, 0),
         }));
-        setData(boletasData);
-        procesarDatos(boletasData);
+        setData((prevData) => [...prevData, ...boletasData]);
+        procesarDatos([...data, ...boletasData]);
+      },
+      (error) => {
+        console.error("Error al obtener datos de Firebase:", error);
       }
     );
 
-    return () => unsubscribe();
-  }, []);
+    const unsubscribeFacturas = onSnapshot(
+      query(collection(db, "misFacturas")),
+      (querySnapshot) => {
+        const facturasData = querySnapshot.docs.map((doc) => ({
+          fecha: doc.data().fecha,
+          tipoPago: doc.data().tipoPago,
+          totalCompra: Math.max(parseFloat(doc.data().total) || 0, 0),
+        }));
+        setData((prevData) => [...prevData, ...facturasData]);
+        procesarDatos([...data, ...facturasData]);
+      },
+      (error) => {
+        console.error("Error al obtener datos de Firebase:", error);
+      }
+    );
+
+    return () => {
+      unsubscribeBoletas();
+      unsubscribeFacturas();
+    };
+  }, [data]);
 
   const procesarDatos = (data) => {
     const ventasPorMes = agruparPorMes(data);
@@ -43,11 +65,12 @@ const BoletasFacturasIA = () => {
     const ventasPorMes = {};
 
     data.forEach((item) => {
-      const mes = item.fecha.slice(3, 10);
-      if (!ventasPorMes[mes]) {
-        ventasPorMes[mes] = { totalCompra: 0 };
+      const [dia, mes, año] = item.fecha.split("/");
+      const mesFormateado = `${mes}/${año}`;
+      if (!ventasPorMes[mesFormateado]) {
+        ventasPorMes[mesFormateado] = { totalCompra: 0 };
       }
-      ventasPorMes[mes].totalCompra += item.totalCompra;
+      ventasPorMes[mesFormateado].totalCompra += item.totalCompra;
     });
 
     return Object.keys(ventasPorMes).map((mes) => ({
@@ -58,64 +81,93 @@ const BoletasFacturasIA = () => {
 
   const entrenarModelo = async (ventasPorMes) => {
     try {
-      const meses = ventasPorMes.map((item) => [
-        parseInt(item.mes.slice(0, 2)),
-      ]);
+      ventasPorMes.sort((a, b) => {
+        const [mesA, añoA] = a.mes.split("/").map(Number);
+        const [mesB, añoB] = b.mes.split("/").map(Number);
+        if (añoA === añoB) return mesA - mesB;
+        return añoA - añoB;
+      });
+
+      const meses = ventasPorMes.map((item, index) => [index + 1]);
       const totalCompra = ventasPorMes.map((item) => item.totalCompra);
 
       const inputTensor = tf.tensor2d(meses);
-      const targetTensor = tf.tensor2d(totalCompra, [totalCompra.length, 1]);
+      const labelTensor = tf.tensor2d(totalCompra, [totalCompra.length, 1]);
 
+      // Crear el modelo
       const model = tf.sequential();
       model.add(
-        tf.layers.dense({ units: 10, inputShape: [1], activation: "relu" })
+        tf.layers.dense({
+          units: 10,
+          inputShape: [1],
+          activation: "relu",
+        })
       );
-      model.add(tf.layers.dense({ units: 1 }));
+      model.add(
+        tf.layers.dense({
+          units: 1,
+          activation: "relu",
+        })
+      );
 
       model.compile({ loss: "meanSquaredError", optimizer: "adam" });
 
-      await model.fit(inputTensor, targetTensor, { epochs: 10 });
+      await model.fit(inputTensor, labelTensor, { epochs: 100, batchSize: 10 });
 
-      const futureMeses = tf.tensor2d([
-        [8],
-        [9],
-        [10],
-        [11],
-        [12],
-        [1],
-        [2],
-        [3],
-        [4],
-        [5],
-        [6],
-        [7],
-      ]);
-      const predictions = model.predict(futureMeses).arraySync();
+      const ultimoIndice = meses.length;
+      const futureMeses = [];
+      for (let i = 1; i <= 12; i++) {
+        futureMeses.push([ultimoIndice + i]);
+      }
 
-      setFuturePredictions(
-        predictions.map((pred, index) => ({
+      const futureTensor = tf.tensor2d(futureMeses);
+      const predictions = model.predict(futureTensor).arraySync();
+
+      const mesesFuturos = obtenerMesesFuturos(ventasPorMes);
+
+      const predictionsFormatted = predictions.map((pred, index) => {
+        const valorPredicho = Math.max(pred[0], 0); // Asegúrate de que el valor sea positivo
+        return {
           id: `future-month-${index + 1}`,
-          mes: obtenerMeses()[index],
-          totalCompra: pred[0] || 0,
-          anomaly: pred[0] > 100000 ? "Anomalía predicha" : "Normal",
-        }))
-      );
+          mes: mesesFuturos[index],
+          totalCompra: valorPredicho,
+          anomaly: valorPredicho > 100000 ? "Anomalía predicha" : "Normal",
+        };
+      });
+
+      setFuturePredictions(predictionsFormatted);
     } catch (error) {
-      console.error("Error processing data with TensorFlow:", error);
+      console.error("Error al procesar datos con TensorFlow:", error);
     }
   };
 
-  const obtenerMeses = () => {
+  const obtenerMesesFuturos = (ventasPorMes) => {
     const meses = [];
-    let año = 24;
-    for (let i = 8; i <= 12; i++) {
-      meses.push(`${i}/${año}`);
-    }
-    año = 25;
+    if (ventasPorMes.length === 0) return meses;
+
+    const ultimoMesAño = ventasPorMes[ventasPorMes.length - 1].mes.split("/");
+    let mes = parseInt(ultimoMesAño[0]);
+    let año = parseInt(ultimoMesAño[1]);
+
     for (let i = 1; i <= 12; i++) {
-      meses.push(`${i}/${año}`);
+      mes += 1;
+      if (mes > 12) {
+        mes = 1;
+        año += 1;
+      }
+      meses.push(`${mes}/${año}`);
     }
+
     return meses;
+  };
+
+  const formatearCLP = (numero) => {
+    return new Intl.NumberFormat("es-CL", {
+      style: "currency",
+      currency: "CLP",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numero);
   };
 
   return (
@@ -135,13 +187,21 @@ const BoletasFacturasIA = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {futurePredictions.map((pred, index) => (
-              <TableRow key={index}>
-                <TableCell>{pred.mes}</TableCell>
-                <TableCell>${pred.totalCompra.toFixed(2)}</TableCell>
-                <TableCell>{pred.anomaly}</TableCell>
+            {futurePredictions.length > 0 ? (
+              futurePredictions.map((pred) => (
+                <TableRow key={pred.id}>
+                  <TableCell>{pred.mes}</TableCell>
+                  <TableCell>{formatearCLP(pred.totalCompra)}</TableCell>
+                  <TableCell>{pred.anomaly}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  No hay predicciones disponibles
+                </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </TableContainer>

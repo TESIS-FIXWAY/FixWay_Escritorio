@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import * as tf from "@tensorflow/tfjs";
 import { DarkModeContext } from "../../../context/darkMode";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../../dataBase/firebase";
@@ -11,14 +10,14 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { format } from "date-fns";
+import * as tf from "@tensorflow/tfjs";
 
 const InventarioIA = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [inventario, setInventario] = useState([]);
-  const [productoMasVendido, setProductoMasVendido] = useState(null);
-  const [diasParaReponer, setDiasParaReponer] = useState(null);
-  const [productosObsoletos, setProductosObsoletos] = useState([]);
-  const [clasificaciones, setClasificaciones] = useState([]);
+  const [ventasMensuales, setVentasMensuales] = useState([]);
+  const [ventasPrediccion, setVentasPrediccion] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -29,13 +28,7 @@ const InventarioIA = () => {
           ...doc.data(),
         }));
         setInventario(inventarioData);
-
-        const masVendido = encontrarProductoMasVendido(inventarioData);
-        setProductoMasVendido(masVendido);
-
-        predecirDiasParaReponer(masVendido);
-        detectarProductosObsoletos(inventarioData);
-        clasificarProductos(inventarioData);
+        calcularVentasMensuales(inventarioData);
       },
       (error) => {
         console.error("Error fetching inventory data:", error);
@@ -45,123 +38,63 @@ const InventarioIA = () => {
     return () => unsubscribe();
   }, []);
 
-  const encontrarProductoMasVendido = (inventario) => {
-    return inventario.reduce(
-      (max, item) => (item.cantidadVendida > max.cantidadVendida ? item : max),
-      inventario[0]
-    );
-  };
+  const calcularVentasMensuales = (inventario) => {
+    const ventasPorMes = {};
 
-  const predecirDiasParaReponer = async (producto) => {
-    try {
-      const data = inventario
-        .map((item) => ({
-          cantidadVendida: parseFloat(item.cantidadVendida),
-          cantidad: parseFloat(item.cantidad),
-          diasEnStock: parseFloat(item.diasEnStock),
-        }))
-        .filter(
-          (item) =>
-            !isNaN(item.cantidadVendida) &&
-            !isNaN(item.cantidad) &&
-            !isNaN(item.diasEnStock)
-        );
+    inventario.forEach((item) => {
+      const fechaVenta = new Date(item.fechaVenta);
+      const mes = format(fechaVenta, "yyyy-MM");
 
-      if (data.length === 0) {
-        console.error("No hay datos válidos para entrenar el modelo.");
-        return;
+      if (!ventasPorMes[mes]) {
+        ventasPorMes[mes] = 0;
       }
-
-      const maxCantidadVendida = Math.max(
-        ...data.map((item) => item.cantidadVendida)
-      );
-      const maxCantidad = Math.max(...data.map((item) => item.cantidad));
-      const maxDiasEnStock = Math.max(...data.map((item) => item.diasEnStock));
-
-      const normalizedData = data.map((item) => ({
-        cantidadVendida: item.cantidadVendida / maxCantidadVendida,
-        cantidad: item.cantidad / maxCantidad,
-        diasEnStock: item.diasEnStock / maxDiasEnStock,
-      }));
-
-      const inputTensor = tf.tensor2d(
-        normalizedData.map((item) => [
-          item.cantidadVendida,
-          item.cantidad,
-          item.diasEnStock,
-        ]),
-        [normalizedData.length, 3]
-      );
-
-      const targetTensor = tf.tensor2d(
-        normalizedData.map((item) => [item.cantidad]),
-        [normalizedData.length, 1]
-      );
-
-      const model = tf.sequential();
-      model.add(
-        tf.layers.dense({ units: 10, inputShape: [3], activation: "relu" })
-      );
-      model.add(tf.layers.dense({ units: 1, activation: "linear" }));
-
-      model.compile({ loss: "meanSquaredError", optimizer: "sgd" });
-
-      await model.fit(inputTensor, targetTensor, { epochs: 10 });
-
-      const normalizedProduct = {
-        cantidadVendida: producto.cantidadVendida / maxCantidadVendida,
-        cantidad: producto.cantidad / maxCantidad,
-        diasEnStock: producto.diasEnStock / maxDiasEnStock,
-      };
-
-      const prediction = model
-        .predict(
-          tf.tensor2d(
-            [
-              [
-                normalizedProduct.cantidadVendida,
-                normalizedProduct.cantidad,
-                normalizedProduct.diasEnStock,
-              ],
-            ],
-            [1, 3]
-          )
-        )
-        .dataSync();
-
-      const diasEstimados = prediction[0] * maxDiasEnStock;
-      setDiasParaReponer(diasEstimados);
-    } catch (error) {
-      console.error("Error processing data with TensorFlow:", error);
-    }
-  };
-
-  const detectarProductosObsoletos = (inventario) => {
-    const obsoletos = inventario.filter(
-      (item) => item.cantidadVendida === 0 && item.diasEnStock > 30
-    );
-    setProductosObsoletos(obsoletos);
-  };
-
-  const clasificarProductos = (inventario) => {
-    const clasificaciones = inventario.map((item) => {
-      const { cantidadVendida, diasEnStock } = item;
-      if (cantidadVendida / diasEnStock > 1) {
-        return { ...item, categoria: "Fast-Moving" };
-      } else if (cantidadVendida / diasEnStock > 0.5) {
-        return { ...item, categoria: "Slow-Moving" };
-      } else {
-        return { ...item, categoria: "Obsoleto" };
-      }
+      ventasPorMes[mes] += item.cantidadVendida;
     });
-    setClasificaciones(clasificaciones);
+
+    const ventasArray = Object.entries(ventasPorMes).map(([mes, ventas]) => ({
+      mes,
+      ventas,
+    }));
+
+    setVentasMensuales(ventasArray);
+
+    entrenarModelo(ventasArray);
+  };
+
+  const entrenarModelo = async (ventasData) => {
+    const xs = ventasData.map((_, idx) => idx);
+    const ys = ventasData.map((venta) => venta.ventas);
+    const inputTensor = tf.tensor2d(xs, [xs.length, 1]);
+    const labelTensor = tf.tensor2d(ys, [ys.length, 1]);
+
+    const model = tf.sequential();
+    model.add(
+      tf.layers.dense({ units: 50, activation: "relu", inputShape: [1] })
+    );
+    model.add(tf.layers.dense({ units: 1 }));
+
+    model.compile({ optimizer: "adam", loss: "meanSquaredError" });
+
+    await model.fit(inputTensor, labelTensor, {
+      epochs: 100,
+      batchSize: 10,
+    });
+
+    const predicciones = [];
+    for (let i = xs.length; i < xs.length + 3; i++) {
+      const prediccion = model.predict(tf.tensor2d([i], [1, 1]));
+      const valorPrediccion = await prediccion.data();
+      predicciones.push(valorPrediccion[0]);
+    }
+
+    setVentasPrediccion(predicciones);
   };
 
   return (
     <>
       <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
         <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
-          <h2>Recomendación por Producto Más Vendido</h2>
+          <h2>Ventas por Mes</h2>
         </div>
         <TableContainer
           className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}
@@ -169,28 +102,22 @@ const InventarioIA = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Producto</TableCell>
-                <TableCell>Cantidad Actual</TableCell>
-                <TableCell>Cantidad Vendida</TableCell>
-                <TableCell>Predicción (Días para Reponer)</TableCell>
+                <TableCell>Mes</TableCell>
+                <TableCell>Ventas</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {productoMasVendido ? (
-                <TableRow key={productoMasVendido.id}>
-                  <TableCell>{productoMasVendido.nombreProducto}</TableCell>
-                  <TableCell>{productoMasVendido.cantidad}</TableCell>
-                  <TableCell>{productoMasVendido.cantidadVendida}</TableCell>
-                  <TableCell>
-                    {diasParaReponer !== null
-                      ? `${Math.round(diasParaReponer)} días`
-                      : "Calculando..."}
-                  </TableCell>
-                </TableRow>
+              {ventasMensuales.length > 0 ? (
+                ventasMensuales.map((venta) => (
+                  <TableRow key={venta.mes}>
+                    <TableCell>{venta.mes}</TableCell>
+                    <TableCell>{venta.ventas}</TableCell>
+                  </TableRow>
+                ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} align="center">
-                    No hay datos disponibles
+                  <TableCell colSpan={2} align="center">
+                    No hay datos de ventas mensuales
                   </TableCell>
                 </TableRow>
               )}
@@ -201,7 +128,7 @@ const InventarioIA = () => {
 
       <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
         <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
-          <h2>Productos Obsoletos</h2>
+          <h2>Predicción de Ventas (Próximos 3 Meses)</h2>
         </div>
         <TableContainer
           className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}
@@ -209,62 +136,22 @@ const InventarioIA = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Producto</TableCell>
-                <TableCell>Cantidad Actual</TableCell>
-                <TableCell>Días en Stock</TableCell>
+                <TableCell>Mes Futuro</TableCell>
+                <TableCell>Ventas Predichas</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {productosObsoletos.length > 0 ? (
-                productosObsoletos.map((producto) => (
-                  <TableRow key={producto.id}>
-                    <TableCell>{producto.nombreProducto}</TableCell>
-                    <TableCell>{producto.cantidad}</TableCell>
-                    <TableCell>{producto.diasEnStock}</TableCell>
+              {ventasPrediccion.length > 0 ? (
+                ventasPrediccion.map((prediccion, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{`Mes ${index + 1}`}</TableCell>
+                    <TableCell>{prediccion.toFixed(2)}</TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} align="center">
-                    No hay productos obsoletos
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-
-      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
-        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
-          <h2>Clasificación de Productos</h2>
-        </div>
-        <TableContainer
-          className={`custom-table-container ${isDarkMode ? "dark-mode" : ""}`}
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Producto</TableCell>
-                <TableCell>Cantidad Actual</TableCell>
-                <TableCell>Cantidad Vendida</TableCell>
-                <TableCell>Categoría</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {clasificaciones.length > 0 ? (
-                clasificaciones.map((producto) => (
-                  <TableRow key={producto.id}>
-                    <TableCell>{producto.nombreProducto}</TableCell>
-                    <TableCell>{producto.cantidad}</TableCell>
-                    <TableCell>{producto.cantidadVendida}</TableCell>
-                    <TableCell>{producto.categoria}</TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4} align="center">
-                    No hay productos clasificados
+                  <TableCell colSpan={2} align="center">
+                    No hay predicciones disponibles
                   </TableCell>
                 </TableRow>
               )}

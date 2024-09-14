@@ -20,20 +20,31 @@ const HistorialVentas = () => {
     fetchData();
   }, [selectedDate, selectedOption]);
 
+  const formatDateToFirestore = (date) => {
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day}/${month}/${year}`;
+  };
+
   const fetchData = async () => {
     const historialCollection = collection(db, "historialVentas");
     let startDate, endDate;
 
     switch (selectedOption) {
       case "dia":
-        startDate = formatDate(new Date(selectedDate));
-        endDate = formatDate(new Date(selectedDate));
+        startDate = new Date(selectedDate);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = new Date(selectedDate);
+        endDate.setHours(23, 59, 59, 999);
         break;
       case "semana":
         startDate = new Date(selectedDate);
         startDate.setDate(selectedDate.getDate() - selectedDate.getDay());
+        startDate.setHours(0, 0, 0, 0);
         endDate = new Date(selectedDate);
         endDate.setDate(selectedDate.getDate() + (6 - selectedDate.getDay()));
+        endDate.setHours(23, 59, 59, 999);
         break;
       case "mes":
         startDate = new Date(
@@ -41,25 +52,33 @@ const HistorialVentas = () => {
           selectedDate.getMonth(),
           1
         );
+        startDate.setHours(0, 0, 0, 0);
         endDate = new Date(
           selectedDate.getFullYear(),
           selectedDate.getMonth() + 1,
           0
         );
+        endDate.setHours(23, 59, 59, 999);
         break;
       case "trimestre":
         const trimestre = getTrimestre(selectedDate.getMonth());
         startDate = new Date(selectedDate.getFullYear(), trimestre * 3, 1);
+        startDate.setHours(0, 0, 0, 0);
         endDate = new Date(selectedDate.getFullYear(), trimestre * 3 + 3, 0);
+        endDate.setHours(23, 59, 59, 999);
         break;
       case "semestre":
         const semestre = getSemestre(selectedDate.getMonth());
         startDate = new Date(selectedDate.getFullYear(), semestre * 6, 1);
+        startDate.setHours(0, 0, 0, 0);
         endDate = new Date(selectedDate.getFullYear(), semestre * 6 + 6, 0);
+        endDate.setHours(23, 59, 59, 999);
         break;
       case "año":
         startDate = new Date(selectedDate.getFullYear(), 0, 1);
+        startDate.setHours(0, 0, 0, 0);
         endDate = new Date(selectedDate.getFullYear(), 11, 31);
+        endDate.setHours(23, 59, 59, 999);
         break;
       default:
         startDate = new Date(selectedDate);
@@ -67,10 +86,13 @@ const HistorialVentas = () => {
         break;
     }
 
+    const formattedStartDate = formatDateToFirestore(startDate);
+    const formattedEndDate = formatDateToFirestore(endDate);
+
     const q = query(
       historialCollection,
-      where("fecha", ">=", formatDate(startDate)),
-      where("fecha", "<=", formatDate(endDate))
+      where("fecha", ">=", formattedStartDate),
+      where("fecha", "<=", formattedEndDate)
     );
 
     const historialSnapshot = await getDocs(q);
@@ -89,13 +111,6 @@ const HistorialVentas = () => {
       (doc) => doc.data().tipo === "Factura"
     ).length;
     setCantidadFacturas(facturas);
-  };
-
-  const formatDate = (date) => {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2); // 'AA'
-    return `${day}/${month}/${year}`;
   };
 
   const handleDateChange = (date) => {

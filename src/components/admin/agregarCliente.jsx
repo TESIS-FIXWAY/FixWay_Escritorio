@@ -126,12 +126,6 @@ const CrearCliente = () => {
                 onBlur={validarRutOnChange}
                 className={`input_formulario ${isDarkMode ? "dark-mode" : ""}`}
               />
-            </p>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              className={isDarkMode ? "dark-mode" : ""}
-            >
               {successMessage && (
                 <Alert severity="success" icon={<CheckCircleIcon />}>
                   {successMessage}
@@ -142,7 +136,7 @@ const CrearCliente = () => {
                   {errorMessage}
                 </Alert>
               )}
-            </Typography>
+            </p>
             <p>
               <br />
               <TextField
@@ -188,7 +182,7 @@ const CrearCliente = () => {
                 sx={{
                   marginTop: "110px",
                   fontSize: "18px",
-                  right: "100px",
+                  left: "199px",
                 }}
               >
                 Agregar Cliente
