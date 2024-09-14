@@ -207,9 +207,11 @@ const AgregarInventario = () => {
                     placeholder="Descripción"
                   />
                 </p>
+                
                 <p>
                   <FormControl
-                    sx={{ height: "30px", marginTop: "20px", width: "225px" }}
+                    sx={{ marginTop: "20px" }}
+                    className="input_formulario"
                   >
                     <InputLabel id="marcaAutomovil-label">
                       Marca Automóvil
@@ -348,7 +350,8 @@ const AgregarInventario = () => {
                 </p>
                 <p>
                   <FormControl
-                    sx={{ height: "30px", marginTop: "20px", width: "259px" }}
+                    sx={{ marginTop: "20px" }}
+                    className="input_formulario"                  
                   >
                     <InputLabel id="categoria-label">
                       Seleccione Categoría
@@ -465,6 +468,8 @@ const AgregarInventario = () => {
                 <p>
                   <br />
                   <input
+                    sx={{ marginTop: "20px" }}
+                    className="input_formulario"  
                     accept="image/*"
                     type="file"
                     id="imagen"
