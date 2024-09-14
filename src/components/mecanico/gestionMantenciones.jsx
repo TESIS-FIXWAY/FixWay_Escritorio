@@ -5,10 +5,7 @@ import {
   onSnapshot,
   doc,
   updateDoc,
-  setDoc,
   getDocs,
-  increment,
-  runTransaction,
 } from "firebase/firestore";
 import Mecanico from "./mecanico";
 import { DarkModeContext } from "../../context/darkMode";
@@ -86,59 +83,34 @@ const GestionMantenciones = () => {
     fetchData();
   }, [currentUser]);
 
-  const addMaintenanceTask = async (licensePlate, taskData) => {
-    try {
-      // Referencia al documento de la patente
-      const licensePlateDocRef = doc(db, "historialMantencion", licensePlate);
-      // Referencia a la subcolección de tareas bajo el documento de la patente
-      const tasksCollectionRef = collection(licensePlateDocRef, "tareas");
-  
-      await runTransaction(db, async (transaction) => {
-        const licensePlateDoc = await transaction.get(licensePlateDocRef);
-        
-        let newTaskNumber = 1;
-        if (licensePlateDoc.exists()) {
-          const licensePlateData = licensePlateDoc.data();
-          newTaskNumber = (licensePlateData.taskCounter || 0) + 1;
-          transaction.update(licensePlateDocRef, { taskCounter: increment(1) });
-        } else {
-          transaction.set(licensePlateDocRef, { taskCounter: 1 });
-        }
-  
-        const newTaskId = `Causa-${newTaskNumber}`;
-        const newTaskDocRef = doc(tasksCollectionRef, newTaskId);
-        
-        transaction.set(newTaskDocRef, {
-          taskId: newTaskId,
-          ...taskData,
-          createdAt: new Date(),
-        });
-      });
-  
-      console.log(`Causa ${newTaskId} agregada correctamente para la patente ${licensePlate}`);
-    } catch (error) {
-      console.error("Error al agregar la tarea: ", error);
-    }
-  };
-  
-
   const updateTaskStatus = async (task, newStatus) => {
     if (!currentUser) {
       console.error("User not authenticated");
       return;
     }
-
+  
     const taskRef = doc(db, "mantenciones", task.id);
-
+  
     try {
-      await updateDoc(taskRef, {
+      let updateData = {
         estado: newStatus,
-        personaTomadora: currentUser.uid,
-      });
-
+      };
+  
+      // Si el estado es "en proceso", asignamos la personaTomadora
+      if (newStatus === "en proceso") {
+        updateData.personaTomadora = currentUser.uid;
+      }
+  
+      // Si el estado es "terminado", eliminamos la personaTomadora
+      if (newStatus === "terminado") {
+        updateData.personaTomadora = null;
+      }
+  
+      await updateDoc(taskRef, updateData);
+  
       const removeFrom = (tasks, id) => tasks.filter((t) => t.id !== id);
       const addTo = (tasks, task) => [...tasks, task];
-
+  
       switch (newStatus) {
         case "en proceso":
           setBeginTask((prevTodoTasks) => removeFrom(prevTodoTasks, task.id));
@@ -147,11 +119,6 @@ const GestionMantenciones = () => {
           );
           break;
         case "terminado":
-          await addMaintenanceTask(task.patente, {
-            ...task,
-            estado: newStatus,
-          });
-
           setInProgressTasks((prevInProgressTasks) =>
             removeFrom(prevInProgressTasks, task.id)
           );
@@ -166,6 +133,7 @@ const GestionMantenciones = () => {
       console.error("Error updating task status:", error);
     }
   };
+  
 
   const handleTaskExpand = (taskId) => {
     setExpandedTask((prevExpandedTask) =>
@@ -293,8 +261,9 @@ const GestionMantenciones = () => {
               {inProgressTasks.map((task) => (
                 <div
                   key={task.id}
-                  className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${expandedTask === task.id ? "expanded" : ""}`}
+                  className={`task-container ${isDarkMode ? "dark-mode" : ""} ${
+                    expandedTask === task.id ? "expanded" : ""
+                  }`}
                   onClick={() => handleTaskExpand(task.id)}
                 >
                   <ul
@@ -336,10 +305,10 @@ const GestionMantenciones = () => {
                         </li>
                         {expandedTask === task.id && (
                           <button
-                            style={{ backgroundColor: "#019EFF" }}
+                            style={{ backgroundColor: "#00ff0d" }}
                             onClick={() => updateTaskStatus(task, "terminado")}
                           >
-                            Finalizar Tarea
+                            Completar Tarea
                           </button>
                         )}
                       </ul>
@@ -364,7 +333,7 @@ const GestionMantenciones = () => {
                 <div
                   key={task.id}
                   className={`task-container ${isDarkMode ? "dark-mode" : ""}
-                    ${expandedTask === task.id ? "expanded" : ""}`}
+                  ${expandedTask === task.id ? "expanded" : ""}`}
                   onClick={() => handleTaskExpand(task.id)}
                 >
                   <ul
@@ -377,8 +346,7 @@ const GestionMantenciones = () => {
                     >
                       Patente: {task.id}
                     </li>
-                  </ul>
-                  {expandedTask === task.id && (
+                    {expandedTask === task.id && (
                     <>
                       <ul
                         className={`descripcion_lista ${
@@ -400,6 +368,7 @@ const GestionMantenciones = () => {
                       </ul>
                     </>
                   )}
+                  </ul>
                 </div>
               ))}
             </ul>

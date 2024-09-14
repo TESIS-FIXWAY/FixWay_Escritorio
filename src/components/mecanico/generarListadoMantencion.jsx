@@ -25,7 +25,7 @@ const GenerarListadoMantencion = () => {
   useEffect(() => {
     const fetchMantenciones = async () => {
       try {
-        const mantencionesCollection = collection(db, "historialMantencion");
+        const mantencionesCollection = collection(db, "mantenciones");
         const snapshot = await getDocs(mantencionesCollection);
         const mantencionesData = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -87,14 +87,9 @@ const GenerarListadoMantencion = () => {
     // Título
     pdf.setFontSize(24);
     pdf.setTextColor(40, 40, 40);
-    pdf.text(
-      "Historial de Mantenciones",
-      pdf.internal.pageSize.getWidth() / 2,
-      20,
-      {
-        align: "center",
-      }
-    );
+    pdf.text("Mantención", pdf.internal.pageSize.getWidth() / 2, 20, {
+      align: "center",
+    });
 
     // Línea separadora
     const lineSeparatorY = 25;
@@ -254,11 +249,11 @@ const GenerarListadoMantencion = () => {
       rowY += cellHeight;
     });
 
-    // Vertical lines
+    // Vertical lines for product table
     colWidths.reduce((acc, width) => {
-      pdf.line(acc, startY, acc, rowY);
+      pdf.line(acc + startX, startY, acc + startX, rowY);
       return acc + width;
-    }, startX);
+    }, 0);
     pdf.line(
       startX + colWidths.reduce((a, b) => a + b, 0),
       startY,
@@ -274,15 +269,15 @@ const GenerarListadoMantencion = () => {
     }
   };
 
-  const formatDate = (date) => {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2);
-    return `${day}/${month}/${year}`;
+  const formatoKilometraje = (kilometraje) => {
+    return new Intl.NumberFormat().format(kilometraje);
   };
 
-  const formatoKilometraje = (amount) => {
-    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${day}/${month}/${year}`;
   };
 
   return (
