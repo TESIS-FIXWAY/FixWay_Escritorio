@@ -22,7 +22,7 @@ export default function ListadoProductos({
   if (showProductList) {
     return (
       <div className="fondo_no">
-        <div className="editar" style={{ width: "950px" }}>
+        <div className="editar" style={{ width: "1350px" }}>
           <p className="p_editar">Productos Seleccionados</p>
           <TableContainer component={Paper} style={{ maxHeight: "400px" }}>
             <Table stickyHeader>
