@@ -1063,6 +1063,10 @@ const GenerarFactura = () => {
     return cantidad <= 10 ? { backgroundColor: "#ffcccc" } : {};
   };
 
+  const formatoDinero = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
   return (
     <>
       <Admin />
@@ -1190,7 +1194,7 @@ const GenerarFactura = () => {
                     </TableCell>
                     <TableCell>{item.codigoProducto}</TableCell>
                     <TableCell>{item.nombreProducto}</TableCell>
-                    <TableCell>{item.costo}</TableCell>
+                    <TableCell>$ {formatoDinero(item.costo)}</TableCell>
                     <TableCell>{item.cantidad}</TableCell>
                     <TableCell>
                       <input

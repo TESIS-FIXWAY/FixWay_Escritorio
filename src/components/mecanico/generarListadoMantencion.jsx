@@ -40,8 +40,6 @@ const GenerarListadoMantencion = () => {
 
     fetchMantenciones();
   }, []);
-
-  // Función para obtener las patentes únicas
   const obtenerPatentesUnicas = (mantenciones) => {
     const patentesSet = new Set();
     return mantenciones.filter((mantencion) => {
@@ -53,7 +51,6 @@ const GenerarListadoMantencion = () => {
     });
   };
 
-  // Función para filtrar por patente
   const filtrarPatente = (e) => {
     const texto = e.target.value.toLowerCase();
     const mantencionesFiltradas = mantenciones.filter((item) =>
@@ -62,14 +59,12 @@ const GenerarListadoMantencion = () => {
     setPatentesUnicas(obtenerPatentesUnicas(mantencionesFiltradas));
   };
 
-  // Función para generar PDF con todas las mantenciones de una patente
   const generarPDF = (patente, action) => {
     const pdf = new jsPDF();
     const mantencionesPorPatente = mantenciones.filter(
       (mantencion) => mantencion.patente === patente
     );
 
-    // Función para ajustar texto largo
     const wrapText = (text, maxWidth) => {
       const words = text.split(" ");
       let lines = [];
@@ -181,9 +176,6 @@ const GenerarListadoMantencion = () => {
       );
       currentY += rowHeight;
 
-      pdf.text(`Precio: ${mantencion.costoTotal || "N/A"}`, 20, currentY);
-      currentY += rowHeight + 5;
-
       // Línea separadora entre mantenciones
       pdf.setDrawColor(0, 0, 0);
       pdf.line(5, currentY, pdf.internal.pageSize.getWidth() - 5, currentY);
@@ -193,9 +185,9 @@ const GenerarListadoMantencion = () => {
     // Acción de visualización o descarga
     if (action === "visualizar") {
       const url = pdf.output("bloburl");
-      window.open(url, "PDF", "width=900,height=1200"); // Abrir en una nueva ventana
+      window.open(url, "PDF", "width=900,height=1200");
     } else if (action === "descargar") {
-      pdf.save(`mantenciones_${patente}.pdf`); // Descargar
+      pdf.save(`mantenciones_${patente}.pdf`);
     }
   };
 
