@@ -400,6 +400,10 @@ const AgregarMantencion = () => {
                 <MenuItem value={"Herramientas y Equipos"}>
                   Herramientas y Equipos
                 </MenuItem>
+                <MenuItem value={"Iluminacion y Electricidad"}>
+                  Iluminacion y Electricidad
+                </MenuItem>
+                <MenuItem value={"Neumaticos"}>Neumaticos</MenuItem>
               </Select>
             </FormControl>
 

@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Typography } from "@mui/material";
+import Mecanico from "../mecanico/mecanico";
 
 const GenerarListadoMantencion = () => {
   const [mantenciones, setMantenciones] = useState([]);
@@ -128,7 +129,11 @@ const GenerarListadoMantencion = () => {
     const dateString = today.toLocaleDateString();
     pdf.setFontSize(12);
     pdf.setTextColor(100, 100, 100);
-    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 35);
+    pdf.text(
+      `Fecha de Emisión: ${dateString}`,
+      pdf.internal.pageSize.getWidth() - 65,
+      35
+    );
 
     // Tabla de Mantenciones
     let currentY = 45;
@@ -139,21 +144,11 @@ const GenerarListadoMantencion = () => {
         pdf.addPage();
         currentY = 20;
       }
+      currentY += rowHeight;
 
       pdf.setFontSize(14);
       pdf.setTextColor(40, 40, 40);
-      pdf.text(`Patente: ${mantencion.patente || "N/A"}`, 20, currentY);
-      currentY += rowHeight;
-
-      pdf.setFontSize(12);
-      pdf.setTextColor(50, 50, 50);
-      pdf.text(
-        `Fecha: ${formatDate(new Date(mantencion.fecha))}`,
-        20,
-        currentY
-      );
-      currentY += rowHeight;
-
+      pdf.setFont("helvetica", "bold");
       pdf.text(
         `Tipo de Mantención: ${mantencion.tipoMantencion || "N/A"}`,
         20,
@@ -161,7 +156,20 @@ const GenerarListadoMantencion = () => {
       );
       currentY += rowHeight;
 
-      pdf.text(`Descripción: ${mantencion.descripcion || "N/A"}`, 20, currentY);
+      pdf.setFontSize(12);
+      pdf.setTextColor(50, 50, 50);
+      pdf.setFont("helvetica", "normal");
+      const productos = mantencion.productos || [];
+      const data = productos.map((producto) => [
+        producto.nombreProducto || "Desconocido",
+      ]);
+      pdf.text(`Producto: ${data || "N/A"}`, 20, currentY);
+      currentY += rowHeight;
+      pdf.text(
+        `Fecha: ${formatDate(new Date(mantencion.fecha))}`,
+        20,
+        currentY
+      );
       currentY += rowHeight;
 
       pdf.text(
@@ -171,6 +179,9 @@ const GenerarListadoMantencion = () => {
         20,
         currentY
       );
+      currentY += rowHeight;
+
+      pdf.text(`Precio: ${mantencion.costoTotal || "N/A"}`, 20, currentY);
       currentY += rowHeight + 5;
 
       // Línea separadora entre mantenciones
@@ -181,7 +192,8 @@ const GenerarListadoMantencion = () => {
 
     // Acción de visualización o descarga
     if (action === "visualizar") {
-      pdf.output("dataurlnewwindow"); // Abrir en una nueva ventana
+      const url = pdf.output("bloburl");
+      window.open(url, "PDF", "width=900,height=1200"); // Abrir en una nueva ventana
     } else if (action === "descargar") {
       pdf.save(`mantenciones_${patente}.pdf`); // Descargar
     }
@@ -199,73 +211,90 @@ const GenerarListadoMantencion = () => {
   };
 
   return (
-    <Box
-      p={2}
-      sx={{
-        backgroundColor: isDarkMode ? "#1e1e1e" : "#f5f5f5",
-        borderRadius: 2,
-        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <Box mb={2}>
-        <TextField
-          label="Filtrar por Patente"
-          variant="outlined"
-          size="small"
-          fullWidth
-          onChange={filtrarPatente}
-          sx={{
-            mb: 2,
-            backgroundColor: isDarkMode ? "#333" : "#fff",
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: isDarkMode ? "#555" : "#ccc",
-              },
-            },
-          }}
-        />
-      </Box>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Patente</TableCell>
-              <TableCell>Fecha</TableCell>
-              <TableCell>Acciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {patentesUnicas.map((mantencion) => (
-              <TableRow key={mantencion.id}>
-                <TableCell>{mantencion.patente}</TableCell>
-                <TableCell>{formatDate(new Date(mantencion.fecha))}</TableCell>
-                <TableCell>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<VisibilityIcon />}
-                    onClick={() => generarPDF(mantencion.patente, "visualizar")}
-                    sx={{ mr: 1 }}
-                  >
-                    Visualizar PDF
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<DownloadIcon />}
-                    onClick={() => generarPDF(mantencion.patente, "descargar")}
-                  >
-                    Descargar PDF
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+    <>
+      <Mecanico />
+      <div className={`tabla_listar ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`table_header ${isDarkMode ? "dark-mode" : ""}`}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            className={`generarQR_titulo ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            Historial Mantención
+          </Typography>
+          <div>
+            <Box>
+              <TextField
+                onChange={filtrarPatente}
+                type="text"
+                id="Buscar Usuario"
+                label="Buscar Patente"
+                variant="outlined"
+                className={isDarkMode ? "text-field-dark-mode" : ""}
+                sx={{
+                  width: "220px",
+                  height: "55px",
+                  marginTop: "10px",
+                  right: "20px",
+                }}
+              />
+            </Box>
+          </div>
+        </div>
+        <div className={`table_section ${isDarkMode ? "dark-mode" : ""}`}>
+          <TableContainer component={Box}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Patente</TableCell>
+                  <TableCell>Fecha</TableCell>
+                  <TableCell>Kilometraje de Mantención</TableCell>
+                  <TableCell>Acciones</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {patentesUnicas.map((mantencion) => (
+                  <TableRow key={mantencion.id}>
+                    <TableCell>{mantencion.patente}</TableCell>
+                    <TableCell>
+                      {formatDate(new Date(mantencion.fecha))}
+                    </TableCell>
+                    <TableCell>
+                      {formatoKilometraje(mantencion.kilometrajeMantencion)}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<VisibilityIcon />}
+                        onClick={() =>
+                          generarPDF(mantencion.patente, "visualizar")
+                        }
+                        sx={{ mr: 1 }}
+                      >
+                        Visualizar PDF
+                      </Button>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<DownloadIcon />}
+                        onClick={() =>
+                          generarPDF(mantencion.patente, "descargar")
+                        }
+                      >
+                        Descargar PDF
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </div>
+    </>
   );
 };
 

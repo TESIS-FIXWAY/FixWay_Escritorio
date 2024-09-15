@@ -88,29 +88,29 @@ const GestionMantenciones = () => {
       console.error("User not authenticated");
       return;
     }
-  
+
     const taskRef = doc(db, "mantenciones", task.id);
-  
+
     try {
       let updateData = {
         estado: newStatus,
       };
-  
+
       // Si el estado es "en proceso", asignamos la personaTomadora
       if (newStatus === "en proceso") {
         updateData.personaTomadora = currentUser.uid;
       }
-  
+
       // Si el estado es "terminado", eliminamos la personaTomadora
       if (newStatus === "terminado") {
         updateData.personaTomadora = null;
       }
-  
+
       await updateDoc(taskRef, updateData);
-  
+
       const removeFrom = (tasks, id) => tasks.filter((t) => t.id !== id);
       const addTo = (tasks, task) => [...tasks, task];
-  
+
       switch (newStatus) {
         case "en proceso":
           setBeginTask((prevTodoTasks) => removeFrom(prevTodoTasks, task.id));
@@ -133,7 +133,6 @@ const GestionMantenciones = () => {
       console.error("Error updating task status:", error);
     }
   };
-  
 
   const handleTaskExpand = (taskId) => {
     setExpandedTask((prevExpandedTask) =>
@@ -347,27 +346,27 @@ const GestionMantenciones = () => {
                       Patente: {task.id}
                     </li>
                     {expandedTask === task.id && (
-                    <>
-                      <ul
-                        className={`descripcion_lista ${
-                          isDarkMode ? "dark-mode" : ""
-                        }`}
-                      >
-                        <li>Descripción: {task.descripcion}</li>
-                        <li>
-                          Kilometro de Mantención:{" "}
-                          {formatoKilometraje(task.kilometrajeMantencion)}
-                        </li>
-                        <li>Fecha: {formatDate(new Date(task.fecha))}</li>
-                        <li>
-                          Producto:{" "}
-                          {task.productos.map((producto, index) => (
-                            <p key={index}> - {producto.nombreProducto}</p>
-                          ))}
-                        </li>
-                      </ul>
-                    </>
-                  )}
+                      <>
+                        <ul
+                          className={`descripcion_lista ${
+                            isDarkMode ? "dark-mode" : ""
+                          }`}
+                        >
+                          <li>Descripción: {task.descripcion}</li>
+                          <li>
+                            Kilometro de Mantención:{" "}
+                            {formatoKilometraje(task.kilometrajeMantencion)}
+                          </li>
+                          <li>Fecha: {formatDate(new Date(task.fecha))}</li>
+                          <li>
+                            Producto:{" "}
+                            {task.productos.map((producto, index) => (
+                              <p key={index}> - {producto.nombreProducto}</p>
+                            ))}
+                          </li>
+                        </ul>
+                      </>
+                    )}
                   </ul>
                 </div>
               ))}
