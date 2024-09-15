@@ -20,20 +20,20 @@ import { Typography } from "@mui/material";
 
 const HistorialMantencionAdmin = () => {
   const [mantenciones, setMantenciones] = useState([]);
-  const [mantencionesFiltradas, setMantencionesFiltradas] = useState([]);
+  const [patentesUnicas, setPatentesUnicas] = useState([]);
   const { isDarkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     const fetchMantenciones = async () => {
       try {
-        const mantencionesCollection = collection(db, "historialMantencion");
+        const mantencionesCollection = collection(db, "mantenciones");
         const snapshot = await getDocs(mantencionesCollection);
         const mantencionesData = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         setMantenciones(mantencionesData);
-        setMantencionesFiltradas(mantencionesData);
+        setPatentesUnicas(obtenerPatentesUnicas(mantencionesData));
       } catch (error) {
         console.error("Error fetching mantenciones:", error);
       }
@@ -42,19 +42,35 @@ const HistorialMantencionAdmin = () => {
     fetchMantenciones();
   }, []);
 
-  const filtrarPatente = (e) => {
-    const texto = e.target.value.toLowerCase();
-    setMantencionesFiltradas(
-      texto === ""
-        ? mantenciones
-        : mantenciones.filter((item) => item.id.toLowerCase().includes(texto))
-    );
+  // Función para obtener las patentes únicas
+  const obtenerPatentesUnicas = (mantenciones) => {
+    const patentesSet = new Set();
+    return mantenciones.filter((mantencion) => {
+      if (!patentesSet.has(mantencion.patente)) {
+        patentesSet.add(mantencion.patente);
+        return true;
+      }
+      return false;
+    });
   };
 
-  const generarPDF = (mantencion, download = true) => {
-    const pdf = new jsPDF();
+  // Función para filtrar por patente
+  const filtrarPatente = (e) => {
+    const texto = e.target.value.toLowerCase();
+    const mantencionesFiltradas = mantenciones.filter((item) =>
+      item.patente.toLowerCase().includes(texto)
+    );
+    setPatentesUnicas(obtenerPatentesUnicas(mantencionesFiltradas));
+  };
 
-    // Function to wrap text within a cell
+  // Función para generar PDF con todas las mantenciones de una patente
+  const generarPDF = (patente, action) => {
+    const pdf = new jsPDF();
+    const mantencionesPorPatente = mantenciones.filter(
+      (mantencion) => mantencion.patente === patente
+    );
+
+    // Función para ajustar texto largo
     const wrapText = (text, maxWidth) => {
       const words = text.split(" ");
       let lines = [];
@@ -90,7 +106,7 @@ const HistorialMantencionAdmin = () => {
     pdf.setFontSize(24);
     pdf.setTextColor(40, 40, 40);
     pdf.text(
-      "Historial de Mantenciones",
+      `Mantenciones para patente: ${patente}`,
       pdf.internal.pageSize.getWidth() / 2,
       20,
       {
@@ -114,180 +130,85 @@ const HistorialMantencionAdmin = () => {
     const dateString = today.toLocaleDateString();
     pdf.setFontSize(12);
     pdf.setTextColor(100, 100, 100);
-    pdf.text(`Fecha: ${dateString}`, pdf.internal.pageSize.getWidth() - 45, 35);
-
-    // Detalles de la Mantención
-    pdf.setFontSize(14);
-    pdf.setTextColor(40, 40, 40);
-    pdf.text(`Detalles de la Mantención:`, 20, 45);
-    pdf.setFontSize(12);
-    pdf.setTextColor(50, 50, 50);
-    const detailsStartY = 55;
-    const detailsRowHeight = 10;
-    const detailsColWidths = [80, 80];
-    const detailsHeaders = ["Descripción", "Detalles"];
-    const detailsData = [
-      ["Patente", mantencion.patente || "N/A"],
-      ["Tipo de Mantención", mantencion.tipoMantencion || "N/A"],
-      ["Descripción", mantencion.descripcion || "N/A"],
-      [
-        "Kilometro Mantención",
-        formatoKilometraje(mantencion.kilometrajeMantencion || 0),
-      ],
-    ];
-
-    // Detalles de la Mantención - Tabla
-    pdf.setFillColor(230, 230, 230);
-    pdf.rect(
-      20,
-      detailsStartY,
-      detailsColWidths.reduce((a, b) => a + b, 0),
-      detailsRowHeight,
-      "F"
-    );
-    pdf.setTextColor(0, 0, 0);
-    detailsHeaders.forEach((header, index) => {
-      pdf.text(
-        header,
-        20 + detailsColWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2,
-        detailsStartY + 7
-      );
-    });
-
-    let detailsRowY = detailsStartY + detailsRowHeight;
-    detailsData.forEach((row) => {
-      let cellHeight = detailsRowHeight;
-
-      row.forEach((cell, index) => {
-        const lines = wrapText(cell, detailsColWidths[index]);
-        lines.forEach((line, lineIndex) => {
-          pdf.text(
-            line,
-            20 +
-              detailsColWidths.slice(0, index).reduce((a, b) => a + b, 0) +
-              2,
-            detailsRowY + 7 + lineIndex * detailsRowHeight
-          );
-        });
-        cellHeight = Math.max(cellHeight, detailsRowHeight * lines.length);
-      });
-
-      pdf.line(
-        20,
-        detailsRowY,
-        20 + detailsColWidths.reduce((a, b) => a + b, 0),
-        detailsRowY
-      ); // Horizontal lines
-      detailsRowY += cellHeight;
-    });
-
-    // Vertical lines for details
-    detailsColWidths.reduce((acc, width) => {
-      pdf.line(acc + 20, detailsStartY, acc + 20, detailsRowY);
-      return acc + width;
-    }, 0);
-    pdf.line(
-      20 + detailsColWidths.reduce((a, b) => a + b, 0),
-      detailsStartY,
-      20 + detailsColWidths.reduce((a, b) => a + b, 0),
-      detailsRowY
+    pdf.text(
+      `Fecha de Emisión: ${dateString}`,
+      pdf.internal.pageSize.getWidth() - 65,
+      35
     );
 
-    // Productos Utilizados
-    pdf.setFontSize(14);
-    pdf.setTextColor(40, 40, 40);
-    pdf.text(`Productos Utilizados:`, 20, detailsRowY + 15);
-    pdf.setFontSize(12);
-    const productos = mantencion.productos || [];
-
-    // Tabla de Productos Utilizados
-    const startX = 20;
-    const startY = detailsRowY + 25;
+    // Tabla de Mantenciones
+    let currentY = 45;
     const rowHeight = 10;
-    const colWidths = [35, 35, 55, 50];
-    const headers = ["Fecha Inicio", "Fecha Término", "Producto", "Precio"];
-    const data = productos.map((producto) => [
-      formatDate(new Date(mantencion.fecha)),
-      formatDate(new Date(mantencion.fechaTerminado)),
-      producto.nombreProducto || "Desconocido",
-      (producto.precio || 0).toString(),
-    ]);
 
-    pdf.setFontSize(12);
-    pdf.setFillColor(230, 230, 230);
-    pdf.rect(
-      startX,
-      startY,
-      colWidths.reduce((a, b) => a + b, 0),
-      rowHeight,
-      "F"
-    );
-    pdf.setTextColor(0, 0, 0);
-    headers.forEach((header, index) => {
+    mantencionesPorPatente.forEach((mantencion, index) => {
+      if (index > 0 && currentY > pdf.internal.pageSize.getHeight() - 40) {
+        pdf.addPage();
+        currentY = 20;
+      }
+      currentY += rowHeight;
+
+      pdf.setFontSize(14);
+      pdf.setTextColor(40, 40, 40);
+      pdf.setFont("helvetica", "bold");
       pdf.text(
-        header,
-        startX + colWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2,
-        startY + 7
+        `Tipo de Mantención: ${mantencion.tipoMantencion || "N/A"}`,
+        20,
+        currentY
       );
+      currentY += rowHeight;
+
+      pdf.setFontSize(12);
+      pdf.setTextColor(50, 50, 50);
+      pdf.setFont("helvetica", "normal");
+      const productos = mantencion.productos || [];
+      const data = productos.map((producto) => [
+        producto.nombreProducto || "Desconocido",
+      ]);
+      pdf.text(`Producto: ${data || "N/A"}`, 20, currentY);
+      currentY += rowHeight;
+      pdf.text(
+        `Fecha: ${formatDate(new Date(mantencion.fecha))}`,
+        20,
+        currentY
+      );
+      currentY += rowHeight;
+
+      pdf.text(
+        `Kilometraje: ${formatoKilometraje(
+          mantencion.kilometrajeMantencion || 0
+        )}`,
+        20,
+        currentY
+      );
+      currentY += rowHeight;
+
+      pdf.text(`Precio: ${mantencion.costoTotal || "N/A"}`, 20, currentY);
+      currentY += rowHeight + 5;
+
+      // Línea separadora entre mantenciones
+      pdf.setDrawColor(0, 0, 0);
+      pdf.line(5, currentY, pdf.internal.pageSize.getWidth() - 5, currentY);
+      currentY += rowHeight;
     });
 
-    let rowY = startY + rowHeight;
-    data.forEach((row) => {
-      let cellHeight = rowHeight;
-
-      row.forEach((cell, index) => {
-        const lines = wrapText(cell, colWidths[index]);
-        lines.forEach((line, lineIndex) => {
-          pdf.text(
-            line,
-            startX + colWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2,
-            rowY + 7 + lineIndex * rowHeight
-          );
-        });
-        cellHeight = Math.max(cellHeight, rowHeight * lines.length);
-      });
-
-      pdf.line(
-        startX,
-        rowY,
-        startX + colWidths.reduce((a, b) => a + b, 0),
-        rowY
-      ); // Horizontal lines
-      rowY += cellHeight;
-    });
-
-    // Vertical lines
-    colWidths.reduce((acc, width) => {
-      pdf.line(acc, startY, acc, rowY);
-      return acc + width;
-    }, startX);
-    pdf.line(
-      startX + colWidths.reduce((a, b) => a + b, 0),
-      startY,
-      startX + colWidths.reduce((a, b) => a + b, 0),
-      rowY
-    );
-
-    if (download) {
-      pdf.save(`${mantencion.id}.pdf`);
-    } else {
+    // Acción de visualización o descarga
+    if (action === "visualizar") {
       const url = pdf.output("bloburl");
-      window.open(url, "PDF", "width=900,height=1200");
+      window.open(url, "PDF", "width=900,height=1200"); // Abrir en una nueva ventana
+    } else if (action === "descargar") {
+      pdf.save(`mantenciones_${patente}.pdf`); // Descargar
     }
+  };
+
+  const formatoKilometraje = (kilometraje) => {
+    return new Intl.NumberFormat().format(kilometraje);
   };
 
   const formatDate = (date) => {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString().slice(-2);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${day}/${month}/${year}`;
-  };
-
-  const formatoKilometraje = (amount) => {
-    if (amount === undefined || amount === null) {
-      return "N/A";
-    }
-    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
   };
 
   return (
@@ -328,12 +249,12 @@ const HistorialMantencionAdmin = () => {
                 <TableRow>
                   <TableCell>Patente</TableCell>
                   <TableCell>Fecha</TableCell>
-                  <TableCell>Kilometro de Mantención</TableCell>
+                  <TableCell>Kilometraje de Mantención</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {mantencionesFiltradas.map((mantencion) => (
+                {patentesUnicas.map((mantencion) => (
                   <TableRow key={mantencion.id}>
                     <TableCell>{mantencion.patente}</TableCell>
                     <TableCell>
@@ -344,23 +265,27 @@ const HistorialMantencionAdmin = () => {
                     </TableCell>
                     <TableCell>
                       <Button
-                        onClick={() => generarPDF(mantencion, false)}
+                        size="small"
                         variant="contained"
                         color="primary"
                         startIcon={<VisibilityIcon />}
-                        className={isDarkMode ? "button-dark-mode" : ""}
-                        sx={{ marginRight: 1 }}
+                        onClick={() =>
+                          generarPDF(mantencion.patente, "visualizar")
+                        }
+                        sx={{ mr: 1 }}
                       >
-                        Visualizar
+                        Visualizar PDF
                       </Button>
                       <Button
-                        onClick={() => generarPDF(mantencion, true)}
+                        size="small"
                         variant="contained"
                         color="secondary"
                         startIcon={<DownloadIcon />}
-                        className={isDarkMode ? "button-dark-mode" : ""}
+                        onClick={() =>
+                          generarPDF(mantencion.patente, "descargar")
+                        }
                       >
-                        Descargar
+                        Descargar PDF
                       </Button>
                     </TableCell>
                   </TableRow>
