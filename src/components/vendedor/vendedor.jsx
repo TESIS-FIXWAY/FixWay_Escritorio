@@ -30,6 +30,7 @@ import NightlightIcon from "@mui/icons-material/Nightlight";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
+import { checkActionCode } from "firebase/auth";
 
 const Vendedor = () => {
   const { user, logout } = UserAuth();
@@ -79,11 +80,14 @@ const Vendedor = () => {
                 }
               >
                 <div className="menuArbol">
-                  <Link to="/generarFactura" className="tree-link">
+                  <Link to="/generarFacturaVendedor" className="tree-link">
                     <ShoppingBagIcon className="iconos-navb" />
                     Realizar Venta
                   </Link>
-                  <Link to="/historialBoleta&Factura" className="tree-link">
+                  <Link
+                    to="/historialBoleta&FacturaVendedor"
+                    className="tree-link"
+                  >
                     <RestoreIcon className="iconos-navb" />
                     Historial de Ventas
                   </Link>

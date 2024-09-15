@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { AuthContextProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRouter";
+
 // Componets (vistas)
 import Login from "./components/login";
 import RecuperarContrasena from "./components/RecuperarContrasena";
@@ -40,12 +44,11 @@ import AgregarAutomovil from "./components/mecanico/agregarAutomovil";
 //Vendedor
 import Vendedor from "./components/vendedor/vendedor";
 import IndexVendedor from "./components/vendedor/indexVendedor";
+import GenerarFacturaVendedor from "./components/vendedor/factura/generarFactura";
+import HistorialBoletasYFacturasVendedor from "./components/vendedor/Historial/historialBoletasFacturaVendedor";
 
+// Error
 import Error from "./components/404";
-
-import { Routes, Route } from "react-router-dom";
-import { AuthContextProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRouter";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -150,6 +153,14 @@ function App() {
               }
             />
             <Route path="/indexVendedor" element={<IndexVendedor />} />
+            <Route
+              path="/generarFacturaVendedor"
+              element={<GenerarFacturaVendedor />}
+            />
+            <Route
+              path="/historialBoleta&FacturaVendedor"
+              element={<HistorialBoletasYFacturasVendedor />}
+            />
           </Routes>
         </AuthContextProvider>
       )}
