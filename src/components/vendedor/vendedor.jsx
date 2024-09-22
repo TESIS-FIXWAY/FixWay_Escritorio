@@ -1,6 +1,8 @@
 import "../styles/admin.css";
 import "../styles/darkMode.css";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../../dataBase/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import Logo from "../../images/LogoSinFondo.png";
@@ -14,7 +16,6 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskIcon from "@mui/icons-material/Task";
 import StoreIcon from "@mui/icons-material/Store";
-import QRCodeIcon from "@mui/icons-material/QRCode";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import Groups2Icon from "@mui/icons-material/Groups2";
@@ -22,15 +23,16 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import GarageIcon from "@mui/icons-material/Garage";
 import NotificacionVendedor from "./notificacionesVendedor";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import Box from "@mui/material/Box";
-import { checkActionCode } from "firebase/auth";
 
 const Vendedor = () => {
   const { user, logout } = UserAuth();
@@ -40,6 +42,43 @@ const Vendedor = () => {
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(true);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const userUID = currentUser.uid;
+
+        const userDocRef = doc(db, "users", userUID);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        } else {
+          console.log("No se encontró el documento del usuario.");
+        }
+      } else {
+        navigate("/login");
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
+  const translateRol = (rol) => {
+    switch (rol) {
+      case "administrador":
+        return "Administrador";
+      case "mecanico":
+        return "Mecánico";
+      case "vendedor":
+        return "Vendedor";
+      default:
+        return rol;
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -171,6 +210,20 @@ const Vendedor = () => {
                   <WorkHistoryIcon className="iconos-navb" />
                   Historial
                 </Link>
+              </div>
+              <div className="menuArbol">
+                <p>
+                  <ContactEmergencyIcon className="iconos-navb" />
+                  {userData?.nombre} {userData?.apellido}
+                </p>
+                <p>
+                  <ContactMailIcon className="iconos-navb" />
+                  {userData?.email}
+                </p>
+                <p>
+                  <SupervisedUserCircleIcon className="iconos-navb" />
+                  {translateRol(userData?.rol)}
+                </p>
               </div>
             </SimpleTreeView>
           </Box>

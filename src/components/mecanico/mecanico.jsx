@@ -1,6 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../../dataBase/firebase";
 import Logo from "../../images/LogoSinFondo.png";
 import "../styles/admin.css";
 import "../styles/darkMode.css";
@@ -12,6 +14,9 @@ import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 
 const Mecanico = () => {
   const { user, logout } = UserAuth();
@@ -19,6 +24,43 @@ const Mecanico = () => {
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [showNotification, setShowNotification] = useState(false);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const userUID = currentUser.uid;
+
+        const userDocRef = doc(db, "users", userUID);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        } else {
+          console.log("No se encontró el documento del usuario.");
+        }
+      } else {
+        navigate("/login");
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
+  const translateRol = (rol) => {
+    switch (rol) {
+      case "administrador":
+        return "Administrador";
+      case "mecanico":
+        return "Mecánico";
+      case "vendedor":
+        return "Vendedor";
+      default:
+        return rol;
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -52,6 +94,21 @@ const Mecanico = () => {
 
   return (
     <>
+      {/* <div className="menuArbol">
+                <p>
+                  <ContactEmergencyIcon className="iconos-navb" />
+                  {userData?.nombre} {userData?.apellido}
+                </p>
+                <p>
+                  <ContactMailIcon className="iconos-navb" />
+                  {userData?.email}
+                </p>
+                <p>
+                  <SupervisedUserCircleIcon className="iconos-navb" />
+                  {translateRol(userData?.rol)}
+                </p>
+              </div> */}
+
       <header className={`encabezado ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="logo">
           <Link to="/indexMecanico">
