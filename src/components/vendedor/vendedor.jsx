@@ -157,31 +157,15 @@ const Vendedor = () => {
                   </Link>
                 </div>
               </TreeItem>
-              <TreeItem
-                itemId="automovil"
-                label={
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <TimeToLeaveIcon className="iconos-navb" />
-                    <p className="tree-p">Automóvil</p>
-                  </div>
-                }
-              >
-                <div className="menuArbol">
-                  <Link to="/listadoAutomovil" className="tree-link">
-                    <GarageIcon className="iconos-navb" />
-                    Listar Automóvil
-                  </Link>
-                </div>
-              </TreeItem>
 
               <div className="menuArbol">
+                <Link to="/listadoAutomovil" className="tree-link">
+                  <GarageIcon className="iconos-navb" />
+                  Listar Automóvil
+                </Link>
                 <Link to="/gestionMantencionesAdmin" className="tree-link">
                   <AssignmentIcon className="iconos-navb" />
                   Tareas
-                </Link>
-                <Link to="/generarqrAdmin" className="tree-link">
-                  <QRCodeIcon className="iconos-navb" />
-                  Generar QR
                 </Link>
                 <Link to="/historialmantencion" className="tree-link">
                   <WorkHistoryIcon className="iconos-navb" />
