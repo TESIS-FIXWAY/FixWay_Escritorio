@@ -88,7 +88,6 @@ const GenerarListadoMantencion = () => {
       return lines;
     };
 
-    // Logo
     const imgData = "../../images/LogoSinFondo.png";
     const imgWidth = 40;
     const imgHeight = 40;
@@ -96,7 +95,6 @@ const GenerarListadoMantencion = () => {
     const imgY = 10;
     pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth, imgHeight);
 
-    // Título
     pdf.setFontSize(24);
     pdf.setTextColor(40, 40, 40);
     pdf.text(
@@ -108,7 +106,6 @@ const GenerarListadoMantencion = () => {
       }
     );
 
-    // Línea separadora
     const lineSeparatorY = 25;
     pdf.setLineWidth(0.5);
     pdf.setDrawColor(0, 0, 0);
@@ -119,7 +116,6 @@ const GenerarListadoMantencion = () => {
       lineSeparatorY
     );
 
-    // Fecha
     const today = new Date();
     const dateString = today.toLocaleDateString();
     pdf.setFontSize(12);
@@ -130,7 +126,6 @@ const GenerarListadoMantencion = () => {
       35
     );
 
-    // Tabla de Mantenciones
     let currentY = 45;
     const rowHeight = 10;
 
@@ -168,7 +163,7 @@ const GenerarListadoMantencion = () => {
       currentY += rowHeight;
 
       pdf.text(
-        `Kilometraje: ${formatoKilometraje(
+        `Kilómetro: ${formatoKilometraje(
           mantencion.kilometrajeMantencion || 0
         )}`,
         20,
@@ -176,13 +171,11 @@ const GenerarListadoMantencion = () => {
       );
       currentY += rowHeight;
 
-      // Línea separadora entre mantenciones
       pdf.setDrawColor(0, 0, 0);
       pdf.line(5, currentY, pdf.internal.pageSize.getWidth() - 5, currentY);
       currentY += rowHeight;
     });
 
-    // Acción de visualización o descarga
     if (action === "visualizar") {
       const url = pdf.output("bloburl");
       window.open(url, "PDF", "width=900,height=1200");
