@@ -233,7 +233,7 @@ const GenerarListadoMantencion = () => {
                 <TableRow>
                   <TableCell>Patente</TableCell>
                   <TableCell>Fecha</TableCell>
-                  <TableCell>Kilometraje de Mantención</TableCell>
+                  <TableCell>Kilómetro de Mantención</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
