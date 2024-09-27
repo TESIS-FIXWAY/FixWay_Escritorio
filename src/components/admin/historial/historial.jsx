@@ -209,8 +209,8 @@ const HistorialVentas = () => {
           calendarClassName={`datepicker-open ${isDarkMode ? "dark-mode" : ""}`}
         />
       </div>
-      <div className="informacion_widgets">
-        <div className="widgets_historial">
+      <div className={`informacion_widgets ${isDarkMode ? "dark-mode" : ""}`}>
+        <div className={`widgets_historial ${isDarkMode ? "dark-mode" : ""}`}>
           <div className={`container_widgets ${isDarkMode ? "dark-mode" : ""}`}>
             <h3
               className={`subtitulos_historial ${

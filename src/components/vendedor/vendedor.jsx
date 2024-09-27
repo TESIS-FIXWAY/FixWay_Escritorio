@@ -106,7 +106,68 @@ const Vendedor = () => {
             <img src={Logo} alt="Logo de la aplicación" />
           </Link>
         </div>
-        <div className="menu_lateral">
+
+        <div className="horizontal-container">
+          <p>
+            <ContactEmergencyIcon className="iconos-navb" />
+            {userData?.nombre} {userData?.apellido}
+          </p>
+          {/* <p>
+            <ContactMailIcon className="iconos-navb" />
+            {userData?.email}
+          </p> */}
+          <p>
+            <SupervisedUserCircleIcon className="iconos-navb" />
+            {translateRol(userData?.rol)}
+          </p>
+          <button
+            onClick={toggleSettingsMenu}
+            className={`boton_config ${isDarkMode ? "dark-mode" : ""}`}
+          >
+            <SettingsIcon fontSize="large" />
+          </button>
+          {isSettingsMenuOpen && (
+            <div className={`settings-menu ${isDarkMode ? "dark-mode" : ""}`}>
+              <ul>
+                {/* <li>
+                  <button
+                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+                    onClick={handleShowNotification}
+                  >
+                    <NotificationsIcon />
+                    <span style={{ marginLeft: "10px" }}>Notificaciones</span>
+                  </button>
+                  {showNotification && <NotificacionVendedor />}
+                </li> */}
+                <li>
+                  <button
+                    onClick={toggleDarkMode}
+                    className={`boton_darkMode ${isDarkMode ? "dark-mode" : ""}`}
+                  >
+                    {isDarkMode ? (
+                      <WbSunnyIcon color="#B4B4B4" />
+                    ) : (
+                      <NightlightIcon color="#fff" />
+                    )}
+                    <span style={{ marginLeft: "10px" }}>Modo Oscuro</span>
+                  </button>
+                </li>
+
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
+                  >
+                    <Logout />
+                    <span style={{ marginLeft: "10px" }}>Cerrar sesión</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+        
+        <div className={`menu_lateral ${isDarkMode ? "dark-mode" : ""}`} >
           <Box sx={{ minWidth: 250 }}>
             <SimpleTreeView>
               <TreeItem
@@ -212,72 +273,9 @@ const Vendedor = () => {
                 </Link>
               </div>
               <div className="menuArbol">
-                <p>
-                  <ContactEmergencyIcon className="iconos-navb" />
-                  {userData?.nombre} {userData?.apellido}
-                </p>
-                <p>
-                  <ContactMailIcon className="iconos-navb" />
-                  {userData?.email}
-                </p>
-                <p>
-                  <SupervisedUserCircleIcon className="iconos-navb" />
-                  {translateRol(userData?.rol)}
-                </p>
               </div>
             </SimpleTreeView>
           </Box>
-        </div>
-
-        <div>
-          <button
-            onClick={toggleSettingsMenu}
-            className={`boton_config ${isDarkMode ? "dark-mode" : ""}`}
-          >
-            <SettingsIcon fontSize="large" />
-          </button>
-          {isSettingsMenuOpen && (
-            <div className={`settings-menu ${isDarkMode ? "dark-mode" : ""}`}>
-              <ul>
-                <li>
-                  <button
-                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
-                    onClick={handleShowNotification}
-                  >
-                    <NotificationsIcon />
-                  </button>
-                  {showNotification && <NotificacionVendedor />}
-                  <span>Notificaciones</span>
-                </li>
-
-                <li>
-                  <button
-                    onClick={toggleDarkMode}
-                    className={`boton_darkMode ${
-                      isDarkMode ? "dark-mode" : ""
-                    }`}
-                  >
-                    {isDarkMode ? (
-                      <WbSunnyIcon color="#B4B4B4" />
-                    ) : (
-                      <NightlightIcon color="#fff" />
-                    )}
-                  </button>
-                  <span>Modo Oscuro</span>
-                </li>
-
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
-                  >
-                    <Logout />
-                  </button>
-                  <span>Cerrar sesión</span>
-                </li>
-              </ul>
-            </div>
-          )}
         </div>
       </header>
     </>

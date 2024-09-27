@@ -1,8 +1,12 @@
 /* admin */
 
 .encabezado.dark-mode {
-  background-color: #171717;
-  color: red;
+  background-color: #333333;
+  color: #b4b4b4;
+}
+.menu_lateral.dark-mode {
+  background-color: #333333;
+  color: #b4b4b4;
 }
 
 .boton_salir.dark-mode {
@@ -34,7 +38,7 @@
 }
 
 .boton_config.dark-mode {
-  background-color: #171717;
+  background-color: #333;
   color: #b4b4b4;
 }
 .settings-menu.dark-mode {
@@ -94,6 +98,18 @@ main.dark-mode {
   background-color: #171717;
 }
 
+
+.container.dark-mode{
+  background-color: #171717;
+}
+.informacion_widgets.dark-mode{
+  background-color: #171717;
+}
+.widgets_historial.dark-mode{
+  background-color: #171717;
+}
+
+
 /* grafico historial */
 .seleccionar.dark-mode {
   border: none !important;
@@ -105,10 +121,14 @@ main.dark-mode {
   border: none;
   background-color: #171717;
 }
-.container_widgets.dark-mode {
-  background-color: #3c3c3c;
-  color: #b4b4b4;
+.titulo-Grafico.dark-mode{
+  background-color: #171717;
 }
+.grafico-container.dark-mode{
+  background-color: #171717;
+}
+
+
 .subtitulos_historial.dark-mode {
   color: #b4b4b4;
 }

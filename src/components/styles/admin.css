@@ -81,6 +81,13 @@
   overflow-y: auto;
 }
 
+.horizontal-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
+
+
 .menuArbol {
   display: flex;
   flex-direction: column;
