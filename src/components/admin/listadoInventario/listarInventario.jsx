@@ -311,6 +311,7 @@ const ListarInventario = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             height: "100vh",
+                            width: "100vw",
                           }}
                           className="fondo_no"
                         >
@@ -354,6 +355,88 @@ const ListarInventario = () => {
                               fullWidth
                               margin="normal"
                             />
+                            <FormControl
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            >
+                              <InputLabel id="marca-label">
+                                Marca Automovil
+                              </InputLabel>
+                              <Select
+                                labelId="marca-label"
+                                id="marca"
+                                value={inventario.marcaAutomovil}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    inventario.id,
+                                    "marcaAutomovil",
+                                    e.target.value
+                                  )
+                                }
+                                label="Marca Automovil"
+                              >
+                                <MenuItem value="" disabled>
+                                  Seleccione una marca
+                                </MenuItem>
+                                <MenuItem value="Alfa Romeo">
+                                  Alfa Romeo
+                                </MenuItem>
+                                <MenuItem value="Audi">Audi</MenuItem>
+                                <MenuItem value="BAIC">BAIC</MenuItem>
+                                <MenuItem value="BMW">BMW</MenuItem>
+                                <MenuItem value="BYD">BYD</MenuItem>
+                                <MenuItem value="Changan">Changan</MenuItem>
+                                <MenuItem value="Chevrolet">Chevrolet</MenuItem>
+                                <MenuItem value="Chery">Chery</MenuItem>
+                                <MenuItem value="Chrysler">Chrysler</MenuItem>
+                                <MenuItem value="Citroën">Citroën</MenuItem>
+                                <MenuItem value="Dodge">Dodge</MenuItem>
+                                <MenuItem value="Dongfeng">Dongfeng</MenuItem>
+                                <MenuItem value="Fiat">Fiat</MenuItem>
+                                <MenuItem value="Foton">Foton</MenuItem>
+                                <MenuItem value="Ford">Ford</MenuItem>
+                                <MenuItem value="Geely">Geely</MenuItem>
+                                <MenuItem value="GAC">GAC</MenuItem>
+                                <MenuItem value="Great Wall">
+                                  Great Wall
+                                </MenuItem>
+                                <MenuItem value="Haval">Haval</MenuItem>
+                                <MenuItem value="Honda">Honda</MenuItem>
+                                <MenuItem value="Hyundai">Hyundai</MenuItem>
+                                <MenuItem value="JAC">JAC</MenuItem>
+                                <MenuItem value="JMC">JMC</MenuItem>
+                                <MenuItem value="Jeep">Jeep</MenuItem>
+                                <MenuItem value="Kia">Kia</MenuItem>
+                                <MenuItem value="Lifan">Lifan</MenuItem>
+                                <MenuItem value="Mahindra">Mahindra</MenuItem>
+                                <MenuItem value="Mazda">Mazda</MenuItem>
+                                <MenuItem value="Mercedes-Benz">
+                                  Mercedes-Benz
+                                </MenuItem>
+                                <MenuItem value="MG">MG</MenuItem>
+                                <MenuItem value="Mini">Mini</MenuItem>
+                                <MenuItem value="Mitsubishi">
+                                  Mitsubishi
+                                </MenuItem>
+                                <MenuItem value="Nissan">Nissan</MenuItem>
+                                <MenuItem value="Opel">Opel</MenuItem>
+                                <MenuItem value="Peugeot">Peugeot</MenuItem>
+                                <MenuItem value="Ram">Ram</MenuItem>
+                                <MenuItem value="Renault">Renault</MenuItem>
+                                <MenuItem value="Skoda">Skoda</MenuItem>
+                                <MenuItem value="SsangYong">SsangYong</MenuItem>
+                                <MenuItem value="Subaru">Subaru</MenuItem>
+                                <MenuItem value="Suzuki">Suzuki</MenuItem>
+                                <MenuItem value="Tata">Tata</MenuItem>
+                                <MenuItem value="Toyota">Toyota</MenuItem>
+                                <MenuItem value="Volkswagen">
+                                  Volkswagen
+                                </MenuItem>
+                                <MenuItem value="Volvo">Volvo</MenuItem>
+                              </Select>
+                            </FormControl>
+
                             <FormControl
                               variant="outlined"
                               fullWidth
@@ -418,6 +501,12 @@ const ListarInventario = () => {
                                 <MenuItem value={"Sistema de Refrigeración"}>
                                   Sistema de Refrigeración
                                 </MenuItem>
+                                <MenuItem value={"Iluminación y Electricidad"}>
+                                  Iluminación y Electricidad
+                                </MenuItem>
+                                <MenuItem value={"Neumáticos"}>
+                                  Neumáticos
+                                </MenuItem>
                                 <MenuItem
                                   value={"Accesorios y Personalización"}
                                 >
@@ -429,12 +518,40 @@ const ListarInventario = () => {
                               </Select>
                             </FormControl>
                             <TextField
-                              label="Marca"
+                              label="Marca Producto"
                               value={inventario.marcaProducto}
                               onChange={(e) =>
                                 handleInputChange(
                                   inventario.id,
                                   "marca",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <TextField
+                              label={"Año de Uso Inicio"}
+                              value={inventario.anoProductoUsoInicio}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "anoProductoUsoFin",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <TextField
+                              label={"Año de Uso Fin"}
+                              value={inventario.anoProductoUsoFin}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "anoProductoUsoFin",
                                   e.target.value
                                 )
                               }
@@ -457,7 +574,35 @@ const ListarInventario = () => {
                               margin="normal"
                             />
                             <TextField
-                              label="Costo"
+                              label="Origen"
+                              value={inventario.origen}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "origen",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <TextField
+                              label="Precio Detalle"
+                              value={inventario.precioDetalle}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  inventario.id,
+                                  "precioVenta",
+                                  e.target.value
+                                )
+                              }
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                            />
+                            <TextField
+                              label="Precio Venta"
                               value={inventario.costo}
                               onChange={(e) =>
                                 handleInputChange(
