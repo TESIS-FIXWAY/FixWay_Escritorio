@@ -7,9 +7,7 @@ export default function VistaIA() {
   return (
     <>
       <Admin />
-      <InventarioIA />
       <HistorialVentasIA />
-      <BoletasFacturasIA />
     </>
   );
 }
