@@ -451,7 +451,7 @@ export default function AgregarAutomovilAdmin() {
                   </Box>
                 </Modal>
                 {successMessage && (
-                  <Alert severity="success" icon={<CheckCircleIcon />}>
+                  <Alert severity="success" icon={<VerifiedIcon />}>
                     {successMessage}
                   </Alert>
                 )}
