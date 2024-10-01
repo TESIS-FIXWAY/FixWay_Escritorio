@@ -324,9 +324,6 @@ const Admin = () => {
                 </Link>
               </div>
 
-              <div className="menuArbol">
-
-              </div>
             </SimpleTreeView>
           </Box>
         </div>

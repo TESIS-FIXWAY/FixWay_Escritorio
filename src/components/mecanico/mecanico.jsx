@@ -17,6 +17,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import Box from "@mui/material/Box";
+import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
+
 
 const Mecanico = () => {
   const { user, logout } = UserAuth();
@@ -94,20 +97,6 @@ const Mecanico = () => {
 
   return (
     <>
-      {/* <div className="menuArbol">
-                <p>
-                  <ContactEmergencyIcon className="iconos-navb" />
-                  {userData?.nombre} {userData?.apellido}
-                </p>
-                <p>
-                  <ContactMailIcon className="iconos-navb" />
-                  {userData?.email}
-                </p>
-                <p>
-                  <SupervisedUserCircleIcon className="iconos-navb" />
-                  {translateRol(userData?.rol)}
-                </p>
-              </div> */}
 
       <header className={`encabezado ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="logo">
@@ -115,72 +104,7 @@ const Mecanico = () => {
             <img src={Logo} alt="logo" />
           </Link>
         </div>
-        <nav className={`arbol ${isDarkMode ? "dark-mode" : ""}`}>
-          <ul className={`arbolitos ${isDarkMode ? "dark-mode" : ""}`}>
-            <li>
-              <Link
-                to="/agregarAutomovil"
-                className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">Agregar Automóvil</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/agregarMantencion"
-                className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">Agregar Mantención</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/gestionMantenciones"
-                className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">Tablero de Tareas</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/listarInventarioMecanico"
-                className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">Listar Inventario</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/GenerarQR"
-                className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">Generar QR</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/GenerarListadoMantencion"
-                className={`links ${isDarkMode ? "dark-mode" : ""} ${
-                  window.location.pathname === "" ? "active" : ""
-                }`}
-              >
-                <span className="link_name">
-                  Descarga Historial de Mantención
-                </span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
+
         <div>
           <button
             onClick={() => {
@@ -234,6 +158,33 @@ const Mecanico = () => {
               </ul>
             </div>
           )}
+        </div>
+
+        <div className={`menu_lateral ${isDarkMode ? "dark-mode" : ""}`} >
+          <Box sx={{ minWidth: 250 }}>
+            <SimpleTreeView>
+              <div className="menuArbol">
+                <Link to="/agregarAutomovil" className="tree-link">
+                  Agregar Automóvil
+                </Link>
+                <Link to="/agregarAutomovil" className="tree-link">
+                  Agregar Mantención
+                </Link>
+                <Link to="/agregarAutomovil" className="tree-link">
+                  Tablero de Tareas
+                </Link>
+                <Link to="/agregarAutomovil" className="tree-link">
+                  Listar Inventario
+                </Link>
+                <Link to="/agregarAutomovil" className="tree-link">
+                  Generar QR
+                </Link>
+                <Link to="/agregarAutomovil" className="tree-link">
+                  Historial de Mantención
+                </Link>
+              </div>
+            </SimpleTreeView>
+          </Box>
         </div>
       </header>
     </>
