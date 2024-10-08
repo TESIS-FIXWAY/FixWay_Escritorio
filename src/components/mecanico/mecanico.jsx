@@ -167,19 +167,19 @@ const Mecanico = () => {
                 <Link to="/agregarAutomovil" className="tree-link">
                   Agregar Automóvil
                 </Link>
-                <Link to="/agregarAutomovil" className="tree-link">
+                <Link to="/AgregarMantencion" className="tree-link">
                   Agregar Mantención
                 </Link>
-                <Link to="/agregarAutomovil" className="tree-link">
+                <Link to="/GestionMantenciones" className="tree-link">
                   Tablero de Tareas
                 </Link>
-                <Link to="/agregarAutomovil" className="tree-link">
+                <Link to="/ListarInventarioMecanico" className="tree-link">
                   Listar Inventario
                 </Link>
-                <Link to="/agregarAutomovil" className="tree-link">
+                <Link to="/GenerarQR" className="tree-link">
                   Generar QR
                 </Link>
-                <Link to="/agregarAutomovil" className="tree-link">
+                <Link to="/GenerarListadoMantencion" className="tree-link">
                   Historial de Mantención
                 </Link>
               </div>
