@@ -18,6 +18,12 @@ vi.mock("../context/AuthContext", () => ({
   }),
 }));
 
+vi.mock("../../context/darkMode", () => ({
+  DarkModeContext: {
+    Consumer: ({ children }) => children({ isDarkMode: false }),
+  },
+}));
+
 describe("AgregarCliente", () => {
   it("should render the client form correctly", () => {
     const mockDarkModeContextValue = {
