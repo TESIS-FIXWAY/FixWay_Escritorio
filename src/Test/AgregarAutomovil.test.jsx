@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import React from "react";
-import AgregarAutomovilAdmin from "../components/admin/agregarAutomovil";
+import AgregarAutomovilAdmin from "../components/admin/agregarAutomovilAdmin";
 import { MemoryRouter } from "react-router-dom";
 import { DarkModeContext } from "../context/darkMode";
 
