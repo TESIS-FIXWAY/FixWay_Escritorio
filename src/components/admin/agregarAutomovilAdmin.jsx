@@ -15,7 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../dataBase/firebase";
-import Admin from "../admin/admin";
+import Admin from "./admin";
 import { DarkModeContext } from "../../context/darkMode";
 import ValidadorPatente from "../../hooks/validadorPatente";
 import ValidadorVIN from "../../hooks/validadorVIN";

@@ -27,9 +27,9 @@ import HistorialMantencionAdmin from "./components/admin/historialMantencion";
 import ListarCliente from "./components/admin/listaCliente/listarCliente";
 import CrearCliente from "./components/admin/agregarCliente";
 import HistorialBoletasYFacturas from "./components/admin/historial/historialBoletaFactura";
-import AgregarAutomovilAdmin from "./components/admin/agregarAutomnovil";
 import ListadoAutomovil from "./components/admin/listadoAutomovil/listadoAutomovil";
 import VistaIA from "./components/admin/IA/inteligenciaArtificial";
+import AgregarAutomovilAdmin from "./components/admin/agregarAutomovilAdmin";
 
 // Mecanico
 import Mecanico from "./components/mecanico/mecanico";
