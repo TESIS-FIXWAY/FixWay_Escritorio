@@ -36,7 +36,7 @@ import Mecanico from "./components/mecanico/mecanico";
 import IndexMecanico from "./components/mecanico/indexMecanico";
 import GestionMantenciones from "./components/mecanico/gestionMantenciones";
 import ListarInventarioMecanico from "./components/mecanico/listarInventarioMecanico";
-import GenerarQR from "./components/mecanico/GenerarQR";
+import GenerarQRMecanico from "./components/mecanico/GenerarQR";
 import GenerarListadoMantencion from "./components/mecanico/generarListadoMantencion";
 import AgregarMantencion from "./components/mecanico/agregarMantencion";
 import AgregarAutomovil from "./components/mecanico/agregarAutomovil";
@@ -136,7 +136,7 @@ function App() {
               path="/listarInventarioMecanico"
               element={<ListarInventarioMecanico />}
             />
-            <Route path="/generarQR" element={<GenerarQR />} />
+            <Route path="/generarQR" element={<GenerarQRMecanico />} />
             <Route
               path="/generarListadoMantencion"
               element={<GenerarListadoMantencion />}

@@ -15,7 +15,7 @@ import {
 import { DarkModeContext } from "../../context/darkMode";
 import { Download } from "@mui/icons-material";
 
-const GenerarQRADmin = () => {
+const GenerarQRMecanico = () => {
   const [patentes, setPatentes] = useState([]);
   const [filteredPatentes, setFilteredPatentes] = useState([]);
   const [selectedPatenteId, setSelectedPatenteId] = useState("");
@@ -136,4 +136,4 @@ const GenerarQRADmin = () => {
   );
 };
 
-export default GenerarQRADmin;
+export default GenerarQRMecanico;
