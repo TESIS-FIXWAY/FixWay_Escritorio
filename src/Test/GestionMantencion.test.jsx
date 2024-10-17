@@ -38,7 +38,6 @@ describe("GestionMantencionesAdmin", () => {
       </MemoryRouter>
     );
 
-    // Usar `getByRole` para seleccionar el encabezado de la tabla
     expect(
       screen.getByRole("columnheader", { name: /Patente/i })
     ).not.toBeNull();
@@ -68,8 +67,6 @@ describe("GestionMantencionesAdmin", () => {
         </DarkModeContext.Provider>
       </MemoryRouter>
     );
-
-    // Verificar que los campos de entrada se renderizan correctamente
     expect(screen.getByPlaceholderText(/Buscar producto/i)).not.toBeNull();
     expect(screen.getByPlaceholderText(/Fecha Actual/i)).not.toBeNull();
   });

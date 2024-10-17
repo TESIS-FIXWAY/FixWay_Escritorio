@@ -38,7 +38,6 @@ vi.mock("../../context/darkMode", () => ({
 
 describe("ProductoMasVendido", () => {
   it("should render the table of most sold products", async () => {
-    // Mock data response
     const mockData = [
       {
         id: "1",
@@ -74,7 +73,6 @@ describe("ProductoMasVendido", () => {
       },
     ];
 
-    // Mockear la respuesta de getDocs
     getDocs.mockResolvedValueOnce({
       forEach: (callback) => {
         mockData.forEach(callback);

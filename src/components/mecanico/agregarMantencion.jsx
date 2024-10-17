@@ -30,7 +30,7 @@ import Mecanico from "./mecanico";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
-const AgregarMantencion = () => {
+export default function AgregarMantencionMecanico() {
   const [patente, setPatente] = useState("");
   const [tipoMantencion, setTipoMantencion] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -620,6 +620,4 @@ const AgregarMantencion = () => {
       </div>
     </>
   );
-};
-
-export default AgregarMantencion;
+}

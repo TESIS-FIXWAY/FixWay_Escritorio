@@ -36,7 +36,7 @@ describe("ListadoFacturas", () => {
 
     expect(screen.getByRole("table")).not.to.be.null;
 
-    expect(screen.getAllByText("Proveedor")[0]).not.to.be.null; // Usamos getAllByText para manejar múltiples elementos
+    expect(screen.getAllByText("Proveedor")[0]).not.to.be.null;
     expect(screen.getByText("ID Producto")).not.to.be.null;
     expect(screen.getByText("Fecha")).not.to.be.null;
     expect(screen.getByText("Detalle")).not.to.be.null;
