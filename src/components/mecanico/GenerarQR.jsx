@@ -25,11 +25,15 @@ const GenerarQRMecanico = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataRef = collection(db, "historialMantencion");
+      const dataRef = collection(db, "mantenciones");
 
       try {
         const querySnapshot = await getDocs(dataRef);
-        const nuevasPatentes = querySnapshot.docs.map((doc) => doc.id);
+        const nuevasPatentes = querySnapshot.docs.map((doc) => {
+          const patenteCompleta = doc.id;
+          const patenteSolo = patenteCompleta.split("-")[0];
+          return patenteSolo;
+        });
 
         setPatentes(nuevasPatentes);
         setFilteredPatentes(nuevasPatentes);
