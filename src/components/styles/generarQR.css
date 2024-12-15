@@ -24,16 +24,6 @@
   font-size: 3em;
 }
 
-.formulario_form_generarQR {
-  margin: 50px;
-  padding: 1em;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1em;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
 
 .input_generarQR {
   margin: 0 0 18px 0;
@@ -71,7 +61,7 @@
 }
 
 /* Responsividad */
-@media (max-width: 800px) {
+@media (max-width: 768px) {
   .formulario_content_generarQR {
     margin-left: 0; /* Elimina el margen lateral en pantallas pequeñas */
   }

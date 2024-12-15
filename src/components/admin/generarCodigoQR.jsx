@@ -79,9 +79,9 @@ const GenerarQRADmin = () => {
   return (
     <>
       <header>
-        {" "}
-        <Admin />{" "}
+        <Admin />
       </header>
+
       <div className={`body_generarQR ${isDarkMode ? "dark-mode" : ""}`}>
         <div className="formulario_content_generarQR">
           <Box textAlign="center" mt={4} className="formulario_content">
