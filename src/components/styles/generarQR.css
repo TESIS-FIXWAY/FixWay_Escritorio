@@ -3,18 +3,20 @@
 }
 
 .body_generarQR {
-  margin-top: -60px;
   background-color: #f7f9fb;
   height: 100vh;
   justify-content: center;
   align-items: center;
   display: flex;
+  flex-direction: column; /* Cambia a columna para pantallas pequeñas */
+  padding: 1em;
 }
 
 .formulario_content_generarQR {
   position: relative;
   text-align: center;
   padding: 1em;
+  margin-left: 200px;
 }
 
 .generarQR_titulo {
@@ -25,7 +27,9 @@
 .formulario_form_generarQR {
   margin: 50px;
   padding: 1em;
+  display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 1em;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -34,7 +38,7 @@
 .input_generarQR {
   margin: 0 0 18px 0;
   padding: 0.7em;
-  width: 80%;
+  width: 100%; /* Ajusta el ancho al 100% */
   border: none;
   border-bottom: 1px solid #000;
   border-radius: 5px;
@@ -42,7 +46,7 @@
 }
 
 #qr-code-canvas {
-  margin: 20px;
+  margin: 20px auto; /* Centra el canvas horizontalmente */
   width: 300px;
   height: 300px;
   transition: opacity 0.5s ease;
@@ -54,8 +58,51 @@
 
 .boton_qr_descargar_qr {
   background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.7em 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
 }
 
 .boton_qr_descargar_qr:hover {
   background-color: #c0392b;
+}
+
+/* Responsividad */
+@media (max-width: 800px) {
+  .formulario_content_generarQR {
+    margin-left: 0; /* Elimina el margen lateral en pantallas pequeñas */
+  }
+
+  .generarQR_titulo {
+    font-size: 2em; /* Reduce el tamaño del título */
+  }
+
+  .formulario_form_generarQR {
+    grid-template-columns: 1fr; /* Cambia a una sola columna */
+    margin: 20px;
+    padding: 1em;
+  }
+
+  .input_generarQR {
+    width: 100%; /* Asegura que el input ocupe todo el ancho disponible */
+  }
+
+  #qr-code-canvas {
+    width: 250px; /* Reduce el tamaño del canvas */
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .generarQR_titulo {
+    font-size: 1.5em; /* Reduce más el tamaño del título */
+  }
+
+  #qr-code-canvas {
+    width: 200px; /* Reduce aún más el tamaño del canvas */
+    height: 200px;
+  }
 }
