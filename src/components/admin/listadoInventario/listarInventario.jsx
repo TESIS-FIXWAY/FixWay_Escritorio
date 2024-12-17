@@ -317,7 +317,7 @@ const ListarInventario = () => {
                         >
                           <Paper
                             elevation={3}
-                            style={{ width: "500px", padding: "20px" }}
+                            style={{ width: "500px", padding: "20px", height:"800px", overflowY: "auto"  }}
                           >
                             <Typography
                               variant="h5"

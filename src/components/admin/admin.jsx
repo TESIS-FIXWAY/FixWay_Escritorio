@@ -139,7 +139,7 @@ const Admin = () => {
           {isSettingsMenuOpen && (
             <div className={`settings-menu ${isDarkMode ? "dark-mode" : ""}`}>
               <ul>
-                <li>
+                {/* <li>
                   <button
                     className={`boton_salir ${isDarkMode ? "dark-mode" : ""}`}
                     onClick={handleShowNotification}
@@ -148,7 +148,7 @@ const Admin = () => {
                     <span style={{ marginLeft: "10px" }}>Notificaciones</span>
                   </button>
                   {showNotification && <Notificacion />}
-                </li>
+                </li> */}
                 <li>
                   <button
                     onClick={toggleDarkMode}
@@ -328,10 +328,6 @@ const Admin = () => {
           </Box>
         </div>
 
-
-        
-
-        
       </header>
     </>
   );
