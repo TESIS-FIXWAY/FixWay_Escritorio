@@ -37,12 +37,12 @@ Esta es una herramienta de gestión para un taller mecánico que permite llevar 
    npm install
    ```
 
-2. **Ejecutar el entorno de desarrollo Web:**
+2. **Ejecutar el entorno de desarrollo:**
 
    ```bash
    npm run dev
    ```
-3. **Ejecutar el entorno de desarrollo con Tauri:**
+3. **Compilación de la aplicación de escritorio y ejecutar la versión de producción:**
 
    ```bash
    npm run tauri dev
